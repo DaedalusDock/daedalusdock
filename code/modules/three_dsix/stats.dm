@@ -82,6 +82,9 @@
 	var/list/skill_data = list()
 	data["skills"] = skill_data
 
+	var/list/stats_data = list()
+	data["stats"] = stats_data
+
 	for(var/skill_type in skills)
 		var/datum/rpg_skill/skill = skills[skill_type]
 		var/datum/rpg_skill/stat = stats[skill.parent_stat_type]
@@ -90,14 +93,26 @@
 		var/list/skill_modifiers = list()
 		var/list/stat_modifiers = list()
 
-		var/list/modifier_data = list()
+		var/list/skill_modifier_data = list()
+		var/list/stat_modifier_data = list()
 
+		var/skill_value = get_skill_modifier(skill_type, skill_modifiers)
+		var/stat_value = get_stat_modifier(stat.type, stat_modifiers)
 		skill_data[++skill_data.len] = list(
 			"name" = skill.name,
 			"desc" = skill.desc,
-			"value" = STATS_BASELINE_VALUE + get_skill_modifier(skill_type, skill_modifiers) + get_stat_modifier(stat.type, stat_modifiers),
-			"modifiers" = modifier_data,
+			"value" = STATS_BASELINE_VALUE + skill_value + stat_value,
+			"modifiers" = skill_modifier_data,
+			"parent_stat_name" = stat.name,
 		)
+
+		if(!stats_data[stat.name])
+			stats_data[stat.name] = list(
+				"name" = stat.name,
+				"desc" = stat.desc,
+				"value" = STATS_BASELINE_VALUE + stat_value,
+				"modifiers" = stat_modifier_data,
+			)
 
 		if(skill.modifiers)
 			skill_modifiers += skill.modifiers
@@ -109,7 +124,7 @@
 			if(modifier_value == 0)
 				continue
 
-			modifier_data[++modifier_data.len] = list(
+			skill_modifier_data[++skill_modifier_data.len] = list(
 				"source" = modifier_source,
 				"value" = modifier_value
 			)
@@ -118,8 +133,14 @@
 			if(modifier_value == 0)
 				continue
 
-			modifier_data[++modifier_data.len] = list(
+			// Skills get stat modifiers
+			skill_modifier_data[++skill_modifier_data.len] = list(
 				"source" = "[modifier_source] ([stat.name])",
+				"value" = modifier_value
+			)
+
+			stat_modifier_data[++stat_modifier_data.len] = list(
+				"source" = "[modifier_source]",
 				"value" = modifier_value
 			)
 

@@ -2,6 +2,8 @@
 @use 'sass:color';
 
 $health-block-color: #454442;
+$stats-per-row: 5;
+$stats_count: 4;
 
 .CharacterStats__nameHeader {
   margin-bottom: 1.7rem;
@@ -42,4 +44,23 @@ $health-block-color: #454442;
   width: 100%;
   color: #454442;
   font-weight: bold;
+}
+
+.CharacterStats__statsPage {
+  font-family: 'Jost', sans-serif;
+}
+
+.CharacterStats__statRow {
+  width: 100%;
+  height: calc((100% / $stats_count) - (1em));
+  margin: 0.5em 0;
+}
+
+.CharacterStats__statEntry {
+  width: calc((100% / $stats-per-row) - (2px * 2));
+  border: 2px solid #03fca1;
+  margin: 0 2px;
+  padding: 1em;
+  box-sizing: border-box;
+  overflow: hidden;
 }

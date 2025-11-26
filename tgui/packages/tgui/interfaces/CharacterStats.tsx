@@ -1,9 +1,10 @@
 import { capitalize } from 'common/string';
-import { Box, Section, Stack, Tabs } from 'tgui-core/components';
+import { SetStateAction, useState } from 'react';
+import { Box, Section, Tabs } from 'tgui-core/components';
 import { BooleanLike } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
-import { ByondUi, Flex } from '../components';
+import { ByondUi, Flex, Modal } from '../components';
 import { Window } from '../layouts';
 
 type CharacterStatsData = {
@@ -13,6 +14,7 @@ type CharacterStatsData = {
   mob: Mob;
   mob_statuses: Record<string, number>;
   skills: Skill[];
+  stats: Record<string, Stat>;
 };
 
 type Mob = {
@@ -26,6 +28,14 @@ type Bodypart = {
 };
 
 type Skill = {
+  desc: string;
+  modifiers: SkillModifier[];
+  name: string;
+  parent_stat_name: string;
+  value: number;
+};
+
+type Stat = {
   desc: string;
   modifiers: SkillModifier[];
   name: string;
@@ -50,10 +60,10 @@ export const CharacterStats = (props) => {
 
   switch (currentPage) {
     case Page.Body:
-      pageContent = BodyPage(data);
+      pageContent = BodyPage();
       break;
     case Page.Stats:
-      pageContent = StatsPage(data);
+      pageContent = StatsPage();
       break;
   }
 
@@ -90,7 +100,8 @@ export const CharacterStats = (props) => {
   );
 };
 
-function BodyPage(data: CharacterStatsData) {
+function BodyPage() {
+  const { data } = useBackend<CharacterStatsData>();
   return (
     <Flex direction="row" justify="center" height="100%">
       <Flex.Item grow={1}>
@@ -197,46 +208,129 @@ function bodypartHealthEntry(bodypart: Bodypart) {
     </Flex.Item>
   );
 }
-function StatsPage(data: CharacterStatsData) {
+
+type ModalState = undefined | Skill | Stat;
+
+function StatsPage() {
+  const [seeingModalOf, setModal] = useState<ModalState>(undefined);
+  const { data } = useBackend<CharacterStatsData>();
   return (
-    <Stack direction="row" wrap height="100%" justify="center" align="center">
-      {data.skills.map((skill, i) => (
-        <Stack.Item
-          key={i}
-          width="23%"
-          height="49%"
-          style={{
-            border: '2px solid #03fca1',
-            marginBottom: '1em',
-            padding: '1em',
-          }}
+    <Box height="100%" width="100%" className="CharacterStats__statsPage">
+      {DetailedStatOrSkillModal(seeingModalOf, setModal)}
+      <Flex
+        direction="column"
+        height="100%"
+        width="100%"
+        justify="flex-start"
+        align="flex-start"
+      >
+        {Object.values(data.stats).map((stat) =>
+          StatRow(stat, seeingModalOf, setModal),
+        )}
+      </Flex>
+    </Box>
+  );
+}
+
+function StatRow(relevantStat: Stat, seeingModalOf, setModal) {
+  const { data } = useBackend<CharacterStatsData>();
+  const relevantSkills = data.skills.filter(
+    (skill) => skill.parent_stat_name === relevantStat.name,
+  );
+  return (
+    <Flex.Item className="CharacterStats__statRow">
+      <Flex direction="row" width="100%" justify="flex-start" height="100%">
+        {StatOrSkillEntry(relevantStat, seeingModalOf, setModal)}
+        {relevantSkills.map((skill) =>
+          StatOrSkillEntry(skill, seeingModalOf, setModal),
+        )}
+      </Flex>
+    </Flex.Item>
+  );
+}
+
+function StatOrSkillEntry(still: Stat | Skill, seeingModalOf, setModal) {
+  const { data } = useBackend<CharacterStatsData>();
+  return (
+    <Flex.Item
+      className="CharacterStats__statEntry"
+      onClick={() => {
+        setModal(still);
+      }}
+    >
+      <Flex direction="column" height="100%">
+        <Flex.Item height="60%">
+          <Box textAlign="center" fontSize="2rem">
+            {still.name}
+          </Box>
+          <Box textAlign="center">
+            <i>{still.desc}</i>
+          </Box>
+        </Flex.Item>
+        <Flex.Item
+          textAlign="center"
+          fontSize="3rem"
+          style={{ marginTop: '0.5rem' }}
+          color={
+            still.value === data.default_skill_value
+              ? ''
+              : still.value >= data.default_skill_value
+                ? '#03fca1'
+                : '#fc4b32'
+          }
         >
-          <Flex direction="column" height="100%">
-            <Flex.Item height="25%">
+          {still.value}
+        </Flex.Item>
+      </Flex>
+    </Flex.Item>
+  );
+}
+
+function DetailedStatOrSkillModal(
+  seeingModalOf: ModalState,
+  setModal: {
+    (value: SetStateAction<ModalState>): void;
+    (arg0: undefined): void;
+  },
+) {
+  const { data } = useBackend<CharacterStatsData>();
+  console.log(seeingModalOf);
+  return (
+    !!seeingModalOf && (
+      <Modal
+        width="30rem"
+        height="50rem"
+        onClick={() => setModal(undefined)}
+        onDimmerClick={() => setModal(undefined)}
+      >
+        <Flex width="100%" height="100%" justify="center">
+          <Flex direction="column" height="100%" width="100%">
+            <Flex.Item>
               <Box textAlign="center" fontSize="2rem">
-                {skill.name}
+                {seeingModalOf.name}
               </Box>
               <Box textAlign="center">
-                <i>{skill.desc}</i>
+                <i>{seeingModalOf.desc}</i>
               </Box>
             </Flex.Item>
             <Flex.Item
               textAlign="center"
-              fontSize="4rem"
-              style={{ marginTop: '0.5rem' }}
+              fontSize="3rem"
+              mt="5rem"
+              mb="5rem"
               color={
-                skill.value === data.default_skill_value
+                seeingModalOf.value === data.default_skill_value
                   ? ''
-                  : skill.value >= data.default_skill_value
+                  : seeingModalOf.value >= data.default_skill_value
                     ? '#03fca1'
                     : '#fc4b32'
               }
             >
-              {skill.value}
+              {seeingModalOf.value}
             </Flex.Item>
-            <Flex.Item grow={1} basis={0} style={{ flexShrink: '1' }}>
+            <Flex.Item grow={1} basis={0} shrink={1}>
               <Section scrollable fill>
-                {skill.modifiers.map((modifier, i) => (
+                {seeingModalOf.modifiers.map((modifier, i) => (
                   <Flex direction="row" key={i} justify="center" align="center">
                     <Flex.Item
                       width="15%"
@@ -261,12 +355,11 @@ function StatsPage(data: CharacterStatsData) {
               </Section>
             </Flex.Item>
           </Flex>
-        </Stack.Item>
-      ))}
-    </Stack>
+        </Flex>
+      </Modal>
+    )
   );
 }
-
 function severityColor(severity: number): string {
   switch (severity) {
     case 1:

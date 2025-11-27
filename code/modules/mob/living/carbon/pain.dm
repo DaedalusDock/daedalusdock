@@ -213,7 +213,7 @@
 			var/datum/roll_result/result = stat_roll(12, /datum/rpg_skill/knuckle_down)
 			switch(result.outcome)
 				if(CRIT_SUCCESS)
-					to_chat(src, result.create_tooltip("Pain is temporary, I will not die on this day!"))
+					to_chat(src, result.create_tooltip("You won't give in now. Stay in the fight."))
 					shock_stage = max(shock_stage - 15, 0)
 					stats.set_cooldown("shrug_off_pain", 180 SECONDS)
 					return

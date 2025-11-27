@@ -1,3 +1,6 @@
+/** ----- BLOODSPORT -----
+ * Melee combat. Real simple this one is.
+**/
 /datum/rpg_skill/bloodsport
 	name = "Bloodsport"
 	desc = "Fists, pipes, chairs, your brushes for the canvas of violence."

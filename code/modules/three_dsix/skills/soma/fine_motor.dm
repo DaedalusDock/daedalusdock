@@ -1,3 +1,7 @@
+/** ----- FINE MOTOR -----
+ * Your Disco "Hand-Eye Coordination".
+ * Fine Motor is all about using your hands for precision actions, even up to firing a gun.
+**/
 /datum/rpg_skill/fine_motor
 	name = "Fine Motor"
 	desc = "Surgery or sabotage, your hands are steady."

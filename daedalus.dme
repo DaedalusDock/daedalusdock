@@ -4744,6 +4744,7 @@
 #include "code\modules\three_dsix\skills\psyche\forensics.dm"
 #include "code\modules\three_dsix\skills\psyche\willpower.dm"
 #include "code\modules\three_dsix\skills\soma\bloodsport.dm"
+#include "code\modules\three_dsix\skills\soma\electric_body.dm"
 #include "code\modules\three_dsix\skills\soma\fine_motor.dm"
 #include "code\modules\three_dsix\stats\_stat.dm"
 #include "code\modules\three_dsix\stats\pneuma.dm"

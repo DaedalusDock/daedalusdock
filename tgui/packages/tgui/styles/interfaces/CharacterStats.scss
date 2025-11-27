@@ -65,4 +65,16 @@ $stats_count: 4;
   overflow: hidden;
   font-weight: 600;
   text-transform: uppercase;
+  cursor: base.$cursor-pointer;
+}
+
+.CharacterStats__statCard {
+  font-family: 'Jost', sans-serif;
+}
+
+.CharacterStats__statCard__header {
+  text-align: center;
+  font-size: 3.2rem;
+  line-height: 1;
+  text-transform: uppercase;
 }

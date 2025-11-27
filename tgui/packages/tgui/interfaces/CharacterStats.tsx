@@ -278,7 +278,7 @@ function SkillEntry(skill: Skill, seeingModalOf, setModal) {
           {skill.value}
         </Flex.Item>
         <Flex.Item>
-          <Box textAlign="center" fontSize="2rem">
+          <Box textAlign="center" fontSize="2rem" style={{ lineHeight: '1.2' }}>
             {skill.name}
           </Box>
         </Flex.Item>
@@ -313,7 +313,7 @@ function StatEntry(stat: Stat, seeingModalOf, setModal) {
         >
           {stat.value}
         </Flex.Item>
-        <hr style={{ width: '50%' }} />
+        <hr style={{ width: '50%', border: `1px solid ${stat.color}` }} />
         <Flex.Item>
           <Box
             textAlign="center"
@@ -349,21 +349,25 @@ function DetailedStatOrSkillModal(
           boxSizing: 'border-box',
         }}
       >
-        <Flex width="100%" height="100%" justify="center">
+        <Flex
+          width="100%"
+          height="100%"
+          justify="center"
+          className="CharacterStats__statCard"
+        >
           <Flex direction="column" height="100%" width="100%">
             <Flex.Item>
-              <Box textAlign="center" fontSize="2rem">
+              <Box className="CharacterStats__statCard__header">
                 {seeingModalOf.name}
               </Box>
-              <Box textAlign="center">
+              <Box textAlign="center" fontSize="1.5rem" italic>
                 <i>{seeingModalOf.desc}</i>
               </Box>
             </Flex.Item>
             <Flex.Item
               textAlign="center"
-              fontSize="3rem"
-              mt="5rem"
-              mb="5rem"
+              fontSize="7rem"
+              mt="3rem"
               color={
                 seeingModalOf.value === data.default_skill_value
                   ? ''
@@ -371,11 +375,19 @@ function DetailedStatOrSkillModal(
                     ? '#03fca1'
                     : '#fc4b32'
               }
+              style={{ lineHeight: '1' }}
             >
               {seeingModalOf.value}
             </Flex.Item>
+            <hr
+              style={{
+                width: '60%',
+                marginBottom: '30px',
+                border: `1px solid ${seeingModalOf.color}`,
+              }}
+            />
             <Flex.Item grow={1} basis={0} shrink={1}>
-              <Section scrollable fill>
+              <Section scrollable fill style={{ border: '2px solid grey' }}>
                 {seeingModalOf.modifiers.map((modifier, i) => (
                   <Flex direction="row" key={i} justify="center" align="center">
                     <Flex.Item
@@ -385,12 +397,30 @@ function DetailedStatOrSkillModal(
                       textAlign="left"
                       color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
                     >
-                      {modifier.value}
+                      {modifier.value > 0 ? (
+                        <>
+                          <span
+                            style={{
+                              fontSize: '2rem',
+                              position: 'relative',
+                              bottom: '2px',
+                            }}
+                          >
+                            +
+                          </span>
+                          <span>{modifier.value}</span>
+                        </>
+                      ) : (
+                        <>
+                          <span style={{ fontSize: '2rem' }}>-</span>
+                          <span>{modifier.value}</span>
+                        </>
+                      )}
                     </Flex.Item>
                     <Flex.Item
                       inline
                       width="70%"
-                      fontSize="1.5rem"
+                      fontSize="2rem"
                       textAlign="right"
                       color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
                     >

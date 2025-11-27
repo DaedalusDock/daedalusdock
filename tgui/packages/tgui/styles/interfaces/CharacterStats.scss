@@ -3,7 +3,7 @@
 
 $health-block-color: #454442;
 $stats-per-row: 4;
-$stats_count: 4;
+$stats_count: 3;
 
 .CharacterStats__nameHeader {
   margin-bottom: 1.7rem;
@@ -68,13 +68,29 @@ $stats_count: 4;
   cursor: base.$cursor-pointer;
 }
 
+.CharacterStats__statBlock_statValue {
+  text-align: center;
+  font-size: 6rem;
+  height: 60%;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
 .CharacterStats__statCard {
   font-family: 'Jost', sans-serif;
 }
 
-.CharacterStats__statCard__header {
+.CharacterStats__statCard__statName {
   text-align: center;
   font-size: 3.2rem;
   line-height: 1;
   text-transform: uppercase;
+  font-weight: 600;
+}
+
+.CharacterStats__statCard__statValue {
+  font-size: 7rem;
+  font-weight: bold;
+  margin-top: 3rem;
+  line-height: 1;
 }

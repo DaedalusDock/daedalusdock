@@ -33,6 +33,7 @@ type Skill = {
   modifiers: SkillModifier[];
   name: string;
   parent_stat_name: string;
+  sort_order: number;
   value: number;
 };
 
@@ -41,6 +42,7 @@ type Stat = {
   desc: string;
   modifiers: SkillModifier[];
   name: string;
+  sort_order: number;
   value: number;
 };
 
@@ -226,9 +228,9 @@ function StatsPage() {
         justify="flex-start"
         align="flex-start"
       >
-        {Object.values(data.stats).map((stat) =>
-          StatRow(stat, seeingModalOf, setModal),
-        )}
+        {Object.values(data.stats)
+          .sort((a, b) => a.sort_order - b.sort_order)
+          .map((stat) => StatRow(stat, seeingModalOf, setModal))}
       </Flex>
     </Box>
   );
@@ -262,10 +264,10 @@ function SkillEntry(skill: Skill, seeingModalOf, setModal) {
       style={{ borderColor: skill.color }}
     >
       <Flex direction="column" height="100%" justify="space-between">
-        <Flex.Item
-          textAlign="center"
-          fontSize="3rem"
-          height="60%"
+        <Flex
+          direction="column"
+          align="center"
+          className="CharacterStats__statBlock_statValue"
           color={
             skill.value === data.default_skill_value
               ? ''
@@ -273,10 +275,9 @@ function SkillEntry(skill: Skill, seeingModalOf, setModal) {
                 ? '#03fca1'
                 : '#fc4b32'
           }
-          style={{ verticalAlign: 'middle' }}
         >
           {skill.value}
-        </Flex.Item>
+        </Flex>
         <Flex.Item>
           <Box textAlign="center" fontSize="2rem" style={{ lineHeight: '1.2' }}>
             {skill.name}
@@ -298,10 +299,11 @@ function StatEntry(stat: Stat, seeingModalOf, setModal) {
       style={{ borderColor: stat.color }}
     >
       <Flex direction="column" height="100%" justify="space-between">
-        <Flex.Item
-          textAlign="center"
-          fontSize="4rem"
-          height="40%"
+        <Flex
+          direction="column"
+          align="center"
+          justify="center"
+          className="CharacterStats__statBlock_statValue"
           color={
             stat.value === data.default_skill_value
               ? ''
@@ -309,12 +311,11 @@ function StatEntry(stat: Stat, seeingModalOf, setModal) {
                 ? '#03fca1'
                 : '#fc4b32'
           }
-          style={{ verticalAlign: 'middle' }}
         >
           {stat.value}
-        </Flex.Item>
-        <hr style={{ width: '50%', border: `1px solid ${stat.color}` }} />
+        </Flex>
         <Flex.Item>
+          <hr style={{ width: '50%', border: `1px solid ${stat.color}` }} />
           <Box
             textAlign="center"
             fontSize="3rem"
@@ -357,17 +358,18 @@ function DetailedStatOrSkillModal(
         >
           <Flex direction="column" height="100%" width="100%">
             <Flex.Item>
-              <Box className="CharacterStats__statCard__header">
+              <Box className="CharacterStats__statCard__statName">
                 {seeingModalOf.name}
               </Box>
               <Box textAlign="center" fontSize="1.5rem" italic>
                 <i>{seeingModalOf.desc}</i>
               </Box>
             </Flex.Item>
-            <Flex.Item
-              textAlign="center"
-              fontSize="7rem"
-              mt="3rem"
+            <Flex
+              direction="column"
+              justify="center"
+              align="center"
+              className="CharacterStats__statCard__statValue"
               color={
                 seeingModalOf.value === data.default_skill_value
                   ? ''
@@ -375,10 +377,9 @@ function DetailedStatOrSkillModal(
                     ? '#03fca1'
                     : '#fc4b32'
               }
-              style={{ lineHeight: '1' }}
             >
               {seeingModalOf.value}
-            </Flex.Item>
+            </Flex>
             <hr
               style={{
                 width: '60%',
@@ -388,46 +389,53 @@ function DetailedStatOrSkillModal(
             />
             <Flex.Item grow={1} basis={0} shrink={1}>
               <Section scrollable fill style={{ border: '2px solid grey' }}>
-                {seeingModalOf.modifiers.map((modifier, i) => (
-                  <Flex direction="row" key={i} justify="center" align="center">
-                    <Flex.Item
-                      width="15%"
-                      fontSize="2rem"
-                      mr="1rem"
-                      textAlign="left"
-                      color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
+                {seeingModalOf.modifiers
+                  .sort((a, b) => b.value - a.value)
+                  .map((modifier, i) => (
+                    <Flex
+                      direction="row"
+                      key={i}
+                      justify="center"
+                      align="center"
                     >
-                      {modifier.value > 0 ? (
-                        <>
-                          <span
-                            style={{
-                              fontSize: '2rem',
-                              position: 'relative',
-                              bottom: '2px',
-                            }}
-                          >
-                            +
-                          </span>
-                          <span>{modifier.value}</span>
-                        </>
-                      ) : (
-                        <>
-                          <span style={{ fontSize: '2rem' }}>-</span>
-                          <span>{modifier.value}</span>
-                        </>
-                      )}
-                    </Flex.Item>
-                    <Flex.Item
-                      inline
-                      width="70%"
-                      fontSize="2rem"
-                      textAlign="right"
-                      color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
-                    >
-                      {modifier.source}
-                    </Flex.Item>
-                  </Flex>
-                ))}
+                      <Flex.Item
+                        width="15%"
+                        fontSize="2rem"
+                        mr="1rem"
+                        textAlign="left"
+                        color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
+                      >
+                        {modifier.value > 0 ? (
+                          <>
+                            <span
+                              style={{
+                                fontSize: '2rem',
+                                position: 'relative',
+                                bottom: '2px',
+                              }}
+                            >
+                              +
+                            </span>
+                            <span>{modifier.value}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span style={{ fontSize: '2rem' }}>-</span>
+                            <span>{modifier.value}</span>
+                          </>
+                        )}
+                      </Flex.Item>
+                      <Flex.Item
+                        inline
+                        width="70%"
+                        fontSize="2rem"
+                        textAlign="right"
+                        color={modifier.value > 0 ? '#03fca1' : '#fc4b32'}
+                      >
+                        {modifier.source}
+                      </Flex.Item>
+                    </Flex>
+                  ))}
               </Section>
             </Flex.Item>
           </Flex>

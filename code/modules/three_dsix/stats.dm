@@ -105,6 +105,7 @@
 			"modifiers" = skill_modifier_data,
 			"parent_stat_name" = stat.name,
 			"color" = stat.color,
+			"sort_order" = skill.ui_sort_order,
 		)
 
 		if(!stats_data[stat.name])
@@ -114,6 +115,7 @@
 				"value" = STATS_BASELINE_VALUE + stat_value,
 				"modifiers" = stat_modifier_data,
 				"color" = stat.color,
+				"sort_order" = stat.ui_sort_order,
 			)
 
 		if(skill.modifiers)

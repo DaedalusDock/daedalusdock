@@ -210,7 +210,7 @@
 	if(pain >= max(SHOCK_MIN_PAIN_TO_BEGIN, shock_stage * 0.8))
 		// A chance to fight through the pain.
 		if((shock_stage >= SHOCK_TIER_3) && stat == CONSCIOUS && !heart_attack_gaming && stats.cooldown_finished("shrug_off_pain"))
-			var/datum/roll_result/result = stat_roll(12, /datum/rpg_skill/willpower)
+			var/datum/roll_result/result = stat_roll(12, /datum/rpg_skill/knuckle_down)
 			switch(result.outcome)
 				if(CRIT_SUCCESS)
 					to_chat(src, result.create_tooltip("Pain is temporary, I will not die on this day!"))
@@ -247,7 +247,7 @@
 			recovery = 3
 
 		// ~25% chance at base to recover twice as fast..
-		if(stat_roll(13, /datum/rpg_skill/willpower).outcome >= SUCCESS)
+		if(stat_roll(13, /datum/rpg_skill/knuckle_down).outcome >= SUCCESS)
 			recovery *= 2
 
 		shock_stage = max(shock_stage - recovery, 0)
@@ -432,7 +432,7 @@
 	// For every 30 points of pain above the threshold, the roll is modified by -1
 	var/roll_modifier = floor(max(0, pain_amt - PAIN_THRESHOLD_DROP_ITEM) / -50)
 	/// ~17% chance to fail baseline.
-	var/datum/roll_result/result = stat_roll(8, /datum/rpg_skill/willpower, roll_modifier)
+	var/datum/roll_result/result = stat_roll(8, /datum/rpg_skill/knuckle_down, roll_modifier)
 
 	var/obj/item/held_item = get_active_held_item()
 

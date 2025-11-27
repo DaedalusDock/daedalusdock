@@ -1,10 +1,10 @@
-/datum/rpg_skill/handicraft
-	name = "Coordination"
-	desc = "Control and manipulate, with style."
+/datum/rpg_skill/fine_motor
+	name = "Fine Motor"
+	desc = "Surgery or sabotage, your hands are steady."
 
-	parent_stat_type = /datum/rpg_stat/kinesis
+	parent_stat_type = /datum/rpg_stat/soma
 
-/datum/rpg_skill/handicraft/get(mob/living/user, list/out_sources)
+/datum/rpg_skill/fine_motor/get(mob/living/user, list/out_sources)
 	. = ..()
 
 	if(CHEM_EFFECT_MAGNITUDE(user, CE_STIMULANT))

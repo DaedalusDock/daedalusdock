@@ -9,6 +9,9 @@
 	var/sound
 	var/color
 
+	/// Affects the sort order in TGUI.
+	var/ui_sort_order = 0
+
 /datum/rpg_stat/proc/get(mob/living/user, list/out_sources)
 	return value - STATS_BASELINE_VALUE
 

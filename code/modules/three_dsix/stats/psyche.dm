@@ -1,10 +1,11 @@
 /datum/rpg_stat/psyche
 	name = "Psyche"
-	desc = ""
+	desc = "The mind"
 
 	value = STATS_BASELINE_VALUE
 	sound = 'sound/three_dsix/psyche.ogg'
 	color = "#615b7d"
+	ui_sort_order = 2
 
 /datum/rpg_stat/psyche/get(mob/living/user, list/out_sources)
 	. = ..()

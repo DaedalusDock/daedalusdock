@@ -3,7 +3,7 @@
 	duration = 20 MINUTES
 	status_type = STATUS_EFFECT_EXTEND
 
-	skill_path = /datum/rpg_skill/willpower
+	skill_path = /datum/rpg_skill/knuckle_down
 	modify_amt = 1
 	source = "Sanctified a corpse."
 
@@ -15,7 +15,7 @@
 
 	skill_path = /datum/rpg_skill/forensics
 	modify_amt = 2
-	source = "Experience."
+	source = "Experience"
 
 // Weed
 /datum/status_effect/skill_mod/cannabis_eyes

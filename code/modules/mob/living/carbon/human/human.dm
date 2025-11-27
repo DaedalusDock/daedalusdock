@@ -545,7 +545,7 @@
 			span_notice("[src] pushes down on [target.name]'s chest!"),
 		)
 
-		var/datum/roll_result/result = stat_roll(6, /datum/rpg_skill/skirmish)
+		var/datum/roll_result/result = stat_roll(6, /datum/rpg_skill/bloodsport)
 		switch(result.outcome)
 			if(CRIT_SUCCESS)
 				if(target.stat != DEAD && target.undergoing_cardiac_arrest() && target.resuscitate())

@@ -228,12 +228,10 @@
 			modifier = 0
 
 	if(modifier)
-		human.stats.set_stat_modifier(modifier, /datum/rpg_stat/kinesis, "Hunger")
 		human.stats.set_stat_modifier(modifier, /datum/rpg_stat/pneuma, "Hunger")
 		human.stats.set_stat_modifier(modifier, /datum/rpg_stat/psyche, "Hunger")
 		human.stats.set_stat_modifier(modifier, /datum/rpg_stat/soma, "Hunger")
 	else
-		human.stats.remove_stat_modifier(/datum/rpg_stat/kinesis, "Hunger")
 		human.stats.remove_stat_modifier(/datum/rpg_stat/pneuma, "Hunger")
 		human.stats.remove_stat_modifier(/datum/rpg_stat/psyche, "Hunger")
 		human.stats.remove_stat_modifier(/datum/rpg_stat/soma, "Hunger")

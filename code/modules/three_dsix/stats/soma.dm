@@ -1,7 +1,9 @@
 /datum/rpg_stat/soma
 	name = "Soma"
-	desc = ""
+	desc = "The body."
 
 	value = STATS_BASELINE_VALUE
 	sound = 'sound/three_dsix/soma.ogg'
-	color = "#872d39"
+	color = "#caa53d"
+
+	ui_sort_order = 1

@@ -1847,9 +1847,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	. = ..()
 	switch(blindness_level)
 		if(BLIND_SLEEPING, BLIND_PHYSICAL)
-			stats?.set_skill_modifier(-4, /datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+			stats?.set_skill_modifier(-4, /datum/rpg_skill/bloodsport, SKILL_SOURCE_BLINDNESS)
 		else
-			stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+			stats?.remove_skill_modifier(/datum/rpg_skill/bloodsport, SKILL_SOURCE_BLINDNESS)
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
@@ -1995,13 +1995,13 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		set_lying_angle(pick(LYING_ANGLE_EAST, LYING_ANGLE_WEST))
 		set_body_position(LYING_DOWN)
 		on_fall()
-		stats?.set_skill_modifier(-2, /datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
+		stats?.set_skill_modifier(-2, /datum/rpg_skill/bloodsport, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being floored. Called when the condition ends.
 /mob/living/proc/on_floored_end()
 	if(!resting)
 		get_up()
-		stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
+		stats?.remove_skill_modifier(/datum/rpg_skill/bloodsport, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being handsblocked. Called when the condition starts.
 /mob/living/proc/on_handsblocked_start()

@@ -1464,7 +1464,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	delay *= toolspeed * skill_modifier
 
 	if(delay && iscarbon(user) && user.stats.cooldown_finished("use_tool")) // Fuck borgs!!!
-		var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/handicraft)
+		var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/fine_motor)
 		switch(result.outcome)
 			if(CRIT_SUCCESS)
 				result.do_skill_sound(user)

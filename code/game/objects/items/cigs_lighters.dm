@@ -872,7 +872,7 @@ TYPEINFO_DEF(/obj/item/match/firebrand)
 		)
 		return
 
-	var/datum/roll_result/result = user.stat_roll(9, /datum/rpg_skill/handicraft)
+	var/datum/roll_result/result = user.stat_roll(9, /datum/rpg_skill/fine_motor)
 	switch(result.outcome)
 		if(FAILURE, CRIT_FAILURE)
 			user.apply_damage(5, BURN, user.get_active_hand())

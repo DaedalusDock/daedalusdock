@@ -147,7 +147,7 @@
 	if(user.mind?.assigned_role?.title != JOB_DETECTIVE)
 		return
 
-	var/datum/roll_result/result = user.get_examine_result("detgun_suicide_flavor", /datum/rpg_skill/extrasensory, only_once = TRUE)
+	var/datum/roll_result/result = user.get_examine_result("detgun_suicide_flavor", /datum/rpg_skill/fourteen_eyes, only_once = TRUE)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)
 		to_chat(

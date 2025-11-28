@@ -73,8 +73,8 @@ export const CharacterStats = (props) => {
 
   return (
     <Window
-      width={1200}
-      height={800}
+      width={700}
+      height={750}
       theme={currentPage === Page.Body ? 'book' : ''}
     >
       <Window.Content>
@@ -120,10 +120,10 @@ function BodyPage() {
           <Flex.Item className="CharacterStats__nameHeader">
             {data.mob.name}
           </Flex.Item>
-          <Flex.Item>
+          <Flex.Item grow={1}>
             <ByondUi
-              height="400px"
-              width="300px"
+              height="300px"
+              width="200px"
               params={{ id: data.byondui_map, type: 'map' }}
             />
           </Flex.Item>
@@ -143,12 +143,18 @@ function BodyPage() {
 
 function generalHealthEntry(mob_statuses: Record<string, number>) {
   return (
-    <Flex.Item width="100%" grow={1} style={{ padding: '0.5em' }}>
+    <Flex.Item
+      width="100%"
+      grow={0}
+      shrink={0}
+      basis="33%"
+      style={{ padding: '0.5em', alignSelf: 'flex-end' }}
+    >
       <Flex direction="column" className="CharacterStats__healthBlock">
         <Flex.Item className="CharacterStats__healthBlock_header">
           General
         </Flex.Item>
-        <Flex.Item grow={1} className="CharacterStats__healthBlock_body">
+        <Flex.Item className="CharacterStats__healthBlock_body" height="100%">
           <Flex height="100%" direction="column">
             {Object.entries(mob_statuses)
               .sort(
@@ -177,7 +183,13 @@ function bodypartHealthEntry(bodypart: Bodypart) {
         <Flex.Item className="CharacterStats__healthBlock_header">
           {bodypart.name}
         </Flex.Item>
-        <Flex.Item className="CharacterStats__healthBlock_body" grow={1}>
+        <Flex.Item
+          className={classes([
+            'CharacterStats__healthBlock_body',
+            bodypart.missing && 'missing',
+          ])}
+          grow={1}
+        >
           {bodypart.missing ? (
             <Flex
               width="100%"
@@ -278,7 +290,11 @@ function SkillEntry(skill: Skill, seeingModalOf, setModal) {
           {skill.value}
         </Flex>
         <Flex.Item>
-          <Box textAlign="center" fontSize="2rem" style={{ lineHeight: '1.2' }}>
+          <Box
+            textAlign="center"
+            fontSize="1.5rem"
+            style={{ lineHeight: '1.2' }}
+          >
             {skill.name}
           </Box>
         </Flex.Item>
@@ -319,7 +335,7 @@ function StatEntry(stat: Stat, seeingModalOf, setModal) {
           />
           <Box
             textAlign="center"
-            fontSize="3rem"
+            fontSize="2.2rem"
             fontFamily="Libre Baskerville"
           >
             {stat.name}

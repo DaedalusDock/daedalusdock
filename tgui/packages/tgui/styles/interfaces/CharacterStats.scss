@@ -26,11 +26,12 @@ hr.psyche {
 
 .CharacterStats__nameHeader {
   margin-bottom: 1.7rem;
-  font-size: 3rem;
+  font-size: 2.2rem;
   font-weight: bold;
   color: black;
   border-bottom: 2px solid #454442;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .CharacterStats__healthBlock {
@@ -57,9 +58,12 @@ hr.psyche {
   padding: 0.5rem;
   overflow-y: auto;
 }
+.CharacterStats__healthBlock_body.missing {
+  background-color: rgba(0, 0, 0, 0.9);
+}
 
 .CharacterStats__healthBlock_entry {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   width: 100%;
   color: #454442;
   font-weight: bold;
@@ -115,7 +119,7 @@ hr.psyche {
 }
 
 .CharacterStats__statCard__modal {
-  border: 2px solid;
+  border: 12px solid;
   box-sizing: border-box;
 }
 

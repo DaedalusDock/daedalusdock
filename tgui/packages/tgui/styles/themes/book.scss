@@ -12,7 +12,7 @@ $text-color: OLD_lighten($color-pencil, 15%);
 
 $color-paper: rgba(248, 240, 227, 255);
 
-$font-family: (Times, Verdana);
+$font-family: ('Libre Baskerville', Times, serif);
 
 @use '../colors.scss' with (
   $primary: #000000,
@@ -41,7 +41,8 @@ $font-family: (Times, Verdana);
       'color-disabled': #363636,
       'color-selected': #9d0808,
       'color-caution': #be6209,
-      'color-danger': #9a9d00
+      'color-danger': #9a9d00,
+      'ui-notch-amount': 0px
     )
   );
   @include meta.load-css(

@@ -39,3 +39,10 @@
 	else if(carbon_user.shock_stage > 10)
 		. -= 1
 		out_sources?["In shock"] = -1
+
+	// Drunkeness removes between 1 and 10 based on how fucked you are.
+	var/datum/status_effect/inebriated/drunk/drunkness = user.has_status_effect(/datum/status_effect/inebriated/drunk)
+	if(drunkness)
+		var/drunk_effect = min(ceil(drunkness.drunk_value / 5), 10) * -1
+		. += drunk_effect
+		out_sources?["Intoxicated"] = drunk_effect

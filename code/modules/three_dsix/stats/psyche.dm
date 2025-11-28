@@ -24,7 +24,7 @@
 	var/datum/status_effect/inebriated/drunk/drunkness = user.has_status_effect(/datum/status_effect/inebriated/drunk)
 	if(drunkness)
 		var/drunk_effect = 0
-		if(drunkness.drunk_value < 20)
+		if(drunkness.drunk_value < 10)
 			drunk_effect = 3
 		else
 			drunk_effect = min(ceil(drunkness.drunk_value / 5), 10) * -1

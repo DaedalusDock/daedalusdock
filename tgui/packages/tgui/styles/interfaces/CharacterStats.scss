@@ -1,9 +1,28 @@
 @use '../base.scss';
 @use 'sass:color';
+@use '../functions.scss' as *;
 
 $health-block-color: #454442;
 $stats-per-row: 4;
 $stats_count: 3;
+
+$pneuma-color: #03fca1;
+$soma-color: #caa53d;
+$psyche-color: #615b7d;
+
+$stat-block-darken: 25%;
+
+hr.pneuma {
+  border-color: $pneuma-color;
+}
+
+hr.soma {
+  border-color: $soma-color;
+}
+
+hr.psyche {
+  border-color: $psyche-color;
+}
 
 .CharacterStats__nameHeader {
   margin-bottom: 1.7rem;
@@ -68,6 +87,21 @@ $stats_count: 3;
   cursor: base.$cursor-pointer;
 }
 
+.CharacterStats__statBlock.pneuma {
+  border-color: $pneuma-color;
+  background-color: darken($pneuma-color, $stat-block-darken);
+}
+
+.CharacterStats__statBlock.soma {
+  border-color: $soma-color;
+  background-color: darken($soma-color, $stat-block-darken);
+}
+
+.CharacterStats__statBlock.psyche {
+  border-color: $psyche-color;
+  background-color: darken($psyche-color, $stat-block-darken);
+}
+
 .CharacterStats__statBlock_statValue {
   text-align: center;
   font-size: 6rem;
@@ -78,6 +112,23 @@ $stats_count: 3;
 
 .CharacterStats__statCard {
   font-family: 'Jost', sans-serif;
+}
+
+.CharacterStats__statCard__modal {
+  border: 2px solid;
+  box-sizing: border-box;
+}
+
+.CharacterStats__statCard__modal.pneuma {
+  border-color: $pneuma-color;
+}
+
+.CharacterStats__statCard__modal.soma {
+  border-color: $soma-color;
+}
+
+.CharacterStats__statCard__modal.psyche {
+  border-color: $psyche-color;
 }
 
 .CharacterStats__statCard__statName {

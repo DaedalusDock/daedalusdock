@@ -4,6 +4,6 @@
 
 	value = STATS_BASELINE_VALUE
 	sound = 'sound/three_dsix/soma.ogg'
-	color = "#caa53d"
 
+	ui_class = "soma"
 	ui_sort_order = 1

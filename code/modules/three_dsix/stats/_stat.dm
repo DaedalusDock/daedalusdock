@@ -7,8 +7,9 @@
 	var/list/modifiers
 
 	var/sound
-	var/color
 
+	/// Used to assign css classes in TGUI.
+	var/ui_class = ""
 	/// Affects the sort order in TGUI.
 	var/ui_sort_order = 0
 

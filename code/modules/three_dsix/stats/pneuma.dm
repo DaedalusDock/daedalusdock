@@ -4,5 +4,6 @@
 
 	value = STATS_BASELINE_VALUE
 	sound = 'sound/three_dsix/pneuma.ogg'
-	color = "#03fca1"
+
+	ui_class = "pneuma"
 	ui_sort_order = 3

@@ -104,7 +104,7 @@
 			"value" = STATS_BASELINE_VALUE + skill_value + stat_value,
 			"modifiers" = skill_modifier_data,
 			"parent_stat_name" = stat.name,
-			"color" = stat.color,
+			"class" = stat.ui_class,
 			"sort_order" = skill.ui_sort_order,
 		)
 
@@ -114,7 +114,7 @@
 				"desc" = stat.desc,
 				"value" = STATS_BASELINE_VALUE + stat_value,
 				"modifiers" = stat_modifier_data,
-				"color" = stat.color,
+				"class" = stat.ui_class,
 				"sort_order" = stat.ui_sort_order,
 			)
 

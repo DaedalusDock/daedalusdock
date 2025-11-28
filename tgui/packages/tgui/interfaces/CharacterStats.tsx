@@ -1,7 +1,7 @@
 import { capitalize } from 'common/string';
 import { SetStateAction, useState } from 'react';
 import { Box, Section, Tabs } from 'tgui-core/components';
-import { BooleanLike } from 'tgui-core/react';
+import { BooleanLike, classes } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
 import { ByondUi, Flex, Modal } from '../components';
@@ -28,7 +28,7 @@ type Bodypart = {
 };
 
 type Skill = {
-  color: string;
+  class: string;
   desc: string;
   modifiers: SkillModifier[];
   name: string;
@@ -38,7 +38,7 @@ type Skill = {
 };
 
 type Stat = {
-  color: string;
+  class: string;
   desc: string;
   modifiers: SkillModifier[];
   name: string;
@@ -257,11 +257,10 @@ function SkillEntry(skill: Skill, seeingModalOf, setModal) {
   const { data } = useBackend<CharacterStatsData>();
   return (
     <Flex.Item
-      className="CharacterStats__statBlock"
+      className={classes(['CharacterStats__statBlock', skill.class])}
       onClick={() => {
         setModal(skill);
       }}
-      style={{ borderColor: skill.color }}
     >
       <Flex direction="column" height="100%" justify="space-between">
         <Flex
@@ -292,11 +291,10 @@ function StatEntry(stat: Stat, seeingModalOf, setModal) {
   const { data } = useBackend<CharacterStatsData>();
   return (
     <Flex.Item
-      className="CharacterStats__statBlock"
+      className={classes(['CharacterStats__statBlock', stat.class])}
       onClick={() => {
         setModal(stat);
       }}
-      style={{ borderColor: stat.color }}
     >
       <Flex direction="column" height="100%" justify="space-between">
         <Flex
@@ -315,7 +313,10 @@ function StatEntry(stat: Stat, seeingModalOf, setModal) {
           {stat.value}
         </Flex>
         <Flex.Item>
-          <hr style={{ width: '50%', border: `1px solid ${stat.color}` }} />
+          <hr
+            className={stat.class}
+            style={{ width: '50%', borderWidth: '1px', borderStyle: 'solid' }}
+          />
           <Box
             textAlign="center"
             fontSize="3rem"
@@ -345,10 +346,10 @@ function DetailedStatOrSkillModal(
         height="50rem"
         onClick={() => setModal(undefined)}
         onDimmerClick={() => setModal(undefined)}
-        style={{
-          border: `2px solid ${seeingModalOf.color}`,
-          boxSizing: 'border-box',
-        }}
+        className={classes([
+          'CharacterStats__statCard__modal',
+          seeingModalOf.class,
+        ])}
       >
         <Flex
           width="100%"
@@ -381,10 +382,12 @@ function DetailedStatOrSkillModal(
               {seeingModalOf.value}
             </Flex>
             <hr
+              className={seeingModalOf.class}
               style={{
                 width: '60%',
                 marginBottom: '30px',
-                border: `1px solid ${seeingModalOf.color}`,
+                borderWidth: '1px',
+                borderStyle: 'solid',
               }}
             />
             <Flex.Item grow={1} basis={0} shrink={1}>

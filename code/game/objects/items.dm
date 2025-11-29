@@ -1800,6 +1800,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	pickup_animation.transform.Scale(0.75)
 	pickup_animation.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
 
+	// Preventing overlay lighting images from stacking during pickup animations.
+	remove_lighting_underlays(pickup_animation)
+
 	var/direction = get_dir(source, target)
 	var/to_x = target.base_pixel_x
 	var/to_y = target.base_pixel_y

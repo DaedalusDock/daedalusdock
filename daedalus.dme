@@ -1504,6 +1504,7 @@
 #include "code\game\machinery\embedded_controller\simple_vent_controller.dm"
 #include "code\game\machinery\newscaster\newscaster_data.dm"
 #include "code\game\machinery\newscaster\newscaster_machine.dm"
+#include "code\game\machinery\newscaster\newscaster_ui.dm"
 #include "code\game\machinery\newscaster\newspaper.dm"
 #include "code\game\machinery\pipe\construction.dm"
 #include "code\game\machinery\pipe\pipe_dispenser.dm"

@@ -173,6 +173,7 @@
 		if(!istype(channel))
 			stack_trace("Non-channel in newscaster channel list")
 			continue
+
 		file_data["[pos]"] = list("channel name" = "[channel.channel_name]", "author" = "[channel.author]", "censored" = channel.censored ? 1 : 0, "author censored" = channel.author_censor ? 1 : 0, "messages" = list())
 		for(var/M in channel.messages)
 			var/datum/feed_message/message = M
@@ -188,8 +189,17 @@
 				comment_data += list(list("author" = "[comment.author]", "time stamp" = "[comment.time_stamp]", "body" = "[comment.body]"))
 			file_data["[pos]"]["messages"] += list(list("author" = "[message.author]", "time stamp" = "[message.time_stamp]", "censored" = message.body_censor ? 1 : 0, "author censored" = message.author_censor ? 1 : 0, "photo file" = "[message.photo_file]", "photo caption" = "[message.caption]", "body" = "[message.body]", "comments" = comment_data))
 		pos++
-	if(GLOB.news_network.wanted_issue.active)
-		file_data["wanted"] = list("author" = "[GLOB.news_network.wanted_issue.scanned_user]", "criminal" = "[GLOB.news_network.wanted_issue.criminal]", "description" = "[GLOB.news_network.wanted_issue.body]", "photo file" = "[GLOB.news_network.wanted_issue.photo_file]")
+
+	if(length(GLOB.news_network.wanted_issues))
+		file_data["wanted"] = list()
+		for(var/datum/wanted_message/wanted_issue as anything in GLOB.news_network.wanted_issues)
+			file_data["wanted"] += list(list(
+				"author" = "[wanted_issue.scanned_user]",
+				"criminal" = "[wanted_issue.criminal]",
+				"description" = "[wanted_issue.body]",
+				"photo file" = "[wanted_issue.photo_file]"
+			))
+
 	WRITE_FILE(json_file, json_encode(file_data))
 
 ///Handles random hardcore point rewarding if it applies.

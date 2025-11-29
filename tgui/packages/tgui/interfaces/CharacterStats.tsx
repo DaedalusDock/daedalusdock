@@ -393,7 +393,25 @@ function DetailedStatOrSkillModal(
           'CharacterStats__statCard__modal',
           seeingModalOf.class,
         ])}
+        position="relative"
       >
+        <Box
+          className={classes(['square', 'top', 'left', seeingModalOf.class])}
+        />
+        <Box
+          className={classes(['square', 'top', 'right', seeingModalOf.class])}
+        />
+        <Box
+          className={classes(['square', 'bottom', 'left', seeingModalOf.class])}
+        />
+        <Box
+          className={classes([
+            'square',
+            'bottom',
+            'right',
+            seeingModalOf.class,
+          ])}
+        />
         <Flex
           width="100%"
           height="100%"

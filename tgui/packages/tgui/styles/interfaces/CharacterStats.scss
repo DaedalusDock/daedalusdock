@@ -12,16 +12,18 @@ $psyche-color: #615b7d;
 
 $stat-block-darken: 25%;
 
-hr.pneuma {
-  border-color: $pneuma-color;
-}
+hr {
+  &.pneuma {
+    border-color: $pneuma-color;
+  }
 
-hr.soma {
-  border-color: $soma-color;
-}
+  &.soma {
+    border-color: $soma-color;
+  }
 
-hr.psyche {
-  border-color: $psyche-color;
+  &.psyche {
+    border-color: $psyche-color;
+  }
 }
 
 .CharacterStats__nameHeader {
@@ -137,6 +139,8 @@ $skill-clip-amount: 20px;
   padding: 1em;
   box-sizing: border-box;
   overflow: hidden;
+  border-style: solid;
+  border-width: 0px;
   font-weight: 600;
   text-transform: uppercase;
   cursor: base.$cursor-pointer;
@@ -150,32 +154,33 @@ $skill-clip-amount: 20px;
     0 calc(100% - #{$skill-clip-amount}),
     0 #{$skill-clip-amount}
   );
+
+  &.pneuma {
+    border-color: $pneuma-color;
+    background-color: darken($pneuma-color, $stat-block-darken);
+  }
+
+  &.soma {
+    border-color: $soma-color;
+    background-color: darken($soma-color, $stat-block-darken);
+  }
+
+  &.psyche {
+    border-color: $psyche-color;
+    background-color: darken($psyche-color, $stat-block-darken);
+  }
+
+  &:not(:first-child) {
+    border-top-width: 3px;
+  }
+
+  &:not(:last-child) {
+    border-bottom-width: 3px solid;
+  }
 }
 
 .CharacterStats__skillBlock.dummy {
   cursor: base.$cursor-default;
-}
-
-.CharacterStats__skillBlock:not(:first-child) {
-  border-top: 3px solid;
-}
-.CharacterStats__skillBlock:not(:last-child) {
-  border-bottom: 3px solid;
-}
-
-.CharacterStats__skillBlock.pneuma {
-  border-color: $pneuma-color;
-  background-color: darken($pneuma-color, $stat-block-darken);
-}
-
-.CharacterStats__skillBlock.soma {
-  border-color: $soma-color;
-  background-color: darken($soma-color, $stat-block-darken);
-}
-
-.CharacterStats__skillBlock.psyche {
-  border-color: $psyche-color;
-  background-color: darken($psyche-color, $stat-block-darken);
 }
 
 .CharacterStats__skillBlock_statValue {
@@ -193,18 +198,16 @@ $skill-clip-amount: 20px;
 .CharacterStats__statCard__modal {
   border: 12px solid;
   box-sizing: border-box;
-}
 
-.CharacterStats__statCard__modal.pneuma {
-  border-color: $pneuma-color;
-}
-
-.CharacterStats__statCard__modal.soma {
-  border-color: $soma-color;
-}
-
-.CharacterStats__statCard__modal.psyche {
-  border-color: $psyche-color;
+  &.pneuma {
+    border-color: $pneuma-color;
+  }
+  &.soma {
+    border-color: $soma-color;
+  }
+  &.psyche {
+    border-color: $psyche-color;
+  }
 }
 
 .CharacterStats__statCard__statName {
@@ -220,4 +223,56 @@ $skill-clip-amount: 20px;
   font-weight: bold;
   margin-top: 3rem;
   line-height: 1;
+}
+
+$square-size: 30px;
+$circle-size: 10px;
+$circle-color: base.$color-bg;
+
+.square {
+  width: $square-size;
+  height: $square-size;
+  position: absolute;
+
+  transform: translate(-50%, -50%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: $circle-size;
+    height: $circle-size;
+    background: $circle-color;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &.top {
+    top: -1%;
+  }
+
+  &.right {
+    right: -11%;
+  }
+
+  &.bottom {
+    bottom: -6%;
+  }
+
+  &.left {
+    left: -2%;
+  }
+
+  &.pneuma {
+    background-color: $pneuma-color;
+  }
+
+  &.soma {
+    background-color: $soma-color;
+  }
+
+  &.psyche {
+    background-color: $psyche-color;
+  }
 }

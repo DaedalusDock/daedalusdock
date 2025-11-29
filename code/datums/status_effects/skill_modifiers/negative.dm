@@ -5,5 +5,8 @@
 
 	source = "Intimidated"
 
-/datum/status_effect/skill_mod/hunger
-	source = "Hunger"
+/datum/status_effect/skill_mod/entertainer
+	skill_path = /datum/rpg_skill/theatre
+	modify_amt = -6
+
+	source = "I'm not very funny"

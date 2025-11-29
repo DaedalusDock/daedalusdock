@@ -71,7 +71,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
 		to_chat(user, span_warning("You just took a candy corn! You should wait a couple minutes, lest you burn through your stash."))
 
 /obj/item/clothing/head/fedora/det_hat/item_action_slot_check(slot, mob/user)
-	return (slot == ITEM_SLOT_HEAD) && (user.mind?.assigned_role.title == JOB_DETECTIVE)
+	return (slot == ITEM_SLOT_HEAD) && (user.mind?.assigned_role?.title == JOB_DETECTIVE)
 
 /datum/action/item_action/noir_mode
 	name = "Investigate"

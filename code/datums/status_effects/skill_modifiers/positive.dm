@@ -73,3 +73,22 @@
 	skill_path = /datum/rpg_skill/fourteen_eyes
 	modify_amt = 1
 	source = "Psychadelics"
+
+/datum/status_effect/skill_mod/slip
+	status_type = STATUS_EFFECT_REFRESH
+
+	duration = 5 MINUTES
+
+	skill_path = /datum/rpg_skill/theatre
+	modify_amt = 1
+	source = "Slipped and fell"
+
+/// Given to entertainers, sometimes, when people laugh near them.
+/datum/status_effect/skill_mod/laugh
+	status_type = STATUS_EFFECT_REFRESH
+
+	duration = 10 MINUTES
+
+	skill_path = /datum/rpg_skill/theatre
+	modify_amt = 2
+	source = "Made someone laugh"

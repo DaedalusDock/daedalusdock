@@ -33,3 +33,10 @@
 	skill_path = /datum/rpg_skill/extrasensory
 	modify_amt = 1
 	source = "Psychadelics"
+
+/datum/status_effect/skill_mod/hallucinating
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+	skill_path = /datum/rpg_skill/fourteen_eyes
+	modify_amt = 2
+	source = "Hallucinations"

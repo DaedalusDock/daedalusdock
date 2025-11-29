@@ -30,6 +30,12 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	if(!hallucination)
 		return
 
+	if(hallucination >= 60)
+		apply_status_effect(/datum/status_effect/skill_mod/hallucinating)
+	else
+		remove_status_effect(/datum/status_effect/skill_mod/hallucinating)
+
+
 	hallucination = max(hallucination - (0.5 * delta_time), 0)
 	if(world.time < next_hallucination)
 		return

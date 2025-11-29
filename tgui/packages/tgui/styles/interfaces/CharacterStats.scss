@@ -152,6 +152,10 @@ $skill-clip-amount: 20px;
   );
 }
 
+.CharacterStats__skillBlock.dummy {
+  cursor: base.$cursor-default;
+}
+
 .CharacterStats__skillBlock:not(:first-child) {
   border-top: 3px solid;
 }

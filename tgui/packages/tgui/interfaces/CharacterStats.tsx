@@ -259,6 +259,8 @@ function StatRow(relevantStat: Stat, seeingModalOf, setModal) {
   const relevantSkills = data.skills.filter(
     (skill) => skill.parent_stat_name === relevantStat.name,
   );
+
+  const dummySkills = 3 - relevantSkills.length;
   return (
     <Flex
       className={classes(['CharacterStats__statColumn', relevantStat.class])}
@@ -272,11 +274,25 @@ function StatRow(relevantStat: Stat, seeingModalOf, setModal) {
       {relevantSkills.map((skill) =>
         SkillEntry(skill, seeingModalOf, setModal),
       )}
+      {fillWithDummies(dummySkills, relevantStat.class)}
     </Flex>
   );
 }
 
-function SkillEntry(skill: Skill, seeingModalOf, setModal) {
+function fillWithDummies(amount: number, skillClass) {
+  const fragments: JSX.Element[] = [];
+  for (let i = 0; i < amount; i++) {
+    fragments.push(
+      <Flex.Item
+        key={i}
+        className={classes(['CharacterStats__skillBlock', 'dummy', skillClass])}
+      />,
+    );
+  }
+  return fragments;
+}
+
+function SkillEntry(skill: Skill, seeingModalOf, setModal, dummy?: boolean) {
   const { data } = useBackend<CharacterStatsData>();
   return (
     <Flex.Item

@@ -3,8 +3,8 @@
 @use '../functions.scss' as *;
 
 $health-block-color: #454442;
-$stats-per-row: 4;
-$stats_count: 3;
+$skills-per-column: 4;
+$stats-count: 3;
 
 $pneuma-color: #03fca1;
 $soma-color: #caa53d;
@@ -73,16 +73,32 @@ hr.psyche {
   font-family: 'Jost', sans-serif;
 }
 
-.CharacterStats__statRow {
-  width: 100%;
-  height: calc((100% / $stats_count) - (1em));
-  margin: 0.5em 0;
+.CharacterStats__statColumn {
+  width: calc((100% / $stats-count));
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 8px solid black;
+}
+
+.CharacterStats__statColumn.pneuma {
+  border-color: $pneuma-color;
+  background-color: $pneuma-color;
+}
+
+.CharacterStats__statColumn.soma {
+  border-color: $soma-color;
+  background-color: $soma-color;
+}
+
+.CharacterStats__statColumn.psyche {
+  border-color: $psyche-color;
+  background-color: $psyche-color;
 }
 
 .CharacterStats__statBlock {
-  width: calc((100% / $stats-per-row) - (2px * 2));
-  border: 2px solid black; // Color overriden in TSX
-  margin: 0 2px;
+  height: calc((100% / $skills-per-column));
+  width: 100%;
+  border-bottom: 6px solid;
   padding: 1em;
   box-sizing: border-box;
   overflow: hidden;
@@ -110,6 +126,58 @@ hr.psyche {
   text-align: center;
   font-size: 6rem;
   height: 60%;
+  vertical-align: middle;
+  font-weight: bold;
+}
+
+$skill-clip-amount: 20px;
+.CharacterStats__skillBlock {
+  height: calc((100% / $skills-per-column));
+  width: 90%;
+  padding: 1em;
+  box-sizing: border-box;
+  overflow: hidden;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: base.$cursor-pointer;
+  clip-path: polygon(
+    #{$skill-clip-amount} 0,
+    calc(100% - #{$skill-clip-amount}) 0,
+    100% #{$skill-clip-amount},
+    100% calc(100% - #{$skill-clip-amount}),
+    calc(100% - #{$skill-clip-amount}) 100%,
+    #{$skill-clip-amount} 100%,
+    0 calc(100% - #{$skill-clip-amount}),
+    0 #{$skill-clip-amount}
+  );
+}
+
+.CharacterStats__skillBlock:not(:first-child) {
+  border-top: 3px solid;
+}
+.CharacterStats__skillBlock:not(:last-child) {
+  border-bottom: 3px solid;
+}
+
+.CharacterStats__skillBlock.pneuma {
+  border-color: $pneuma-color;
+  background-color: darken($pneuma-color, $stat-block-darken);
+}
+
+.CharacterStats__skillBlock.soma {
+  border-color: $soma-color;
+  background-color: darken($soma-color, $stat-block-darken);
+}
+
+.CharacterStats__skillBlock.psyche {
+  border-color: $psyche-color;
+  background-color: darken($psyche-color, $stat-block-darken);
+}
+
+.CharacterStats__skillBlock_statValue {
+  text-align: center;
+  font-size: 4rem;
+  height: 70%;
   vertical-align: middle;
   font-weight: bold;
 }

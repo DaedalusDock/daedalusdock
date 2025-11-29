@@ -1,6 +1,6 @@
 import { capitalize } from 'common/string';
 import { SetStateAction, useState } from 'react';
-import { Box, Section, Tabs } from 'tgui-core/components';
+import { Box, Section, Stack, Tabs } from 'tgui-core/components';
 import { BooleanLike, classes } from 'tgui-core/react';
 
 import { useBackend, useLocalState } from '../backend';
@@ -78,27 +78,33 @@ export const CharacterStats = (props) => {
       theme={currentPage === Page.Body ? 'book' : ''}
     >
       <Window.Content>
-        <Tabs fluid>
-          <Tabs.Tab
-            selected={currentPage === Page.Body}
-            onClick={() => setCurrentPage(Page.Body)}
-            textAlign="center"
-            fontSize="1.4rem"
-          >
-            Body
-          </Tabs.Tab>
-          <Tabs.Tab
-            selected={currentPage === Page.Stats}
-            onClick={() => setCurrentPage(Page.Stats)}
-            textAlign="center"
-            fontSize="1.4rem"
-          >
-            Stats
-          </Tabs.Tab>
-        </Tabs>
-        <Section fill height="94%">
-          {pageContent}
-        </Section>
+        <Stack fill vertical>
+          <Stack.Item>
+            <Tabs fluid>
+              <Tabs.Tab
+                selected={currentPage === Page.Body}
+                onClick={() => setCurrentPage(Page.Body)}
+                textAlign="center"
+                fontSize="1.4rem"
+              >
+                Body
+              </Tabs.Tab>
+              <Tabs.Tab
+                selected={currentPage === Page.Stats}
+                onClick={() => setCurrentPage(Page.Stats)}
+                textAlign="center"
+                fontSize="1.4rem"
+              >
+                Stats
+              </Tabs.Tab>
+            </Tabs>
+          </Stack.Item>
+          <Stack.Item grow>
+            <Section fill fitted>
+              {pageContent}
+            </Section>
+          </Stack.Item>
+        </Stack>
       </Window.Content>
     </Window>
   );
@@ -234,8 +240,8 @@ function StatsPage() {
     <Box height="100%" width="100%" className="CharacterStats__statsPage">
       {DetailedStatOrSkillModal(seeingModalOf, setModal)}
       <Flex
-        direction="column"
-        height="100%"
+        direction="row"
+        height="660px"
         width="100%"
         justify="flex-start"
         align="flex-start"
@@ -254,14 +260,19 @@ function StatRow(relevantStat: Stat, seeingModalOf, setModal) {
     (skill) => skill.parent_stat_name === relevantStat.name,
   );
   return (
-    <Flex.Item className="CharacterStats__statRow">
-      <Flex direction="row" width="100%" justify="flex-start" height="100%">
-        {StatEntry(relevantStat, seeingModalOf, setModal)}
-        {relevantSkills.map((skill) =>
-          SkillEntry(skill, seeingModalOf, setModal),
-        )}
-      </Flex>
-    </Flex.Item>
+    <Flex
+      className={classes(['CharacterStats__statColumn', relevantStat.class])}
+      direction="column"
+      width="100%"
+      justify="flex-start"
+      align="center"
+      height="100%"
+    >
+      {StatEntry(relevantStat, seeingModalOf, setModal)}
+      {relevantSkills.map((skill) =>
+        SkillEntry(skill, seeingModalOf, setModal),
+      )}
+    </Flex>
   );
 }
 
@@ -269,7 +280,7 @@ function SkillEntry(skill: Skill, seeingModalOf, setModal) {
   const { data } = useBackend<CharacterStatsData>();
   return (
     <Flex.Item
-      className={classes(['CharacterStats__statBlock', skill.class])}
+      className={classes(['CharacterStats__skillBlock', skill.class])}
       onClick={() => {
         setModal(skill);
       }}
@@ -278,7 +289,7 @@ function SkillEntry(skill: Skill, seeingModalOf, setModal) {
         <Flex
           direction="column"
           align="center"
-          className="CharacterStats__statBlock_statValue"
+          className="CharacterStats__skillBlock_statValue"
           color={
             skill.value === data.default_skill_value
               ? ''

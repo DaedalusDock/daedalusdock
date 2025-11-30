@@ -60,14 +60,23 @@
 	return TRUE
 
 /mob/living/carbon/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
-	if(!skipcatch && can_catch_item() && istype(AM, /obj/item) && !HAS_TRAIT(AM, TRAIT_UNCATCHABLE) && isturf(AM.loc))
+	if(!skipcatch && istype(AM, /obj/item) && isturf(AM.loc) && !HAS_TRAIT(AM, TRAIT_UNCATCHABLE) && can_catch_item())
 		var/obj/item/I = AM
-		I.attack_hand(src)
-		if(get_active_held_item() == I) //if our attack_hand() picks up the item...
-			visible_message(span_warning("[src] catches [I]!"), \
-							span_userdanger("You catch [I] in mid-air!"))
-			throw_mode_off(THROW_MODE_TOGGLE)
-			return TRUE
+		var/datum/roll_result/result = stat_roll(11, /datum/rpg_skill/fine_motor)
+		result.do_skill_sound(src)
+		if(result.outcome >= SUCCESS)
+			I.attack_hand(src)
+			if(get_active_held_item() == I) //if our attack_hand() picks up the item...
+				visible_message(
+					span_obviousnotice("[src] catches [I]."),
+					ignored_mobs = list(src),
+				)
+				throw_mode_off(THROW_MODE_TOGGLE)
+				to_chat(src, result.create_tooltip("Your hand snaps into place, catching [I] with ease."))
+				return TRUE
+		else
+			to_chat(src, result.create_tooltip("You [pick("undershoot", "overshoot")] [I] whilst attempting to catch [I.p_them()]."))
+
 	return ..()
 
 /mob/living/carbon/send_item_attack_message(obj/item/I, mob/living/user, hit_area)

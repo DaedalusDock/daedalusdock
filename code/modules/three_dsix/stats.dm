@@ -269,6 +269,10 @@
 			if(part.splint)
 				status_strings["splinted"] = STATS_COLOR_NEUTRAL
 
+			// Dislocated
+			if(part.bodypart_flags & BP_DISLOCATED)
+				status_strings["dislocated"] = STATS_COLOR_BAD
+
 			// Embedded objects
 			for(var/obj/item/embedded as anything in part.embedded_objects)
 				status_strings["embedded [embedded.name]"] = STATS_COLOR_BAD

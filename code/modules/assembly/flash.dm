@@ -245,6 +245,8 @@ TYPEINFO_DEF(/obj/item/assembly/flash)
 	if(!try_use_flash(user))
 		return NONE
 
+	user.changeNext_move(CLICK_CD_MELEE)
+
 	var/mob/living/M = interacting_with
 	M.do_attack_animation(interacting_with, do_hurt = FALSE)
 

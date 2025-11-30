@@ -82,11 +82,14 @@
 	if(SEND_SIGNAL(src, COMSIG_LIVING_Z_IMPACT, levels, T) & NO_Z_IMPACT_DAMAGE)
 		return
 
-	visible_message(span_danger("<b>[src]</b> slams into [T]!"), blind_message = span_hear("You hear something slam into the deck."))
-	TakeFallDamage(levels)
+	visible_message(
+		span_danger("<b>[src]</b> falls onto [T]."),
+		blind_message = span_hear("You hear something slam into the deck.")
+	)
+	TakeFallDamage(T, levels)
 	return TRUE
 
-/mob/living/proc/TakeFallDamage(levels)
+/mob/living/proc/TakeFallDamage(turf/T, levels)
 	adjustBruteLoss((levels * 5) ** 1.5)
 	Knockdown(levels * 5 SECONDS)
 	Stun(levels * 2 SECONDS)

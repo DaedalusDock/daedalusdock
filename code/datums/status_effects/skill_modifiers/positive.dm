@@ -92,3 +92,10 @@
 	skill_path = /datum/rpg_skill/theatre
 	modify_amt = 2
 	source = "Made someone laugh"
+
+/datum/status_effect/skill_mod/hallucinating
+	duration = -1
+	status_type = STATUS_EFFECT_UNIQUE
+	skill_path = /datum/rpg_skill/fourteen_eyes
+	modify_amt = 2
+	source = "Hallucinations"

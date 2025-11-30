@@ -830,7 +830,7 @@ SUBSYSTEM_DEF(job)
 		if(player.stat == DEAD || !player.mind?.assigned_role)
 			continue
 
-		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT))
+		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
 			. += player.mind
 
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
@@ -845,7 +845,7 @@ SUBSYSTEM_DEF(job)
 		if(!player.mind?.assigned_role)
 			continue
 
-		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT))
+		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
 			. += player.mind
 
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
@@ -860,7 +860,7 @@ SUBSYSTEM_DEF(job)
 		if(!player.mind?.assigned_role)
 			continue
 
-		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT)
+		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION)
 			. += player.mind
 
 //////////////////////////////////////////////

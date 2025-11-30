@@ -21,7 +21,7 @@
 /datum/antagonist/rev/can_be_owned(datum/mind/new_owner)
 	. = ..()
 	if(.)
-		if(new_owner.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT|DEPARTMENT_BITFLAG_SECURITY))
+		if(new_owner.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_FEDERATION|DEPARTMENT_BITFLAG_SECURITY))
 			return FALSE
 
 		if(new_owner.unconvertable)

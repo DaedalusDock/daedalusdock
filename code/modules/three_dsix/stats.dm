@@ -347,29 +347,29 @@
 /**
  * Returns a scalar value based on the given skill's current value.
  * max_scalar defines the scalar at a skill sum of 18.
- * A skill sum of 1 will return the inverse of the max_scalar (1 / max_scalar)
+ * A skill sum of 3 will return the inverse of the max_scalar (1 / max_scalar)
 **/
 /datum/stats/proc/get_skill_as_scalar(datum/rpg_skill/skill, max_scalar = 0, inverse = FALSE)
 	if(!max_scalar)
 		. = 0
 		CRASH("Bad max scalar: [max_scalar]")
 
-	var/skill_value = clamp(get_skill_modifier(skill) + STATS_BASELINE_VALUE, 1, 18)
+	var/skill_value = clamp(get_skill_modifier(skill) + STATS_BASELINE_VALUE, STATS_MINIMUM_VALUE, STATS_MAXIMUM_VALUE)
 	if(skill_value == STATS_BASELINE_VALUE)
 		return 1
 
 	var/min_scalar = round(1 / max_scalar, 0.01)
 	if(!inverse)
 		if(skill_value > STATS_BASELINE_VALUE)
-			return 1 + (skill_value - STATS_BASELINE_VALUE) * (max_scalar - 1) / (18 - STATS_BASELINE_VALUE)
+			return 1 + (skill_value - STATS_BASELINE_VALUE) * (max_scalar - 1) / (STATS_MAXIMUM_VALUE - STATS_BASELINE_VALUE)
 
 		else
-			return min_scalar + (skill_value - 1) * (1 - min_scalar) / (STATS_BASELINE_VALUE - 1)
+			return min_scalar + (skill_value - STATS_MINIMUM_VALUE) * (1 - min_scalar) / (STATS_BASELINE_VALUE - 3)
 	else
 		if(skill_value > STATS_BASELINE_VALUE)
-			return 1 - (skill_value - STATS_BASELINE_VALUE) * (1 - min_scalar) / (18 - STATS_BASELINE_VALUE)
+			return 1 - (skill_value - STATS_BASELINE_VALUE) * (1 - min_scalar) / (STATS_MAXIMUM_VALUE - STATS_BASELINE_VALUE)
 		else
-			return max_scalar - (skill_value - 1) * (max_scalar - 1) / (STATS_BASELINE_VALUE - 1)
+			return max_scalar - (skill_value - STATS_MINIMUM_VALUE) * (max_scalar - 1) / (STATS_BASELINE_VALUE - 3)
 
 /// Returns a cached result datum pr null
 /datum/stats/proc/get_stashed_result(id)

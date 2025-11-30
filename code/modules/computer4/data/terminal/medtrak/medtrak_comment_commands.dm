@@ -6,9 +6,9 @@
 	system.unload_program(program)
 
 /datum/shell_command/medtrak/comment/back
-	aliases = list("back", "home")
+	aliases = list("0", "back", "home")
 
-/datum/shell_command/medtrak/record/comment/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+/datum/shell_command/medtrak/comment/back/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/datum/c4_file/terminal_program/medtrak/medtrak = program
 	medtrak.view_record()
 

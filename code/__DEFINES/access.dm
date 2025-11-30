@@ -21,8 +21,8 @@
 #define ACCESS_CAPTAIN 20
 #define ACCESS_ALL_PERSONAL_LOCKERS 21
 #define ACCESS_CHAPEL_OFFICE 22
-/// Faction access for Management
-#define ACCESS_MANAGEMENT 23
+/// Faction access for the Federation
+#define ACCESS_FEDERATION 23
 #define ACCESS_ATMOSPHERICS 24
 #define ACCESS_BAR 25
 #define ACCESS_JANITOR 26

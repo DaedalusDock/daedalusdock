@@ -151,6 +151,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/noticeboard, 32)
 /obj/structure/noticeboard/staff
 	name = "Management Notice Board"
 	desc = "Important notices from Management."
-	req_access = list(ACCESS_MANAGEMENT)
+	req_access = list(ACCESS_FEDERATION)
 
 #undef MAX_NOTICES

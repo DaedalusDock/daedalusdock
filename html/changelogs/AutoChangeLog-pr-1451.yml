@@ -1,8 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - bugfix: Lighting overlays no longer temporarily stack during the pickup animation.
-  - bugfix: Blood no longer says it's red, as it is often, not.
-  - bugfix: Failing to grab a player will no longer tell them if they are not conscious.
-  - tweak: Flares are more red.
-  - refactor: Rewrote the newscaster. It works again. Hoo-ray.

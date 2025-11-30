@@ -16,3 +16,12 @@
   - tweak: SSmedia now loads subdirectories.
   - rscadd: Replaced "check self for injuries" with a full character sheet UI.
   - bugfix: Any TGUI interface utilizing double-clicking now works correctly.
+2025-11-30:
+  Kapu1178:
+  - bugfix: Lighting overlays no longer temporarily stack during the pickup animation.
+  - bugfix: Blood no longer says it's red, as it is often, not.
+  - bugfix: Failing to grab a player will no longer tell them if they are not conscious.
+  - tweak: Flares are more red.
+  - refactor: Rewrote the newscaster. It works again. Hoo-ray.
+  ToasterBan:
+  - rscadd: Severe Hallucinations increase your Eyes Fourteen skill

@@ -969,17 +969,33 @@
 /mob/living/proc/resist_restraints()
 	return
 
-/mob/living/proc/update_gravity(gravity)
+/// Called when the mob's gravity state is updated via refresh_gravity()
+/mob/living/proc/update_gravity(new_gravity_state, old_gravity_state)
+	PRIVATE_PROC(TRUE)
+
 	// Handle movespeed stuff
-	var/speed_change = max(0, gravity - STANDARD_GRAVITY)
+	var/speed_change = max(0, new_gravity_state - STANDARD_GRAVITY)
 	if(speed_change)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, slowdown=speed_change)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/gravity)
 
+	update_gravity_alert(new_gravity_state, old_gravity_state)
+
+	if(old_gravity_state != STANDARD_GRAVITY && new_gravity_state == STANDARD_GRAVITY && isturf(loc) && !CanZFall(loc, DOWN))
+		var/datum/roll_result/result = stat_roll(13, /datum/rpg_skill/electric_body)
+		if(result.outcome <= FAILURE)
+			result.do_skill_sound(src)
+			to_chat(src, result.create_tooltip("The sudden change in gravity sends you to the floor."))
+			Knockdown(3 SECONDS)
+
+/// Called by update_gravity().
+/mob/living/proc/update_gravity_alert(new_gravity_state, old_gravity_state)
+	PRIVATE_PROC(TRUE)
+
 	// Time to add/remove gravity alerts. sorry for the mess it's gotta be fast
 	var/atom/movable/screen/alert/gravity_alert = alerts[ALERT_GRAVITY]
-	switch(gravity)
+	switch(new_gravity_state)
 		if(-INFINITY to NEGATIVE_GRAVITY)
 			if(!istype(gravity_alert, /atom/movable/screen/alert/negative))
 				throw_alert(ALERT_GRAVITY, /atom/movable/screen/alert/negative)
@@ -1003,9 +1019,11 @@
 	// If we had no gravity alert, or the same alert as before, go home
 	if(!gravity_alert || alerts[ALERT_GRAVITY] == gravity_alert)
 		return
+
 	// By this point we know that we do not have the same alert as we used to
 	if(istype(gravity_alert, /atom/movable/screen/alert/weightless))
 		REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, NO_GRAVITY_TRAIT)
+
 	if(istype(gravity_alert, /atom/movable/screen/alert/negative))
 		var/matrix/flipped_matrix = transform
 		flipped_matrix.b = -flipped_matrix.b

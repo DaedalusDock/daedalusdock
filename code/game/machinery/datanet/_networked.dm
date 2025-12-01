@@ -37,9 +37,18 @@
 			if(!isnull(tmp_filter) && tmp_filter != net_class)
 				return RECEIVE_SIGNAL_FINISHED
 			//Blame kapu for how stupid this looks :3
-			post_signal(create_signal(sigdat[LEGACY_PACKET_SOURCE_ADDRESS], list("command"=NET_COMMAND_PING_REPLY,LEGACY_PACKET_NETCLASS=src.net_class,"netaddr"=src.net_id)+src.ping_addition))
+			var/payload = list(PACKET_CMD=NET_COMMAND_PING_REPLY,PACKET_NETCLASS=src.net_class)
+			if(ping_addition)
+				payload += ping_addition
+			post_signal(create_signal(sigdat[PACKET_SOURCE_ADDRESS],payload))
 		return RECEIVE_SIGNAL_FINISHED//regardless, return 1 so that machines don't process packets not intended for them.
 	return RECEIVE_SIGNAL_CONTINUE // We are the designated recipient of this packet, we need to handle it.
+
+/// Wrapper for wireline packets received from data terminals/netjacks, Includes the origin jack as an arg.
+/// This allows machines with multiple interfaces to track it's origin.
+/obj/machinery/proc/receive_wireline_signal(datum/signal/signal, obj/machinery/power/packet_source)
+	//By default this will simply fall through to receive_signal, discarding the extra info.
+	return receive_signal(signal)
 
 //Handle the network jack
 

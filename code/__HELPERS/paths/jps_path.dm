@@ -64,13 +64,13 @@
 	/// Defines how we handle diagonal moves. See __DEFINES/path.dm
 	var/diagonal_handling = DIAGONAL_REMOVE_CLUNKY
 
-/datum/pathfind/jps/New(atom/movable/invoker, atom/goal, access, max_distance, mintargetdist, simulated_only, avoid, skip_first, diagonal_handling, datum/callback/on_finish)
+/datum/pathfind/jps/New(atom/movable/invoker, atom/goal, access, max_steps, mintargetdist, simulated_only, avoid, skip_first, diagonal_handling, datum/callback/on_finish)
 	src.invoker = invoker
 	src.pass_info = new(invoker, access)
 	end = get_turf(goal)
 	open = new /datum/heap(GLOBAL_PROC_REF(HeapPathWeightCompare))
 	found_turfs = new()
-	src.max_distance = max_distance
+	src.max_steps = max_steps
 	src.mintargetdist = mintargetdist
 	src.simulated_only = simulated_only
 	src.avoid = avoid
@@ -98,9 +98,12 @@
 	if(!get_turf(end))
 		stack_trace("Invalid JPS destination")
 		return FALSE
+
 	if(start.z != end.z || start == end ) //no pathfinding between z levels
 		return FALSE
-	if(max_distance && (max_distance < get_dist(start, end))) //if start turf is farther than max_distance from end turf, no need to do anything
+
+	// If the turf is out of the step range we already know it's too far.
+	if(max_steps && (max_steps < get_dist_manhattan(start, end)))
 		return FALSE
 
 	var/datum/jps_node/current_processed_node = new (start, -1, 0, end)
@@ -122,7 +125,7 @@
 
 	while(!open.is_empty() && !path)
 		var/datum/jps_node/current_processed_node = open.pop() //get the lower f_value turf in the open list
-		if(max_distance && (current_processed_node.number_tiles > max_distance))//if too many steps, don't process that path
+		if(max_steps && (current_processed_node.number_tiles > max_steps))//if too many steps, don't process that path
 			continue
 
 		var/turf/current_turf = current_processed_node.tile
@@ -273,7 +276,7 @@
 		else
 			found_turfs[current_turf] = original_turf
 
-		if(parent_node && parent_node.number_tiles + steps_taken > max_distance)
+		if(parent_node && parent_node.number_tiles + steps_taken > max_steps)
 			return
 
 		var/interesting = FALSE // have we found a forced neighbor that would make us add this turf to the open list?
@@ -334,7 +337,7 @@
 		else
 			found_turfs[current_turf] = original_turf
 
-		if(parent_node.number_tiles + steps_taken > max_distance)
+		if(parent_node.number_tiles + steps_taken > max_steps)
 			return
 
 		var/interesting = FALSE // have we found a forced neighbor that would make us add this turf to the open list?

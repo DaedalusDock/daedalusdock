@@ -26,5 +26,5 @@ GLOBAL_REAL_VAR(list/binary_radial_defaults) = list(
 	if(!client?.prefs.read_preference(/datum/preference/toggle/binary_radials))
 		return SIMPLE_RADIAL_DOESNT_USE
 
-	return show_radial_menu(src, target, custom_options || global.binary_radial_defaults, radius = 21, require_near = TRUE)
+	return show_radial_menu(src, target, custom_options || global.binary_radial_defaults, radius = 21, require_near = !isAI(src))
 

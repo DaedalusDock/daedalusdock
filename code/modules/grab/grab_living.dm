@@ -71,7 +71,7 @@
 
 		if(grabbed_mob && grabbed_mob != original_target)
 			target = grabbed_mob
-			to_chat(src, span_warning("As \the [original_target] is buckled to \the [target], you try to grab that instead!"))
+			to_chat(src, span_warning("As \the [original_target] is buckled to \the [target], you try to grab that instead."))
 
 	if(!istype(target))
 		return
@@ -84,8 +84,8 @@
 
 
 	if(QDELETED(grab))
-		if(original_target != src && ismob(original_target))
-			to_chat(original_target, span_warning("\The [src] tries to grab you, but fails!"))
+		if(original_target != src && ismob(original_target) && astype(original_target, /mob).stat == CONSCIOUS)
+			to_chat(original_target, span_warning("\The [src] tries to grab you, but fails."))
 		return null
 
 	for(var/obj/item/hand_item/grab/competing_grab in target.grabbed_by)

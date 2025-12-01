@@ -8,7 +8,7 @@
 
 /obj/effect/decal/cleanable/blood
 	name = "blood"
-	desc = "It's red and gooey. Perhaps it's the chef's cooking?"
+	desc = "Supposed to be inside of organic lifeforms. This, is not."
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "floor1"
 	appearance_flags = TILE_BOUND|PIXEL_SCALE|LONG_GLIDE|NO_CLIENT_COLOR
@@ -365,7 +365,6 @@
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drips of blood"
-	desc = "It's red."
 	icon = 'icons/effects/drip.dmi'
 	icon_state = "5" //using drip5 since the others tend to blend in with pipes & wires.
 	random_icon_states = list("1","2","3", "4","5")
@@ -377,7 +376,6 @@
 
 	bloodiness = BLOOD_AMOUNT_PER_DECAL / 10
 	dryname = "drips of blood"
-	drydesc = "It's red."
 	smell_intensity = INTENSITY_SUBTLE
 	dry_duration = 4 MINUTES
 

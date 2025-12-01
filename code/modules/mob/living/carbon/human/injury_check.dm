@@ -74,9 +74,6 @@
 
 		combined_msg += "<span class='[no_damage ? "notice" : "warning"]'>Your [body_part.name][isdisabled][broken][self_aware ? " has " : " is "][status].</span>"
 
-		if(body_part.check_bones() & BP_BROKEN_BONES)
-			combined_msg += "[span_warning("Your [body_part.plaintext_zone] is broken!")]"
-
 	for(var/t in missing)
 		combined_msg += span_boldannounce("Your [parse_zone(t)] is missing!")
 

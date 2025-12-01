@@ -11,3 +11,12 @@
 #define MEDIA_TAG_ROUNDEND_RARE "ROUNDEND_RARE"
 /// Jukebox music.
 #define MEDIA_TAG_JUKEBOX "JUKEBOX"
+
+/// Cassette music, anything with this tag will be able to be put into random cassettes.
+#define MEDIA_TAG_CASSETTE "CASSETTE"
+/// IS12 cassettes.
+#define MEDIA_TAG_IS12 "IS12"
+/// White women cassettes.
+#define MEDIA_TAG_WHITEWOMEN "WHITEWOMEN"
+/// Carmen Miranda's Ghost
+#define MEDIA_TAG_CARMEN_MIRANDA "CARMEN"

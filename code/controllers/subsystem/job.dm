@@ -824,13 +824,13 @@ SUBSYSTEM_DEF(job)
 ///////////////////////////////////
 //Keeps track of all living heads//
 ///////////////////////////////////
-/datum/controller/subsystem/job/proc/get_living_heads(management_only)
+/datum/controller/subsystem/job/proc/get_living_heads(federation_only)
 	. = list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(player.stat == DEAD || !player.mind?.assigned_role)
 			continue
 
-		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
+		if(federation_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
 			. += player.mind
 
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
@@ -839,22 +839,22 @@ SUBSYSTEM_DEF(job)
 ////////////////////////////
 //Keeps track of all heads//
 ////////////////////////////
-/datum/controller/subsystem/job/proc/get_all_heads(management_only)
+/datum/controller/subsystem/job/proc/get_all_heads(federation_only)
 	. = list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(!player.mind?.assigned_role)
 			continue
 
-		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
+		if(federation_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
 			. += player.mind
 
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
 			. += player.mind
 
 /////////////////////////////////
-//Keeps track of all management//
+//Keeps track of all Federation members//
 /////////////////////////////////
-/datum/controller/subsystem/job/proc/get_all_management(management_only)
+/datum/controller/subsystem/job/proc/get_all_federation()
 	. += list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(!player.mind?.assigned_role)
@@ -1004,16 +1004,16 @@ SUBSYSTEM_DEF(job)
 	JobDebug("Assign Captain: Nobody signed up for captain. Pulling from users signed up for Command.")
 
 	// Okay nobody is signed up for captain, let's try something more drastic.
-	var/datum/job_department/management = get_department_type(/datum/job_department/command)
-	for(var/datum/job/management_job as anything in management.department_jobs)
+	var/datum/job_department/federation = get_department_type(/datum/job_department/command)
+	for(var/datum/job/federation_job as anything in federation.department_jobs)
 		for(var/level in level_order)
-			var/list/candidates = FindOccupationCandidates(management_job, level)
+			var/list/candidates = FindOccupationCandidates(federation_job, level)
 			if(!candidates.len)
 				continue
 
 			for(var/mob/dead/new_player/candidate as anything in candidates)
 				if(AssignRole(candidate, captain_job))
-					JobDebug("Assign Captain: Found captain from pool of management roles.")
+					JobDebug("Assign Captain: Found captain from pool of Federation roles.")
 					return TRUE
 
 	JobDebug("Assign Captain: Failed, no captain was found. DivideOccupations aborted.")

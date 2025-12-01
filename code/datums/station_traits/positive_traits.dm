@@ -181,7 +181,7 @@
 	department_name = "Engineering"
 
 /datum/station_trait/deathrattle_department/command
-	name = "Deathrattled Management"
+	name = "Deathrattled Federation"
 	trait_flags = NONE
 	weight = 1
 	department_to_apply_to = DEPARTMENT_BITFLAG_FEDERATION

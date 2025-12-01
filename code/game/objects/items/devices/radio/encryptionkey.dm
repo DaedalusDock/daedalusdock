@@ -53,7 +53,7 @@
 	channels = list(RADIO_CHANNEL_MEDICAL = 1)
 
 /obj/item/encryptionkey/headset_com
-	name = "\improper Management radio encryption key"
+	name = "\improper Federation radio encryption key"
 	icon_state = "com_cypherkey"
 	channels = list(RADIO_CHANNEL_FEDERATION = 1)
 

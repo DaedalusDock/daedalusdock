@@ -7,8 +7,8 @@
 	if(!datagram || !destination_id)
 		return //Unfortunately /dev/null isn't network-scale.
 	var/list/sig_data = datagram.Copy()
-	sig_data[LEGACY_PACKET_SOURCE_ADDRESS] = src.net_id
-	sig_data[LEGACY_PACKET_DESTINATION_ADDRESS] = destination_id
+	sig_data[PKT_HEAD_SOURCE_ADDRESS] = src.net_id
+	sig_data[PKT_HEAD_DEST_ADDRESS] = destination_id
 	return new /datum/signal(src, sig_data, TRANSMISSION_WIRE)
 
 
@@ -20,7 +20,7 @@
 	if(isnull(netjack) || isnull(sending_signal)) //nullcheck for sanic speed
 		return //You need a pipe and something to send down it, though.
 	if(!preserve_s_addr)
-		sending_signal.data[LEGACY_PACKET_SOURCE_ADDRESS] = src.net_id
+		sending_signal.data[PKT_HEAD_SOURCE_ADDRESS] = src.net_id
 	sending_signal.transmission_method = TRANSMISSION_WIRE
 	sending_signal.author = WEAKREF(src) // Override the sending signal author.
 	src.netjack.post_signal(sending_signal)
@@ -31,8 +31,8 @@
 	if(isnull(signal))
 		return
 	var/sigdat = signal.data //cache for sanic speed this joke is getting old.
-	if(sigdat[LEGACY_PACKET_DESTINATION_ADDRESS] != src.net_id)//This packet doesn't belong to us directly
-		if(sigdat[LEGACY_PACKET_DESTINATION_ADDRESS] == NET_ADDRESS_PING)// But it could be a ping, if so, reply
+	if(sigdat[PKT_HEAD_DEST_ADDRESS] != src.net_id)//This packet doesn't belong to us directly
+		if(sigdat[PKT_HEAD_DEST_ADDRESS] == NET_ADDRESS_PING)// But it could be a ping, if so, reply
 			var/tmp_filter = sigdat["filter"]
 			if(!isnull(tmp_filter) && tmp_filter != net_class)
 				return RECEIVE_SIGNAL_FINISHED
@@ -40,7 +40,7 @@
 			var/payload = list(PACKET_CMD=NET_COMMAND_PING_REPLY,PACKET_NETCLASS=src.net_class)
 			if(ping_addition)
 				payload += ping_addition
-			post_signal(create_signal(sigdat[PACKET_SOURCE_ADDRESS],payload))
+			post_signal(create_signal(sigdat[PKT_HEAD_SOURCE_ADDRESS],payload))
 		return RECEIVE_SIGNAL_FINISHED//regardless, return 1 so that machines don't process packets not intended for them.
 	return RECEIVE_SIGNAL_CONTINUE // We are the designated recipient of this packet, we need to handle it.
 

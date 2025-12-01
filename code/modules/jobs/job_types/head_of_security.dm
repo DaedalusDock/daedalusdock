@@ -53,7 +53,7 @@
 		</div>
 		<br>
 		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
-		You are loudly and proudly a member of the Federation Galaxia, and you push your corps to carry out Management's will.
+		You are loudly and proudly a member of the Federation, and you push your corps to carry out its will.
 		Ensure the Superintendent is pleased, and your team follows your orders. Insubordination is not tolerated.
 		</div>
 	"}

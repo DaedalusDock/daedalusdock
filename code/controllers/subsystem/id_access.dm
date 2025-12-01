@@ -64,7 +64,7 @@ SUBSYSTEM_DEF(id_access)
 
 	station_groups = list(
 		/datum/access_group/station/security,
-		/datum/access_group/station/management,
+		/datum/access_group/station/federation,
 		/datum/access_group/station/engineering,
 		/datum/access_group/station/independent_areas,
 		/datum/access_group/station/cargo,

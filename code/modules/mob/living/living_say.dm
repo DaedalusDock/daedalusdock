@@ -278,6 +278,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(isnull(message))
 			return FALSE
 
+	if(stat == CONSCIOUS)
+		last_words = message
+
 	send_speech(message, range, src, bubble_type, spans, language, message_mods)//roughly 58% of living/say()'s total cost
 
 	///Play a sound to indicate we just spoke

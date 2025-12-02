@@ -1,6 +1,5 @@
-author: Kapu1178
-delete-after: true
-changes:
+2025-12-01:
+  Kapu1178:
   - bugfix: AI can use objects using binary radials.
   - bugfix: Flashes have a cooldown again.
   - bugfix: Directives give money.

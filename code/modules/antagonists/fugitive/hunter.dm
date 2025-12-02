@@ -116,7 +116,7 @@
 		else//all fugitives died, all hunters died, nobody brought back. seems weird to not give fugitives a victory if they managed to kill the hunters but literally no progress to either goal should lead to a nobody wins situation
 			return FUGITIVE_RESULT_STALEMATE
 
-/datum/team/fugitive_hunters/roundend_report() //shows the number of fugitives, but not if they won in case there is no security
+/datum/team/fugitive_hunters/roundend_report_article_column_body() //shows the number of fugitives, but not if they won in case there is no security
 	if(!members.len)
 		return
 

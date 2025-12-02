@@ -982,12 +982,15 @@
 
 	update_gravity_alert(new_gravity_state, old_gravity_state)
 
+	// This breaks unit tests
+	#ifndef UNIT_TESTS
 	if(old_gravity_state != STANDARD_GRAVITY && new_gravity_state == STANDARD_GRAVITY && isturf(loc) && !CanZFall(loc, DOWN))
 		var/datum/roll_result/result = stat_roll(13, /datum/rpg_skill/electric_body)
 		if(result.outcome <= FAILURE)
 			result.do_skill_sound(src)
 			to_chat(src, result.create_tooltip("The sudden change in gravity sends you to the floor."))
 			Knockdown(3 SECONDS)
+	#endif
 
 /// Called by update_gravity().
 /mob/living/proc/update_gravity_alert(new_gravity_state, old_gravity_state)

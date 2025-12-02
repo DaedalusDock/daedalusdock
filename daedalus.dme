@@ -3059,7 +3059,6 @@
 #include "code\modules\detectivework\swab.dm"
 #include "code\modules\detectivework\uv_light.dm"
 #include "code\modules\directives\_directive.dm"
-#include "code\modules\directives\bar_closure.dm"
 #include "code\modules\directives\church.dm"
 #include "code\modules\directives\import_tax.dm"
 #include "code\modules\directives\masquerade.dm"

@@ -984,7 +984,7 @@
 
 	// This breaks unit tests
 	#ifndef UNIT_TESTS
-	if(old_gravity_state != STANDARD_GRAVITY && new_gravity_state == STANDARD_GRAVITY && isturf(loc) && !CanZFall(loc, DOWN))
+	if(old_gravity_state != null && old_gravity_state != STANDARD_GRAVITY && new_gravity_state == STANDARD_GRAVITY && isturf(loc) && !CanZFall(loc, DOWN))
 		var/datum/roll_result/result = stat_roll(13, /datum/rpg_skill/electric_body)
 		if(result.outcome <= FAILURE)
 			result.do_skill_sound(src)

@@ -11,7 +11,7 @@ TYPEINFO_DEF(/obj/structure/chair)
 	buckle_lying = 0 //you sit in a chair, not lay
 	resistance_flags = NONE
 
-	max_integrity = 100
+	max_integrity = 20
 	integrity_failure = 0.1
 
 	layer = OBJ_LAYER
@@ -143,7 +143,7 @@ TYPEINFO_DEF(/obj/structure/chair)
 	name = "wooden chair"
 	desc = "Old is never too old to not be in fashion."
 	resistance_flags = FLAMMABLE
-	max_integrity = 70
+	max_integrity = 15
 	buildstacktype = /obj/item/stack/sheet/mineral/wood
 	buildstackamount = 3
 	item_chair = /obj/item/chair/wood
@@ -161,7 +161,7 @@ TYPEINFO_DEF(/obj/structure/chair)
 	icon_state = "comfychair"
 	color = rgb(255,255,255)
 	resistance_flags = FLAMMABLE
-	max_integrity = 70
+	max_integrity = 30
 	buildstackamount = 2
 	item_chair = null
 	// The mutable appearance used for the overlay over buckled mobs.
@@ -303,7 +303,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/chair/stool/bar, 0)
 	desc = "A makeshift bamboo stool with a rustic look."
 	icon_state = "bamboo_stool"
 	resistance_flags = FLAMMABLE
-	max_integrity = 60
+	max_integrity = 10
 	buildstacktype = /obj/item/stack/sheet/mineral/bamboo
 	buildstackamount = 2
 	item_chair = /obj/item/chair/stool/bamboo
@@ -336,7 +336,7 @@ TYPEINFO_DEF(/obj/item/chair)
 
 	w_class = WEIGHT_CLASS_HUGE
 
-	max_integrity = 125
+	max_integrity = 20
 	integrity_failure = 0.1
 
 	force = 12 // dude it's a fucking chair
@@ -481,7 +481,7 @@ TYPEINFO_DEF(/obj/item/chair)
 	hitsound = 'sound/weapons/genhit1.ogg'
 	origin_type = /obj/structure/chair/stool/bamboo
 
-	max_integrity = 50
+	max_integrity = 10
 
 /obj/item/chair/stool/bamboo/integrity_loss_on_hit()
 	return rand(15, 25)
@@ -495,7 +495,7 @@ TYPEINFO_DEF(/obj/item/chair/stool/wood)
 	inhand_icon_state = "stool_wood"
 	origin_type = /obj/structure/chair/stool/wood
 
-	max_integrity = 100
+	max_integrity = 15
 
 /obj/item/chair/stool/wood/Initialize(mapload)
 	. = ..()
@@ -515,7 +515,7 @@ TYPEINFO_DEF(/obj/item/chair/wood)
 	icon_state = "wooden_chair_toppled"
 	inhand_icon_state = "woodenchair"
 	resistance_flags = FLAMMABLE
-	max_integrity = 70
+	max_integrity = 15
 	hitsound = 'sound/weapons/genhit1.ogg'
 	origin_type = /obj/structure/chair/wood
 	break_chance = 50
@@ -597,7 +597,7 @@ TYPEINFO_DEF(/obj/structure/chair/plastic)
 	name = "folding plastic chair"
 	desc = "No matter how much you squirm, it'll still be uncomfortable."
 	resistance_flags = FLAMMABLE
-	max_integrity = 50
+	max_integrity = 10
 	buildstacktype = /obj/item/stack/sheet/plastic
 	buildstackamount = 2
 	item_chair = /obj/item/chair/plastic

@@ -17,7 +17,7 @@
 	if(icon_state == "water" && SSevents.holidays?[APRIL_FOOLS])
 		icon_state = "water_fools"
 
-/obj/structure/reagent_dispensers/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+/obj/structure/reagent_dispensers/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, armor_penetration = 0, allow_break = TRUE)
 	. = ..()
 	if(. && atom_integrity > 0)
 		if(tank_volume && (damage_flag == PUNCTURE || damage_flag == LASER))

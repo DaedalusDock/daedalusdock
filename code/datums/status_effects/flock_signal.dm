@@ -20,11 +20,11 @@
 		'goon/sounds/flockmind/flockdrone_grump1.ogg',
 		'goon/sounds/flockmind/flockdrone_grump2.ogg',
 		'goon/sounds/flockmind/flockdrone_grump3.ogg',
-		'goon/sounds/flockmind/radio_sweep1.ogg',
-		'goon/sounds/flockmind/radio_sweep2.ogg',
-		'goon/sounds/flockmind/radio_sweep3.ogg',
-		'goon/sounds/flockmind/radio_sweep4.ogg',
-		'goon/sounds/flockmind/radio_sweep5.ogg'
+		'goon/sounds/radio_sweep1.ogg',
+		'goon/sounds/radio_sweep2.ogg',
+		'goon/sounds/radio_sweep3.ogg',
+		'goon/sounds/radio_sweep4.ogg',
+		'goon/sounds/radio_sweep5.ogg'
 	)
 
 /datum/status_effect/flock_signal/New(list/arguments)

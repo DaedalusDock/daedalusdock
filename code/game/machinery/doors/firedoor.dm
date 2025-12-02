@@ -410,7 +410,7 @@ TYPEINFO_DEF(/obj/machinery/door/firedoor)
 	if(!(border_dir == dir)) //Make sure looking at appropriate border
 		return TRUE
 
-/obj/machinery/door/firedoor/border_only/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/machinery/door/firedoor/border_only/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	return !density || (dir != to_dir)
 
 /obj/machinery/door/firedoor/border_only/proc/on_exit(datum/source, atom/movable/leaving, direction)

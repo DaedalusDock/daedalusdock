@@ -87,7 +87,7 @@ TYPEINFO_DEF(/obj/structure/railing)
 		return . || mover.throwing || mover.movement_type & (FLYING | FLOATING)
 	return TRUE
 
-/obj/structure/railing/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/structure/railing/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	if(!(to_dir & dir))
 		return TRUE
 	return ..()

@@ -126,6 +126,9 @@ SUBSYSTEM_DEF(timer)
 		callBack.InvokeAsync()
 
 		if(ctime_timer.flags & TIMER_LOOP)
+			if (QDELETED(ctime_timer)) // Don't re-insert timers deleted inside their callbacks.
+				continue
+
 			ctime_timer.spent = 0
 			ctime_timer.timeToRun = REALTIMEOFDAY + ctime_timer.wait
 			BINARY_INSERT(ctime_timer, clienttime_timers, /datum/timedevent, ctime_timer, timeToRun, COMPARE_KEY)
@@ -172,6 +175,9 @@ SUBSYSTEM_DEF(timer)
 				last_invoke_tick = world.time
 
 			if (timer.flags & TIMER_LOOP) // Prepare looping timers to re-enter the queue
+				if(QDELETED(timer)) // If a loop is deleted in its callback, we need to avoid re-inserting it.
+					continue
+
 				timer.spent = 0
 				timer.timeToRun = world.time + timer.wait
 				timer.bucketJoin()
@@ -667,7 +673,7 @@ SUBSYSTEM_DEF(timer)
 	timer_subsystem = timer_subsystem || SStimer
 	//id is string
 	var/datum/timedevent/timer = timer_subsystem.timer_id_dict[id]
-	if (timer && (!timer.spent || timer.flags & TIMER_DELETE_ME))
+	if (timer && (!timer.spent || (timer.flags & TIMER_DELETE_ME)))
 		qdel(timer)
 		return TRUE
 	return FALSE
@@ -681,11 +687,14 @@ SUBSYSTEM_DEF(timer)
 /proc/timeleft(id, datum/controller/subsystem/timer/timer_subsystem)
 	if (!id)
 		return null
+
 	if (id == TIMER_ID_NULL)
 		CRASH("Tried to get timeleft of a null timerid. Use TIMER_STOPPABLE flag")
+
 	if (istype(id, /datum/timedevent))
 		var/datum/timedevent/timer = id
 		return timer.timeToRun - world.time
+
 	timer_subsystem = timer_subsystem || SStimer
 	//id is string
 	var/datum/timedevent/timer = timer_subsystem.timer_id_dict[id]

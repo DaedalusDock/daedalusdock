@@ -11,13 +11,16 @@
 
 	flock_id = "Second-Stage Assembler"
 	build_time = 6 SECONDS
-
+	no_flock_decon = TRUE
 
 /obj/structure/flock/egg/finish_building()
 	. = ..()
 
 	spawn_mobs()
 	qdel(src)
+
+/obj/structure/flock/egg/update_info_tag()
+	info_tag.set_text("Hatch Time: [build_time_left()] seconds")
 
 /obj/structure/flock/egg/proc/spawn_mobs()
 	new /mob/living/simple_animal/flock/drone(get_turf(src), flock)

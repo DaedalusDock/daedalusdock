@@ -13,10 +13,12 @@
 	/// Granted after create_rift is cast.
 	var/list/grant_upon_start = list(
 		/datum/action/cooldown/flock/control_panel,
+		/datum/action/cooldown/flock/create_structure,
 		/datum/action/cooldown/flock/partition_mind,
 		/datum/action/cooldown/flock/diffract_drone,
 		/datum/action/cooldown/flock/control_drone,
 		/datum/action/cooldown/flock/designate_tile,
+		/datum/action/cooldown/flock/designate_deconstruct,
 		/datum/action/cooldown/flock/designate_enemy,
 		/datum/action/cooldown/flock/designate_ignore,
 		/datum/action/cooldown/flock/ping,
@@ -35,8 +37,7 @@
 
 /mob/camera/flock/overmind/Login()
 	. = ..()
-	//remove this when the gamemode is set up
-	flock.start()
+	flock.refresh_unlockables()
 
 /mob/camera/flock/overmind/Logout()
 	. = ..()
@@ -44,17 +45,32 @@
 	var/datum/action/cooldown/flock/control_drone/control_drone = locate() in actions
 	control_drone?.free_drone()
 
+/mob/camera/flock/overmind/examine(mob/user)
+	if(!isflockmob(user))
+		return ..()
+
+	. = list(
+		span_flocksay("<b>###=- Ident confirmed, data packet received.</b>"),
+		span_flocksay("<b>ID:</b> [real_name]"),
+		span_flocksay("<b>Flock:</b> [flock.name || "N/A"]"),
+		span_flocksay("<b>Bandwidth:</b> [flock.bandwidth.has_points()]"),
+		span_flocksay("<b>Substrate:</b> [flock.get_total_substrate()]"),
+		span_flocksay("<b>System Integrity: [flock.get_total_health_percentage()]%</b>"),
+		span_flocksay("<b>Cognition:</b> COMPUTATIONAL NEXUS"),
+		span_flocksay("<b>###=-</b>"),
+	)
+
 /mob/camera/flock/overmind/get_status_tab_items()
 	. = ..()
 	. += ""
-	. += "Total Compute: [flock.compute.has_points()]"
-	. += "Used Compute: [flock.used_compute]"
-	. += "Available Compute: [flock.available_compute()]"
+	. += "Total Bandwidth: [flock.bandwidth.has_points()]"
+	. += "Used Bandwidth: [flock.used_bandwidth]"
+	. += "Available Bandwidth: [flock.available_bandwidth()]"
 
 /mob/camera/flock/overmind/so_very_sad_death()
 	var/datum/flock/old_flock = flock
 	flock = null
-	old_flock?.overmind = null
+	old_flock?.overmind = null // to prevent infinite loop
 	old_flock.game_over()
 	. = ..()
 
@@ -67,3 +83,5 @@
 	for(var/datum/action/A as anything in grant_upon_start)
 		A = new A()
 		A.Grant(src)
+
+	flock.start()

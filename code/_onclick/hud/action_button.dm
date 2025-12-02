@@ -189,6 +189,9 @@ DEFINE_INTERACTABLE(/atom/movable/screen/movable/action_button)
 
 	for(var/datum/action/action as anything in actions)
 		var/atom/movable/screen/movable/action_button/button = action.viewers[hud_used]
+		if(isnull(button))
+			continue
+
 		action.build_all_button_icons()
 		if(reload_screen)
 			client.screen += button

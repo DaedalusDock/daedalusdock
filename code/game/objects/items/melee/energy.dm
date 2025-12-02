@@ -3,7 +3,7 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 
 /obj/item/melee/energy
 	icon = 'icons/obj/transforming_energy.dmi'
-	max_integrity = 200
+	max_integrity = 25
 	attack_verb_continuous = list("hits", "taps", "pokes")
 	attack_verb_simple = list("hit", "tap", "poke")
 	resistance_flags = FIRE_PROOF

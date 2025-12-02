@@ -27,7 +27,7 @@ TYPEINFO_DEF(/obj/item/spear)
 	attack_verb_continuous = list("attacks", "pokes", "jabs", "tears", "lacerates", "gores")
 	attack_verb_simple = list("attack", "poke", "jab", "tear", "lacerate", "gore")
 	sharpness = SHARP_EDGED // i know the whole point of spears is that they're pointy, but edged is more devastating at the moment so
-	max_integrity = 200
+	max_integrity = 30
 
 	var/war_cry = "AAAAARGH!!!"
 	var/icon_prefix = "spearglass"

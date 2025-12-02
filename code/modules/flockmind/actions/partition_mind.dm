@@ -5,11 +5,16 @@
 
 	var/awaiting_partition = FALSE
 
+/datum/action/cooldown/flock/partition_mind/New()
+	..()
+	desc = "Divide our computational power, creating a Flocktrace. Requires [FLOCK_COMPUTE_COST_FLOCKTRACE] total bandwidth per trace."
+
 /datum/action/cooldown/flock/partition_mind/is_valid_target(atom/cast_on)
+	var/mob/camera/flock/overmind/ghost_bird = owner
 	if(awaiting_partition)
+		to_chat(ghost_bird, span_warning("We are currently partitioning."))
 		return FALSE
 
-	var/mob/camera/flock/overmind/ghost_bird = owner
 	if(!ghost_bird.flock.can_afford(FLOCK_COMPUTE_COST_FLOCKTRACE))
 		to_chat(ghost_bird, span_warning("The Flock does not have enough spare computaional power to support another thread."))
 		return FALSE
@@ -50,12 +55,13 @@
 
 	if(!ghost_bird.flock.can_afford(FLOCK_COMPUTE_COST_FLOCKTRACE))
 		message_admins("The Flock was unable to support another flocktrace, partition aborted.")
-		to_chat(ghost_bird, span_flocksay("Partition failure: compute required is unavailable."))
+		to_chat(ghost_bird, span_flocksay("Partition failure: bandwidth required is unavailable."))
 		return
 
 
 	var/mob/candidate = pick(candidates)
 	message_admins("[key_name_admin(candidate)] respawned as a Flocktrace.")
 
-	var/mob/camera/flock/new_ghostbird = new(get_turf(ghost_bird), ghost_bird.flock)
+	var/mob/camera/flock/trace/new_ghostbird = new(get_turf(ghost_bird), ghost_bird.flock)
 	new_ghostbird.PossessByPlayer(candidate.key)
+	new_ghostbird.mind.add_antag_datum(/datum/antagonist/flock)

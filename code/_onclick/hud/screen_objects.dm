@@ -49,6 +49,7 @@
 	hud = null
 	return ..()
 
+// Children should return TRUE to cancel further child calls.
 /atom/movable/screen/Click(location, control, params)
 	SHOULD_CALL_PARENT(TRUE)
 	. = !(TRUE || ..())

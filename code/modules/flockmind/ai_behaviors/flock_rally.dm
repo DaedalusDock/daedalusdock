@@ -9,6 +9,7 @@
 	controller.set_move_target(destination)
 
 /datum/ai_behavior/flock/rally/perform(delta_time, datum/ai_controller/controller, turf/destination)
+	..()
 	return BEHAVIOR_PERFORM_SUCCESS
 
 /datum/ai_behavior/flock/rally/finish_action(datum/ai_controller/controller, succeeded, ...)

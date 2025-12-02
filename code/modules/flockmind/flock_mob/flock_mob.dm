@@ -34,19 +34,37 @@
 	stop_automated_movement = TRUE
 	movement_type = FLOATING
 
+	var/list/actions_to_grant = list(
+		/datum/action/cooldown/flock/convert,
+	)
+
+	var/icon_dormant = "drone-dormant"
+
 	/// Flock datum. Can be null.
-	var/datum/flock/flock
+	var/tmp/datum/flock/flock
 
-	var/datum/point_holder/resources
+	/// Physical resources for constructing structures or flockrunning.
+	var/tmp/datum/point_holder/substrate
+	/// Type of point holder to use
+	var/point_holder_type = /datum/point_holder
 
-	var/compute_provided = 0
+	/// Flock ID nametag
+	var/tmp/obj/effect/abstract/info_tag/flock/name_tag
+	/// Tag for the mob's current AI task.
+	var/tmp/obj/effect/abstract/info_tag/flock/info/task_tag
+
+	var/bandwidth_provided = 0
+
+	/// If, while part of an active flock, a flockmob leaves the station, they become dormant.
+	var/tmp/dormant = FALSE
 
 /mob/living/simple_animal/flock/Initialize(mapload, join_flock)
 	. = ..()
 	RegisterSignal(ai_controller, COMSIG_AI_STATUS_CHANGE, PROC_REF(on_ai_status_change))
 
-	var/datum/action/cooldown/flock/convert/convert_action = new
-	convert_action.Grant(src)
+	for(var/action_path in actions_to_grant)
+		var/datum/action/action = new action_path
+		action.Grant(src)
 
 	set_combat_mode(TRUE)
 
@@ -56,8 +74,13 @@
 	flock = join_flock || get_default_flock()
 	flock?.add_unit(src)
 
-	resources = new
-	resources.adjust_points(1000000)
+	substrate = new point_holder_type
+
+	name_tag = new()
+	name_tag.set_parent(src)
+
+	task_tag = new()
+	task_tag.set_parent(src)
 
 	update_health_notice()
 	update_light_state()
@@ -65,7 +88,12 @@
 /mob/living/simple_animal/flock/Destroy()
 	flock?.free_unit(src)
 	flock = null
+	QDEL_NULL(name_tag)
+	QDEL_NULL(task_tag)
 	return ..()
+
+/mob/living/simple_animal/flock/create_mood()
+	return // THEY DO NOT FEEEEEEEEEEEEEEEL
 
 /mob/living/simple_animal/flock/set_stat(new_stat)
 	. = ..()
@@ -76,6 +104,10 @@
 		else
 			REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, STAT_TRAIT)
 			ADD_TRAIT(src, TRAIT_NO_FLOATING_ANIM, STAT_TRAIT)
+
+/mob/living/simple_animal/flock/update_name(updates)
+	. = ..()
+	name_tag?.set_text(real_name)
 
 /mob/living/simple_animal/flock/say(message, bubble_type, list/spans, sanitize, datum/language/language, ignore_spam, forced, filterproof, range)
 	. = ..()
@@ -90,13 +122,30 @@
 /mob/living/simple_animal/flock/treat_message(message, correct_grammar = FALSE)
 	. = ..()
 
+/mob/living/simple_animal/flock/update_icon_state()
+	if(stat == DEAD)
+		icon_state = icon_dead
+	else
+		if(dormant)
+			icon_state = icon_dormant
+		else
+			icon_state = icon_living
+	return ..()
+
+/mob/living/simple_animal/flock/on_changed_z_level(turf/old_turf, turf/new_turf)
+	. = ..()
+	if(flock && new_turf && !flock.is_on_safe_z(new_turf))
+		dormantize()
+
 /mob/living/simple_animal/flock/updatehealth(cause_of_death)
 	. = ..()
 	update_health_notice()
 
 /mob/living/simple_animal/flock/death(gibbed, cause_of_death)
-	. = ..()
-	flock.remove_notice(src, FLOCK_NOTICE_HEALTH)
+	flock?.remove_notice(src, FLOCK_NOTICE_HEALTH)
+	flock?.free_unit(src)
+	flock?.stat_deaths++
+	return ..()
 
 /mob/living/simple_animal/flock/get_flock_id()
 	return real_name
@@ -110,30 +159,48 @@
 		notice = flock.add_notice(src, FLOCK_NOTICE_HEALTH)
 
 	var/image/I = notice.image
-	I.icon_state = "hp-[getHealthPercent()]"
+	I.icon_state = "hp-[round(getHealthPercent(), 10)]"
 
 /mob/living/simple_animal/flock/proc/get_flock_data()
 	var/list/data = list()
 	data["name"] = real_name
 	data["health"] = getHealthPercent()
-	data["resources"] = resources.has_points()
+	data["resources"] = substrate.has_points()
 	data["area"] = get_area_name(src, TRUE) || "???"
 	data["ref"] = REF(src)
 	return data
+
+/// Become dormant. A husk. A shell.
+/mob/living/simple_animal/flock/proc/dormantize()
+	if(dormant)
+		return
+
+	dormant = TRUE
+
+	cancel_do_afters()
+	ai_controller.set_ai_status(AI_STATUS_OFF)
+	flock?.free_unit(src)
+	update_light_state()
+
+	update_appearance(UPDATE_ICON_STATE)
 
 /mob/living/simple_animal/flock/proc/rally(turf/location)
 	if(!isturf(location))
 		return
 
-	if(ai_controller.ai_status == AI_OFF || ckey)
+	if(ai_controller.ai_status == AI_STATUS_OFF || ckey)
 		return
 
 	ai_controller.CancelActions()
 	ai_controller.queue_behavior(/datum/ai_behavior/flock/rally, location)
 
+/// Helper for keeping consistency across tesk name sets.
+/mob/living/simple_animal/flock/proc/set_task_desc(text)
+	task_tag?.set_text("Task: [text || "idling"]")
+
 /// Turn the light on or off, based on if the mob is doing shit or not.
 /mob/living/simple_animal/flock/proc/update_light_state()
-	if(stat == DEAD)
+	if(stat == DEAD || dormant)
 		set_light_on(FALSE)
 		return
 
@@ -149,10 +216,10 @@
 
 /mob/living/simple_animal/flock/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if(NAMEOF(src, compute_provided))
-			flock?.compute.adjust_points(-compute_provided)
+		if(NAMEOF(src, bandwidth_provided))
+			flock?.bandwidth.adjust_points(-bandwidth_provided)
 			..()
-			flock?.compute.adjust_points(compute_provided)
+			flock?.bandwidth.adjust_points(bandwidth_provided)
 			return TRUE
 
 	return ..()

@@ -183,7 +183,7 @@
 			continue
 		all_antagonists |= A
 
-	#warn needs rewrite
+	// TOOD: rewrite to the new system
 	// for(var/datum/team/T in all_teams)
 	// 	result += "<div>[T.roundend_report()]</div>"
 	// 	for(var/datum/antagonist/X in all_antagonists)

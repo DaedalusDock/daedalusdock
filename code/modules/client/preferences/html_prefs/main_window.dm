@@ -109,6 +109,7 @@
 		CRASH("Failed to load character for slot [default_slot]!")
 
 	character_preview_view.update_body()
+	astype(usr, /mob/dead/new_player)?.npp?.update()
 	update_html()
 
 /datum/preferences/proc/html_create_categories()

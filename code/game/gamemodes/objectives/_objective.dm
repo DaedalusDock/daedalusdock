@@ -151,7 +151,7 @@ GLOBAL_LIST_EMPTY(objectives) //PARIAH EDIT
 		explanation_text = team_explanation_text
 
 /datum/objective/proc/get_roundend_suffix()
-	return check_completion() ? span_greentext("Success!") : span_redtext("Fail.")
+	return check_completion() ? span_greentext("Successful.") : span_redtext("Failed.")
 
 /datum/objective/proc/give_special_equipment(special_equipment)
 	var/datum/mind/receiver = pick(get_owners())

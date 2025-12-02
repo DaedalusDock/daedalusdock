@@ -93,7 +93,7 @@
 /datum/antagonist/fugitive/apply_innate_effects(mob/living/mob_override)
 	add_team_hud(mob_override || owner.current)
 
-/datum/team/fugitive/roundend_report() //shows the number of fugitives, but not if they won in case there is no security
+/datum/team/fugitive/roundend_report_article_column_body() //shows the number of fugitives, but not if they won in case there is no security
 	var/list/fugitives = list()
 	for(var/datum/antagonist/fugitive/fugitive_antag in GLOB.antagonists)
 		if(!fugitive_antag.owner)

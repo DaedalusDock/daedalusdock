@@ -9,7 +9,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 	var/description = "This role has no defined description, so probably no lore implications."
 
 	///Section of roundend report, datums with same category will be displayed together, also default header for the section
-	var/roundend_category = "other antagonists"
+	var/roundend_category = "other wildcards"
+
 	///Set to false to hide the antagonists from roundend report
 	var/show_in_roundend = TRUE
 	///If false, the roundtype will still convert with this antag active
@@ -306,41 +307,113 @@ GLOBAL_LIST_EMPTY(antagonists)
 /datum/antagonist/proc/get_team()
 	return
 
-/**
- * Proc that sends string information for the end-round report window to the server.
- * This runs on every instance of every antagonist that exists at the end of the round.
- * This is the body of the message, sandwiched between roundend_report_header and roundend_report_footer.
- */
-/datum/antagonist/proc/roundend_report()
-	var/list/report = list()
+/// Returns an article for the round end report newspaper. The base definition should cover most cases, unless you'd like to get fancy.
+/datum/antagonist/proc/roundend_report_article(list/antagonists)
+	var/list/columns = list()
+	for(var/datum/antagonist/iter_antag in antagonists)
+		if(!iter_antag.owner)
+			stack_trace("Antagonist [iter_antag.type] without an owner.")
+			continue
 
-	if(!owner)
-		CRASH("Antagonist datum without owner")
+		columns += {"
+				<div class='column'>
+					[iter_antag.roundend_report_article_column_header()]
+					[iter_antag.roundend_report_article_column_blurb()]
+					[iter_antag.roundend_report_article_column_body()]
+				</div>
+		"}
 
-	report += printplayer(owner)
+	return {"
+		<div>
+			<div class='newspaper_headline'>
+				[roundend_report_headline()]
+			</div>
+			<div class='content'>
+				<div class='columns'>
+					[jointext(columns, "")]
+				</div>
+			</div>
+			[roundend_report_footer()]
+		</div>
+	"}
+
+/// Returns the text within the headline for the round end report article.
+/datum/antagonist/proc/roundend_report_headline()
+	var/header_text = replacetext(roundend_category, "%STATION%", station_name())
+	return uppertext(header_text)
+
+/// Returns the header for a round end report article. Is not called if roundend_report_article() does not implement it.
+/datum/antagonist/proc/roundend_report_article_column_header()
+	var/job_text
+	if(!is_unassigned_job(owner.assigned_role))
+		job_text = " the <span class='highlighter'>[owner.assigned_role.title]</span>"
+
+	return {"
+
+		<div class='headline'>
+			[owner.name][job_text]
+		</div>
+		<div class='headline subhead'>
+			Played by [owner.key]
+		</div>
+	"}
+
+/// Returns the body of a "column" for the newspaper article at round end. Is not called if roundend_report_article() does not implement it.
+/datum/antagonist/proc/roundend_report_article_column_body()
+	var/list/column_body = list()
 
 	var/objectives_complete = TRUE
-	if(objectives.len)
-		report += printobjectives(objectives)
+	if(length(objectives))
+		column_body += "<div>[printobjectives(objectives)]</div>"
 		for(var/datum/objective/objective in objectives)
 			if(!objective.check_completion())
 				objectives_complete = FALSE
 				break
 
-	if(objectives.len == 0 || objectives_complete)
-		report += "<span class='greentext big'>The [name] was successful!</span>"
+	if(!length(objectives) || objectives_complete)
+		column_body += "<div class='highlighter' style='font-size: 1.5em;'>The [name] succeeded in their goals.</div>"
 	else
-		report += "<span class='redtext big'>The [name] has failed!</span>"
+		column_body += "<div class='highlighter' style='font-size: 1.5em;'>The [name] has failed their goals.</div>"
 
-	return report.Join("<br>")
+	return jointext(column_body, "")
 
-/**
- * Proc that sends string data for the round-end report.
- * Displayed before roundend_report and roundend_report_footer.
- * Appears at start of roundend_catagory section.
- */
-/datum/antagonist/proc/roundend_report_header()
-	return "<span class='header'>The [roundend_category] were:</span><br>"
+/// Returns a div containing a blurb of text describing the antagonist's state at the end of the round. Replaces the old printplayer().
+/datum/antagonist/proc/roundend_report_article_column_blurb()
+	if(!owner.current)
+		var/body_was = pick("body was", "corpse was" , "remains were")
+		var/found = pick("found", "recovered")
+		return "Their [body_was] never [found]."
+
+	var/list/sentences = list()
+	if(owner.current.stat == DEAD)
+		var/died = pick("died", "perished", "met their end", "went missing, and were later found dead")
+		var/turf/corpse_turf = get_turf(owner.current)
+		var/location_desc = (!corpse_turf || !is_station_level(corpse_turf.z)) ? "in the void" : "in [get_area_name(owner.current, TRUE)]"
+		sentences += pick(\
+			"They [died] [location_desc].",\
+			"They were found dead [location_desc].",\
+			"They went missing, and were later found dead [location_desc]."\
+		)
+
+	else
+		var/seen = pick("found", "spotted", "seen")
+		var/doing_things = pick("fleeing the colony", "nodding off", "sneaking around", "rummaging through trash")
+		var/sometime = pick("shortly", "not long", "sometime")
+		var/after = pick("later", "after")
+		var/the_events = ""
+		if(after == "after")
+			the_events = " the events of today"
+
+		sentences += "Reportedly, they were [seen] [doing_things] [sometime] [after][the_events]."
+
+		if(owner.current.real_name != owner.name)
+			var/name_str = "<span class='highlighter'>[owner.current.real_name]</span>"
+			sentences += pick(
+				"They are suspected of changing their identity to [name_str]>.",
+				"They have been spotted under the name [name_str]>.",
+			)
+
+	return "<div class='blurb'>[jointext(sentences, " ")]</div>"
 
 /**
  * Proc that sends string data for the round-end report.

@@ -28,7 +28,7 @@
 	priority_announce(
 		get_announce_start_text(),
 		"Executive Order",
-		"An executive order has been issued. Failure to comply will result in punishment up to and including execution. [delay_string]",
+		"An executive order has been issued. [delay_string]",
 		sound_type = ANNOUNCER_ATTENTION,
 		send_to_newscaster = TRUE,
 		do_not_modify = TRUE,

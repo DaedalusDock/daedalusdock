@@ -227,7 +227,7 @@
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
 
-	var/roll = stat_roll(14, /datum/rpg_skill/bloodsport, defender = target).outcome
+	var/datum/roll_result/result = stat_roll(14, /datum/rpg_skill/bloodsport, defender = target)
 
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)
@@ -235,7 +235,23 @@
 		if(prob(hurt_prob) && I.on_disarm_attempt(target, src))
 			return
 
-	if(roll == CRIT_SUCCESS)
+	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.
+		target.apply_damage(STAMINA_DISARM_DMG * 2, STAMINA, BODY_ZONE_CHEST)
+		target.visible_message(
+			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest."),
+			null,
+			span_hear("You hear aggressive shuffling followed by a loud thud."),
+			COMBAT_MESSAGE_RANGE,
+		)
+
+		log_combat(src, target, "kicks", addition = "dealing stam damage")
+		return
+
+	else
+		target.apply_damage(STAMINA_DISARM_DMG, STAMINA, BODY_ZONE_CHEST)
+
+	var/can_shove = (loc != target.loc) && !target.IsKnockdown()
+	if(can_shove && result.outcome == CRIT_SUCCESS)
 		var/shove_dir = get_dir(loc, target.loc)
 		var/turf/target_shove_turf = get_step(target.loc, shove_dir)
 		var/shove_blocked = FALSE //Used to check if a shove is blocked so that if it is knockdown logic can be applied
@@ -247,45 +263,34 @@
 		if(!target.Move(target_shove_turf, shove_dir))
 			shove_blocked = TRUE
 
-		if(!can_hit_something)
+		if(can_hit_something)
 			//Don't hit people through windows, ok?
 			if(!directional_blocked && SEND_SIGNAL(target_shove_turf, COMSIG_CARBON_DISARM_COLLIDE, src, target, shove_blocked) & COMSIG_CARBON_SHOVE_HANDLED)
 				return
 
+		to_chat(src, result.create_tooltip("[target.p_they(TRUE)] [target.p_are()] off-balance, knock [target.p_them()] to the ground!"))
+
 		target.Knockdown(SHOVE_KNOCKDOWN_SOLID)
 		target.visible_message(
-			span_danger("<b>[name]</b> shoves <b>[target.name]</b>, knocking [target.p_them()] down!"),
-			span_userdanger("You're knocked down from a shove by [name]!"),
-			span_hear("You hear aggressive shuffling followed by a loud thud!"),
+			span_danger("<b>[name]</b> shoves <b>[target.name]</b>, knocking [target.p_them()] down."),
+			null,
+			span_hear("You hear aggressive shuffling, followed by a loud thud."),
 			COMBAT_MESSAGE_RANGE,
 		)
 		log_combat(src, target, "shoved", "knocking them down")
 		target.release_all_grabs()
 		return
 
-	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.
-		target.apply_damage(STAMINA_DISARM_DMG * 4, STAMINA, BODY_ZONE_CHEST)
-		target.visible_message(
-			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
-			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
-			span_hear("You hear aggressive shuffling followed by a loud thud!"),
-			COMBAT_MESSAGE_RANGE,
-			//src
-		)
-
-		log_combat(src, target, "kicks", addition = "dealing stam/oxy damage")
-		return
-
 	target.visible_message(
-		span_danger("<b>[name]</b> shoves <b>[target.name]</b>!"),
+		span_danger("<b>[name]</b> shoves <b>[target.name]</b>."),
 		null,
-		span_hear("You hear aggressive shuffling!"),
+		span_hear("You hear aggressive shuffling."),
 		COMBAT_MESSAGE_RANGE,
 	)
 
 	var/append_message = ""
 
-	if(roll >= SUCCESS && length(target.held_items))
+	if(result.outcome >= SUCCESS && length(target.held_items))
 		var/list/dropped = list()
 		for(var/obj/item/I in target.held_items)
 			if(target.dropItemToGround(I))
@@ -297,6 +302,9 @@
 				)
 				dropped += I
 		append_message = "causing them to drop [length(dropped) ? english_list(dropped) : "nothing"]"
+
+		if(length(dropped))
+			to_chat(src, result.create_tooltip("[target.p_their(TRUE)] grip is weak, break it and disarm [target.p_them()]!"))
 
 	log_combat(src, target, "shoved", addition = append_message)
 

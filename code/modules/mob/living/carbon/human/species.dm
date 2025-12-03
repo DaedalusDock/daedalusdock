@@ -989,8 +989,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/harm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
 	// Pacifists can't harm.
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
-		to_chat(user, span_warning("You don't want to harm [target]!"))
-		return FALSE
+		to_chat(user, span_warning("You don't want to harm [target]."))
+		return ATTACK_DO_NOTHING
 
 	// If martial arts did something, bail.
 	if(attacker_style?.harm_act(user,target) == MARTIAL_ATTACK_SUCCESS)
@@ -1011,12 +1011,12 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	// If we're biting them, make sure we can bite, or bail.
 	if(atk_effect == ATTACK_EFFECT_BITE)
 		if(!user.has_mouth())
-			to_chat(user, span_warning("You can't [atk_verb] without a mouth!"))
-			return FALSE
+			to_chat(user, span_warning("You cannot [atk_verb] without a mouth."))
+			return ATTACK_DO_NOTHING
 
 		if(user.is_mouth_covered(mask_only = TRUE))
-			to_chat(user, span_warning("You can't [atk_verb] with your mouth covered!"))
-			return FALSE
+			to_chat(user, span_warning("You cannot [atk_verb] with your mouth covered."))
+			return ATTACK_DO_NOTHING
 
 	// By this point, we are attempting an attack!!!
 	user.do_attack_animation(target, atk_effect)
@@ -1038,16 +1038,16 @@ GLOBAL_LIST_EMPTY(features_by_species)
 		playsound(target.loc, attacking_bodypart.unarmed_miss_sound, 25, TRUE, -1)
 
 		target.visible_message(
-			span_danger("[user]'s [atk_verb] misses [target][rolled ? "as [target.p_they()] roll out of the way" : ""]!"),
+			span_danger("[user]'s [atk_verb] misses [target][rolled ? "as [target.p_they()] roll out of the way" : ""]."),
 			null,
-			span_hear("You hear a swoosh!"),
+			span_hear("You hear a swoosh."),
 			COMBAT_MESSAGE_RANGE,
 		)
 		if(rolled)
 			target.setDir(pick(GLOB.cardinals))
 
 		log_combat(user, target, "attempted to punch (missed)")
-		return FALSE
+		return ATTACK_CONSUME_STAMINA | ATTACK_HANDLED
 
 	var/attack_sharpness = NONE
 	switch(atk_effect)
@@ -1064,9 +1064,9 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	playsound(target.loc, attacking_bodypart.unarmed_attack_sound, 25, TRUE, -1)
 
 	user.visible_message(
-		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b> in the [affecting.plaintext_zone]!"),
+		span_danger("<b>[user]</b> [atk_verb]ed <b>[target]</b> in the [affecting.plaintext_zone]."),
 		null,
-		span_hear("You hear a scuffle!"),
+		span_hear("You hear a scuffle."),
 		COMBAT_MESSAGE_RANGE
 	)
 
@@ -1100,8 +1100,6 @@ GLOBAL_LIST_EMPTY(features_by_species)
 	if(user.body_position != STANDING_UP)
 		return FALSE
 	if(user == target)
-		return FALSE
-	if(user.loc == target.loc)
 		return FALSE
 
 	user.disarm(target)

@@ -428,45 +428,51 @@
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/helper)
 	if(on_fire)
-		to_chat(helper, span_warning("You can't put [p_them()] out with just your bare hands!"))
-		return
+		var/datum/roll_result/result = helper.stat_roll(9, /datum/rpg_skill/electric_body)
+		if(result.outcome >= SUCCESS)
+			result.do_skill_sound(helper)
+			to_chat(helper, result.create_tooltip("[p_they(TRUE)] are <b>ON FIRE</b>, don't touch them you dolt!"))
+			return
+		else
+			spreadFire(helper)
 
 	if(SEND_SIGNAL(src, COMSIG_CARBON_PRE_HELP_ACT, helper) & COMPONENT_BLOCK_HELP_ACT)
 		return
 
 	if(body_position == LYING_DOWN)
 		if(buckled)
-			to_chat(helper, span_warning("You need to unbuckle [src] first to do that!"))
+			to_chat(helper, span_warning("You need to unbuckle [src] first to do that."))
 			return
-		helper.visible_message(span_notice("[helper] shakes [src] trying to get [p_them()] up!"), \
-						null, span_hear("You hear the rustling of clothes."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You shake [src] trying to pick [p_them()] up!"))
-		to_chat(src, span_notice("[helper] shakes you to get you up!"))
+
+		helper.visible_message(
+			span_notice("<b>[helper]</b> shakes <b>[src]</b>, trying to get [p_them()] up."), \
+			null,
+			span_hear("You hear the rustling of clothes."),
+			DEFAULT_MESSAGE_RANGE,
+		)
 		share_blood_on_touch(helper, ITEM_SLOT_OCLOTHING | ITEM_SLOT_ICLOTHING)
 
 	else if(deprecise_zone(helper.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD)) //Headpats!
-		helper.visible_message(span_notice("[helper] gives [src] a pat on the head to make [p_them()] feel better!"), \
-					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You give [src] a pat on the head to make [p_them()] feel better!"))
-		to_chat(src, span_notice("[helper] gives you a pat on the head to make you feel better! "))
+		helper.visible_message(
+			span_notice("<b>[helper]</b> gives <b>[src]</b> a pat on the head."),
+			null,
+			vision_distance = DEFAULT_MESSAGE_RANGE,
+		)
 
 		if(HAS_TRAIT(src, TRAIT_BADTOUCH))
 			to_chat(helper, span_warning("[src] looks visibly upset as you pat [p_them()] on the head."))
 		share_blood_on_touch(helper, ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 
 	else if ((helper.zone_selected == BODY_ZONE_PRECISE_GROIN) && !isnull(src.getorgan(/obj/item/organ/tail)))
-		helper.visible_message(span_notice("[helper] pulls on [src]'s tail!"), \
-					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You pull on [src]'s tail!"))
-		to_chat(src, span_notice("[helper] pulls on your tail!"))
+		helper.visible_message(span_notice("<b>[helper]</b> pulls on <b>[src]</b>'s tail."), vision_distance = DEFAULT_MESSAGE_RANGE)
 		if(HAS_TRAIT(src, TRAIT_BADTOUCH)) //How dare they!
 			to_chat(helper, span_warning("[src] makes a grumbling noise as you pull on [p_their()] tail."))
 
 	else
-		helper.visible_message(span_notice("[helper] hugs [src] to make [p_them()] feel better!"), \
-					null, span_hear("You hear the rustling of clothes."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You hug [src] to make [p_them()] feel better!"))
-		to_chat(src, span_notice("[helper] hugs you to make you feel better!"))
+		helper.visible_message(
+			span_notice("<b>[helper]</b> hugs <b>[src]</b> to make [p_them()] feel better."),
+			null,
+			span_hear("You hear the rustling of clothes."), DEFAULT_MESSAGE_RANGE)
 
 		// Warm them up with hugs
 		share_bodytemperature(helper)

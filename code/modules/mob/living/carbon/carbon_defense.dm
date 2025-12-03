@@ -73,6 +73,7 @@
 				)
 				throw_mode_off(THROW_MODE_TOGGLE)
 				to_chat(src, result.create_tooltip("Your hand snaps into place, catching [I] with ease."))
+				result.do_skill_sound(src)
 				return TRUE
 		else
 			to_chat(src, result.create_tooltip("You [pick("undershoot", "overshoot")] [I] whilst attempting to catch [I.p_them()]."))
@@ -268,6 +269,7 @@
 			if(!directional_blocked && SEND_SIGNAL(target_shove_turf, COMSIG_CARBON_DISARM_COLLIDE, src, target, shove_blocked) & COMSIG_CARBON_SHOVE_HANDLED)
 				return
 
+		result.do_skill_sound(src)
 		to_chat(src, result.create_tooltip("[target.p_they(TRUE)] [target.p_are()] off-balance, knock [target.p_them()] to the ground!"))
 
 		target.Knockdown(SHOVE_KNOCKDOWN_SOLID)
@@ -304,6 +306,7 @@
 		append_message = "causing them to drop [length(dropped) ? english_list(dropped) : "nothing"]"
 
 		if(length(dropped))
+			result.do_skill_sound(src)
 			to_chat(src, result.create_tooltip("[target.p_their(TRUE)] grip is weak, break it and disarm [target.p_them()]!"))
 
 	log_combat(src, target, "shoved", addition = append_message)

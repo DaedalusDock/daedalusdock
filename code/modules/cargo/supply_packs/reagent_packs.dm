@@ -6,9 +6,8 @@
 	crate_type = /obj/structure/closet/crate/medical
 
 /datum/supply_pack/reagent/chemical_carts
-	name = "Full Chemistry Cartridge Pack"
-	desc = "Contains a full set of chem dispenser cartridges with every chemical you'll need for making pharmaceuticals."
-	cost = PAYCHECK_ASSISTANT * 50 + CARGO_CRATE_VALUE //price may need balancing
+	name = "Generic Chemistry Cartridge Pack"
+	desc = "You shouldn't see this."
 	crate_name = "chemical cartridges crate"
 
 /datum/supply_pack/reagent/chemical_carts/New()
@@ -42,8 +41,16 @@
 					/obj/item/reagent_containers/chem_cartridge/small)
 	crate_name = "empty chemical cartridges crate"
 
-/datum/supply_pack/reagent/chemical_carts/soft_drinks_chem_cartridge //IGNORE THE TYPEPATH PLEASE
-	name = "Soft Drinks Cartridge Luxury Pack (Full Dispenser)"
+/datum/supply_pack/reagent/chemical_carts/chemistry_starter_pack
+	name = "Full Chemistry Cartridge Pack"
+	desc = "Contains a full set of chem dispenser cartridges with every chemical you'll need for making pharmaceuticals."
+	cost = PAYCHECK_ASSISTANT * 50 + CARGO_CRATE_VALUE //price may need balancing
+
+/datum/supply_pack/reagent/chemical_carts/chemistry_starter_pack/set_cart_list()
+	contains = GLOB.cartridge_list_chems.Copy()
+
+/datum/supply_pack/reagent/chemical_carts/soft_drinks_chem_cartridge
+	name = "Drinks Cartridge Luxury Pack (Full Dispenser)"
 	desc = "Contains a full set of chem cartridges of the same size inside a soft drinks dispenser at shift start."
 	cost = PAYCHECK_ASSISTANT * 8.7 + CARGO_CRATE_VALUE
 
@@ -73,7 +80,7 @@
 	for(var/datum/reagent/reagent_path as anything in GLOB.cartridge_list_chems | GLOB.cartridge_list_botany | GLOB.cartridge_list_booze | GLOB.cartridge_list_drinks)
 		var/datum/supply_pack/reagent/individual_chem_cart/pack = new
 		var/name = initial(reagent_path.name)
-		pack.name = "Crate of [name]"
+		pack.name = "Single Crate of [name]"
 		pack.desc = "Contains [volume]u of [name]."
 		pack.crate_name = "reagent crate ([name])"
 		pack.id = "[type]([name])"

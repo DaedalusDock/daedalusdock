@@ -1,0 +1,5 @@
+author: francinum
+delete-after: true
+changes:
+  - bugfix: the corners of space will no longer result in the BYOND equivalent of
+      a chunk ban.

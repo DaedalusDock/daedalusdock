@@ -4,13 +4,13 @@
  * @license MIT
  */
 
-import { THEME_DARK, THEME_LIGHT } from './settings/constants';
+import { Theme } from './settings/constants';
 
 const COLOR_DARK_BG = '#222020';
 const COLOR_DARK_BG_DARKER = '#171717';
 const COLOR_DARK_TEXT = '#ABC7A2';
 
-let setClientThemeTimer = null;
+let setClientThemeTimer: NodeJS.Timeout | undefined;
 
 /**
  * Darkmode preference, originally by Kmc2000.
@@ -31,7 +31,7 @@ export const setClientTheme = (name) => {
     Byond.command(`.output statbrowser:set_theme ${name}`);
   }, 1500);
 
-  if (name === THEME_LIGHT) {
+  if (name === Theme.LIGHT) {
     return Byond.winset({
       // Main windows
       'infobuttons.background-color': 'none',
@@ -83,7 +83,7 @@ export const setClientTheme = (name) => {
       'tooltip.text-color': '#000000',
     });
   }
-  if (name === THEME_DARK) {
+  if (name === Theme.DARK) {
     Byond.winset({
       // Main windows
       'infobuttons.background-color': COLOR_DARK_BG,

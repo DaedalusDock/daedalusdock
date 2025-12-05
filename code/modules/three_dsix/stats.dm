@@ -82,25 +82,69 @@
 	var/list/skill_data = list()
 	data["skills"] = skill_data
 
+	var/list/stats_data = list()
+	data["stats"] = stats_data
+
 	for(var/skill_type in skills)
 		var/datum/rpg_skill/skill = skills[skill_type]
-		/// Used as an out-var for get_skill_modifier()
-		var/list/other_skill_modifiers = list()
-		var/list/modifier_data = list()
+		var/datum/rpg_stat/stat = stats[skill.parent_stat_type]
 
+		/// Used as an out-var for get_skill_modifier()
+		var/list/skill_modifiers = list()
+		var/list/stat_modifiers = list()
+
+		var/list/skill_modifier_data = list()
+		var/list/stat_modifier_data = list()
+
+		var/skill_value = get_skill_modifier(skill_type, skill_modifiers)
+		var/stat_value = get_stat_modifier(stat.type, stat_modifiers)
 		skill_data[++skill_data.len] = list(
 			"name" = skill.name,
 			"desc" = skill.desc,
-			"value" = STATS_BASELINE_VALUE + get_skill_modifier(skill_type, other_skill_modifiers),
-			"modifiers" = modifier_data,
+			"value" = STATS_BASELINE_VALUE + skill_value + stat_value,
+			"modifiers" = skill_modifier_data,
+			"parent_stat_name" = stat.name,
+			"class" = stat.ui_class,
+			"sort_order" = skill.ui_sort_order,
 		)
 
-		if(skill.modifiers)
-			other_skill_modifiers += skill.modifiers
+		if(!stats_data[stat.name])
+			stats_data[stat.name] = list(
+				"name" = stat.name,
+				"desc" = stat.desc,
+				"value" = STATS_BASELINE_VALUE + stat_value,
+				"modifiers" = stat_modifier_data,
+				"class" = stat.ui_class,
+				"sort_order" = stat.ui_sort_order,
+			)
 
-		for(var/modifier_source,modifier_value in other_skill_modifiers)
-			modifier_data[++modifier_data.len] = list(
+		if(skill.modifiers)
+			skill_modifiers += skill.modifiers
+
+		if(stat.modifiers)
+			stat_modifiers += stat.modifiers
+
+		for(var/modifier_source,modifier_value in skill_modifiers)
+			if(modifier_value == 0)
+				continue
+
+			skill_modifier_data[++skill_modifier_data.len] = list(
 				"source" = modifier_source,
+				"value" = modifier_value
+			)
+
+		for(var/modifier_source,modifier_value in stat_modifiers)
+			if(modifier_value == 0)
+				continue
+
+			// Skills get stat modifiers
+			skill_modifier_data[++skill_modifier_data.len] = list(
+				"source" = "[modifier_source] ([stat.name])",
+				"value" = modifier_value
+			)
+
+			stat_modifier_data[++stat_modifier_data.len] = list(
+				"source" = "[modifier_source]",
 				"value" = modifier_value
 			)
 
@@ -225,6 +269,10 @@
 			if(part.splint)
 				status_strings["splinted"] = STATS_COLOR_NEUTRAL
 
+			// Dislocated
+			if(part.bodypart_flags & BP_DISLOCATED)
+				status_strings["dislocated"] = STATS_COLOR_BAD
+
 			// Embedded objects
 			for(var/obj/item/embedded as anything in part.embedded_objects)
 				status_strings["embedded [embedded.name]"] = STATS_COLOR_BAD
@@ -237,9 +285,9 @@
 #undef STATS_COLOR_VERY_BAD
 
 /// Return a given stat value.
-/datum/stats/proc/get_stat_modifier(stat)
+/datum/stats/proc/get_stat_modifier(stat, list/out_sources)
 	var/datum/rpg_stat/S = stats[stat]
-	return S.get(owner)
+	return S.get(owner, out_sources)
 
 /// Return a given skill value modifier.
 /datum/stats/proc/get_skill_modifier(skill, list/out_sources)
@@ -295,6 +343,33 @@
 
 /datum/stats/proc/set_cooldown(index, value)
 	COOLDOWN_START(src, stat_cooldowns[index], value)
+
+/**
+ * Returns a scalar value based on the given skill's current value.
+ * max_scalar defines the scalar at a skill sum of 18.
+ * A skill sum of 3 will return the inverse of the max_scalar (1 / max_scalar)
+**/
+/datum/stats/proc/get_skill_as_scalar(datum/rpg_skill/skill, max_scalar = 0, inverse = FALSE)
+	if(!max_scalar)
+		. = 0
+		CRASH("Bad max scalar: [max_scalar]")
+
+	var/skill_value = clamp(get_skill_modifier(skill) + STATS_BASELINE_VALUE, STATS_MINIMUM_VALUE, STATS_MAXIMUM_VALUE)
+	if(skill_value == STATS_BASELINE_VALUE)
+		return 1
+
+	var/min_scalar = round(1 / max_scalar, 0.01)
+	if(!inverse)
+		if(skill_value > STATS_BASELINE_VALUE)
+			return 1 + (skill_value - STATS_BASELINE_VALUE) * (max_scalar - 1) / (STATS_MAXIMUM_VALUE - STATS_BASELINE_VALUE)
+
+		else
+			return min_scalar + (skill_value - STATS_MINIMUM_VALUE) * (1 - min_scalar) / (STATS_BASELINE_VALUE - 3)
+	else
+		if(skill_value > STATS_BASELINE_VALUE)
+			return 1 - (skill_value - STATS_BASELINE_VALUE) * (1 - min_scalar) / (STATS_MAXIMUM_VALUE - STATS_BASELINE_VALUE)
+		else
+			return max_scalar - (skill_value - STATS_MINIMUM_VALUE) * (max_scalar - 1) / (STATS_BASELINE_VALUE - 3)
 
 /// Returns a cached result datum pr null
 /datum/stats/proc/get_stashed_result(id)

@@ -31,7 +31,7 @@
 
 /datum/status_effect/skill_mod
 	tick_interval = -1
-	status_type = STATUS_EFFECT_MULTIPLE
+	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = null
 
 	/// Type path of the skill to modify

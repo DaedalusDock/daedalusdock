@@ -61,7 +61,9 @@
 				last_dust = world.time
 			sustained_moves = 0
 
-	carbon_parent.stamina.adjust(-STAMINA_SPRINT_COST)
+	// At 18 Electric Body, stamina consumption is reduced by 25%
+	var/sprint_cost = round(STAMINA_SPRINT_COST * carbon_parent.stats.get_skill_as_scalar(/datum/rpg_skill/electric_body, 4, inverse = TRUE), 1)
+	carbon_parent.stamina.adjust(-sprint_cost)
 
 /datum/component/carbon_sprint/proc/keyDown()
 	sprint_key_down = TRUE

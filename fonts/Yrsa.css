@@ -1,0 +1,15 @@
+@font-face {
+	font-family: "Yrsa";
+	src: url("Yrsa.ttf") format("truetype");
+	font-weight: 300 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Yrsa";
+	src: url("Yrsa-Italic.ttf") format("truetype");
+	font-weight: 300 700;
+	font-style: italic;
+	font-display: swap;
+}

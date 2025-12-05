@@ -97,7 +97,7 @@ TYPEINFO_DEF(/obj/structure/trash_can)
 
 	if(isliving(throwingdatum.thrower))
 		var/mob/living/thrower = throwingdatum.thrower
-		var/datum/roll_result/result = thrower.stat_roll(4, /datum/rpg_skill/handicraft, -ceil(get_dist_euclidean(src, throwingdatum.origin_turf)))
+		var/datum/roll_result/result = thrower.stat_roll(4, /datum/rpg_skill/fine_motor, -ceil(get_dist_euclidean(src, throwingdatum.origin_turf)))
 		if(result.outcome < SUCCESS)
 			visible_message(span_warning("[AM] bounces off of [src]'s rim."))
 			return ..()

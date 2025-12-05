@@ -26,7 +26,7 @@ import {
 import { ChatPageSettings } from '../chat';
 import { rebuildChat, saveChatToDisk } from '../chat/actions';
 import { changeSettingsTab, updateSettings } from './actions';
-import { FONTS, SETTINGS_TABS, THEMES } from './constants';
+import { FONTS, SETTINGS_TABS, Theme } from './constants';
 import { resetPaneSplitters, setEditPaneSplitters } from './scaling';
 import { selectActiveTab, selectSettings } from './selectors';
 
@@ -34,7 +34,7 @@ export const SettingsPanel = (props) => {
   const activeTab = useSelector(selectActiveTab);
   const dispatch = useDispatch();
   return (
-    <Stack fill>
+    <Stack fill style={{ fontFamily: 'Verdana, sans-serif' }}>
       <Stack.Item>
         <Section fitted fill minHeight="8em">
           <Tabs vertical>
@@ -77,14 +77,17 @@ export const SettingsGeneral = (props) => {
   } = useSelector(selectSettings);
   const dispatch = useDispatch();
   const [freeFont, setFreeFont] = useLocalState('freeFont', false);
-  const [editingPanes, setEditingPanes] = useLocalState('editingPanes', false);
+  const [editingPanes, setEditingPanes] = useLocalState<boolean>(
+    'editingPanes',
+    false,
+  );
   return (
     <Section>
       <LabeledList>
         <LabeledList.Item label="Theme">
           <Dropdown
             selected={theme}
-            options={THEMES}
+            options={Object.values(Theme)}
             onSelected={(value) =>
               dispatch(
                 updateSettings({
@@ -98,12 +101,11 @@ export const SettingsGeneral = (props) => {
           <Stack>
             <Stack.Item>
               <Button
-                onClick={() =>
-                  setEditingPanes((val) => {
-                    setEditPaneSplitters(!val);
-                    return !val;
-                  })
-                }
+                onClick={() => {
+                  const newVal = !editingPanes;
+                  setEditingPanes(newVal);
+                  setEditPaneSplitters(newVal);
+                }}
                 color={editingPanes ? 'red' : undefined}
                 icon={editingPanes ? 'save' : undefined}
               >
@@ -123,14 +125,14 @@ export const SettingsGeneral = (props) => {
               {(!freeFont && (
                 <Dropdown
                   selected={fontFamily}
-                  options={FONTS}
-                  onSelected={(value) =>
-                    dispatch(
-                      updateSettings({
-                        fontFamily: value,
-                      }),
-                    )
-                  }
+                  options={FONTS.map((font) => font.friendlyName)}
+                  onSelected={(value) => {
+                    let selectedFont = FONTS.find(
+                      (font) => font.friendlyName === value,
+                    )!;
+                    let composedFontCSS = selectedFont.toCSS();
+                    dispatch(updateSettings({ fontFamily: composedFontCSS }));
+                  }}
                 />
               )) || (
                 <Input

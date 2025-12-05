@@ -1287,11 +1287,8 @@
 	apply_overlay(FIRE_LAYER)
 	return null
 
-/mob/living/carbon/ZImpactDamage(turf/T, levels)
+/mob/living/carbon/TakeFallDamage(turf/T, levels)
 	. = ..()
-	if(!.)
-		return
-
 	var/atom/highest
 	for(var/atom/movable/hurt_atom as anything in T)
 		if(hurt_atom == src)
@@ -1302,22 +1299,38 @@
 			if(hurt_atom.layer > highest?.layer)
 				highest = hurt_atom
 
-	if(!highest)
-		return
+	if(highest)
+		if(isobj(highest))
+			var/obj/O = highest
+			if(!O.uses_integrity)
+				return
+			O.take_damage(30 * levels)
 
-	if(isobj(highest))
-		var/obj/O = highest
-		if(!O.uses_integrity)
-			return
-		O.take_damage(30 * levels)
+		if(ismob(highest))
+			var/mob/living/L = highest
+			var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
+			L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
+			L.Paralyze(10 SECONDS)
 
-	if(ismob(highest))
-		var/mob/living/L = highest
-		var/armor = L.run_armor_check(BODY_ZONE_HEAD, BLUNT)
-		L.apply_damage(15 * levels, blocked = armor, spread_damage = TRUE)
-		L.Paralyze(10 SECONDS)
+		visible_message(span_warning("[src] falls down onto [highest] from above."))
 
-	visible_message(span_warning("[src] slams into [highest] from above!"))
+	var/list/dislocatable_bodyparts = list()
+	for(var/obj/item/bodypart/BP in bodyparts)
+		if(BP.body_zone in list(BODY_ZONE_CHEST, BODY_ZONE_HEAD))
+			continue
+
+		if((BP.bodypart_flags & BP_CAN_BE_DISLOCATED) && !(BP.bodypart_flags & BP_DISLOCATED))
+			dislocatable_bodyparts += BP
+
+	if(length(dislocatable_bodyparts))
+		var/datum/roll_result/result = stat_roll(10, /datum/rpg_skill/electric_body)
+		if(result.outcome <= FAILURE)
+			var/obj/item/bodypart/dislocated = pick(dislocatable_bodyparts)
+			dislocated.set_dislocated(TRUE)
+
+			audible_message(span_hear("You hear a sickening pop of bone."))
+			result.do_skill_sound(src)
+			to_chat(src, result.create_tooltip("Your [dislocated.joint_name] is wrenched out of its socket by the fall."))
 
 /mob/living/carbon/get_ingested_reagents()
 	RETURN_TYPE(/datum/reagents)

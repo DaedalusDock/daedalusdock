@@ -11,7 +11,7 @@
 /datum/addiction/opiods/withdrawal_enters_stage_2(mob/living/carbon/affected_carbon)
 	. = ..()
 	affected_carbon.apply_status_effect(/datum/status_effect/high_blood_pressure)
-	affected_carbon.stats?.set_skill_modifier(-1, /datum/rpg_skill/willpower, SKILL_SOURCE_OPIOD_WITHDRAWL)
+	affected_carbon.stats?.set_skill_modifier(-1, /datum/rpg_skill/knuckle_down, SKILL_SOURCE_OPIOD_WITHDRAWL)
 
 /datum/addiction/opiods/withdrawal_stage_3_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
@@ -23,7 +23,7 @@
 	. = ..()
 	affected_carbon.remove_status_effect(/datum/status_effect/high_blood_pressure)
 	affected_carbon.set_disgust(affected_carbon.disgust * 0.5) //half their disgust to help
-	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/willpower, SKILL_SOURCE_OPIOD_WITHDRAWL)
+	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/knuckle_down, SKILL_SOURCE_OPIOD_WITHDRAWL)
 
 ///Stimulants
 
@@ -57,7 +57,7 @@
 /datum/addiction/alcohol/withdrawal_stage_1_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
 	affected_carbon.set_timed_status_effect(10 SECONDS * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	affected_carbon.stats?.set_skill_modifier(-2, /datum/rpg_skill/handicraft, SKILL_SOURCE_ALCHOHOL_WITHDRAWL)
+	affected_carbon.stats?.set_skill_modifier(-2, /datum/rpg_skill/fine_motor, SKILL_SOURCE_ALCHOHOL_WITHDRAWL)
 
 /datum/addiction/alcohol/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
@@ -74,7 +74,7 @@
 
 /datum/addiction/alcohol/end_withdrawal(mob/living/carbon/affected_carbon)
 	. = ..()
-	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/handicraft, SKILL_SOURCE_ALCHOHOL_WITHDRAWL)
+	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/fine_motor, SKILL_SOURCE_ALCHOHOL_WITHDRAWL)
 
 /datum/addiction/hallucinogens
 	name = "hallucinogen"
@@ -242,7 +242,7 @@
 /datum/addiction/nicotine/withdrawal_enters_stage_1(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
 	affected_carbon.set_timed_status_effect(10 SECONDS * delta_time, /datum/status_effect/jitter, only_if_higher = TRUE)
-	affected_carbon.stats?.set_skill_modifier(-2, /datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE_WITHDRAWL) //can't focus without my cigs
+	affected_carbon.stats?.set_skill_modifier(-2, /datum/rpg_skill/fine_motor, SKILL_SOURCE_NICOTINE_WITHDRAWL) //can't focus without my cigs
 
 /datum/addiction/nicotine/withdrawal_stage_2_process(mob/living/carbon/affected_carbon, delta_time)
 	. = ..()
@@ -258,4 +258,4 @@
 
 /datum/addiction/nicotine/end_withdrawal(mob/living/carbon/affected_carbon)
 	. = ..()
-	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/handicraft, SKILL_SOURCE_NICOTINE_WITHDRAWL)
+	affected_carbon.stats?.remove_skill_modifier(/datum/rpg_skill/fine_motor, SKILL_SOURCE_NICOTINE_WITHDRAWL)

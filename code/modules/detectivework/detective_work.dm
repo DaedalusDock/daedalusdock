@@ -262,9 +262,10 @@
 	// Spawn 0 so this displays *after* the examine block.
 	spawn(0)
 		if(length(residue))
-			to_chat(src, result.create_tooltip("A remnant of past events flashes into your mind, the booming crack of a firearm."))
+			to_chat(src, result.create_tooltip("A remnant of past events flashes into your mind, the booming crack of a firearm echoes in your skull."))
 
-		else if(length(fingerprints) || length(trace_dna))
-			var/text = isitem(examined) ? "someone else has held this item in the past" : "someone else has been here before"
-			to_chat(src, result.create_tooltip("Perhaps it is a stray particle of dust, or a smudge on the surface. Whatever it may be, you are certain [text]."))
+		// Commented out because I don't really like this interaction. It needs work. Perhaps items used as weapons could gain a trait and reveal their dark use?
+		// else if(length(fingerprints) || length(trace_dna))
+		// 	var/text = isitem(examined) ? "someone else has held this item in the past" : "someone else has been here before"
+		// 	to_chat(src, result.create_tooltip("Perhaps it is a stray particle of dust, or a smudge on the surface. Whatever it may be, you are certain [text]."))
 

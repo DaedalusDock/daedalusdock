@@ -21,7 +21,7 @@ TYPEINFO_DEF(/obj/item/clothing/mask/utopia)
 
 /obj/item/clothing/mask/utopia/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
 	. = ..()
-	var/datum/roll_result/result = user.get_examine_result("acolyte_mask_flavor", 13, /datum/rpg_skill/extrasensory, trait_succeed = TRAIT_AETHERITE, only_once = TRUE)
+	var/datum/roll_result/result = user.get_examine_result("acolyte_mask_flavor", 13, /datum/rpg_skill/fourteen_eyes, trait_succeed = TRAIT_AETHERITE, only_once = TRUE)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)
 		to_chat(

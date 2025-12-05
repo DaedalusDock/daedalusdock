@@ -48,7 +48,7 @@
 	if(gravity_state == old_grav_state)
 		return
 
-	update_gravity(gravity_state)
+	update_gravity(gravity_state, old_grav_state)
 
 	if(gravity_state > STANDARD_GRAVITY)
 		gravity_animate()

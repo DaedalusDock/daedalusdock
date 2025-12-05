@@ -52,6 +52,12 @@
 	if(!do_after(user, H, 5 SECONDS, DO_PUBLIC, interaction_key = "splint", display = src))
 		return ITEM_INTERACT_BLOCKING
 
+	var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/anatomy)
+	if(result.outcome <= FAILURE)
+		result.do_skill_sound(user)
+		to_chat(user, result.create_tooltip("Oh, that is not how you put on a splint."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(H == user && prob(25))
 		user.visible_message(span_warning("[user] fumbles [src]."))
 		return ITEM_INTERACT_BLOCKING

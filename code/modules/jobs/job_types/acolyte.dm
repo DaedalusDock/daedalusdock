@@ -43,7 +43,7 @@
 
 /datum/job/acolyte/New()
 	. = ..()
-	description = "A member of a strange religious organization, you aid your \
+	description = "A member of a strange religious organization, you aid the elder member known as the \
 	<span style='color:[/datum/job/augur::selection_color]'>Augur</span> in maintaining the Sacred Cycle. \
 	Aid those who are not yet ready to pass unto the Ephemeral Twilight, and condemn those who attempt to avoid it."
 
@@ -51,6 +51,8 @@
 	. = ..()
 	if(!isvox(spawned))
 		spawned.AddComponent(/datum/component/clothing_lover, list(/obj/item/clothing/mask/utopia), "aether_maskless", /datum/mood_event/aether_maskless, ITEM_SLOT_MASK)
+
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/doctor)
 
 /datum/outfit/job/doctor
 	name = JOB_ACOLYTE

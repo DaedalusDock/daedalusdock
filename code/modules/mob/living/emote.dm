@@ -288,6 +288,18 @@
 		var/mob/living/carbon/C = user
 		return !C.silent
 
+/datum/emote/living/laugh/run_emote(mob/user, params, type_override, intentional)
+	. = ..()
+	if(!.)
+		return
+
+	if(intentional && prob(40))
+		for(var/mob/living/carbon/human/H in oview(user, world.view))
+			if(H.mind?.assigned_role?.title != JOB_CLOWN)
+				continue
+
+			H.apply_status_effect(/datum/status_effect/skill_mod/laugh)
+
 /datum/emote/living/laugh/get_sound(mob/living/user)
 	if(!ishuman(user) || user.mind?.miming)
 		return null

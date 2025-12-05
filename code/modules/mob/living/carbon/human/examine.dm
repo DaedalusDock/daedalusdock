@@ -391,7 +391,7 @@
 	var/possible_invisible_damage = getToxLoss() > 20 || getBrainLoss()
 
 	if(!length(get_missing_limbs()) && (possible_invisible_damage || length(fucked_reasons) || visible_bodyparts >= 3))
-		var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/anatomia)
+		var/datum/roll_result/result = living_user.stat_roll(15, /datum/rpg_skill/anatomy)
 		switch(result.outcome)
 			if(SUCCESS, CRIT_SUCCESS)
 				spawn(0)

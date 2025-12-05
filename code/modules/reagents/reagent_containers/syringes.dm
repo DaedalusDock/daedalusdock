@@ -48,7 +48,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/syringe)
 		return
 
 	if(tool.use_tool(src, user, 5 SECONDS, amount = 5))
-		var/datum/roll_result/result = user.stat_roll(11, /datum/rpg_skill/anatomia)
+		var/datum/roll_result/result = user.stat_roll(11, /datum/rpg_skill/anatomy)
 		result.do_skill_sound(user)
 		switch(result.outcome)
 			if(SUCCESS, CRIT_SUCCESS)

@@ -12,8 +12,14 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 /mob/living/proc/stat_roll(requirement = STATS_BASELINE_VALUE, datum/rpg_skill/skill_path, modifier = 0, crit_fail_modifier = -10, mob/living/defender)
 	RETURN_TYPE(/datum/roll_result)
 
-	var/skill_mod = skill_path ? stats.get_skill_modifier(skill_path) : 0
-	var/stat_mod = skill_path ? stats.get_stat_modifier(initial(skill_path.parent_stat_type)) : 0
+	var/datum/rpg_skill/checked_skill_path = skill_path
+
+	/// The entertainer specifically always uses Sock and Buskin because that's funny.
+	if(skill_path && mind?.assigned_role?.title == JOB_CLOWN)
+		checked_skill_path = /datum/rpg_skill/theatre
+
+	var/skill_mod = checked_skill_path ? stats.get_skill_modifier(checked_skill_path) : 0
+	var/stat_mod = checked_skill_path ? stats.get_stat_modifier(initial(checked_skill_path.parent_stat_type)) : 0
 
 	if(defender && skill_path)
 		skill_mod -= defender.stats?.get_skill_modifier(skill_path) || 0

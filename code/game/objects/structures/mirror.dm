@@ -74,7 +74,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 			result.do_skill_sound(user)
 			to_chat(
 				user,
-				result.create_tooltip("The corpse of a mirror lies grotesquely bolted to the wall. Below it lies shards that no longer fit into the whole. The shards are still clear, this crime must have been recent."),
+				result.create_tooltip("The corpse of a mirror lies grotesquely bolted to the wall. Below it lies shards that no longer fit into the whole. The shards are still clear, this work must be recent."),
 			)
 		return
 

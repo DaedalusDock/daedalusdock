@@ -189,7 +189,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 
 		H.stats.set_cooldown("supermatter_fuckywucky", INFINITY)
 
-		var/datum/roll_result/result = H.stat_roll(16, /datum/rpg_skill/extrasensory)
+		var/datum/roll_result/result = H.stat_roll(16, /datum/rpg_skill/fourteen_eyes)
 		if(result.outcome >= SUCCESS)
 			continue
 

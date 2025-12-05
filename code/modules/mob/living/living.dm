@@ -82,11 +82,14 @@
 	if(SEND_SIGNAL(src, COMSIG_LIVING_Z_IMPACT, levels, T) & NO_Z_IMPACT_DAMAGE)
 		return
 
-	visible_message(span_danger("<b>[src]</b> slams into [T]!"), blind_message = span_hear("You hear something slam into the deck."))
-	TakeFallDamage(levels)
+	visible_message(
+		span_danger("<b>[src]</b> falls onto [T]."),
+		blind_message = span_hear("You hear something slam into the deck.")
+	)
+	TakeFallDamage(T, levels)
 	return TRUE
 
-/mob/living/proc/TakeFallDamage(levels)
+/mob/living/proc/TakeFallDamage(turf/T, levels)
 	adjustBruteLoss((levels * 5) ** 1.5)
 	Knockdown(levels * 5 SECONDS)
 	Stun(levels * 2 SECONDS)
@@ -966,17 +969,36 @@
 /mob/living/proc/resist_restraints()
 	return
 
-/mob/living/proc/update_gravity(gravity)
+/// Called when the mob's gravity state is updated via refresh_gravity()
+/mob/living/proc/update_gravity(new_gravity_state, old_gravity_state)
+	PRIVATE_PROC(TRUE)
+
 	// Handle movespeed stuff
-	var/speed_change = max(0, gravity - STANDARD_GRAVITY)
+	var/speed_change = max(0, new_gravity_state - STANDARD_GRAVITY)
 	if(speed_change)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, slowdown=speed_change)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/gravity)
 
+	update_gravity_alert(new_gravity_state, old_gravity_state)
+
+	// This breaks unit tests
+	#ifndef UNIT_TESTS
+	if(old_gravity_state != null && old_gravity_state != STANDARD_GRAVITY && new_gravity_state == STANDARD_GRAVITY && isturf(loc) && !CanZFall(loc, DOWN))
+		var/datum/roll_result/result = stat_roll(13, /datum/rpg_skill/electric_body)
+		if(result.outcome <= FAILURE)
+			result.do_skill_sound(src)
+			to_chat(src, result.create_tooltip("The sudden change in gravity sends you to the floor."))
+			Knockdown(3 SECONDS)
+	#endif
+
+/// Called by update_gravity().
+/mob/living/proc/update_gravity_alert(new_gravity_state, old_gravity_state)
+	PRIVATE_PROC(TRUE)
+
 	// Time to add/remove gravity alerts. sorry for the mess it's gotta be fast
 	var/atom/movable/screen/alert/gravity_alert = alerts[ALERT_GRAVITY]
-	switch(gravity)
+	switch(new_gravity_state)
 		if(-INFINITY to NEGATIVE_GRAVITY)
 			if(!istype(gravity_alert, /atom/movable/screen/alert/negative))
 				throw_alert(ALERT_GRAVITY, /atom/movable/screen/alert/negative)
@@ -1000,9 +1022,11 @@
 	// If we had no gravity alert, or the same alert as before, go home
 	if(!gravity_alert || alerts[ALERT_GRAVITY] == gravity_alert)
 		return
+
 	// By this point we know that we do not have the same alert as we used to
 	if(istype(gravity_alert, /atom/movable/screen/alert/weightless))
 		REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, NO_GRAVITY_TRAIT)
+
 	if(istype(gravity_alert, /atom/movable/screen/alert/negative))
 		var/matrix/flipped_matrix = transform
 		flipped_matrix.b = -flipped_matrix.b
@@ -1847,9 +1871,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	. = ..()
 	switch(blindness_level)
 		if(BLIND_SLEEPING, BLIND_PHYSICAL)
-			stats?.set_skill_modifier(-4, /datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+			stats?.set_skill_modifier(-4, /datum/rpg_skill/bloodsport, SKILL_SOURCE_BLINDNESS)
 		else
-			stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+			stats?.remove_skill_modifier(/datum/rpg_skill/bloodsport, SKILL_SOURCE_BLINDNESS)
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
@@ -1995,13 +2019,13 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		set_lying_angle(pick(LYING_ANGLE_EAST, LYING_ANGLE_WEST))
 		set_body_position(LYING_DOWN)
 		on_fall()
-		stats?.set_skill_modifier(-2, /datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
+		stats?.set_skill_modifier(-2, /datum/rpg_skill/bloodsport, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being floored. Called when the condition ends.
 /mob/living/proc/on_floored_end()
 	if(!resting)
 		get_up()
-		stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
+		stats?.remove_skill_modifier(/datum/rpg_skill/bloodsport, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being handsblocked. Called when the condition starts.
 /mob/living/proc/on_handsblocked_start()

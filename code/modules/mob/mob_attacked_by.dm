@@ -20,7 +20,7 @@
 			if(HAS_TRAIT(attacker, TRAIT_PERFECT_ATTACKER))
 				roll = SUCCESS
 			else
-				roll = attacker.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7, src).outcome
+				roll = attacker.stat_roll(10, /datum/rpg_skill/bloodsport, bodyzone_modifier, -7, src).outcome
 
 			switch(roll)
 				if(CRIT_FAILURE)

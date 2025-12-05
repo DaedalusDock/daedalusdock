@@ -1085,3 +1085,35 @@
 
 	C.adjustToxLoss(1, cause_of_death = "Zedaphen overdose") // Counter-acted by the normal metabolization, resulting in minor organ damage.
 	C.Unconscious(10 SECONDS) // You're in for it now.
+
+/datum/reagent/medicine/shmowder
+	name = "Shmowder"
+	taste_description = "horrible bitterness"
+	taste_mult = 100
+	description = "A horrible mess of pharmaceuticals masquerading as \"medicine\"."
+	reagent_state = LIQUID
+	color = "#d8d8d8"
+
+	ingest_met = 0.2
+
+/datum/reagent/medicine/shmowder/affect_ingest(mob/living/carbon/C, removed)
+	. = ..()
+	// After having gone through 10u of the thing, there's a 5% chance every 10 units processed to cure all diseases.
+	if(current_cycle >= 50 && prob(current_cycle / 10))
+		for(var/datum/pathogen/pathogen in C.diseases)
+			pathogen.force_cure(add_resistance = FALSE)
+
+	if(prob(80)) // *THUD*
+		C.adjustBruteLoss(-10 * removed, FALSE)
+
+	if(prob(80)) // *THUD*
+		C.adjustBruteLoss(-10 * removed, FALSE)
+
+	if(prob(80)) // *THUD*
+		C.adjustBloodVolumeUpTo(10 * removed, BLOOD_VOLUME_NORMAL)
+
+	if(prob(80)) // *THUD*
+		C.adjustToxLoss(-2 * removed, FALSE)
+
+	C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 10 * removed, updating_health = FALSE)
+	return TRUE

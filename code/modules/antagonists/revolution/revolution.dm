@@ -21,7 +21,7 @@
 /datum/antagonist/rev/can_be_owned(datum/mind/new_owner)
 	. = ..()
 	if(.)
-		if(new_owner.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_MANAGEMENT|DEPARTMENT_BITFLAG_SECURITY))
+		if(new_owner.assigned_role.departments_bitflags & (DEPARTMENT_BITFLAG_FEDERATION|DEPARTMENT_BITFLAG_SECURITY))
 			return FALSE
 
 		if(new_owner.unconvertable)
@@ -322,7 +322,7 @@
 	var/list/ex_revs = list()
 
 /datum/team/revolution/proc/update_objectives(initial = FALSE)
-	var/untracked_heads = SSjob.get_all_management()
+	var/untracked_heads = SSjob.get_all_heads()
 	for(var/datum/objective/mutiny/O in objectives)
 		untracked_heads -= O.target
 
@@ -348,7 +348,7 @@
 /datum/team/revolution/proc/update_heads()
 	if(SSticker.HasRoundStarted())
 		var/list/datum/mind/head_revolutionaries = head_revolutionaries()
-		var/list/datum/mind/heads = SSjob.get_all_management()
+		var/list/datum/mind/heads = SSjob.get_all_heads()
 		var/list/sec = SSjob.get_all_sec()
 
 		if(head_revolutionaries.len < max_headrevs && head_revolutionaries.len < round(heads.len - ((8 - sec.len) / 3)))
@@ -387,7 +387,7 @@
 	return TRUE
 
 /// Checks if the government has won
-/datum/team/revolution/proc/check_management_victory()
+/datum/team/revolution/proc/check_federation_victory()
 	for(var/datum/mind/rev_mind in head_revolutionaries())
 		var/turf/rev_turf = get_turf(rev_mind.current)
 		if(!considered_afk(rev_mind) && considered_alive(rev_mind) && is_station_level(rev_turf.z))
@@ -400,7 +400,7 @@
 /datum/team/revolution/proc/check_completion()
 	if (check_rev_victory())
 		return REVOLUTION_VICTORY
-	else if (check_management_victory())
+	else if (check_federation_victory())
 		return STATION_VICTORY
 
 /// Mutates the ticker to report that the revs have won
@@ -488,7 +488,7 @@
 	parts += antag_listing_footer()
 	common_part = parts.Join()
 
-	var/heads_report = "<b>Management</b><br>"
+	var/heads_report = "<b>Federation</b><br>"
 	heads_report += "<table cellspacing=5>"
 	for(var/datum/mind/N in SSjob.get_living_heads(TRUE))
 		var/mob/M = N.current

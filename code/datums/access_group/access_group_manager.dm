@@ -7,7 +7,7 @@
 
 /datum/access_group_manager/captain
 	job_title = JOB_CAPTAIN
-	access_groups = list(/datum/access_group/station/management)
+	access_groups = list(/datum/access_group/station/federation)
 
 /datum/access_group_manager/hop
 	job_title = JOB_HEAD_OF_PERSONNEL

@@ -64,7 +64,7 @@ SUBSYSTEM_DEF(id_access)
 
 	station_groups = list(
 		/datum/access_group/station/security,
-		/datum/access_group/station/management,
+		/datum/access_group/station/federation,
 		/datum/access_group/station/engineering,
 		/datum/access_group/station/independent_areas,
 		/datum/access_group/station/cargo,
@@ -179,7 +179,7 @@ SUBSYSTEM_DEF(id_access)
 	desc_by_access["[ACCESS_TELEPORTER]"] = "Teleporter"
 	desc_by_access["[ACCESS_EVA]"] = "EVA"
 	desc_by_access["[ACCESS_FACTION_LEADER]"] = "Faction Leader"
-	desc_by_access["[ACCESS_MANAGEMENT]"] = "Management"
+	desc_by_access["[ACCESS_FEDERATION]"] = "Federation"
 	desc_by_access["[ACCESS_CAPTAIN]"] = "Captain"
 	desc_by_access["[ACCESS_ALL_PERSONAL_LOCKERS]"] = "Personal Lockers"
 	desc_by_access["[ACCESS_CHAPEL_OFFICE]"] = "Chapel Office"

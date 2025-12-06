@@ -35,10 +35,7 @@
 		return
 	. = prefs.update_preference(src, input)
 
-	if(istype(user, /mob/dead/new_player))
-		var/mob/dead/new_player/player = user
-		if(player.npp.active_tab == "game")
-			player.npp.change_tab("game") // Reload name
+	astype(user, /mob/dead/new_player)?.npp?.update()
 	return .
 
 /datum/preference/name/get_button(datum/preferences/prefs)

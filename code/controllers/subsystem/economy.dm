@@ -27,8 +27,8 @@ SUBSYSTEM_DEF(economy)
 	///The station's master account, used for splitting up funds and pooling money.
 	var/datum/bank_account/department/station_master
 
-	/// Govt Bux, for the government supply console
-	var/datum/bank_account/department/government_budget
+	/// Govt Bux, for the federation supply console
+	var/datum/bank_account/department/federation_budget
 
 	///Departmental account datums by ID
 	var/list/datum/bank_account/department/department_accounts_by_id = list()

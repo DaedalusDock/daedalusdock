@@ -4,9 +4,9 @@
 	var/creator_info = ""
 
 /datum/employer/government
-	name = "The Government"
-	short_name = "Government"
-	creator_info = "The Core Worlds has sent out many agents to secure as many capable space stations as possible to provide relief from the ongoing resource scarcity back home. Regardless of what the inhabitants think."
+	name = "The Federation"
+	short_name = "Federation"
+	creator_info = "The pool's local government superpower, evolving from the Minervan Trade Union. The Federation showed up on the colony's proverbial doorstep and taken hold over it's inhabitants."
 
 /datum/employer/daedalus
 	name = "Daedalus Industries"

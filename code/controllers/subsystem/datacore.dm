@@ -392,7 +392,7 @@ SUBSYSTEM_DEF(datacore)
 /datum/controller/subsystem/datacore/proc/can_modify_records(record_key, list/access)
 	switch(record_key)
 		if(DATACORE_RECORDS_STATION)
-			if((ACCESS_CAPTAIN in access) || (ACCESS_DELEGATE in access)) // HACK, need to split ACCESS_FACTION_LEADER away from a new ACCESS_MANAGEMENT
+			if((ACCESS_CAPTAIN in access) || (ACCESS_DELEGATE in access)) // HACK, need to split ACCESS_FACTION_LEADER away from a new ACCESS_FEDERATION
 				return TRUE
 
 		if(DATACORE_RECORDS_AETHER, DATACORE_RECORDS_MEDICAL)

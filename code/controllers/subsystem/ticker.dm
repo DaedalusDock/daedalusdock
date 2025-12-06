@@ -433,7 +433,7 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/get_captain_or_backup()
 	var/list/spare_id_candidates = list()
-	var/datum/job_department/management = SSjob.get_department_type(/datum/job_department/command)
+	var/datum/job_department/federation = SSjob.get_department_type(/datum/job_department/command)
 
 	// Find a suitable player to hold captaincy.
 	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
@@ -450,7 +450,7 @@ SUBSYSTEM_DEF(ticker)
 
 		// Keep a rolling tally of who'll get the cap's spare ID vault code.
 		// Check assigned_role's priority and curate the candidate list appropriately.
-		if(new_player_human.mind.assigned_role.departments_bitflags & management.department_bitflags)
+		if(new_player_human.mind.assigned_role.departments_bitflags & federation.department_bitflags)
 			spare_id_candidates += new_player_human
 
 		CHECK_TICK

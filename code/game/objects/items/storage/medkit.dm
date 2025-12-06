@@ -137,7 +137,7 @@
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/ancient
-	icon_state = "oldfirstaid"
+	icon_state = "medkit"
 	desc = "A first aid kit with the ability to heal common types of injuries."
 
 /obj/item/storage/medkit/ancient/PopulateContents()

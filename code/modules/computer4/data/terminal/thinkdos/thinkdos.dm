@@ -105,10 +105,23 @@
 
 		var/datum/shell_stdin/parsed_stdin = popleft(queued_commands)
 		var/recognized = FALSE
+		// Search builtins. We crush the parsed command to lowertext to make them case insensitive.
+		var/lowertext_shellcommand = lowertext(parsed_stdin.command)
 		for(var/datum/shell_command/potential_command as anything in commands)
-			if(potential_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
+			if(potential_command.try_exec(lowertext_shellcommand, src, src, parsed_stdin.arguments, parsed_stdin.options))
 				recognized = TRUE
 				break
+		// Search the local directory for a matching program
+		// Argument passing doesn't exist for programs so we can just ignore it.
+		var/datum/c4_file/terminal_program/program_to_run = resolve_filepath(parsed_stdin.command)
+		if(!istype(program_to_run) || istype(program_to_run, /datum/c4_file/terminal_program/operating_system))
+			// Search the bin directory for a matching program
+			program_to_run = resolve_filepath(parsed_stdin.command, get_bin_folder())
+
+		if(istype(program_to_run) && !istype(program_to_run, /datum/c4_file/terminal_program/operating_system))
+			execute_program(program_to_run) //This will block command queue execution.
+			recognized = TRUE
+
 
 		if(!recognized)
 			println("'[html_encode(parsed_stdin.raw)]' is not recognized as an internal or external command.")
@@ -216,6 +229,13 @@
 
 	return log_dir
 
+/// Get the bin folder. The bin directory holds normal programs.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/get_bin_folder()
+	//the `/bin` part here is technically supposed to be reading the physical computer's default program dir.
+	//But that's dumb and /bin should always be correct.
+	return parse_directory("/bin", drive.root, FALSE)
+
+
 /// Create the log file, or append a startup log.
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_logs()
 	if(command_log)
@@ -235,6 +255,8 @@
 
 	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
 	return TRUE
+
+
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/set_current_user(datum/c4_file/user/new_user)
 	if(current_user)

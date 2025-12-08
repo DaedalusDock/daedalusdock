@@ -111,16 +111,20 @@
 			if(potential_command.try_exec(lowertext_shellcommand, src, src, parsed_stdin.arguments, parsed_stdin.options))
 				recognized = TRUE
 				break
-		// Search the local directory for a matching program
+		// Check if we executed a shell command, if so, break out of the while loop.
+		if(recognized)
+			break
+		// Otherwise,  Search the local directory for a matching program
 		// Argument passing doesn't exist for programs so we can just ignore it.
 		var/datum/c4_file/terminal_program/program_to_run = resolve_filepath(parsed_stdin.command)
 		if(!istype(program_to_run) || istype(program_to_run, /datum/c4_file/terminal_program/operating_system))
-			// Search the bin directory for a matching program
+			// If that one's not good, Search the bin directory for a matching program
 			program_to_run = resolve_filepath(parsed_stdin.command, get_bin_folder())
 
 		if(istype(program_to_run) && !istype(program_to_run, /datum/c4_file/terminal_program/operating_system))
 			execute_program(program_to_run) //This will block command queue execution.
 			recognized = TRUE
+			break
 
 
 		if(!recognized)

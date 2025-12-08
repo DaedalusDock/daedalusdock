@@ -105,10 +105,8 @@
 
 		var/datum/shell_stdin/parsed_stdin = popleft(queued_commands)
 		var/recognized = FALSE
-		// Search builtins. We crush the parsed command to lowertext to make them case insensitive.
-		var/lowertext_shellcommand = lowertext(parsed_stdin.command)
 		for(var/datum/shell_command/potential_command as anything in commands)
-			if(potential_command.try_exec(lowertext_shellcommand, src, src, parsed_stdin.arguments, parsed_stdin.options))
+			if(potential_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
 				recognized = TRUE
 				break
 		// Check if we executed a shell command, if so, break out of the while loop.

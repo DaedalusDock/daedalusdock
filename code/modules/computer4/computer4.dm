@@ -64,8 +64,8 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	/// List of peripheral typepaths to install by default.
 	var/list/default_peripherals
 
-	/// The directory to install them in
-	var/default_program_dir = "/bin"
+	/// The directory to install them in.
+	var/default_program_dir = THINKDOS_BIN_DIRECTORY
 
 	/// Soundloop. Self explanatory.
 	var/datum/looping_sound/computer/soundloop

@@ -235,7 +235,7 @@
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/get_bin_folder()
 	//the `/bin` part here is technically supposed to be reading the physical computer's default program dir.
 	//But that's dumb and /bin should always be correct.
-	return parse_directory("/bin", drive.root, FALSE)
+	return parse_directory(THINKDOS_BIN_DIRECTORY, drive.root, FALSE)
 
 
 /// Create the log file, or append a startup log.

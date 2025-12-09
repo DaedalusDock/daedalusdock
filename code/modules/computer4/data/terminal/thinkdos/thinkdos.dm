@@ -111,7 +111,7 @@
 				break
 		// Check if we executed a shell command, if so, break out of the while loop.
 		if(recognized)
-			break
+			continue //We aren't being re-called from unload_program(), so we have to loop back to the start here.
 		// Otherwise,  Search the local directory for a matching program
 		// Argument passing doesn't exist for programs so we can just ignore it.
 		var/datum/c4_file/terminal_program/program_to_run = resolve_filepath(parsed_stdin.command)
@@ -120,7 +120,7 @@
 			program_to_run = resolve_filepath(parsed_stdin.command, get_bin_folder())
 
 		if(istype(program_to_run) && !istype(program_to_run, /datum/c4_file/terminal_program/operating_system))
-			execute_program(program_to_run) //This will block command queue execution.
+			execute_program(program_to_run, parsed_stdin) //This will block command queue execution.
 			recognized = TRUE
 			break
 

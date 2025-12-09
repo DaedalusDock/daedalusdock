@@ -11,10 +11,12 @@
 		for(var/path as anything in subtypesof(/datum/shell_command/probe_cmd))
 			commands += new path
 
-/datum/c4_file/terminal_program/probe/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
+/datum/c4_file/terminal_program/probe/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system, cmdline)
 	. = ..()
 	if(!.)
 		return
+
+	//If we have a cmdline, skip the printline.
 
 	system.println("NetProbe V2.4", FALSE)
 	system.println("Welcome to NetProbe, type 'help' to get started.")

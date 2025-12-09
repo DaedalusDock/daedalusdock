@@ -22,6 +22,7 @@
 	if(.)
 		return
 
+	system.clear_screen(TRUE)
 	var/title_text = list(
 		@"<pre style='margin: 0px'>      ___ ___  __        __   ___</pre>",
 		@"<pre style='margin: 0px'>|\ | |__   |  |__)  /\  / _` |__ </pre>",

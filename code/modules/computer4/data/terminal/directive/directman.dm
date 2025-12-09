@@ -26,6 +26,7 @@
 	if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
 		system.println("<b>Error:</b> Unable to locate wireless adapter.")
 
+	system.clear_screen(TRUE)
 	view_home()
 
 /datum/c4_file/terminal_program/directman/std_in(text)

@@ -31,6 +31,7 @@
 		@"<pre style='margin: 0px'>  /    /   /   ) /   ' /    /   /   ) /   ' /(    </pre>",
 		@"<pre style='margin: 0px'>_/____/___(___/_(___ _/____/___(___/_(___ _/___\__</pre>",
 	).Join("")
+	system.clear_screen(TRUE)
 	system.println(title_text)
 	system.println("Welcome to DocDock, type !help to get started.")
 

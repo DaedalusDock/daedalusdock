@@ -26,9 +26,9 @@
 
 	return TRUE
 
-/// Called when a program is run.
-/datum/c4_file/terminal_program/proc/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
-	system.clear_screen(TRUE)
+/// Called when a program is run. cmdline can be either a string or a parsed /datum/shell_stdin
+/datum/c4_file/terminal_program/proc/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system, cmdline)
+	return
 
 /// Called when a program is no longer running
 /datum/c4_file/terminal_program/proc/on_close(datum/c4_file/terminal_program/operating_system/thinkdos/system)

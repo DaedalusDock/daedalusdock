@@ -63,6 +63,7 @@
 
 	write_log("[system.current_user.registered_name] accessed the records database.")
 
+	system.clear_screen(TRUE)
 	home_text()
 
 /// Getter for the log file. This isn't kept as a ref because I don't want to manage the ref. :)

@@ -2,7 +2,7 @@
 div.container {
 	border: 1px solid;
 	padding: 2px;
-	margin-bottom: 1em;
+	margin-bottom: 0.25em;
 }
 div.header {
 	padding-left: 0.5em;
@@ -46,7 +46,7 @@ div.quick-actions {
 div.quick-actions > :not(:last-child)::after {
 	content: " -";
 }
-div.quick-actions > span > span.disabled {
+span.disabled {
 	color: grey;
 	text-decoration: line-through red;
 }
@@ -76,7 +76,19 @@ span.rank-player {
 }
 /* Categories */
 div.player_info {
-	background-color: pink;
+	background-color: lightblue;
+}
+div.admin_actions {
+	background-color: darksalmon;
+}
+div.general_actions {
+	background-color: olive;
+}
+div.movement_actions {
+	background-color: darkcyan;
+}
+div.transformation_actions {
+	background-color: orchid;
 }
 /* Misc Styling */
 a {

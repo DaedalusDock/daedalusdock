@@ -435,6 +435,9 @@
 		if(!check_rights(R_ADMIN))
 			return
 		cmd_admin_mute(href_list["mute"], text2num(href_list["mute_type"]))
+		if(href_list["pp_mute_refresh_target"])
+			show_player_panel(locate(href_list["pp_mute_refresh_target"]) in GLOB.mob_list)
+
 
 	else if(href_list["f_dynamic_roundstart"])
 		if(!check_rights(R_ADMIN))

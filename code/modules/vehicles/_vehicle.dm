@@ -32,7 +32,7 @@ TYPEINFO_DEF(/obj/vehicle)
 	var/canmove = TRUE
 	var/list/autogrant_actions_passenger //plain list of typepaths
 	var/list/autogrant_actions_controller //assoc list "[bitflag]" = list(typepaths)
-	var/list/mob/occupant_actions //assoc list mob = list(type = action datum assigned to mob)
+	var/list/list/mob/occupant_actions //assoc list mob = list(type = action datum assigned to mob)
 	///This vehicle will follow us when we move (like atrailer duh)
 	var/obj/vehicle/trailer
 	var/are_legs_exposed = FALSE

@@ -5,7 +5,7 @@
 //This is probably unnecessary, but juuust in case.
 GENERAL_PROTECT_DATUM(/datum/player_panel_renderer)
 
-/datum/admins/proc/show_player_panel(mob/M in GLOB.mob_list)
+/client/proc/show_player_panel(mob/M in GLOB.mob_list)
 	set category = "Admin.Game"
 	set name = "Show Player Panel"
 	set desc="Edit player (respawn, ban, heal, etc)"
@@ -14,14 +14,14 @@ GENERAL_PROTECT_DATUM(/datum/player_panel_renderer)
 		return
 
 	if(!M)
-		to_chat(usr, span_warning("You seem to be selecting a mob that doesn't exist anymore."), confidential = TRUE)
+		to_chat(src, span_warning("You seem to be selecting a mob that doesn't exist anymore."), confidential = TRUE)
 		return
 
-	log_admin("[key_name(usr)] checked the individual player panel for [key_name(M)][isobserver(usr)?"":" while in game"].")
+	log_admin("[key_name(src)] checked the individual player panel for [key_name(M)][isobserver(mob)?"":" while in game"].")
 
 	var/datum/player_panel_renderer/renderer = new
-	var/static/datum/asset/simple/namespaced/player_panel/asset = get_asset_datum(/datum/asset/simple/namespaced/player_panel)
-	asset.send(usr)
+	var/datum/asset/simple/namespaced/player_panel/asset = get_asset_datum(/datum/asset/simple/namespaced/player_panel)
+	asset.send(src)
 
 	var/body = {"
 	<html>
@@ -33,15 +33,15 @@ GENERAL_PROTECT_DATUM(/datum/player_panel_renderer)
 		<body>
 	"}
 
-	body += renderer.pp_header(M, usr)
-	body += renderer.pp_info(M, usr)
-	body += renderer.actions_admin(M, usr)
-	body += renderer.actions_info(M, usr)
-	body += renderer.actions_general(M, usr)
-	body += renderer.actions_movement(M, usr)
-	body += renderer.actions_transformation(M, usr)
+	body += renderer.pp_header(M, mob)
+	body += renderer.pp_info(M, mob)
+	body += renderer.actions_admin(M, mob)
+	body += renderer.actions_info(M, mob)
+	body += renderer.actions_general(M, mob)
+	body += renderer.actions_movement(M, mob)
+	body += renderer.actions_transformation(M, mob)
 
 	body += "</body></html>"
 
-	usr << browse(body, "window=adminplayeropts-[REF(M)];size=550x650")
+	src << browse(body, "window=adminplayeropts-[REF(M)];size=550x650")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Player Panel") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

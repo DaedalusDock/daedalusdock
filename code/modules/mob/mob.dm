@@ -1487,7 +1487,7 @@
 	if(href_list[VV_HK_PLAYER_PANEL])
 		if(!check_rights(NONE))
 			return
-		usr.client.holder.show_player_panel(src)
+		usr.client.show_player_panel(src)
 	if(href_list[VV_HK_GODMODE])
 		if(!check_rights(R_ADMIN))
 			return

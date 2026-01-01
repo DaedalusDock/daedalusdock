@@ -1,10 +1,13 @@
-/datum/rpg_skill/skirmish
-	name = "Skirmish"
-	desc = "The thrill of hand-to-hand combat."
+/** ----- BLOODSPORT -----
+ * Melee combat. Real simple this one is.
+**/
+/datum/rpg_skill/bloodsport
+	name = "Bloodsport"
+	desc = "Fists, pipes, chairs, your brushes for the canvas of violence."
 
 	parent_stat_type = /datum/rpg_stat/soma
 
-/datum/rpg_skill/skirmish/get(mob/living/user, list/out_sources)
+/datum/rpg_skill/bloodsport/get(mob/living/user, list/out_sources)
 	. = ..()
 	if(CHEM_EFFECT_MAGNITUDE(user, CE_STIMULANT))
 		. += 1

@@ -11,13 +11,40 @@ import {
   toggleSettings,
   updateSettings,
 } from './actions';
-import { DEFAULT_THEME, FONTS, SETTINGS_TABS } from './constants';
+import {
+  CHAT_SETTINGS_VERSION,
+  DEFAULT_FONT,
+  DEFAULT_FONT_SIZE,
+  DEFAULT_LINE_HEIGHT,
+  DEFAULT_THEME,
+  SETTINGS_TABS,
+  Theme,
+} from './constants';
 
-const initialState = {
+type ReducerState = {
+  adminMusicVolume: number;
+  chatSettingsVersion: number;
+  fontFamily: string;
+  fontSize: number;
+  highlightColor: string;
+  highlightText?: string;
+  lineHeight: number;
+  matchCase: boolean;
+  matchWord: boolean;
+  theme: Theme;
+  version: number;
+  view: {
+    activeTab: string;
+    visible: boolean;
+  };
+};
+
+const initialState: ReducerState = {
   version: 1,
-  fontSize: 16,
-  fontFamily: FONTS[0],
-  lineHeight: 1.2,
+  chatSettingsVersion: CHAT_SETTINGS_VERSION,
+  fontSize: DEFAULT_FONT_SIZE,
+  fontFamily: DEFAULT_FONT.toCSS(),
+  lineHeight: DEFAULT_LINE_HEIGHT,
   theme: DEFAULT_THEME,
   adminMusicVolume: 0.5,
   highlightText: '',
@@ -43,6 +70,19 @@ export const settingsReducer = (state = initialState, action) => {
     if (!payload?.version) {
       return state;
     }
+
+    if (
+      !payload.chatSettingsVersion ||
+      payload.chatSettingsVersion < state.chatSettingsVersion
+    ) {
+      delete payload.fontFamily;
+      delete payload.fontSize;
+      delete payload.lineHeight;
+      if (payload.chatSettingsVersion) {
+        delete payload.chatSettingsVersion;
+      }
+    }
+
     delete payload.view;
     return {
       ...state,

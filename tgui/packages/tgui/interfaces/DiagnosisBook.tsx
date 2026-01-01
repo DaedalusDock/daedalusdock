@@ -110,7 +110,7 @@ export const PatientEntry = (props) => {
       <Flex direction="row" align="baseline">
         <Box
           style={{
-            fontSize: '200%',
+            fontSize: '1.5rem',
             marginRight: '8px',
             width: '40%',
             fontWeight: 'bold',

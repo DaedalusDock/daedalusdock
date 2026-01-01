@@ -233,6 +233,17 @@
 	user.visible_message(span_warning("[usr] begins attaching [src] to [target]..."), span_warning("You begin attaching [src] to [target]."))
 	if(!do_after(usr, target, 1 SECONDS))
 		return
+
+	if(isliving(user) && iscarbon(target))
+		var/mob/living/carbon/carbon_target = target
+		var/mob/living/living_user = user
+		var/datum/roll_result/result = living_user.stat_roll(7, /datum/rpg_skill/anatomy)
+		if(result.outcome <= FAILURE)
+			result.do_skill_sound(user)
+			to_chat(user, result.create_tooltip("That is not where an IV should be inserted, but it will suffice."))
+			carbon_target.bleed(10)
+			carbon_target.apply_damage(5, BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), sharpness = SHARP_POINTY)
+
 	usr.visible_message(span_warning("[usr] attaches [src] to [target]."), span_notice("You attach [src] to [target]."))
 	var/datum/reagents/container = get_reagent_holder()
 	log_combat(usr, target, "attached", src, "containing: ([container.get_reagent_log_string()])")

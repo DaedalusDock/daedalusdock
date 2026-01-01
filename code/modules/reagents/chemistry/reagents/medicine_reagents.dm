@@ -1071,7 +1071,7 @@
 	if(C.stat != CONSCIOUS)
 		return
 
-	var/datum/roll_result/result = C.stat_roll(13, /datum/rpg_skill/extrasensory)
+	var/datum/roll_result/result = C.stat_roll(13, /datum/rpg_skill/fourteen_eyes)
 	switch(result.outcome)
 		if(SUCCESS, CRIT_SUCCESS)
 			to_chat(C, result.create_tooltip("You feel a deep sense of impending doom."))

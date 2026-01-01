@@ -25,5 +25,10 @@
 #define SKILL_SOURCE_OPIOD_WITHDRAWL "Opiod withdrawl"
 /// Alchohol withdrawl
 #define SKILL_SOURCE_ALCHOHOL_WITHDRAWL "Alchohol withdrawl"
+
 /// The baseline value for a stat.
 #define STATS_BASELINE_VALUE 11
+/// Maximum "real" value of a stat, including modifiers.
+#define STATS_MAXIMUM_VALUE 18
+/// Minimum "real" value of a stat, including modifiers.
+#define STATS_MINIMUM_VALUE 3

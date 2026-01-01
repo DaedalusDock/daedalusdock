@@ -46,7 +46,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
 		)
 
 		if(HAS_MIND_TRAIT(user, TRAIT_DICK))
-			var/datum/roll_result/det_result = user.get_examine_result("dethat_expensive_detective_shame", 16, /datum/rpg_skill/willpower, only_once = TRUE)
+			var/datum/roll_result/det_result = user.get_examine_result("dethat_expensive_detective_shame", 16, /datum/rpg_skill/knuckle_down, only_once = TRUE)
 			if(det_result?.outcome <= FAILURE)
 				to_chat(
 					user,
@@ -71,7 +71,7 @@ TYPEINFO_DEF(/obj/item/clothing/head/fedora/det_hat)
 		to_chat(user, span_warning("You just took a candy corn! You should wait a couple minutes, lest you burn through your stash."))
 
 /obj/item/clothing/head/fedora/det_hat/item_action_slot_check(slot, mob/user)
-	return (slot == ITEM_SLOT_HEAD) && (user.mind?.assigned_role.title == JOB_DETECTIVE)
+	return (slot == ITEM_SLOT_HEAD) && (user.mind?.assigned_role?.title == JOB_DETECTIVE)
 
 /datum/action/item_action/noir_mode
 	name = "Investigate"

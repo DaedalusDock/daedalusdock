@@ -49,6 +49,7 @@
 		return
 
 	spawned.apply_pref_name(/datum/preference/name/clown)
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/entertainer)
 
 /datum/outfit/job/clown
 	name = "Clown"

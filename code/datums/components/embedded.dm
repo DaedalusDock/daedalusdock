@@ -237,7 +237,7 @@
 
 	if(harmful && user.stats.cooldown_finished("ripout_embed_check"))
 		user.stats.set_cooldown("ripout_embed_check", INFINITY)
-		var/datum/roll_result/result = user.stat_roll(12, /datum/rpg_skill/handicraft)
+		var/datum/roll_result/result = user.stat_roll(12, /datum/rpg_skill/fine_motor)
 		result.do_skill_sound(user)
 		switch(result.outcome)
 			if(CRIT_SUCCESS)

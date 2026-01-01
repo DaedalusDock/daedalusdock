@@ -1,0 +1,96 @@
+/* Structural Classes */
+div.container {
+	border: 1px solid;
+	padding: 2px;
+	margin-bottom: 0.25em;
+}
+div.header {
+	padding-left: 0.5em;
+	padding-bottom: 0.1em;
+}
+div.label {
+	float: left;
+	width: 10em;
+	clear: both;
+	font-weight: bold;
+}
+div.options {
+	overflow: auto;
+}
+div.options > :not(:last-child)::after {
+	content: " -";
+}
+/* Header bar */
+div.major_info {
+	position: fixed;
+	height: auto;
+	border-bottom: 1px solid;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 0.2em 0.5em 0.2em 0.5em;
+	background-color: white;
+}
+span.name_mismatch {
+	text-decoration: underline wavy 1px red;
+}
+span.new_player {
+	color: darkblue;
+	text-decoration: underline dashed 1px darkblue;
+	font-style: oblique;
+}
+div.quick-actions {
+	float: right;
+	text-align: right;
+}
+div.quick-actions > :not(:last-child)::after {
+	content: " -";
+}
+span.disabled {
+	color: grey;
+	text-decoration: line-through red;
+}
+/* CKey Styling */
+span.ckey-null {
+	color: blueviolet;
+}
+span.ckey-noclient {
+	color: forestgreen;
+}
+span.ckey-noclient > a {
+	/* Need to fudge this a little...*/
+	color: inherit;
+}
+span.ckey-normal {
+	color: inherit;
+}
+/* Rank Styling */
+span.rank-admin {
+	color: crimson;
+}
+span.rank-deadmin {
+	color: darkcyan;
+}
+span.rank-player {
+	color: darkblue;
+}
+/* Categories */
+div.player_info {
+	background-color: lightblue;
+}
+div.admin_actions {
+	background-color: darksalmon;
+}
+div.general_actions {
+	background-color: olive;
+}
+div.movement_actions {
+	background-color: darkcyan;
+}
+div.transformation_actions {
+	background-color: orchid;
+}
+/* Misc Styling */
+a {
+	text-decoration: none;
+}

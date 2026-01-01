@@ -704,6 +704,7 @@
 #include "code\datums\profiling.dm"
 #include "code\datums\progressbar.dm"
 #include "code\datums\recipe.dm"
+#include "code\datums\round_end_report.dm"
 #include "code\datums\ruins.dm"
 #include "code\datums\saymode.dm"
 #include "code\datums\shuttles.dm"

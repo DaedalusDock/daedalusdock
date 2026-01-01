@@ -36,6 +36,8 @@ SUBSYSTEM_DEF(ticker)
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
 
+	/// Container for the round end report procs and data.
+	var/datum/round_end_report/round_end_report
 	var/list/datum/mind/minds = list() //The characters in the game. Used for objective tracking.
 
 	var/delay_end = FALSE //if set true, the round will not restart on it's own

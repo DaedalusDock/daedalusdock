@@ -201,7 +201,7 @@
 			module_picker_compactmode = !module_picker_compactmode
 			return TRUE
 
-/datum/antagonist/malf_ai/roundend_report()
+/datum/antagonist/malf_ai/roundend_report_article_column_body()
 	var/list/result = list()
 
 	var/malf_ai_won = TRUE
@@ -224,9 +224,9 @@
 	var/special_role_text = lowertext(name)
 
 	if(malf_ai_won)
-		result += span_greentext("The [special_role_text] was successful!")
+		result += "<span class='good'>The [special_role_text] was successful!</span>"
 	else
-		result += span_redtext("The [special_role_text] has failed!")
+		result += "<span class='bad'>The [special_role_text] has failed!</span>"
 		SEND_SOUND(owner.current, 'sound/ambience/ambifailure.ogg')
 
 	return result.Join("<br>")

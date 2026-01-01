@@ -395,7 +395,7 @@
 		to_chat(owner.current, "[span_hear("You hear a whisper...")] [span_hypnophrase(pick(strings(HERETIC_INFLUENCE_FILE, "drain_message")))]")
 	addtimer(CALLBACK(src, PROC_REF(passive_influence_gain)), passive_gain_timer)
 
-/datum/antagonist/heretic/roundend_report()
+/datum/antagonist/heretic/roundend_report_article_column_body()
 	var/list/parts = list()
 
 	var/succeeded = TRUE

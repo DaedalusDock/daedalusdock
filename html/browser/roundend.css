@@ -1,14 +1,126 @@
-.greentext {
-	color: #90ee90;
-	font-weight: bold;
+body {
+	background-color: #272727;
+	color: #efefef;
 }
 
-.greentext_alt {
-	color: green;
+li {
+	margin-bottom: 0.2rem;
 }
-.redtext {
-	color: #ef2f3c;
+
+.panel {
+	font-family: "Quantico", sans-serif;
+	font-size: 1rem;
+	line-height: normal;
+	background-color: #313131;
+	padding: 10px;
+	margin-bottom: 5px;
+}
+
+.general_panel {
+	font-size: 1.5rem;
+}
+
+.header {
+	font-size: 2rem;
 	font-weight: bold;
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+.header.antagonist {
+	font-family: "Special Elite", serif;
+}
+
+.newspaper_header {
+	text-align: center;
+	font-family: "Playfair Display", serif;
+	font-weight: 900;
+	text-transform: uppercase;
+	font-size: 3rem;
+	margin-bottom: 1.2rem;
+}
+
+.newspaper_headline {
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 2.5rem;
+	border-bottom: 2px solid #2f2f2f;
+	border-top: 2px solid #2f2f2f;
+	padding: 12px 0 12px 0;
+}
+
+.newspaper .columns {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: start;
+	overflow-x: hidden; /*I am not sure why this is needed, but removing it causes phantom overflow*/
+}
+.newspaper .column {
+	width: 31%;
+	display: inline-block;
+	padding: 0 1% 0 1%;
+	vertical-align: top;
+	margin-bottom: 2rem;
+}
+
+.newspaper .content {
+	margin: 1.5rem 2% 0 2%;
+}
+
+.newspaper .blurb {
+	margin-bottom: 1.2rem;
+}
+
+.column:nth-child(3n + 2),
+.column:nth-child(3n + 3) {
+	border-left: 1px solid #2f2f2f;
+}
+
+.column .headline {
+	text-align: center;
+	font-family: "Playfair Display", serif;
+	display: block;
+	margin: 0 auto;
+	font-size: 2rem;
+}
+
+.column .headline.subhead {
+	font-weight: 400;
+	font-size: 1.2rem;
+	box-sizing: border-box;
+	padding: 10px 0 10px 0;
+}
+.column .headline.subhead:before {
+	border-top: 1px solid #2f2f2f;
+	content: "";
+	width: 100px;
+	height: 7px;
+	display: block;
+	margin: 0 auto;
+}
+.column .headline.subhead:after {
+	border-bottom: 1px solid #2f2f2f;
+	content: "";
+	width: 100px;
+	height: 10px;
+	display: block;
+	margin: 0 auto;
+}
+.personal_header {
+	font-family: "Quantico", sans-serif;
+	text-align: center;
+	font-size: 3rem;
+	margin: 2rem;
+}
+
+.good {
+	color: #03fca1;
+}
+
+.bad {
+	color: #fc4b32;
 }
 
 .bluetext {
@@ -21,19 +133,17 @@
 }
 
 .marooned {
-	color: rgb(109, 109, 255); font-weight: bold;
+	color: rgb(109, 109, 255);
+	font-weight: bold;
 }
 
 .service {
-	color: #6eaa2c; font-weight: bold;
-}
-
-.header {
-	font-size: 24px; font-weight: bold;
+	color: #6eaa2c;
+	font-weight: bold;
 }
 
 .big {
-	font-size: 24px;
+	font-size: 2em;
 }
 
 .medaltext {
@@ -41,7 +151,7 @@
 }
 
 .codephrase {
-	color : #ef2f3c;
+	color: #ef2f3c;
 }
 
 .redborder {
@@ -53,27 +163,11 @@
 }
 
 .clockborder {
-	border-bottom: 2px solid #B18B25;
+	border-bottom: 2px solid #b18b25;
 }
 
 .stationborder {
 	border-bottom: 2px solid #add8e6;
-}
-
-li {
-	margin-bottom: 0.2rem;
-}
-
-.panel {
-	background-color: #313131;
-	padding: 10px;
-	border-radius: 10px;
-	margin-bottom: 5px;
-}
-
-body {
-	background-color: #272727;
-	color: #efefef;
 }
 
 .tooltip_container {
@@ -88,15 +182,54 @@ body {
 	z-index: 1;
 	width: 220px;
 	font-size: 14px;
-    border-width: 4px;
+	border-width: 4px;
 	border-style: solid;
 	border-color: #272727;
-    background: #363636;
-    color: white;
-    top: 100%;
+	background: #363636;
+	color: white;
+	top: 100%;
 	left: 30px;
 }
 
 .tooltip_container:hover .tooltip_hover {
 	visibility: visible;
+}
+
+.newspaper {
+	background-color: #f9f7f1;
+	color: #2f2f2f;
+	font-family: "Droid Serif", serif;
+}
+
+.fill_width {
+	width: 100%;
+}
+
+.fill_height {
+	height: 100%;
+}
+
+.flex_container {
+	display: flex;
+}
+
+.flex_container.horizontal {
+	flex-direction: row;
+}
+
+.flex_container.vertical {
+	flex-direction: column;
+}
+
+.justify_center {
+	justify-content: center;
+}
+
+.align_center {
+	align-items: center;
+}
+
+.highlighter {
+	background-color: #e5eb34;
+	line-height: normal;
 }

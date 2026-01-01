@@ -1,18 +1,18 @@
 {
-    "Gone Postal": {
-        "allies": "None.",
-        "goal": "The preparations are finally complete. Today is the day you go postal.",
-        "introduction": "You're going postal today.",
-        "roundend_report": "simply went completely postal!",
-        "ui_theme": "neutral",
-        "uplink": "You've actually managed to steal a full uplink a month ago. This should certainly help accomplish your goals."
-    },
-    "Legal Trouble": {
-        "allies": "None.",
-        "goal": "Try to finish your to-do list, and don't get caught. If they find out what you're actually doing, this scandal will go galactic.",
-        "introduction": "You are in legal trouble.",
-        "roundend_report": "was in legal trouble.",
-        "ui_theme": "neutral",
-        "uplink": "You've connected to the black market to clean this mess up. If there's no evidence, there's no crime."
-    }
+	"Gone Postal": {
+		"allies": "None.",
+		"goal": "The preparations are finally complete. Today is the day you go postal.",
+		"introduction": "You're going postal today.",
+		"roundend_report": "simply went completely postal.",
+		"ui_theme": "neutral",
+		"uplink": "You've actually managed to steal a full uplink a month ago. This should certainly help accomplish your goals."
+	},
+	"Legal Trouble": {
+		"allies": "None.",
+		"goal": "Try to finish your to-do list, and don't get caught. If they find out what you're actually doing, this scandal will go galactic.",
+		"introduction": "You are in legal trouble.",
+		"roundend_report": "was allegedly in hot water with several organizations.",
+		"ui_theme": "neutral",
+		"uplink": "You've connected to the black market to clean this mess up. If there's no evidence, there's no crime."
+	}
 }

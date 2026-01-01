@@ -115,7 +115,7 @@
 	if(pack.special && !pack.special_enabled)
 		return FALSE
 
-	if((pack.supply_flags & SUPPLY_PACK_GOVERNMENT) && !(supply_flags & SUPPLY_PACK_GOVERNMENT))
+	if((pack.supply_flags & SUPPLY_PACK_FEDERATION) && !(supply_flags & SUPPLY_PACK_FEDERATION))
 		return FALSE
 
 /obj/machinery/computer/cargo/ui_interact(mob/user, datum/tgui/ui)

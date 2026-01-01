@@ -1,5 +1,5 @@
 GLOBAL_LIST_INIT(job_display_order, list(
-	// Management
+	// The Federation
 	/datum/job/captain,
 	/datum/job/head_of_personnel,
 	///datum/job/bureaucrat,

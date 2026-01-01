@@ -91,7 +91,7 @@ GLOBAL_LIST_EMPTY(all_radios)
 GLOBAL_LIST_INIT(radiochannels, list(
 	RADIO_CHANNEL_COMMON = FREQ_COMMON,
 	RADIO_CHANNEL_SCIENCE = FREQ_SCIENCE,
-	RADIO_CHANNEL_COMMAND = FREQ_COMMAND,
+	RADIO_CHANNEL_FEDERATION = FREQ_COMMAND,
 	RADIO_CHANNEL_MEDICAL = FREQ_MEDICAL,
 	RADIO_CHANNEL_ENGINEERING = FREQ_ENGINEERING,
 	RADIO_CHANNEL_SECURITY = FREQ_SECURITY,
@@ -109,7 +109,7 @@ GLOBAL_LIST_INIT(radiochannels, list(
 GLOBAL_LIST_INIT(reverseradiochannels, list(
 	"[FREQ_COMMON]" = RADIO_CHANNEL_COMMON,
 	"[FREQ_SCIENCE]" = RADIO_CHANNEL_SCIENCE,
-	"[FREQ_COMMAND]" = RADIO_CHANNEL_COMMAND,
+	"[FREQ_COMMAND]" = RADIO_CHANNEL_FEDERATION,
 	"[FREQ_MEDICAL]" = RADIO_CHANNEL_MEDICAL,
 	"[FREQ_ENGINEERING]" = RADIO_CHANNEL_ENGINEERING,
 	"[FREQ_SECURITY]" = RADIO_CHANNEL_SECURITY,
@@ -219,6 +219,9 @@ GLOBAL_LIST_INIT(freq2icon, list(
 	///Anything that captures packets should either generate garbage data or discard these packets.
 	var/has_magic_data = FALSE
 
+	/// I hate doing this but STP is hard.
+	var/list/passed_bridges
+
 /datum/signal/New(author, data, transmission_method = TRANSMISSION_RADIO, logging_data = null)
 	src.author = isnull(author) ? null : WEAKREF(author)
 	if(islist(author))
@@ -230,5 +233,15 @@ GLOBAL_LIST_INIT(freq2icon, list(
 
 /// Returns a copy of this signal.
 /datum/signal/proc/Copy()
-	var/datum/signal/clone = new type(author, data, transmission_method, logging_data)
+	var/datum/signal/clone = new type(author, data.Copy(), transmission_method, logging_data)
+	clone.passed_bridges = src.passed_bridges?.Copy()
 	return clone
+
+/// Check if this signal has passed a bridge, if not, add the bridge's refid to the passed bridge list.
+/// FALSE - first pass, TRUE - second+pass, panic.
+/datum/signal/proc/check_bridge(obj/machinery/bridge)
+	var/refid = ref(bridge)
+	if(refid in passed_bridges)
+		return TRUE
+	LAZYADD(passed_bridges, refid)
+	return FALSE

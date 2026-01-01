@@ -8,7 +8,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 	// Department
 	MODE_KEY_DEPARTMENT = MODE_DEPARTMENT,
-	RADIO_KEY_COMMAND = RADIO_CHANNEL_COMMAND,
+	RADIO_KEY_FEDERATION = RADIO_CHANNEL_FEDERATION,
 	RADIO_KEY_SCIENCE = RADIO_CHANNEL_SCIENCE,
 	RADIO_KEY_MEDICAL = RADIO_CHANNEL_MEDICAL,
 	RADIO_KEY_ENGINEERING = RADIO_CHANNEL_ENGINEERING,
@@ -38,7 +38,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 	// Department
 	"р" = MODE_DEPARTMENT,
-	"с" = RADIO_CHANNEL_COMMAND,
+	"с" = RADIO_CHANNEL_FEDERATION,
 	"т" = RADIO_CHANNEL_SCIENCE,
 	"ь" = RADIO_CHANNEL_MEDICAL,
 	"у" = RADIO_CHANNEL_ENGINEERING,
@@ -277,6 +277,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		message = language.before_speaking(src, message)
 		if(isnull(message))
 			return FALSE
+
+	if(stat == CONSCIOUS)
+		last_words = message
 
 	send_speech(message, range, src, bubble_type, spans, language, message_mods)//roughly 58% of living/say()'s total cost
 

@@ -266,7 +266,7 @@
 
 	var/mob/living/target_examined = examinify
 	if(target_examined.stats.cooldown_finished("ai_examine"))
-		var/datum/roll_result/result = target_examined.stat_roll(13, /datum/rpg_skill/extrasensory)
+		var/datum/roll_result/result = target_examined.stat_roll(13, /datum/rpg_skill/fourteen_eyes)
 		switch(result.outcome)
 			if(SUCCESS, CRIT_SUCCESS)
 				target_examined.stats.set_cooldown("ai_examine", 1 MINUTE)

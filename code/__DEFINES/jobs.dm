@@ -42,11 +42,7 @@
 #define JOB_SECURITY_MARSHAL "Security Marshal"
 #define JOB_WARDEN "Brig Lieutenant"
 #define JOB_DETECTIVE "Private Investigator"
-#define JOB_SECURITY_OFFICER "Security Officer"
-#define JOB_SECURITY_OFFICER_MEDICAL "Security Officer (Medical)"
-#define JOB_SECURITY_OFFICER_ENGINEERING "Security Officer (Engineering)"
-#define JOB_SECURITY_OFFICER_SCIENCE "Security Officer (Science)"
-#define JOB_SECURITY_OFFICER_SUPPLY "Security Officer (Cargo)"
+#define JOB_SECURITY_OFFICER "Peacekeeper"
 //Engineering
 #define JOB_CHIEF_ENGINEER "Chief Engineer"
 #define JOB_STATION_ENGINEER "Station Engineer"
@@ -98,8 +94,8 @@
 
 #define DEPARTMENT_BITFLAG_SECURITY (1<<0)
 #define DEPARTMENT_SECURITY "Mars Private Security"
-#define DEPARTMENT_BITFLAG_MANAGEMENT (1<<1)
-#define DEPARTMENT_MANAGEMENT "Management"
+#define DEPARTMENT_BITFLAG_FEDERATION (1<<1)
+#define DEPARTMENT_FEDERATION "The Federation"
 #define DEPARTMENT_BITFLAG_SERVICE (1<<2)
 #define DEPARTMENT_SERVICE "Independant"
 #define DEPARTMENT_BITFLAG_CARGO (1<<3)

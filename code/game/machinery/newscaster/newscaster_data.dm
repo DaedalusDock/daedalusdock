@@ -165,12 +165,19 @@ GLOBAL_LIST_EMPTY(request_list)
 	var/icon/img
 	/// Reference to the photo file used by wanted message on creation.
 	var/photo_file
+	/// UUID
+	var/id
+
+/datum/wanted_message/New()
+	var/static/uuid = 0
+	uuid++
+	id = uuid
 
 /datum/feed_network
 	/// All the feed channels that have been made on the feed network.
 	var/list/datum/feed_channel/network_channels = list()
 	/// What is the wanted issue being sent out to all newscasters.
-	var/datum/wanted_message/wanted_issue
+	var/list/datum/wanted_message/wanted_issues = list()
 	/// What time was the last action taken on the feed_network?
 	var/last_action
 	/// What does this feed network say when a message/author is redacted?
@@ -180,9 +187,10 @@ GLOBAL_LIST_EMPTY(request_list)
 	/// How many messages currently exist on this feed_network? Increments as new messages are written.
 	var/message_count = 0
 
+	var/const/default_channel_name = "The Colony Echo"
+
 /datum/feed_network/New()
-	create_feed_channel("Station Announcements", "SS13", "Company news, staff annoucements, and all the latest information. Have a secure shift!", locked = TRUE, hardset_channel = 1000)
-	wanted_issue = new /datum/wanted_message
+	create_feed_channel(default_channel_name, "The Colony Echo", "Bleeding-edge coverage of colony events.", locked = TRUE, hardset_channel = 1000)
 
 /datum/feed_network/proc/create_feed_channel(channel_name, author, desc, locked, adminChannel = FALSE, hardset_channel)
 	var/datum/feed_channel/newChannel = new /datum/feed_channel
@@ -219,6 +227,7 @@ GLOBAL_LIST_EMPTY(request_list)
 	newMsg.message_ID = message_count
 
 /datum/feed_network/proc/submit_wanted(criminal, body, scanned_user, datum/picture/picture, adminMsg = FALSE, newMessage = FALSE)
+	var/datum/wanted_message/wanted_issue = new()
 	wanted_issue.active = TRUE
 	wanted_issue.criminal = criminal
 	wanted_issue.body = body
@@ -232,14 +241,18 @@ GLOBAL_LIST_EMPTY(request_list)
 			N.news_alert()
 			N.update_appearance()
 
-/datum/feed_network/proc/delete_wanted()
-	wanted_issue.active = FALSE
-	wanted_issue.criminal = null
-	wanted_issue.body = null
-	wanted_issue.scanned_user = null
-	wanted_issue.img = null
-	for(var/obj/machinery/newscaster/updated_newscaster in GLOB.allCasters)
-		updated_newscaster.update_appearance()
+	wanted_issues += wanted_issue
+
+/datum/feed_network/proc/delete_wanted(id)
+	for(var/datum/wanted_message/wanted_issue in wanted_issues)
+		if(wanted_issue.id != id)
+			continue
+
+		wanted_issues -= wanted_issue
+
+		for(var/obj/machinery/newscaster/updated_newscaster in GLOB.allCasters)
+			updated_newscaster.update_appearance()
+		return TRUE
 
 /datum/feed_network/proc/save_photo(icon/photo)
 	var/photo_file = copytext_char(md5("\icon[photo]"), 1, 6)

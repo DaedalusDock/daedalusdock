@@ -58,9 +58,9 @@
 
 	if(send_to_newscaster)
 		if(sub_title == "")
-			GLOB.news_network.submit_article(text, super_title, "Colony Announcements", null)
+			GLOB.news_network.submit_article(text, super_title, /datum/feed_network::default_channel_name)
 		else
-			GLOB.news_network.submit_article(sub_title + "<br><br>" + text, super_title, "Colony Announcements", null)
+			GLOB.news_network.submit_article(sub_title + "<br><br>" + text, super_title, /datum/feed_network::default_channel_name)
 
 /**
  * Summon the crew for an emergency meeting

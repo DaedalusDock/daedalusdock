@@ -36,6 +36,8 @@ SUBSYSTEM_DEF(ticker)
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
 
+	/// Container for the round end report procs and data.
+	var/datum/round_end_report/round_end_report
 	var/list/datum/mind/minds = list() //The characters in the game. Used for objective tracking.
 
 	var/delay_end = FALSE //if set true, the round will not restart on it's own
@@ -431,7 +433,7 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/get_captain_or_backup()
 	var/list/spare_id_candidates = list()
-	var/datum/job_department/management = SSjob.get_department_type(/datum/job_department/command)
+	var/datum/job_department/federation = SSjob.get_department_type(/datum/job_department/command)
 
 	// Find a suitable player to hold captaincy.
 	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
@@ -448,7 +450,7 @@ SUBSYSTEM_DEF(ticker)
 
 		// Keep a rolling tally of who'll get the cap's spare ID vault code.
 		// Check assigned_role's priority and curate the candidate list appropriately.
-		if(new_player_human.mind.assigned_role.departments_bitflags & management.department_bitflags)
+		if(new_player_human.mind.assigned_role.departments_bitflags & federation.department_bitflags)
 			spare_id_candidates += new_player_human
 
 		CHECK_TICK

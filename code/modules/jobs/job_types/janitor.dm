@@ -42,12 +42,15 @@
 
 	id_template = /datum/access_template/job/janitor
 	uniform = /obj/item/clothing/under/rank/civilian/janitor
-	belt = /obj/item/modular_computer/tablet/pda/janitor
+	belt = /obj/item/taperecorder/empty
 	ears = /obj/item/radio/headset/headset_srv
 	gloves = /obj/item/clothing/gloves/cleaning
 
 /datum/outfit/job/janitor/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
+	if(SSmedia.get_track_pool(/obj/item/tape/music/roundstart::media_tag))
+		l_pocket = /obj/item/tape/music/roundstart
+
 	if(GARBAGEDAY in SSevents.holidays)
 		backpack_contents += /obj/item/gun/ballistic/revolver
 		r_pocket = /obj/item/ammo_box/a357

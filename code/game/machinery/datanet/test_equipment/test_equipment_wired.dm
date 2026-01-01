@@ -3,6 +3,7 @@
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "fax0"
 	desc = "A piece of test equipment for data networks. You should probably call a coder if you see this!"
+	network_flags = NETWORK_FLAG_GEN_ID
 	var/obj/machinery/power/data_terminal/transmission_terminal //Parasitize the data terminal.
 
 // This equipment is *incredibly* basic, and there's probably a subtype of machinery that you should use instead.
@@ -11,6 +12,13 @@
 /obj/machinery/test_equipment/wired/CtrlClick(mob/user, list/params)
 	. = ..()
 	reconnect_dataterm()
+
+/obj/machinery/test_equipment/wired/AltClick(mob/user)
+	. = ..()
+	if(.)
+		return
+	transmission_terminal.post_signal(create_signal(NET_ADDRESS_PING, list()))
+
 
 /obj/machinery/test_equipment/wired/say_emphasis(input)
 	//Fuck off and don't decorate debug text

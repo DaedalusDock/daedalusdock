@@ -18,3 +18,15 @@
 		/obj/item/clothing/mask/cigarette,
 		/obj/item/flashlight/glowstick,
 	))
+
+/// Holds cassettes.
+/datum/storage/box/cassette
+	max_slots = 6
+	max_specific_storage = /obj/item/tape::w_class
+	max_total_storage = /obj/item/tape::w_class * 6
+
+/datum/storage/box/cassette/New(atom/parent, max_slots, max_specific_storage, max_total_storage, numerical_stacking, allow_quick_gather, allow_quick_empty, collection_mode, attack_hand_interact)
+	. = ..()
+	set_holdable(list(
+		/obj/item/tape,
+	))

@@ -35,7 +35,7 @@
 /datum/component/clothing_lover/Destroy(force, silent)
 	var/mob/living/carbon/human/H = parent
 	if(H)
-		H.mob_mood.clear_mood_event(moodlet_category)
+		H?.mob_mood.clear_mood_event(moodlet_category)
 		UnregisterSignal(H, list(COMSIG_MOB_EQUIPPED_ITEM, COMSIG_ITEM_POST_UNEQUIP))
 	return ..()
 

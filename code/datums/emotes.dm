@@ -141,6 +141,7 @@
 	)
 
 	SEND_SIGNAL(user, COMSIG_MOB_EMOTED(key))
+	return TRUE
 
 /**
  * For handling emote cooldown, return true to allow the emote to happen.

@@ -429,7 +429,7 @@
 			return CULT_LOSS
 	return CULT_VICTORY
 
-/datum/team/cult/roundend_report()
+/datum/team/cult/roundend_report_article_column_body()
 	var/list/parts = list()
 	var/victory = check_cult_victory()
 
@@ -451,7 +451,7 @@
 			count++
 
 	if(members.len)
-		parts += "<span class='header'>The cultists were:</span>"
+		parts += "<span class='header antagonist'>The cultists were:</span>"
 		parts += printplayerlist(members)
 
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"

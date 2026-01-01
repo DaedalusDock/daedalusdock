@@ -140,7 +140,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 
 /turf/open/space/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
-	if(!arrived || src != arrived.loc)
+	if(!arrived || src != arrived.loc || istype(arrived, /atom/movable/mirage_holder))
 		return
 
 	if(destination_z && destination_x && destination_y && !LAZYLEN(arrived.grabbed_by) && !arrived.currently_z_moving)

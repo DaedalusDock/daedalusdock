@@ -45,7 +45,7 @@ GLOBAL_LIST_EMPTY(loadout_category_to_subcategory_to_items)
  */
 /datum/loadout_item/proc/insert_path_into_outfit(datum/outfit/outfit, mob/living/carbon/human/equipper, visuals_only = FALSE)
 	if(!visuals_only)
-		LAZYADD(outfit.backpack_contents, path)
+		outfit.backpack_contents += path
 
 /// Ran from SSloadouts after SSgreyscale initializes so we can properly read some information
 /datum/loadout_item/proc/parse_gags()

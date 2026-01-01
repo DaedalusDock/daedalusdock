@@ -117,7 +117,7 @@ SUBSYSTEM_DEF(directives)
 
 	selectable_directives = new_choices
 
-	aas_radio_message("Higher orders received. New directives are available.", list(RADIO_CHANNEL_COMMAND))
+	aas_radio_message("Higher orders received. New directives are available.", list(RADIO_CHANNEL_FEDERATION))
 
 /datum/controller/subsystem/directives/proc/on_roundstart()
 	SIGNAL_HANDLER

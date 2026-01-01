@@ -182,8 +182,8 @@ TYPEINFO_DEF(/obj/item/modular_computer)
 
 	// We have two IDs, pick the one with the most command accesses, preferring the primary slot.
 	if(first_id && second_id)
-		var/first_id_tally = SSid_access.tally_access(first_id, /datum/access_group/station/management)
-		var/second_id_tally = SSid_access.tally_access(second_id, /datum/access_group/station/management)
+		var/first_id_tally = SSid_access.tally_access(first_id, /datum/access_group/station/federation)
+		var/second_id_tally = SSid_access.tally_access(second_id, /datum/access_group/station/federation)
 
 		return (first_id_tally >= second_id_tally) ? first_id : second_id
 

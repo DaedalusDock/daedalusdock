@@ -1,12 +1,11 @@
 /datum/job/captain
 	title = JOB_CAPTAIN
-	description = "The middle-man between the big man at home and the station's inhabitants. Ensure that quotas are met and the population is \
-	compliant."
+	description = "The middle-man between the big man at home and the station's inhabitants. Enforce the Federation's will and rule with an iron fist."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the government."
+	supervisors = "the Federation."
 	selection_color = "#2f2f7f"
 	req_admin_notify = 1
 	minimal_player_age = 14

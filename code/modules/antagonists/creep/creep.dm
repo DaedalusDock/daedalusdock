@@ -105,10 +105,7 @@
 	for(var/datum/objective/O in objectives)
 		O.update_explanation_text()
 
-/datum/antagonist/obsessed/roundend_report_header()
-	return "<span class='header'>Someone became obsessed!</span><br>"
-
-/datum/antagonist/obsessed/roundend_report()
+/datum/antagonist/obsessed/roundend_report_article_column_body()
 	var/list/report = list()
 
 	if(!owner)
@@ -132,9 +129,9 @@
 		report += span_redtext("The [name] had no trauma attached to their antagonist ways! Either it bugged out or an admin incorrectly gave this good samaritan antag and it broke! You might as well show yourself!!")
 
 	if(objectives.len == 0 || objectives_complete)
-		report += "<span class='greentext big'>The [name] was successful!</span>"
+		report += "<span class='good big'>The [name] was successful!</span>"
 	else
-		report += "<span class='redtext big'>The [name] has failed!</span>"
+		report += "<span class='bad big'>The [name] has failed!</span>"
 
 	return report.Join("<br>")
 

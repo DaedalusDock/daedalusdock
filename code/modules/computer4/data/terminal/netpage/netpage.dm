@@ -102,7 +102,7 @@
 
 /datum/pager_access_info/management
 	arg_name = "gov"
-	pager_class = PAGER_CLASS_MANAGEMENT
+	pager_class = PAGER_CLASS_FEDERATION
 	required_access = ACCESS_CAPTAIN
 
 /datum/pager_access_info/mars

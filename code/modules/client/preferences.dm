@@ -234,8 +234,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				preference_middleware.on_new_character(usr)
 
 			character_preview_view.update_body()
-
+			astype(usr, /mob/dead/new_player)?.npp?.update()
 			return TRUE
+
 		if ("rotate")
 			character_preview_view.dir = turn(character_preview_view.dir, -90)
 

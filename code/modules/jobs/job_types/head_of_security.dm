@@ -1,6 +1,6 @@
 /datum/job/head_of_security
 	title = JOB_SECURITY_MARSHAL
-	description = "Coordinate security personnel, ensure Management's needs are met."
+	description = "Coordinate security personnel, ensure the Federation's needs are met."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list(RADIO_CHANNEL_SECURITY)
@@ -43,6 +43,10 @@
 	voice_of_god_power = 1.4 //Command staff has authority
 
 
+/datum/job/head_of_security/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/security_marshal)
+
 /datum/job/head_of_security/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
 
@@ -53,7 +57,7 @@
 		</div>
 		<br>
 		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
-		You are loudly and proudly a member of the Federation Galaxia, and you push your corps to carry out Management's will.
+		You are loudly and proudly a member of the Federation, and you push your corps to carry out its will.
 		Ensure the Superintendent is pleased, and your team follows your orders. Insubordination is not tolerated.
 		</div>
 	"}

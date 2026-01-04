@@ -168,7 +168,7 @@ GLOBAL_LIST_INIT(possible_abductor_names, list("Alpha","Beta","Gamma","Delta","E
 	O.update_explanation_text()
 	objectives += O
 
-/datum/team/abductor_team/roundend_report()
+/datum/team/abductor_team/roundend_report_article_column_body()
 	var/list/result = list()
 
 	var/won = TRUE
@@ -180,7 +180,7 @@ GLOBAL_LIST_INIT(possible_abductor_names, list("Alpha","Beta","Gamma","Delta","E
 	else
 		result += "<span class='redtext big'>[name] team failed its mission.</span>"
 
-	result += "<span class='header'>The abductors of [name] were:</span>"
+	result += "<span class='header antagonist'>The abductors of [name] were:</span>"
 	for(var/datum/mind/abductor_mind in members)
 		result += printplayer(abductor_mind)
 	result += printobjectives(objectives)

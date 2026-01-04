@@ -6,13 +6,17 @@
 
 import { classes } from 'common/react';
 
-import { computeBoxClassName, computeBoxProps } from './Box';
+import { BoxProps, computeBoxClassName, computeBoxProps } from './Box';
 import { Dimmer } from './Dimmer';
 
-export const Modal = (props) => {
-  const { className, children, ...rest } = props;
+type ModalProps = {
+  onDimmerClick?: Function;
+} & BoxProps;
+
+export const Modal = (props: ModalProps) => {
+  const { className, children, onDimmerClick, ...rest } = props;
   return (
-    <Dimmer>
+    <Dimmer onClick={onDimmerClick}>
       <div
         className={classes(['Modal', className, computeBoxClassName(rest)])}
         {...computeBoxProps(rest)}

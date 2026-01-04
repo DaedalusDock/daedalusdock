@@ -76,7 +76,7 @@
 	owner.mob_mood.add_mood_event("forcednoir", /datum/mood_event/noir_victim)
 	RegisterSignal(owner, COMSIG_ENTER_AREA, PROC_REF(owner_entered_area))
 
-	var/datum/roll_result/result = owner.stat_roll(15, /datum/rpg_skill/willpower)
+	var/datum/roll_result/result = owner.stat_roll(15, /datum/rpg_skill/knuckle_down)
 	switch(result.outcome)
 		if(FAILURE, CRIT_FAILURE)
 			owner.apply_status_effect(/datum/status_effect/skill_mod/intimidated)
@@ -120,7 +120,7 @@
 
 	owner.stats.set_cooldown("det_intimiate_chair_lock", 3 SECONDS)
 
-	var/datum/roll_result/result = owner.stat_roll(18, /datum/rpg_skill/willpower, getup_check_modifier)
+	var/datum/roll_result/result = owner.stat_roll(18, /datum/rpg_skill/knuckle_down, getup_check_modifier)
 	switch(result.outcome)
 		if(FAILURE, CRIT_FAILURE)
 			result.do_skill_sound(owner)

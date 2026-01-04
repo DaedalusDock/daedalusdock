@@ -72,6 +72,9 @@
 	return TRUE
 
 /obj/item/organ/heart/proc/Stop()
+	if(pulse == PULSE_NONE)
+		return
+
 	pulse = PULSE_NONE
 	update_appearance(UPDATE_ICON_STATE)
 	update_movespeed()
@@ -79,7 +82,8 @@
 
 	if(owner)
 		owner.med_hud_set_health()
-		SSblackbox.record_feedback("amount", "heartattacks", 1)
+		if(owner.ckey)
+			SSblackbox.record_feedback("amount", "heartattacks", 1)
 
 /obj/item/organ/heart/proc/update_movespeed()
 	if(isnull(owner))

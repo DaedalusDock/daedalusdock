@@ -37,7 +37,7 @@
 			if(!isnull(tmp_filter) && tmp_filter != net_class)
 				return RECEIVE_SIGNAL_FINISHED
 			//Blame kapu for how stupid this looks :3
-			var/payload = list(PACKET_CMD=NET_COMMAND_PING_REPLY,PACKET_NETCLASS=src.net_class)
+			var/payload = list(PKT_ARG_CMD=NET_COMMAND_PING_REPLY,PKT_HEAD_NETCLASS=src.net_class)
 			if(ping_addition)
 				payload += ping_addition
 			post_signal(create_signal(sigdat[PKT_HEAD_SOURCE_ADDRESS],payload))

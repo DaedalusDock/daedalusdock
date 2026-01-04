@@ -52,17 +52,17 @@
 	radio_connection = SSpackets.add_object(src, new_frequency)
 
 /// Post a signal. Has safety checks, so calling this with a timer is OK.
-/obj/item/peripheral/network_card/wireless/proc/post_signal(datum/signal/packet, filter)
+/obj/item/peripheral/network_card/wireless/post_signal(datum/signal/packet, filter)
 	if(!master_pc?.is_operational || !radio_connection)
 		return
 
-	packet.data[PACKET_SOURCE_ADDRESS] = network_id
+	packet.data[LEGACY_PACKET_SOURCE_ADDRESS] = network_id
 	// Rewrite the author so we don't get the packet we just sent back.
 	packet.author = WEAKREF(src)
 	radio_connection.post_signal(packet, filter)
 
 /obj/item/peripheral/network_card/wireless/proc/deferred_post_signal(datum/signal/packet, filter, time)
-	addtimer(CALLBACK(src, PROC_REF(post_signal), packet, filter), time)
+	addtimer(CALLBACK(src, TYPE_PROC_REF(/datum, post_signal), packet, filter), time)
 
 /obj/item/peripheral/network_card/wireless/receive_signal(datum/signal/signal)
 	if(!master_pc)
@@ -74,19 +74,19 @@
 	switch(listen_mode)
 		if(WIRELESS_FILTER_NETADDR)
 			// Isn't meant for us, but could be a ping
-			if(signal.data[PACKET_DESTINATION_ADDRESS] != network_id)
-				if(!signal.data[PACKET_SOURCE_ADDRESS] || (signal.data[PACKET_DESTINATION_ADDRESS] != NET_ADDRESS_PING))
+			if(signal.data[LEGACY_PACKET_DESTINATION_ADDRESS] != network_id)
+				if(!signal.data[LEGACY_PACKET_SOURCE_ADDRESS] || (signal.data[LEGACY_PACKET_DESTINATION_ADDRESS] != NET_ADDRESS_PING))
 					return // Is not a ping, bye bye!
 
 				var/list/data = list(
-					PACKET_SOURCE_ADDRESS = network_id,
-					PACKET_DESTINATION_ADDRESS = signal.data[PACKET_SOURCE_ADDRESS],
-					PACKET_CMD = NET_COMMAND_PING_REPLY,
-					PACKET_NETCLASS = NETCLASS_ADAPTER,
+					LEGACY_PACKET_SOURCE_ADDRESS = network_id,
+					LEGACY_PACKET_DESTINATION_ADDRESS = signal.data[LEGACY_PACKET_SOURCE_ADDRESS],
+					LEGACY_PACKET_COMMAND = NET_COMMAND_PING_REPLY,
+					LEGACY_PACKET_NETCLASS = NETCLASS_ADAPTER,
 				)
 
 				var/datum/signal/packet = new(src, data, TRANSMISSION_RADIO)
-				addtimer(CALLBACK(src, PROC_REF(post_signal), packet), 1 SECOND)
+				addtimer(CALLBACK(src, TYPE_PROC_REF(/datum, post_signal), packet), 1 SECOND)
 				return
 		if(WIRELESS_FILTER_ID_TAGS)
 			//Drop packets not in our ID tags list.
@@ -97,10 +97,11 @@
 			//allow all
 		*/
 
-
-
 	var/datum/signal/clone = signal.Copy()
-	master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PACKET, clone)
+	if(signal.data[PKT_HEAD_PROTOCOL] == PKT_PROTOCOL_PDP)
+		master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PDP_PACKET, clone)
+	else
+		master_pc.peripheral_input(src, PERIPHERAL_CMD_RECEIVE_PACKET, clone)
 
 /obj/item/peripheral/network_card/wireless/proc/ping()
 	if(!COOLDOWN_FINISHED(src, ping_cooldown))
@@ -108,8 +109,8 @@
 
 	COOLDOWN_START(src, ping_cooldown, 2 SECONDS)
 	var/list/data = list(
-		PACKET_SOURCE_ADDRESS = network_id,
-		PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
+		LEGACY_PACKET_SOURCE_ADDRESS = network_id,
+		LEGACY_PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
 	)
 
 	var/datum/signal/packet = new(src, data)

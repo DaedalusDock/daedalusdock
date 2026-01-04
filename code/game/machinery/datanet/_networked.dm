@@ -7,8 +7,8 @@
 	if(!datagram || !destination_id)
 		return //Unfortunately /dev/null isn't network-scale.
 	var/list/sig_data = datagram.Copy()
-	sig_data[PACKET_SOURCE_ADDRESS] = src.net_id
-	sig_data[PACKET_DESTINATION_ADDRESS] = destination_id
+	sig_data[PKT_HEAD_SOURCE_ADDRESS] = src.net_id
+	sig_data[PKT_HEAD_DEST_ADDRESS] = destination_id
 	return new /datum/signal(src, sig_data, TRANSMISSION_WIRE)
 
 
@@ -16,11 +16,11 @@
 /// If you're sending a forged source address (You should have a good reason for this...) set `preserve_s_addr = TRUE
 ///
 /// NONE OF THE ABOVE IS TRUE IF YOU ARE `machinery/power`, AS THEY DEAL DIRECTLY WITH SSPACKETS INSTEAD OF ABSTRACTED TERMINALS
-/obj/machinery/proc/post_signal(datum/signal/sending_signal, preserve_s_addr = FALSE)
+/obj/machinery/post_signal(datum/signal/sending_signal, preserve_s_addr = FALSE)
 	if(isnull(netjack) || isnull(sending_signal)) //nullcheck for sanic speed
 		return //You need a pipe and something to send down it, though.
 	if(!preserve_s_addr)
-		sending_signal.data[PACKET_SOURCE_ADDRESS] = src.net_id
+		sending_signal.data[PKT_HEAD_SOURCE_ADDRESS] = src.net_id
 	sending_signal.transmission_method = TRANSMISSION_WIRE
 	sending_signal.author = WEAKREF(src) // Override the sending signal author.
 	src.netjack.post_signal(sending_signal)
@@ -31,16 +31,16 @@
 	if(isnull(signal))
 		return
 	var/sigdat = signal.data //cache for sanic speed this joke is getting old.
-	if(sigdat[PACKET_DESTINATION_ADDRESS] != src.net_id)//This packet doesn't belong to us directly
-		if(sigdat[PACKET_DESTINATION_ADDRESS] == NET_ADDRESS_PING)// But it could be a ping, if so, reply
+	if(sigdat[PKT_HEAD_DEST_ADDRESS] != src.net_id)//This packet doesn't belong to us directly
+		if(sigdat[PKT_HEAD_DEST_ADDRESS] == NET_ADDRESS_PING)// But it could be a ping, if so, reply
 			var/tmp_filter = sigdat["filter"]
 			if(!isnull(tmp_filter) && tmp_filter != net_class)
 				return RECEIVE_SIGNAL_FINISHED
 			//Blame kapu for how stupid this looks :3
-			var/payload = list(PACKET_CMD=NET_COMMAND_PING_REPLY,PACKET_NETCLASS=src.net_class)
+			var/payload = list(PKT_ARG_CMD=NET_COMMAND_PING_REPLY,PKT_HEAD_NETCLASS=src.net_class)
 			if(ping_addition)
 				payload += ping_addition
-			post_signal(create_signal(sigdat[PACKET_SOURCE_ADDRESS],payload))
+			post_signal(create_signal(sigdat[PKT_HEAD_SOURCE_ADDRESS],payload))
 		return RECEIVE_SIGNAL_FINISHED//regardless, return 1 so that machines don't process packets not intended for them.
 	return RECEIVE_SIGNAL_CONTINUE // We are the designated recipient of this packet, we need to handle it.
 

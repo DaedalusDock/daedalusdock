@@ -55,6 +55,10 @@
 	else
 		println("Type 'help' to get started.")
 
+/datum/c4_file/terminal_program/operating_system/thinkdos/clean_up()
+	LAZYNULL(queued_commands)
+	return ..()
+
 /datum/c4_file/terminal_program/operating_system/thinkdos/parse_std_in(text)
 	RETURN_TYPE(/list/datum/shell_stdin)
 
@@ -97,6 +101,12 @@
 	if(.)
 		handle_command_queue()
 
+/datum/c4_file/terminal_program/operating_system/thinkdos/tick(delta_time)
+	for(var/datum/c4_file/terminal_program/program as anything in processing_programs)
+		if(program == src)
+			continue
+
+		program.tick(delta_time)
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/handle_command_queue()
 	while(LAZYLEN(queued_commands)) //hmm...
@@ -170,6 +180,38 @@
 	set_current_user(null)
 	return TRUE
 
+/// Returns the logging folder, attempting to create it if it doesn't already exist.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/get_log_folder()
+	var/datum/c4_file/folder/log_dir = parse_directory("logs", drive.root)
+	if(!log_dir)
+		log_dir = new /datum/c4_file/folder
+		log_dir.set_name("logs")
+		if(!drive.root.try_add_file(log_dir))
+			qdel(log_dir)
+			return null
+
+	return log_dir
+
+/// Create the log file, or append a startup log.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_logs()
+	if(command_log)
+		return TRUE
+
+	var/datum/c4_file/folder/log_dir = get_log_folder()
+	var/datum/c4_file/text/log_file = log_dir.get_file("syslog")
+	if(!log_file)
+		log_file = new /datum/c4_file/text()
+		log_file.set_name("syslog")
+		if(!log_dir.try_add_file(log_file))
+			qdel(log_file)
+			return FALSE
+
+	command_log = log_file
+	RegisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_PARENT_QDELETING), PROC_REF(log_file_gone))
+
+	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
+	return TRUE
+
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_accounts()
 	var/datum/c4_file/folder/account_dir = parse_directory("users")
 	if(!istype(account_dir))
@@ -204,38 +246,6 @@
 		//set_current_user(user_data)
 	return TRUE
 
-/// Returns the logging folder, attempting to create it if it doesn't already exist.
-/datum/c4_file/terminal_program/operating_system/thinkdos/get_log_folder()
-	var/datum/c4_file/folder/log_dir = parse_directory("logs", drive.root)
-	if(!log_dir)
-		log_dir = new /datum/c4_file/folder
-		log_dir.set_name("logs")
-		if(!drive.root.try_add_file(log_dir))
-			qdel(log_dir)
-			return null
-
-	return log_dir
-
-/// Create the log file, or append a startup log.
-/datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_logs()
-	if(command_log)
-		return TRUE
-
-	var/datum/c4_file/folder/log_dir = get_log_folder()
-	var/datum/c4_file/text/log_file = log_dir.get_file("syslog")
-	if(!log_file)
-		log_file = new /datum/c4_file/text()
-		log_file.set_name("syslog")
-		if(!log_dir.try_add_file(log_file))
-			qdel(log_file)
-			return FALSE
-
-	command_log = log_file
-	RegisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_PARENT_QDELETING), PROC_REF(log_file_gone))
-
-	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
-	return TRUE
-
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/set_current_user(datum/c4_file/user/new_user)
 	if(current_user)
 		UnregisterSignal(current_user, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_COMPUTER4_FILE_REMOVED))
@@ -251,6 +261,3 @@
 
 			unload_program(running_program)
 
-/datum/c4_file/terminal_program/operating_system/thinkdos/clean_up()
-	LAZYNULL(queued_commands)
-	. = ..()

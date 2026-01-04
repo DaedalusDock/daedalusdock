@@ -16,8 +16,6 @@
 
 /datum/c4_file/terminal_program/notepad/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system)
 	. = ..()
-	if(.)
-		return
 
 	// Hope you saved your work motherfucker.
 	working_line = 0

@@ -1328,6 +1328,10 @@
 /obj/structure/sign/warning/radiation,
 /turf/closed/wall/r_wall,
 /area/station/engineering/main)
+"kr" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/space)
 "ks" = (
 /obj/effect/turf_decal/siding/purple{
 	dir = 1
@@ -1486,6 +1490,9 @@
 "lp" = (
 /turf/open/floor/iron/smooth,
 /area/station/tcommsat/computer)
+"lr" = (
+/turf/open/floor/iron,
+/area/space)
 "ls" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -3184,6 +3191,9 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/station/science/mixing)
+"xh" = (
+/turf/closed/wall/r_wall,
+/area/space)
 "xl" = (
 /obj/machinery/light/directional/west,
 /turf/open/floor/iron,
@@ -5034,13 +5044,6 @@
 "KE" = (
 /turf/closed/wall/r_wall,
 /area/station/maintenance/fore)
-"KF" = (
-/obj/machinery/door/airlock/external{
-	name = "Departure Lounge Airlock";
-	space_dir = 1
-	},
-/turf/open/floor/plating,
-/area/station/hallway/secondary/exit/departure_lounge)
 "KI" = (
 /turf/closed/wall/r_wall,
 /area/station/security/prison)
@@ -5476,6 +5479,13 @@
 /obj/item/storage/fancy/cigarettes,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office)
+"NO" = (
+/obj/machinery/door/airlock/external{
+	name = "Departure Lounge Airlock";
+	space_dir = 1
+	},
+/turf/open/floor/plating,
+/area/space)
 "NP" = (
 /obj/machinery/camera/directional/north{
 	c_tag = "Xenobiology Lab - Euthanasia Chamber";
@@ -6426,6 +6436,9 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
+"Vv" = (
+/turf/closed/wall,
+/area/station/maintenance/fore)
 "Vw" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
@@ -42115,8 +42128,8 @@ Ii
 Ii
 Ii
 Ii
-Vr
-Vr
+Ii
+ed
 AZ
 st
 AZ
@@ -42372,10 +42385,10 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Vr
 ed
 ed
+st
+st
 AZ
 st
 qa
@@ -42628,13 +42641,13 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JK
 AZ
 AZ
 st
+AZ
+AZ
 Fh
 dB
 gs
@@ -42885,11 +42898,11 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JK
 JK
+AZ
+AZ
 AZ
 AZ
 ae
@@ -43143,11 +43156,11 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JK
 JK
+AZ
+AZ
 AZ
 ae
 ed
@@ -43401,11 +43414,11 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JK
 ed
+AZ
+AZ
 Wj
 ed
 Uo
@@ -43659,10 +43672,10 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 ed
+AZ
+AZ
 ae
 ed
 ys
@@ -43917,9 +43930,9 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 ed
+AZ
+AZ
 ae
 ed
 ju
@@ -44174,9 +44187,9 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 ed
+AZ
+AZ
 ae
 ed
 bi
@@ -44429,11 +44442,11 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 ed
 ed
 ed
+AZ
+AZ
 ae
 ed
 pr
@@ -44686,9 +44699,9 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 ed
+AZ
+AZ
 AZ
 AZ
 ae
@@ -44940,14 +44953,14 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 RG
 RG
 ed
 AZ
-ed
+AZ
+AZ
+AZ
 ae
 ed
 zJ
@@ -45451,10 +45464,8 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
-DV
-iz
+xh
+kr
 iz
 Tc
 RS
@@ -45462,6 +45473,8 @@ RS
 RS
 RS
 RS
+QK
+QK
 QK
 KP
 CN
@@ -45708,10 +45721,8 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
-KF
-DS
+NO
+lr
 DS
 Qi
 RS
@@ -45720,6 +45731,8 @@ RS
 RS
 RS
 QK
+RS
+RS
 KP
 KP
 KP
@@ -45965,10 +45978,8 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
-iz
-DS
+kr
+lr
 DS
 vn
 RS
@@ -45977,6 +45988,8 @@ RS
 RS
 RS
 QK
+RS
+RS
 nT
 Gx
 Og
@@ -46222,16 +46235,16 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
-iz
-DS
+kr
+lr
 DS
 vn
 RS
 RS
 RS
 RS
+QK
+QK
 QK
 QK
 si
@@ -46479,8 +46492,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 Qi
 DS
 DS
@@ -46501,6 +46512,8 @@ Ic
 BC
 BC
 io
+Vv
+Vv
 BQ
 fc
 fc
@@ -46736,8 +46749,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 DV
 iz
 iz
@@ -46757,6 +46768,8 @@ ya
 Jt
 ya
 BC
+Hg
+Hg
 Hg
 BQ
 AM
@@ -46994,8 +47007,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 RG
 Ii
@@ -47014,6 +47025,8 @@ fo
 kD
 fo
 BC
+Hg
+Hg
 Hg
 BQ
 AM
@@ -47257,8 +47270,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 Qs
 cH
 tE
@@ -47271,6 +47282,8 @@ aj
 zs
 aj
 BC
+Hg
+Hg
 Hg
 BQ
 AM
@@ -47513,8 +47526,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JF
 Vj
@@ -47528,6 +47539,8 @@ fo
 kD
 fo
 BC
+Hg
+Hg
 Hg
 BQ
 AM
@@ -47770,8 +47783,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JF
 Vj
@@ -47785,6 +47796,8 @@ aj
 zs
 aj
 BC
+Hg
+Hg
 Hg
 GS
 GS
@@ -48027,8 +48040,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JF
 Vj
@@ -48042,6 +48053,8 @@ fo
 kD
 fo
 BC
+Hg
+Hg
 Hg
 GS
 UT
@@ -48284,8 +48297,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JF
 JF
@@ -48299,6 +48310,8 @@ aj
 zs
 aj
 BC
+Hg
+Hg
 Hg
 GS
 qJ
@@ -48542,8 +48555,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JF
 Vj
@@ -48556,6 +48567,8 @@ fo
 kD
 fo
 BC
+Hg
+Hg
 Hg
 GS
 bD
@@ -48799,8 +48812,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 JF
 JF
@@ -48814,6 +48825,8 @@ gj
 rL
 rL
 KE
+Vv
+Hg
 GS
 GS
 GS
@@ -49057,8 +49070,6 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 RG
 RG
@@ -49066,6 +49077,8 @@ Ii
 rL
 gj
 rL
+Ii
+Ii
 Ii
 Ii
 RG
@@ -49318,11 +49331,11 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 rL
 gj
 rL
+Ii
+Ii
 Ii
 Ii
 RG
@@ -49575,11 +49588,11 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 rL
 gj
 rL
+Ii
+Ii
 Ii
 Ii
 RG
@@ -49832,11 +49845,11 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 rL
 gj
 rL
+Ii
+Ii
 Ii
 Ii
 Ii
@@ -50090,9 +50103,9 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
+Ii
+Ii
 Ii
 Ii
 Ii

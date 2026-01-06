@@ -1,10 +1,12 @@
+TYPEINFO_DEF(/obj/vehicle)
+	default_armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 60, ACID = 60)
+
 /obj/vehicle
 	name = "generic vehicle"
 	desc = "Yell at coderbus."
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "fuckyou"
 	max_integrity = 300
-	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 0, LASER = 30, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 60, ACID = 60)
 	layer = VEHICLE_LAYER
 	density = TRUE
 	anchored = FALSE
@@ -30,7 +32,7 @@
 	var/canmove = TRUE
 	var/list/autogrant_actions_passenger //plain list of typepaths
 	var/list/autogrant_actions_controller //assoc list "[bitflag]" = list(typepaths)
-	var/list/mob/occupant_actions //assoc list mob = list(type = action datum assigned to mob)
+	var/list/list/mob/occupant_actions //assoc list mob = list(type = action datum assigned to mob)
 	///This vehicle will follow us when we move (like atrailer duh)
 	var/obj/vehicle/trailer
 	var/are_legs_exposed = FALSE

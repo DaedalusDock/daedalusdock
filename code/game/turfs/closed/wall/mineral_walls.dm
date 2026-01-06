@@ -87,7 +87,7 @@
 	name = "plasma wall"
 	desc = "A wall with plasma plating. This is definitely a bad idea."
 	plating_material = /datum/material/plasma
-	color = "#c162ec" //To display in mapping softwares
+	color = /datum/material/plasma::wall_color //To display in mapping softwares
 
 /turf/closed/wall/mineral/wood
 	name = "wooden wall"
@@ -97,7 +97,7 @@
 	turf_flags = IS_SOLID
 	explosion_block = 0
 	plating_material = /datum/material/wood
-	color = "#bb8e53" //To display in mapping softwares
+	color = /datum/material/wood::wall_color //To display in mapping softwares
 
 /turf/closed/wall/mineral/wood/attackby(obj/item/W, mob/user)
 	if((W.sharpness & SHARP_EDGED) && W.force)

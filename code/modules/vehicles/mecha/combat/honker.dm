@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/honker)
+	default_armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/honker
 	desc = "Produced by \"Tyranny of Honk, INC\", this exosuit is designed as heavy clown-support. Used to spread the fun and joy of life. HONK!"
 	name = "\improper H.O.N.K"
@@ -5,7 +8,6 @@
 	base_icon_state = "honker"
 	movedelay = 3
 	max_integrity = 140
-	armor = list(BLUNT = -20, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 25000
 	operation_req_access = list(ACCESS_THEATRE)
 	internals_req_access = list(ACCESS_MECH_SCIENCE, ACCESS_THEATRE)
@@ -26,12 +28,14 @@
 
 //DARK H.O.N.K.
 
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/honker/dark)
+	default_armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 50, ENERGY = 35, BOMB = 20, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/honker/dark
 	desc = "Produced by \"Tyranny of Honk, INC\", this exosuit is designed as heavy clown-support. This one has been painted black for maximum fun. HONK!"
 	name = "\improper Dark H.O.N.K"
 	icon_state = "darkhonker"
 	max_integrity = 300
-	armor = list(BLUNT = 40, PUNCTURE = 40, SLASH = 0, LASER = 50, ENERGY = 35, BOMB = 20, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 35000
 	operation_req_access = list(ACCESS_SYNDICATE)
 	internals_req_access = list(ACCESS_SYNDICATE)

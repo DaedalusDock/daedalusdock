@@ -28,8 +28,12 @@
 	if(!station_date || update_time)
 		var/extra_days = round(STATION_TIME_TICKS / (1 DAY)) DAYS
 		var/timeofday = world.timeofday + extra_days
-		station_date = time2text(timeofday, "DD-MM") + "-" + num2text(CURRENT_STATION_YEAR)
+		station_date = time2text(timeofday, "DD-MM") + "-77"
 	return station_date
+
+/// Returns the round duration in real time.
+/proc/round_timeofday()
+	return REALTIMEOFDAY - SSticker.round_start_timeofday
 
 //returns timestamp in a sql and a not-quite-compliant ISO 8601 friendly format
 /proc/SQLtime(timevar)

@@ -8,7 +8,7 @@
 	var/datum/action/innate/blobpop/pop_action
 	var/starting_points_human_blob = OVERMIND_STARTING_POINTS
 
-/datum/antagonist/blob/roundend_report()
+/datum/antagonist/blob/roundend_report_article_column_body()
 	var/basic_report = ..()
 	//Display max blobpoints for blebs that lost
 	if(isovermind(owner.current)) //embarrasing if not

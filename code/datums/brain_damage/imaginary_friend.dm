@@ -50,7 +50,7 @@
 	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as [owner.real_name]'s imaginary friend?", ROLE_PAI, null, 7.5 SECONDS, friend, POLL_IGNORE_IMAGINARYFRIEND)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/C = pick(candidates)
-		friend.key = C.key
+		friend.PossessByPlayer(C.ckey)
 		friend_initialized = TRUE
 	else
 		qdel(src)
@@ -108,8 +108,8 @@
 	hide.Grant(src)
 
 /mob/camera/imaginary_friend/proc/setup_friend()
-	var/gender = pick(MALE, FEMALE)
-	set_real_name(random_unique_name(gender))
+	var/datum/name_generator/human/name_gen = new
+	set_real_name(name_gen.Generate())
 	human_image = get_flat_human_icon(null, pick(SSjob.joinable_occupations))
 
 /**

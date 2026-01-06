@@ -22,11 +22,10 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/warden,
-			SPECIES_PLASMAMAN = /datum/outfit/job/warden/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_HARD
+	paycheck = /datum/job/security_officer::paycheck
 	paycheck_department = ACCOUNT_SEC
 
 	mind_traits = list(TRAIT_DONUT_LOVER)
@@ -49,12 +48,27 @@
 	rpg_title = "Jailor"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
+/datum/job/warden/on_join_popup(client/C, job_title_pref)
+	var/content = {"
+		<div style='width:100%; text-align:center; font-size: 20px'>
+		You are the <b>[title]</b>
+		</div>
+		<br>
+		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
+		You have been hired by the Federation for "peacekeeping" aboard a remote colony. You know good things do not befall those who disobey them.
+		As the [title], you are responsible for keeping the security wing under control, and assisting the Security Marshal.
+		</div>
+	"}
+	var/datum/browser/popup = new(C.mob, "jobinfo", "Role Information", 480, 360)
+	popup.set_window_options("can_close=1;can_resize=0")
+	popup.set_content(content)
+	popup.open(FALSE)
 
 /datum/outfit/job/warden
 	name = "Brig Lieutenant"
 	jobtype = /datum/job/warden
 
-	id_trim = /datum/id_trim/job/warden
+	id_template = /datum/access_template/job/warden
 	uniform = /obj/item/clothing/under/rank/security/warden
 	suit = /obj/item/clothing/suit/armor/vest/warden/alt
 	suit_store = /obj/item/gun/energy/disabler
@@ -70,18 +84,7 @@
 	l_pocket = /obj/item/restraints/handcuffs
 	r_pocket = /obj/item/assembly/flash/handheld
 
-	backpack = /obj/item/storage/backpack/security
-	satchel = /obj/item/storage/backpack/satchel/sec
-	duffelbag = /obj/item/storage/backpack/duffelbag/sec
+	back = /obj/item/storage/backpack/security
 
 	box = /obj/item/storage/box/survival/security
 	implants = list(/obj/item/implant/mindshield)
-
-/datum/outfit/job/warden/plasmaman
-	name = "Brig Lieutenant (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/security/warden
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/security/warden
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full

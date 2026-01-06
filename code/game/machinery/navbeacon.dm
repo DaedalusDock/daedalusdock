@@ -1,6 +1,9 @@
 // Navigation beacon for AI robots
 // No longer exists on the radio controller, it is managed by a global list.
 
+TYPEINFO_DEF(/obj/machinery/navbeacon)
+	default_armor = list(BLUNT = 70, PUNCTURE = 70, SLASH = 95, LASER = 70, ENERGY = 70, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
+
 /obj/machinery/navbeacon
 
 	icon = 'icons/obj/objects.dmi'
@@ -10,7 +13,6 @@
 	desc = "A radio beacon used for bot navigation."
 	layer = LOW_OBJ_LAYER
 	max_integrity = 500
-	armor = list(BLUNT = 70, PUNCTURE = 70, SLASH = 95, LASER = 70, ENERGY = 70, BOMB = 0, BIO = 0, FIRE = 80, ACID = 80)
 
 	var/open = FALSE // true if cover is open
 	var/locked = TRUE // true if controls are locked
@@ -19,7 +21,7 @@
 	var/list/codes // assoc. list of transponder codes
 	var/codes_txt = "" // codes as set on map: "tag1;tag2" or "tag1=value;tag2=value"
 
-	req_one_access = list(ACCESS_ENGINE, ACCESS_ROBOTICS)
+	req_one_access = list(ACCESS_ENGINEERING, ACCESS_ROBOTICS)
 
 /obj/machinery/navbeacon/Initialize(mapload)
 	. = ..()

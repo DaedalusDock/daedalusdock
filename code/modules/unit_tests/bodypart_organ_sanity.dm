@@ -19,10 +19,10 @@
 		removed_organs += organ
 
 	for(var/obj/item/organ/organ as anything in removed_organs)
-		TEST_ASSERT(!(organ in hollow_boy.organs), "Organ '[organ.name] remained inside human after forceMove into nullspace.")
-		TEST_ASSERT(isnull(organ.loc), "Organ '[organ.name] did not move to nullspace after being forced to.")
-		TEST_ASSERT(isnull(organ.owner), "Organ '[organ.name] kept reference to human after forceMove into nullspace.")
-		TEST_ASSERT(isnull(organ.ownerlimb), "Organ '[organ.name] kept reference to bodypart after forceMove into nullspace.")
+		TEST_ASSERT(!(organ in hollow_boy.organs), "Organ '[organ.name]' remained inside human after forceMove into nullspace.")
+		TEST_ASSERT(isnull(organ.loc), "Organ '[organ.name]' did not move to nullspace after being forced to.")
+		TEST_ASSERT(isnull(organ.owner), "Organ '[organ.name]' kept reference to human after forceMove into nullspace.")
+		TEST_ASSERT(isnull(organ.ownerlimb), "Organ '[organ.name]' kept reference to bodypart after forceMove into nullspace.")
 
 	for(var/obj/item/bodypart/bodypart as anything in hollow_boy.bodyparts)
 		bodypart = new bodypart.type() //fresh, duplice bodypart with no insides

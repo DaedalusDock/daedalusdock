@@ -1,6 +1,6 @@
 /mob/living/simple_animal/hostile/faithless
 	name = "The Faithless"
-	desc = "The Wish Granter's faith in humanity, incarnate."
+	desc = "The Wish Granter's faith in minervanity, incarnate."
 	icon_state = "faithless"
 	icon_living = "faithless"
 	icon_dead = "faithless_dead"
@@ -12,7 +12,7 @@
 	response_help_simple = "pass through"
 	emote_taunt = list("wails")
 	taunt_chance = 25
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 80
 	health = 80
 	stat_attack = UNCONSCIOUS

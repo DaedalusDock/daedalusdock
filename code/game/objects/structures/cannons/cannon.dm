@@ -51,7 +51,7 @@
 	if(!anchorable_cannon)
 		return FALSE
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/cannon/attackby(obj/item/used_item, mob/user, params)
 	if(charge_ignited)
@@ -84,7 +84,7 @@
 		var/obj/item/reagent_containers/powder_keg = used_item
 		if(!(powder_keg.reagent_flags & OPENCONTAINER))
 			return ..()
-		if(istype(powder_keg, /obj/item/reagent_containers/glass/rag))
+		if(istype(powder_keg, /obj/item/reagent_containers/cup/rag))
 			return ..()
 
 		if(!powder_keg.reagents.total_volume)

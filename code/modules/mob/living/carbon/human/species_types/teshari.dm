@@ -7,6 +7,8 @@
 	species_language_holder = /datum/language_holder/teshari
 	species_eye_path = 'icons/mob/species/teshari/eyes.dmi'
 
+	name_generator_type = /datum/name_generator/teshari
+
 	fallback_clothing_path = 'icons/mob/clothing/species/teshari/fallback.dmi'
 	offset_features = list(
 		OFFSET_EARS = list(0, -4),
@@ -101,22 +103,6 @@
 
 /datum/species/teshari/get_scream_sound(mob/living/carbon/human/human)
 	return 'sound/voice/raptor_scream.ogg'
-
-/datum/species/teshari/random_name(gender, unique, lastname)
-	if(unique)
-		return random_unique_teshari_name()
-	return teshari_name()
-
-/datum/species/teshari/get_species_description()
-	return "The Teshari are a species of social, pack-based raptor-like nomadic aliens, hailing from the planet of Esmerini, or Penelope's Star VII (7), \
-	a cold jungle planet full of precursor and archotechnology just outside the Goldilocks zone of their system. While still a relatively young species, \
-	the Teshari have become a recent part of spacefaring species, thanks in part to efforts by the Orion Commonwealth to uplift them, \
-	trading the snow-filled trees and frozen tundra for warmer ships and orbital installations."
-
-/datum/species/teshari/get_species_lore()
-	return list(
-		"WIP"
-	)
 
 /datum/species/teshari/on_species_gain(mob/living/carbon/C, datum/species/old_species, pref_load)
 	. = ..()

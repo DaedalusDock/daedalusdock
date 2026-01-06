@@ -66,7 +66,6 @@ GLOBAL_LIST_EMPTY(heretic_sacrifice_landmarks)
 
 // Some VERY dim lights, used for the void sacrifice realm.
 /obj/machinery/light/very_dim
-	nightshift_allowed = FALSE
 	bulb_colour = "#d6b6a6ff"
 	bulb_inner_range = 3
 	bulb_power = 0.5

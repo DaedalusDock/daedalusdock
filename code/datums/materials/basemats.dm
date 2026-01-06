@@ -24,7 +24,7 @@
 	integrity_modifier = 0.1
 	sheet_type = /obj/item/stack/sheet/glass
 	shard_type = /obj/item/shard
-	value_per_unit = IRON_VALUE_PER_UNIT * 0.5
+	value_per_unit = IRON_VALUE_PER_UNIT * 2.5
 	beauty_modifier = 0.05
 	armor_modifiers = list(BLUNT = 0.2, PUNCTURE = 0.2, SLASH = 0, LASER = 0, ENERGY = 1, BOMB = 0, BIO = 0.2, FIRE = 1, ACID = 0.2)
 	wall_type = null
@@ -279,7 +279,8 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	texture_layer_icon_state = "woodgrain"
 	wall_icon = 'icons/turf/walls/wood_wall.dmi'
 	wall_stripe_icon = 'icons/turf/walls/wood_wall_stripe.dmi'
-	wall_color = "#93662C"
+	low_wall_stripe_icon = 'icons/turf/walls/wood_wall_stripe.dmi'
+	wall_color = "#38260f"
 	wall_type = /turf/closed/wall/mineral/wood
 	false_wall_type = /obj/structure/falsewall/wood
 

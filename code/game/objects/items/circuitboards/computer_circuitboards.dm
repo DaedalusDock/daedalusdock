@@ -1,3 +1,8 @@
+/obj/item/circuitboard/computer
+	req_components = list(
+		/obj/item/disk/data = 1
+	)
+
 //Command
 
 /obj/item/circuitboard/computer/aiupload
@@ -9,10 +14,6 @@
 	name = "Cyborg Upload (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_COMMAND
 	build_path = /obj/machinery/computer/upload/borg
-
-/obj/item/circuitboard/computer/bsa_control
-	name = "Bluespace Artillery Controls (Computer Board)"
-	build_path = /obj/machinery/computer/bsa_control
 
 /obj/item/circuitboard/computer/accounting
 	name = "Account Lookup Console (Computer Board)"
@@ -208,11 +209,6 @@
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
 	build_path = /obj/machinery/computer/monitor/secret
 
-/obj/item/circuitboard/computer/sat_control
-	name = "Satellite Network Control (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
-	build_path = /obj/machinery/computer/sat_control
-
 /obj/item/circuitboard/computer/solar_control
 	name = "Solar Control (Computer Board)"  //name fixed 250810
 	greyscale_colors = CIRCUIT_COLOR_ENGINEERING
@@ -342,11 +338,6 @@
 	name = "Crew Monitoring Console (Computer Board)"
 	greyscale_colors = CIRCUIT_COLOR_MEDICAL
 	build_path = /obj/machinery/computer/crew
-
-/obj/item/circuitboard/computer/med_data
-	name = "Medical Records Console (Computer Board)"
-	greyscale_colors = CIRCUIT_COLOR_MEDICAL
-	build_path = /obj/machinery/computer/med_data
 
 /obj/item/circuitboard/computer/pandemic
 	name = "PanD.E.M.I.C. 2200 (Computer Board)"

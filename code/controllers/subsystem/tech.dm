@@ -53,7 +53,9 @@ SUBSYSTEM_DEF(tech)
 	if(!(found_design.build_type & M.allowed_buildtypes))
 		return FALSE
 
-	if(!(found_design in M.internal_disk.read(DATA_IDX_DESIGNS)))
+	var/datum/c4_file/fab_design_bundle/fab_record = M.disk_get_file(FABRICATOR_FILE_NAME)
+
+	if(!istype(fab_record) || !(found_design in fab_record.included_designs))
 		return FALSE
 
 	return found_design

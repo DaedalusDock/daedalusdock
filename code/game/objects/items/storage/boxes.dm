@@ -101,12 +101,18 @@
 //Disk boxes
 
 /obj/item/storage/box/disks
-	name = "diskette box"
-	illustration = "disk_kit"
+	name = "box of floppy disks"
+	desc = "A box able to fit 4 floppy disks."
+
+	icon_state = "floopybox-closed"
+	illustration = null
+
+	storage_type = /datum/storage/box/small_skinny
+
 
 /obj/item/storage/box/disks/PopulateContents()
-	for(var/i in 1 to 7)
-		new /obj/item/disk/data(src)
+	for(var/i in 1 to 4)
+		new /obj/item/disk/data/floppy(src)
 
 // Ordinary survival box
 /obj/item/storage/box/survival
@@ -119,9 +125,7 @@
 	var/medipen_type = /obj/item/reagent_containers/hypospray/medipen
 
 /obj/item/storage/box/survival/PopulateContents()
-	if(isplasmaman(loc))
-		new /obj/item/tank/internals/plasmaman/belt(src)
-	else if(isvox(loc))
+	if(isvox(loc))
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
 	else
 		new mask_type(src)
@@ -139,13 +143,7 @@
 	new /obj/item/radio/off(src)
 
 /obj/item/storage/box/survival/proc/wardrobe_removal()
-	if(isplasmaman(loc)) //We need to specially fill the box with plasmaman gear, since it's intended for one
-		var/obj/item/mask = locate(mask_type) in src
-		var/obj/item/internals = locate(internal_type) in src
-		new /obj/item/tank/internals/plasmaman/belt(src)
-		qdel(mask) // Get rid of the items that shouldn't be
-		qdel(internals)
-	else if(isvox(loc))
+	if(isvox(loc))
 		var/obj/item/mask = locate(mask_type) in src
 		var/obj/item/internals = locate(internal_type) in src
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
@@ -213,11 +211,13 @@
 
 /obj/item/storage/box/syringes
 	name = "box of syringes"
-	desc = "A box full of syringes."
+	desc = "A box able to fit 9 syringes."
 	illustration = "syringe"
 
+	storage_type = /datum/storage/box/small_skinny
+
 /obj/item/storage/box/syringes/PopulateContents()
-	for(var/i in 1 to 7)
+	for(var/i in 1 to 9)
 		new /obj/item/reagent_containers/syringe(src)
 
 /obj/item/storage/box/syringes/variety
@@ -233,6 +233,8 @@
 	name = "box of medipens"
 	desc = "A box full of epinephrine MediPens."
 	illustration = "epipen"
+
+	storage_type = /datum/storage/box/small_skinny
 
 /obj/item/storage/box/medipens/PopulateContents()
 	for(var/i in 1 to 7)
@@ -254,7 +256,7 @@
 
 /obj/item/storage/box/beakers/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/glass/beaker( src )
+		new /obj/item/reagent_containers/cup/beaker( src )
 
 /obj/item/storage/box/beakers/bluespace
 	name = "box of bluespace beakers"
@@ -262,18 +264,18 @@
 
 /obj/item/storage/box/beakers/bluespace/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/glass/beaker/bluespace(src)
+		new /obj/item/reagent_containers/cup/beaker/bluespace(src)
 
 /obj/item/storage/box/beakers/variety
 	name = "beaker variety box"
 
 /obj/item/storage/box/beakers/variety/PopulateContents()
-	new /obj/item/reagent_containers/glass/beaker(src)
-	new /obj/item/reagent_containers/glass/beaker/large(src)
-	new /obj/item/reagent_containers/glass/beaker/plastic(src)
-	new /obj/item/reagent_containers/glass/beaker/meta(src)
-	new /obj/item/reagent_containers/glass/beaker/noreact(src)
-	new /obj/item/reagent_containers/glass/beaker/bluespace(src)
+	new /obj/item/reagent_containers/cup/beaker(src)
+	new /obj/item/reagent_containers/cup/beaker/large(src)
+	new /obj/item/reagent_containers/cup/beaker/plastic(src)
+	new /obj/item/reagent_containers/cup/beaker/meta(src)
+	new /obj/item/reagent_containers/cup/beaker/noreact(src)
+	new /obj/item/reagent_containers/cup/beaker/bluespace(src)
 
 /obj/item/storage/box/medigels
 	name = "box of medical gels"
@@ -440,7 +442,7 @@
 
 /obj/item/storage/box/drinkingglasses/PopulateContents()
 	for(var/i in 1 to 6)
-		new /obj/item/reagent_containers/food/drinks/drinkingglass(src)
+		new /obj/item/reagent_containers/cup/glass/drinkingglass(src)
 
 /obj/item/storage/box/condimentbottles
 	name = "box of condiment bottles"
@@ -449,7 +451,7 @@
 
 /obj/item/storage/box/condimentbottles/PopulateContents()
 	for(var/i in 1 to 6)
-		new /obj/item/reagent_containers/food/condiment(src)
+		new /obj/item/reagent_containers/condiment(src)
 
 /obj/item/storage/box/cups
 	name = "box of paper cups"
@@ -458,7 +460,7 @@
 
 /obj/item/storage/box/cups/PopulateContents()
 	for(var/i in 1 to 7)
-		new /obj/item/reagent_containers/food/drinks/sillycup( src )
+		new /obj/item/reagent_containers/cup/glass/sillycup( src )
 
 /obj/item/storage/box/donkpockets
 	name = "box of donk-pockets"
@@ -628,7 +630,7 @@
 		new /obj/item/firing_pin/tag/blue(src)
 
 /obj/item/storage/box/handcuffs
-	name = "box of spare handcuffs"
+	name = "box of handcuffs"
 	desc = "A box full of handcuffs."
 	icon_state = "secbox"
 	illustration = "handcuff"
@@ -725,9 +727,11 @@
 	for(var/i in 1 to 10)
 		new /obj/item/match(src)
 
-/obj/item/storage/box/matches/attackby(obj/item/match/W as obj, mob/user as mob, params)
-	if(istype(W, /obj/item/match))
-		W.matchignite()
+/obj/item/storage/box/matches/item_interaction(mob/living/user, obj/item/match/match, list/modifiers)
+	if(istype(match))
+		match.matchignite()
+		return ITEM_INTERACT_SUCCESS
+	return NONE
 
 /obj/item/storage/box/matches/update_icon_state()
 	. = ..()
@@ -781,8 +785,8 @@
 		new /obj/item/light/bulb(src)
 
 /obj/item/storage/box/metalfoam
-	name = "box of metal foam grenades"
-	desc = "To be used to rapidly seal hull breaches."
+	name = "box of BIGWELD"
+	desc = "A box containing several BIGWELD™ Rapid Structual Support canisters."
 	illustration = "grenade"
 
 /obj/item/storage/box/metalfoam/PopulateContents()
@@ -844,10 +848,9 @@
 /obj/item/storage/box/hug/survival/PopulateContents()
 	new /obj/item/reagent_containers/hypospray/medipen(src)
 
-	if(isplasmaman(loc))
-		new /obj/item/tank/internals/plasmaman/belt(src)
-	else if(isvox(loc))
+	if(isvox(loc))
 		new /obj/item/tank/internals/nitrogen/belt/emergency(src)
+		new /obj/item/clothing/mask/breath(src)
 	else
 		new /obj/item/clothing/mask/breath(src)
 		new /obj/item/tank/internals/emergency_oxygen(src)
@@ -862,14 +865,15 @@
 	for Medical Officers who just take the box for themselves."
 
 	/// the plushies that aren't of things trying to kill you
-	var/list/static/approved_by_corporate = list(/obj/item/toy/plush/carpplushie, // well, maybe they can be something that tries to kill you a little bit
+	var/list/static/approved_by_corporate = list(
+		/obj/item/toy/plush/carpplushie, // well, maybe they can be something that tries to kill you a little bit
 		/obj/item/toy/plush/slimeplushie,
 		/obj/item/toy/plush/lizard_plushie,
 		/obj/item/toy/plush/snakeplushie,
-		/obj/item/toy/plush/plasmamanplushie,
 		/obj/item/toy/plush/beeplushie,
 		/obj/item/toy/plush/moth,
-		/obj/item/toy/plush/pkplush)
+		/obj/item/toy/plush/pkplush
+	)
 
 /obj/item/storage/box/hug/plushes/PopulateContents()
 	for(var/i in 1 to 7)
@@ -1031,8 +1035,10 @@
 	name = "box of fountain pens"
 	illustration = "fpen"
 
+	storage_type = /datum/storage/box/small_skinny
+
 /obj/item/storage/box/fountainpens/PopulateContents()
-	for(var/i in 1 to 7)
+	for(var/i in 1 to 9)
 		new /obj/item/pen/fountain(src)
 
 /obj/item/storage/box/holy_grenades
@@ -1079,7 +1085,7 @@
 /obj/item/storage/box/dishdrive
 	name = "DIY Dish Drive Kit"
 	desc = "Contains everything you need to build your own Dish Drive!"
-	custom_premium_price = PAYCHECK_EASY * 3
+	custom_premium_price = PAYCHECK_ASSISTANT * 1.2
 
 /obj/item/storage/box/dishdrive/PopulateContents()
 	var/static/items_inside = list(
@@ -1144,13 +1150,15 @@
 		)
 	generate_items_inside(items_inside,src)
 
+TYPEINFO_DEF(/obj/item/storage/box/plastic)
+	default_materials = list(/datum/material/plastic = 1000)
+
 /obj/item/storage/box/plastic
 	name = "plastic box"
 	desc = "It's a solid, plastic shell box."
 	icon_state = "plasticbox"
 	foldable = null
 	illustration = "writing"
-	custom_materials = list(/datum/material/plastic = 1000) //You lose most if recycled.
 
 
 /obj/item/storage/box/fireworks
@@ -1216,7 +1224,7 @@
 	name = "nicotine gum packet"
 	desc = "Designed to help with nicotine addiction and oral fixation all at once without destroying your lungs in the process. Mint flavored!"
 	icon_state = "bubblegum_nicotine"
-	custom_premium_price = PAYCHECK_EASY * 1.5
+	custom_premium_price = PAYCHECK_ASSISTANT * 0.4
 
 /obj/item/storage/box/gum/nicotine/PopulateContents()
 	for(var/i in 1 to 4)
@@ -1381,7 +1389,7 @@
 	for(var/i in 1 to 3)
 		new /obj/item/food/grown/tomato(src)
 		new /obj/item/food/meatball(src)
-	new /obj/item/reagent_containers/food/drinks/bottle/wine(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/wine(src)
 
 /obj/item/storage/box/ingredients/vegetarian
 	theme_name = "vegetarian"
@@ -1599,3 +1607,37 @@
 							  /obj/item/food/sustenance_bar/wonka = 1))
 		new randomFood(src)
 	new /obj/item/storage/box/gum/wake_up(src)
+
+/obj/item/storage/box/chalk
+	name = "box of chalk"
+	desc = "A box able to fit 9 sticks of chalk."
+	illustration = "fpen"
+
+	storage_type = /datum/storage/box/small_skinny
+
+/obj/item/storage/box/chalk/PopulateContents()
+	for(var/i in 1 to 9)
+		new /obj/item/chalk(src)
+
+/obj/item/storage/box/carmen
+	name = "cassette box \"Carmen Miranda's Ghost Ultimate Collector's Edition\""
+	desc = "A box containing 6 cassettes, for the ultimate Carmen Miranda's Ghost listening experience."
+
+	illustration = null
+
+	storage_type = /datum/storage/box/cassette
+
+/obj/item/storage/box/carmen/PopulateContents()
+	var/list/song_pool = SSmedia.get_track_pool(MEDIA_TAG_CARMEN_MIRANDA)
+	if(length(song_pool) < 12)
+		#ifndef UNIT_TESTS
+		stack_trace("Carmen Miranda's Ghost cassette box cannot spawn due to the media not being present.")
+		#endif
+		return
+
+	for(var/i in 1 to 6) // 12 songs, 2 songs per cassette
+		var/a_side = song_pool[1]
+		var/b_side = song_pool[2]
+		song_pool.Cut(1, 3)
+
+		new /obj/item/tape/music/carmen(src, a_side, b_side)

@@ -255,6 +255,9 @@
 	if(!first_location.z || !second_location.z)
 		return INFINITY
 
+	if(first_location == second_location)
+		return -1
+
 	var/dx = first_location.x - second_location.x
 	var/dy = first_location.y - second_location.y
 
@@ -267,7 +270,24 @@
 	if(!A.z || !B.z)
 		return INFINITY
 
+	if(A == B)
+		return -1
+
 	return abs(A.x - B.x) + abs(A.y - B.y) + abs(A.z - B.z)
+
+/// Returns the octile distance between two atoms. Returns INFINITY if either are not on a turf, for BYOND get_dist() parity.
+/proc/get_dist_octile(atom/A, atom/B)
+	if(!A.z || !B.z)
+		return INFINITY
+
+	if(A == B)
+		return -1
+
+	var/dx = abs(A.x - B.x)
+	var/dy = abs(A.y - B.y)
+	var/F = (sqrt(2) - 1)
+
+	return (dx < dy) ? F * dx + dy : F * dy + dx
 
 ///Returns a list of turfs around a center based on RANGE_TURFS()
 /proc/circle_range_turfs(center = usr, radius = 3)

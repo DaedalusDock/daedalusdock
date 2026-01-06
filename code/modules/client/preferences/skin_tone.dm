@@ -7,7 +7,7 @@
 	return GLOB.skin_tones
 
 /datum/preference/choiced/skin_tone/create_default_value()
-	return "caucasian1"
+	return "Saxon"
 
 /datum/preference/choiced/skin_tone/apply_to_human(mob/living/carbon/human/target, value)
 	target.skin_tone = value

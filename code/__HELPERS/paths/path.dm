@@ -1,51 +1,20 @@
-/**
- * This file contains the stuff you need for using JPS (Jump Point Search) pathing, an alternative to A* that skips
- * over large numbers of uninteresting tiles resulting in much quicker pathfinding solutions. Mind that diagonals
- * cost the same as cardinal moves currently, so paths may look a bit strange, but should still be optimal.
- */
-
-/**
- * This is the proc you use whenever you want to have pathfinding more complex than "try stepping towards the thing".
- * If no path was found, returns an empty list, which is important for bots like medibots who expect an empty list rather than nothing.
- * It will yield until a path is returned, using magic
- *
- * Arguments:
- * * caller: The movable atom that's trying to find the path
- * * end: What we're trying to path to. It doesn't matter if this is a turf or some other atom, we're gonna just path to the turf it's on anyway
- * * max_distance: The maximum number of steps we can take in a given path to search (default: 30, 0 = infinite)
- * * mintargetdistance: Minimum distance to the target before path returns, could be used to get near a target, but not right to it - for an AI mob with a gun, for example.
- * * access: A list representing what access we have and what doors we can open.
- * * simulated_only: Whether we consider turfs without atmos simulation (AKA do we want to ignore space)
- * * exclude: If we want to avoid a specific turf, like if we're a mulebot who already got blocked by some turf
- * * skip_first: Whether or not to delete the first item in the path. This would be done because the first item is the starting tile, which can break movement for some creatures.
- * * diagonal_handling: defines how we handle diagonal moves. see __DEFINES/path.dm
- */
-/proc/jps_path_to(atom/movable/caller, atom/end, max_distance = 30, mintargetdist, list/access, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY)
-	var/list/path = list()
-	// We're guarenteed that list will be the first list in pathfinding_finished's argset because of how callback handles the arguments list
-	var/datum/callback/await = CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(pathfinding_finished), path)
-	if(!SSpathfinder.pathfind(caller, end, max_distance, mintargetdist, access, simulated_only, exclude, skip_first, diagonal_handling, await))
-		return list()
-
-	UNTIL(length(path))
-	if(length(path) == 1 && path[1] == null || (QDELETED(caller) || QDELETED(end))) // It's trash, just hand back null to make it easy
-		return list()
-	return path
-
 /// Uses funny pass by reference bullshit to take the path created by pathfinding, and insert it into a return list
 /// We'll be able to use this return list to tell a sleeping proc to continue execution
-/proc/pathfinding_finished(list/return_list, list/path)
-	// We use += here to ensure the list is still pointing at the same thing
-	return_list += path
+/proc/__pathfinding_finished(datum/pathfind_packet/return_packet, list/path)
+	return_packet.path = path || list()
 
+/// Wrapper around the path list since we play with refs.
+/datum/pathfind_packet
+	/// The unwound path, set when it's finished.
+	var/list/path
 
 /datum/pathfind
 	/// The turf we started at
 	var/turf/start
 
 	// general pathfinding vars/args
-	/// Limits how far we can search before giving up on a path
-	var/max_distance = 30
+	/// The maximum number of steps a path can be before it is considered too long and ignored. Diagonals are 2 steps, so it's Manhattan distance.
+	var/max_steps = 30
 	/// Space is big and empty, if this is TRUE then we ignore pathing through unsimulated tiles
 	var/simulated_only
 	/// A specific turf we're avoiding, like if a mulebot is being blocked by someone t-posing in a doorway we're trying to get through
@@ -97,7 +66,7 @@
  * Call to return a value to whoever spawned this pathfinding work
  * Will fail if it's already been called
  */
-/datum/pathfind/proc/hand_back(value)
+/datum/pathfind/proc/hand_back(list/value)
 	set waitfor = FALSE
 	on_finish?.Invoke(value)
 	on_finish = null
@@ -145,6 +114,8 @@
 	var/datum/can_pass_info/rider_info = null
 	/// If our mob is buckled to something, what's it like
 	var/datum/can_pass_info/buckled_info = null
+	/// If our mob is flock phasing or can flock phase.
+	var/able_to_flockphase = FALSE
 
 	/// Do we have gravity
 	var/has_gravity = TRUE
@@ -202,6 +173,11 @@
 		src.camera_type = construct_from.type
 	src.is_bot = isbot(construct_from)
 
+	if(isflockdrone(construct_from))
+		var/mob/living/simple_animal/flock/drone/bird = construct_from
+		if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE) || bird.resources.has_points(10))
+			able_to_flockphase = TRUE
+
 /// List of vars on /datum/can_pass_info to use when checking two instances for equality
 GLOBAL_LIST_INIT(can_pass_info_vars, GLOBAL_PROC_REF(can_pass_check_vars))
 
@@ -221,6 +197,6 @@ GLOBAL_LIST_INIT(can_pass_info_vars, GLOBAL_PROC_REF(can_pass_check_vars))
 
 /datum/can_pass_info/proc/compare_against(datum/can_pass_info/check_against)
 	for(var/comparable_var in GLOB.can_pass_info_vars)
-		if(!(vars[comparable_var] ~= check_against[comparable_var]))
+		if(!(vars[comparable_var] ~= check_against.vars[comparable_var]))
 			return FALSE
 	return TRUE

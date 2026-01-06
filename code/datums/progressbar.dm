@@ -162,17 +162,16 @@
 		if(!istype(underlay))
 			underlay = image(underlay, dir = SOUTH)
 			underlay.filters += filter(type = "outline", size = 1)
+			underlay.maptext = null
 
-		underlay.pixel_y += 2
+		underlay.pixel_y = 2
 		underlay.alpha = 200
 		underlay.plane = GAME_PLANE
 		underlay.layer = FLY_LAYER
 		underlay.appearance_flags = APPEARANCE_UI
 		bar.underlays += underlay
 
-	owner:vis_contents += bar
-	if(owner.bound_overlay)
-		owner.bound_overlay.vis_contents += bar
+	owner.add_viscontents(bar)
 
 	animate(bar, alpha = 255, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
 
@@ -211,7 +210,8 @@
 /obj/effect/abstract/progbar
 	icon = 'icons/effects/progessbar.dmi'
 	icon_state = "prog_bar_0"
-	plane = ABOVE_HUD_PLANE
+	plane = GAME_PLANE
+	layer = FLY_LAYER
 	appearance_flags = APPEARANCE_UI | KEEP_APART
 	pixel_y = 32
 	alpha = 0

@@ -1,6 +1,6 @@
 
 /// The essential proc to call when an atom must receive damage of any kind.
-/atom/proc/take_damage(damage_amount, damage_type = BRUTE, damage_flag = "", sound_effect = TRUE, attack_dir, armor_penetration = 0)
+/atom/proc/take_damage(damage_amount, damage_type = BRUTE, damage_flag = NONE, sound_effect = TRUE, attack_dir, armor_penetration = 0, allow_break = TRUE)
 	if(!uses_integrity)
 		CRASH("[src] had /atom/proc/take_damage() called on it without it being a type that has uses_integrity = TRUE!")
 	if(QDELETED(src))
@@ -21,15 +21,7 @@
 
 	. = damage_amount
 
-	update_integrity(atom_integrity - damage_amount)
-
-	//BREAKING FIRST
-	if(integrity_failure && atom_integrity <= integrity_failure * max_integrity)
-		atom_break(damage_flag)
-
-	//DESTROYING SECOND
-	if(atom_integrity <= 0)
-		atom_destruction(damage_flag)
+	update_integrity(atom_integrity - damage_amount, damage_flag, allow_break)
 
 /// Proc for recovering atom_integrity. Returns the amount repaired by
 /atom/proc/repair_damage(amount)
@@ -44,34 +36,55 @@
 		atom_fix()
 
 /// Handles the integrity of an atom changing. This must be called instead of changing integrity directly.
-/atom/proc/update_integrity(new_value)
-	SHOULD_NOT_OVERRIDE(TRUE)
+/atom/proc/update_integrity(new_value, damage_flag = NONE, allow_break = TRUE)
+	SHOULD_CALL_PARENT(TRUE)
+
 	if(!uses_integrity)
 		CRASH("/atom/proc/update_integrity() was called on [src] when it doesnt use integrity!")
+
 	var/old_value = atom_integrity
 	new_value = max(0, new_value)
 	if(atom_integrity == new_value)
 		return
+
 	atom_integrity = new_value
 	SEND_SIGNAL(src, COMSIG_ATOM_INTEGRITY_CHANGED, old_value, new_value)
+
+	if(allow_break)
+		//BREAKING FIRST. Only called ONCE until the value is repaired above the broken threshold.
+		if(!is_broken(old_value) && is_broken())
+			atom_break(damage_flag)
+
+		//DESTROYING SECOND
+		if(is_destroyed())
+			atom_destruction(damage_flag)
 
 /// This mostly exists to keep atom_integrity private. Might be useful in the future.
 /atom/proc/get_integrity()
 	SHOULD_BE_PURE(TRUE)
 	return atom_integrity
 
+/// Returns TRUE if the atom's integrity is below (max_integrity * integrity_failure) point.
+/atom/proc/is_broken(relative_integrity = src.atom_integrity)
+	SHOULD_BE_PURE(TRUE)
+	return integrity_failure && (relative_integrity <= integrity_failure * max_integrity)
+
+/// Returns TRUE if the atom's integrity is less than or equal to zero.
+/atom/proc/is_destroyed(relative_integrity = src.atom_integrity)
+	SHOULD_BE_PURE(TRUE)
+	return relative_integrity <= 0
+
 /**
  * Retrieves the atom's current damage as a percentage where `100%` is `100`.
- * If `use_raw_values` is `TRUE`, uses the raw var values instead of the `get_*` proc results.
  */
 /atom/proc/get_integrity_percentage()
-	return round((get_integrity_lost())/max_integrity * 100)
+	return ceil((get_integrity())/max_integrity * 100)
 
 /atom/proc/get_integrity_lost()
 	return max_integrity - get_integrity()
 
 ///returns the damage value of the attack after processing the atom's various armor protections
-/atom/proc/run_atom_armor(damage_amount, damage_type, damage_flag = 0, attack_dir, armor_penetration = 0)
+/atom/proc/run_atom_armor(damage_amount, damage_type, damage_flag = NONE, attack_dir, armor_penetration = 0)
 	if(!uses_integrity)
 		CRASH("/atom/proc/run_atom_armor was called on [src] without being implemented as a type that uses integrity!")
 

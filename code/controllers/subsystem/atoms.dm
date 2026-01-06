@@ -93,15 +93,10 @@ SUBSYSTEM_DEF(atoms)
 	if (atoms_to_return)
 		LAZYINITLIST(created_atoms)
 
-	#ifdef TESTING
-	var/count
-	#endif
 	var/list/mapload_arg = list(TRUE)
-
+	var/count = 0
 	if(atoms)
-		#ifdef TESTING
 		count = atoms.len
-		#endif
 
 		for(var/I in 1 to length(atoms))
 			var/atom/A = atoms[I]
@@ -116,19 +111,16 @@ SUBSYSTEM_DEF(atoms)
 				InitAtom(A, TRUE, mapload_arg)
 				PROFILE_INIT_ATOM_END(A)
 	else
-		#ifdef TESTING
-		count = 0
-		#endif
+		var/all_atoms = length(world.contents)
 		for(var/atom/A in world)
 			if(!(A.initialized))
 				PROFILE_INIT_ATOM_BEGIN()
 				InitAtom(A, FALSE, mapload_arg)
 				PROFILE_INIT_ATOM_END(A)
-				#ifdef TESTING
 				++count
-				#endif
 				if(TICK_CHECK)
 					clear_tracked_initalize(mapload_source)
+					SSlobby.set_game_status_text(sub_text = "Initializing world (%[Percent(count, all_atoms, 1)])")
 					stoplag()
 					if(mapload_source)
 						set_tracked_initalized(INITIALIZATION_INNEW_MAPLOAD, mapload_source)

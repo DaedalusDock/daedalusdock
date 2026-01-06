@@ -128,7 +128,7 @@
 				say(span_warning("Unable to find product [reagent_type] in holder after reaction! reagents found are:"))
 				for(var/other_reagent in reagents.reagent_list)
 					say("[other_reagent]")
-				var/obj/item/reagent_containers/glass/beaker/bluespace/beaker = new /obj/item/reagent_containers/glass/beaker/bluespace(loc)
+				var/obj/item/reagent_containers/cup/beaker/bluespace/beaker = new /obj/item/reagent_containers/cup/beaker/bluespace(loc)
 				reagents.trans_to(beaker)
 				beaker.name = "[cached_reactions[index]] failed"
 				if(!failed)
@@ -141,7 +141,7 @@
 				impure_string += "Reaction [cached_reactions[index]] has a product [reagent_type] [span_warning("[reagent.volume]u")] index:[index]\n"
 
 		if(beaker_spawn && reagents.total_volume)
-			var/obj/item/reagent_containers/glass/beaker/bluespace/beaker = new /obj/item/reagent_containers/glass/beaker/bluespace(loc)
+			var/obj/item/reagent_containers/cup/beaker/bluespace/beaker = new /obj/item/reagent_containers/cup/beaker/bluespace(loc)
 			reagents.trans_to(beaker)
 			beaker.name = "[cached_reactions[index]]"
 		reagents.clear_reagents()
@@ -322,7 +322,7 @@
 			if(!reagent)
 				say("Could not find [name]")
 				return
-			var/datum/chemical_reaction/reaction = SSreagents.chemical_reactions_list_product_index[reagent.type]
+			var/list/datum/chemical_reaction/reaction = SSreagents.chemical_reactions_list_product_index[reagent.type]
 			if(!reaction)
 				say("Could not find [name] reaction!")
 				return

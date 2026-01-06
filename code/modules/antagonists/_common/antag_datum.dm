@@ -2,8 +2,15 @@ GLOBAL_LIST_EMPTY(antagonists)
 /datum/antagonist
 	///Public name for this antagonist. Appears for player prompts and round-end reports.
 	var/name = "\improper Antagonist"
+	/// Prefix before the "name"
+	var/name_prefix = "a"
+
+	/// LORE AND MECHANICAL INFO THINHIGGGESS
+	var/description = "This role has no defined description, so probably no lore implications."
+
 	///Section of roundend report, datums with same category will be displayed together, also default header for the section
-	var/roundend_category = "other antagonists"
+	var/roundend_category = "other wildcards"
+
 	///Set to false to hide the antagonists from roundend report
 	var/show_in_roundend = TRUE
 	///If false, the roundtype will still convert with this antag active
@@ -147,6 +154,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 	if(!owner.current)
 		CRASH("[src] ran on_gain() on a mind without a mob")
+
 	if(ui_name)//in the future, this should entirely replace greet.
 		info_button = new(src)
 		info_button.Grant(owner.current)
@@ -163,7 +171,6 @@ GLOBAL_LIST_EMPTY(antagonists)
 	if(!soft_antag && owner.current.stat != DEAD && owner.current.client)
 		owner.current.add_to_current_living_antags()
 
-
 	if(!silent)
 		greet()
 		if(ui_name)
@@ -171,6 +178,9 @@ GLOBAL_LIST_EMPTY(antagonists)
 			info_button.Trigger()
 
 	SEND_SIGNAL(owner, COMSIG_ANTAGONIST_GAINED, src)
+
+	message_admins("[key_name_admin(owner.current)] was made into [type].")
+	log_game("ANTAGS: [key_name(owner.current)] was made into a [type].")
 
 /**
  * Proc that checks the sent mob aganst the banlistfor this antagonist.
@@ -189,13 +199,13 @@ GLOBAL_LIST_EMPTY(antagonists)
 /datum/antagonist/proc/replace_banned_player()
 	set waitfor = FALSE
 
-	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as a [name]?", "[name]", job_rank, 5 SECONDS, owner.current)
+	var/list/mob/dead/observer/candidates = poll_candidates_for_mob("Do you want to play as [get_name()]?", "[get_name(TRUE)]", job_rank, 5 SECONDS, owner.current)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/C = pick(candidates)
 		to_chat(owner, "Your mob has been taken over by a ghost! Appeal your job ban if you want to avoid this in the future!")
 		message_admins("[key_name_admin(C)] has taken control of ([key_name_admin(owner)]) to replace a jobbanned player.")
 		owner.current.ghostize(0)
-		owner.current.key = C.key
+		owner.current.PossessByPlayer(C.key)
 
 /**
  * Called by the remove_antag_datum() and remove_all_antag_datums() mind procs for the antag datum to handle its own removal and deletion.
@@ -229,30 +239,54 @@ GLOBAL_LIST_EMPTY(antagonists)
 		if (!antag_hud.mobShouldSee(current))
 			antag_hud.hide_from(current)
 
+	message_admins("[key_name_admin(owner.current)] lost their [type].")
+	log_game("ANTAGS: [key_name(owner.current)] lost their [type].")
 	qdel(src)
+
+/// Returns the name including the prefix if there is one.
+/datum/antagonist/proc/get_name(capitalize = FALSE)
+	if(name_prefix)
+		return "[capitalize ? capitalize(name_prefix) : name_prefix] [name]"
+	return name
 
 /**
  * Proc that sends fluff or instructional messages to the player when they are given this antag datum.
  * Use this proc for playing sounds, sending alerts, or helping to setup non-gameplay influencing aspects of the antagonist type.
  */
 /datum/antagonist/proc/greet()
-	var/list/greeting = "[greeting_header()]<br>[jointext(build_greeting(), "<br>")]"
+	var/list/greeting = list(
+		greeting_header(),
+	)
+
+	var/greeting_body = jointext(build_greeting(), "<br>")
+	if(greeting_body)
+		greeting += greeting_body
 
 	if(length(objectives))
+		if(greeting_body)
+			greeting += "<br><br>"
+
 		greeting += "You have the following objectives:<br>"
 
 		var/list/objective_strings = list()
 		var/objective_tally = 0
 		for(var/datum/objective/O as anything in objectives)
 			objective_tally++
-			objective_strings += "<b>[objective_tally].) [O.objective_name]</b>: [O.explanation_text]"
+			objective_strings += "[FOURSPACES]<b>[objective_tally].) [O.objective_name]</b>: [O.explanation_text]"
 
 		greeting += jointext(objective_strings, "<br><br>")
+
+	if(length(greeting) > 1)
+		greeting.Insert(2, "<hr>")
 
 	to_chat(owner.current, examine_block(jointext(greeting, "")))
 
 /datum/antagonist/proc/greeting_header()
-	return "<u><span style='font-size: 200%'>You are the [span_alert("[src]")]</span></u>"
+	var/list/out = list()
+	out += "<div style='font-size: 200%;text-align: center'>You are [name_prefix ? "[name_prefix] " : ""][span_alert(name)]</div>"
+	if(description)
+		out += "<div style='text-align: center'>[description]</div>"
+	return jointext(out, "")
 
 /// Builds a list of strings to print out in greet().
 /datum/antagonist/proc/build_greeting()
@@ -264,7 +298,7 @@ GLOBAL_LIST_EMPTY(antagonists)
  * Use this proc for playing sounds, sending alerts, or otherwise informing the player that they're no longer a specific antagonist type.
  */
 /datum/antagonist/proc/farewell()
-	to_chat(owner.current, span_userdanger("You are no longer \the [src]!"))
+	to_chat(owner.current, span_userdanger("You are no longer [get_name()]!"))
 	owner.announce_objectives()
 
 /**
@@ -273,41 +307,113 @@ GLOBAL_LIST_EMPTY(antagonists)
 /datum/antagonist/proc/get_team()
 	return
 
-/**
- * Proc that sends string information for the end-round report window to the server.
- * This runs on every instance of every antagonist that exists at the end of the round.
- * This is the body of the message, sandwiched between roundend_report_header and roundend_report_footer.
- */
-/datum/antagonist/proc/roundend_report()
-	var/list/report = list()
+/// Returns an article for the round end report newspaper. The base definition should cover most cases, unless you'd like to get fancy.
+/datum/antagonist/proc/roundend_report_article(list/antagonists)
+	var/list/columns = list()
+	for(var/datum/antagonist/iter_antag in antagonists)
+		if(!iter_antag.owner)
+			stack_trace("Antagonist [iter_antag.type] without an owner.")
+			continue
 
-	if(!owner)
-		CRASH("Antagonist datum without owner")
+		columns += {"
+				<div class='column'>
+					[iter_antag.roundend_report_article_column_header()]
+					[iter_antag.roundend_report_article_column_blurb()]
+					[iter_antag.roundend_report_article_column_body()]
+				</div>
+		"}
 
-	report += printplayer(owner)
+	return {"
+		<div>
+			<div class='newspaper_headline'>
+				[roundend_report_headline()]
+			</div>
+			<div class='content'>
+				<div class='columns'>
+					[jointext(columns, "")]
+				</div>
+			</div>
+			[roundend_report_footer()]
+		</div>
+	"}
+
+/// Returns the text within the headline for the round end report article.
+/datum/antagonist/proc/roundend_report_headline()
+	var/header_text = replacetext(roundend_category, "%STATION%", station_name())
+	return uppertext(header_text)
+
+/// Returns the header for a round end report article. Is not called if roundend_report_article() does not implement it.
+/datum/antagonist/proc/roundend_report_article_column_header()
+	var/job_text
+	if(!is_unassigned_job(owner.assigned_role))
+		job_text = " the <span class='highlighter'>[owner.assigned_role.title]</span>"
+
+	return {"
+
+		<div class='headline'>
+			[owner.name][job_text]
+		</div>
+		<div class='headline subhead'>
+			Played by [owner.key]
+		</div>
+	"}
+
+/// Returns the body of a "column" for the newspaper article at round end. Is not called if roundend_report_article() does not implement it.
+/datum/antagonist/proc/roundend_report_article_column_body()
+	var/list/column_body = list()
 
 	var/objectives_complete = TRUE
-	if(objectives.len)
-		report += printobjectives(objectives)
+	if(length(objectives))
+		column_body += "<div>[printobjectives(objectives)]</div>"
 		for(var/datum/objective/objective in objectives)
 			if(!objective.check_completion())
 				objectives_complete = FALSE
 				break
 
-	if(objectives.len == 0 || objectives_complete)
-		report += "<span class='greentext big'>The [name] was successful!</span>"
+	if(!length(objectives) || objectives_complete)
+		column_body += "<div class='highlighter' style='font-size: 1.5em;'>The [name] succeeded in their goals.</div>"
 	else
-		report += "<span class='redtext big'>The [name] has failed!</span>"
+		column_body += "<div class='highlighter' style='font-size: 1.5em;'>The [name] has failed their goals.</div>"
 
-	return report.Join("<br>")
+	return jointext(column_body, "")
 
-/**
- * Proc that sends string data for the round-end report.
- * Displayed before roundend_report and roundend_report_footer.
- * Appears at start of roundend_catagory section.
- */
-/datum/antagonist/proc/roundend_report_header()
-	return "<span class='header'>The [roundend_category] were:</span><br>"
+/// Returns a div containing a blurb of text describing the antagonist's state at the end of the round. Replaces the old printplayer().
+/datum/antagonist/proc/roundend_report_article_column_blurb()
+	if(!owner.current)
+		var/body_was = pick("body was", "corpse was" , "remains were")
+		var/found = pick("found", "recovered")
+		return "Their [body_was] never [found]."
+
+	var/list/sentences = list()
+	if(owner.current.stat == DEAD)
+		var/died = pick("died", "perished", "met their end", "went missing, and were later found dead")
+		var/turf/corpse_turf = get_turf(owner.current)
+		var/location_desc = (!corpse_turf || !is_station_level(corpse_turf.z)) ? "in the void" : "in [get_area_name(owner.current, TRUE)]"
+		sentences += pick(\
+			"They [died] [location_desc].",\
+			"They were found dead [location_desc].",\
+			"They went missing, and were later found dead [location_desc]."\
+		)
+
+	else
+		var/seen = pick("found", "spotted", "seen")
+		var/doing_things = pick("fleeing the colony", "nodding off", "sneaking around", "rummaging through trash")
+		var/sometime = pick("shortly", "not long", "sometime")
+		var/after = pick("later", "after")
+		var/the_events = ""
+		if(after == "after")
+			the_events = " the events of today"
+
+		sentences += "Reportedly, they were [seen] [doing_things] [sometime] [after][the_events]."
+
+		if(owner.current.real_name != owner.name)
+			var/name_str = "<span class='highlighter'>[owner.current.real_name]</span>"
+			sentences += pick(
+				"They are suspected of changing their identity to [name_str]>.",
+				"They have been spotted under the name [name_str]>.",
+			)
+
+	return "<div class='blurb'>[jointext(sentences, " ")]</div>"
 
 /**
  * Proc that sends string data for the round-end report.
@@ -322,8 +428,8 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 ///Called when using admin tools to give antag status
 /datum/antagonist/proc/admin_add(datum/mind/new_owner,mob/admin)
-	message_admins("[key_name_admin(admin)] made [key_name_admin(new_owner)] into [name].")
-	log_admin("[key_name(admin)] made [key_name(new_owner)] into [name].")
+	message_admins("[key_name_admin(admin)] made [key_name_admin(new_owner)] into [get_name()].")
+	log_admin("[key_name(admin)] made [key_name(new_owner)] into [get_name()].")
 	new_owner.add_antag_datum(src)
 
 ///Called when removing antagonist using admin tools

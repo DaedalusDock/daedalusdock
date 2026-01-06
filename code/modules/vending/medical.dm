@@ -13,7 +13,6 @@
 		/obj/item/healthanalyzer = 4,
 		/obj/item/wrench/medical = 1,
 		/obj/item/stack/sticky_tape/surgical = 3,
-		/obj/item/healthanalyzer/wound = 4,
 		/obj/item/stack/medical/ointment = 2,
 		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/bone_gel/twelve = 4
@@ -31,10 +30,11 @@
 		/obj/item/storage/organbox = 1
 	)
 	refill_canister = /obj/item/vending_refill/medical
-	default_price = PAYCHECK_EASY
-	extra_price = PAYCHECK_COMMAND
+	default_price = PAYCHECK_ASSISTANT
+	extra_price = PAYCHECK_ASSISTANT * 10
 	payment_department = ACCOUNT_MED
 	light_mask = "med-light-mask"
+	discount_access = ACCESS_MEDICAL
 
 /obj/item/vending_refill/medical
 	machine_name = "NanoMed Plus"
@@ -57,12 +57,12 @@
 					/obj/item/reagent_containers/pill/kelotane = 7,
 					/obj/item/reagent_containers/syringe/dexalin = 2,
 					/obj/item/reagent_containers/pill/insulin = 5,
-					/obj/item/reagent_containers/glass/bottle/dylovene = 2,
-					/obj/item/reagent_containers/glass/bottle/epinephrine = 3,
-					/obj/item/reagent_containers/glass/bottle/morphine = 4,
-					/obj/item/reagent_containers/glass/bottle/potass_iodide = 1,
-					/obj/item/reagent_containers/glass/bottle/saline_glucose = 3,
-					/obj/item/reagent_containers/glass/bottle/toxin = 3,
+					/obj/item/reagent_containers/cup/bottle/dylovene = 2,
+					/obj/item/reagent_containers/cup/bottle/epinephrine = 3,
+					/obj/item/reagent_containers/cup/bottle/morphine = 4,
+					/obj/item/reagent_containers/cup/bottle/potass_iodide = 1,
+					/obj/item/reagent_containers/cup/bottle/saline_glucose = 3,
+					/obj/item/reagent_containers/cup/bottle/toxin = 3,
 					/obj/item/reagent_containers/syringe/antiviral = 6,
 				)
 	contraband = list(/obj/item/reagent_containers/pill/tox = 3,

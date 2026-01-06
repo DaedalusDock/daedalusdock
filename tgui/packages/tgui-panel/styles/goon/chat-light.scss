@@ -37,6 +37,7 @@ img {
 img.icon {
   height: 1em;
   min-height: 16px;
+  min-width: 16px;
   width: auto;
   vertical-align: bottom;
 }
@@ -123,7 +124,7 @@ a.popt {
 .popup input[type='submit']:focus,
 .popup input[type='submit']:active {
   background: #aaa;
-  cursor: pointer;
+  cursor: url('shared_assets/link_select.cur'), auto;
 }
 
 .changeFont {
@@ -242,9 +243,6 @@ a.popt {
 .bold,
 .name,
 .prefix,
-.ooc,
-.looc,
-.adminooc,
 .admin,
 .medal,
 .yell {
@@ -284,14 +282,29 @@ em {
   font-weight: bold;
 }
 
+// Applied to messages that don't come from the game.
+.system {
+  color: #638500;
+  font-family: 'Lucida Console', monospace;
+}
+
+.systemfont {
+  font-family: 'Lucida Console', monospace;
+}
+
 .ooc {
   color: #002eb8;
+  font-family: 'Lucida Console', monospace;
+}
+
+.oocplain {
   font-weight: bold;
-  text-shadow: inherit;
+  font-family: 'Lucida Console', monospace;
 }
 
 .looc {
   color: #6699cc;
+  font-family: 'Lucida Console', monospace;
 }
 
 .adminobserverooc {
@@ -990,4 +1003,34 @@ h2.alert {
   border-image-outset: 0 0 0 0;
   border-image-repeat: repeat repeat;
   border-style: solid;
+}
+
+.flocksay {
+  color: #488276;
+}
+
+.flocksay a {
+  color: #488276;
+}
+
+.flocksay a:visited {
+  color: #488276;
+}
+
+.flocksay.sentient {
+  color: white;
+  background-color: #66ad9e;
+}
+
+.flocksay.sentient.flockmind {
+  font-size: 120%;
+}
+
+.flocknpc {
+  color: #869995;
+  font-size: 80%;
+}
+
+.flocksay.ping {
+  font-style: italic;
 }

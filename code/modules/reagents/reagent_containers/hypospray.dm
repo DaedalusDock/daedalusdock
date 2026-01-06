@@ -14,49 +14,75 @@
 	resistance_flags = ACID_PROOF
 	reagent_flags = OPENCONTAINER
 	slot_flags = ITEM_SLOT_BELT
+
 	var/ignore_flags = NONE
 	var/infinite = FALSE
+	var/time = 0
 
 /obj/item/reagent_containers/hypospray/attack_paw(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
-/obj/item/reagent_containers/hypospray/attack(mob/living/affected_mob, mob/user)
-	inject(affected_mob, user)
+/obj/item/reagent_containers/hypospray/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	return inject(interacting_with, user)
 
 ///Handles all injection checks, injection and logging.
 /obj/item/reagent_containers/hypospray/proc/inject(mob/living/affected_mob, mob/user)
 	if(!reagents.total_volume)
-		to_chat(user, span_warning("[src] is empty!"))
-		return FALSE
+		to_chat(user, span_warning("[src] is empty."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(!iscarbon(affected_mob))
-		return FALSE
+		return ITEM_INTERACT_BLOCKING
 
 	//Always log attemped injects for admins
 	var/list/injected = list()
 	for(var/datum/reagent/injected_reagent in reagents.reagent_list)
 		injected += injected_reagent.name
+
 	var/contained = english_list(injected)
+
 	log_combat(user, affected_mob, "attempted to inject", src, "([contained])")
 
-	if(reagents.total_volume && (ignore_flags || affected_mob.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))) // Ignore flag should be checked first or there will be an error message.
-		affected_mob.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick!")
-		to_chat(user, span_notice("You inject [affected_mob] with [src]."))
-		var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
+	if(!reagents.total_volume)
+		return ITEM_INTERACT_BLOCKING
+
+	if(!inject_check(user, affected_mob))
+		return ITEM_INTERACT_BLOCKING
+
+	playsound(src, 'sound/effects/autoinjector.ogg', 25)
+	user.changeNext_move(CLICK_CD_RAPID)
+
+	if(time && user != affected_mob && !affected_mob.incapacitated())
+		if(!do_after(user, affected_mob, time, DO_PUBLIC|DO_RESTRICT_USER_DIR_CHANGE, extra_checks = CALLBACK(src, PROC_REF(inject_check), user, affected_mob), interaction_key = src, display = src))
+			return ITEM_INTERACT_BLOCKING
+
+	affected_mob.apply_pain(1, BODY_ZONE_CHEST, "You feel a tiny prick.")
+
+	if(user == affected_mob)
+		user.visible_message(span_notice("<b>[user]</b> jabs [src] into <b>[user.p_them()]self</b>."), vision_distance = COMBAT_MESSAGE_RANGE)
+	else
+		user.do_attack_animation(affected_mob, used_item = src, do_hurt = FALSE)
+		user.visible_message(span_notice("<b>[user]</b> jabs [src] into <b>[affected_mob]</b>."), vision_distance = COMBAT_MESSAGE_RANGE)
+
+	var/fraction = min(amount_per_transfer_from_this/reagents.total_volume, 1)
+
+	if(affected_mob.reagents)
+		var/trans = 0
+		if(!infinite)
+			trans = reagents.trans_to(affected_mob, amount_per_transfer_from_this, transfered_by = user, methods = INJECT)
+		else
+			reagents.expose(affected_mob, INJECT, fraction)
+			trans = reagents.copy_to(affected_mob, amount_per_transfer_from_this)
+		to_chat(user, span_obviousnotice("[trans] unit\s injected. [reagents.total_volume] unit\s remaining in [src]."))
+		log_combat(user, affected_mob, "injected", src, "([contained])")
+	return ITEM_INTERACT_SUCCESS
 
 
-		if(affected_mob.reagents)
-			var/trans = 0
-			if(!infinite)
-				trans = reagents.trans_to(affected_mob, amount_per_transfer_from_this, transfered_by = user, methods = INJECT)
-			else
-				reagents.expose(affected_mob, INJECT, fraction)
-				trans = reagents.copy_to(affected_mob, amount_per_transfer_from_this)
-			to_chat(user, span_notice("[trans] unit\s injected. [reagents.total_volume] unit\s remaining in [src]."))
-			log_combat(user, affected_mob, "injected", src, "([contained])")
-			playsound(src, 'sound/effects/autoinjector.ogg', 25)
-		return TRUE
-	return FALSE
-
+/obj/item/reagent_containers/hypospray/proc/inject_check(mob/living/user, mob/living/affected_mob)
+	return ignore_flags || affected_mob.try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE)
 
 /obj/item/reagent_containers/hypospray/cmo
 	list_reagents = list(/datum/reagent/medicine/tricordrazine = 30)
@@ -101,22 +127,31 @@
 //MediPens
 
 /obj/item/reagent_containers/hypospray/medipen
-	name = "emergency medipen"
-	desc = "A rapid and safe way to stabilize patients in critical condition for personnel without advanced medical knowledge."
+	name = "emergency autoinjector"
+	desc = "A device for simple subcutaneous injection of chemicals."
 	icon_state = "medipen"
 	inhand_icon_state = "medipen"
 	worn_icon_state = "medipen"
 	base_icon_state = "medipen"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	amount_per_transfer_from_this = 15
-	volume = 15
-	ignore_flags = 1 //so you can medipen through spacesuits
+
+	time = 1.5 SECOND
+
+	amount_per_transfer_from_this = 30
+	volume = 30
 	reagent_flags = DRAWABLE
 	flags_1 = null
-	list_reagents = list(/datum/reagent/medicine/inaprovaline = 10, /datum/reagent/medicine/peridaxon = 10, /datum/reagent/medicine/coagulant = 5)
-	custom_price = PAYCHECK_MEDIUM
-	custom_premium_price = PAYCHECK_HARD
+
+	list_reagents = list(
+		/datum/reagent/medicine/inaprovaline = 10,
+		/datum/reagent/medicine/peridaxon = 10,
+		/datum/reagent/medicine/coagulant = 5,
+		/datum/reagent/medicine/adenosine = 5,
+	)
+
+	custom_price = PAYCHECK_ASSISTANT * 2.2
+	custom_premium_price = PAYCHECK_ASSISTANT * 4
 
 /obj/item/reagent_containers/hypospray/medipen/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins to choke on \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
@@ -233,7 +268,12 @@
 	base_icon_state = "stimpen"
 	volume = 30
 	amount_per_transfer_from_this = 30
-	list_reagents = list(/datum/reagent/medicine/synaptizine = 4, /datum/reagent/medicine/dermaline = 8, /datum/reagent/medicine/meralyne = 8, /datum/reagent/medicine/leporazine = 6)
+	list_reagents = list(
+		/datum/reagent/medicine/synaptizine = 4,
+		/datum/reagent/medicine/dermaline = 10,
+		/datum/reagent/medicine/meralyne = 10,
+		/datum/reagent/medicine/leporazine = 6
+	)
 
 /obj/item/reagent_containers/hypospray/medipen/survival/inject(mob/living/affected_mob, mob/user)
 	if(DOING_INTERACTION(user, DOAFTER_SOURCE_SURVIVALPEN))
@@ -250,7 +290,7 @@
 
 /obj/item/reagent_containers/hypospray/medipen/survival/luxury
 	name = "luxury autoinjector"
-	desc = "Cutting edge technology allowed humanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
+	desc = "Cutting edge technology allowed minervanity to compact 50u of volume into a single medipen. Contains rare and powerful chemicals used to aid in exploration of very hard enviroments."
 	icon_state = "luxpen"
 	inhand_icon_state = "atropen"
 	base_icon_state = "luxpen"

@@ -47,8 +47,16 @@
 	thermic_constant = 20 // Harder to ignite plasma
 
 /datum/chemical_reaction/tricordrazine
-	results =  list(/datum/reagent/medicine/tricordrazine = 5)
+	results = list(/datum/reagent/medicine/tricordrazine = 5)
 	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/kelotane = 1, /datum/reagent/medicine/dylovene = 1)
+
+/datum/chemical_reaction/zedaphen
+	results = list(/datum/reagent/medicine/zedaphen = 3)
+	required_reagents = list(
+		/datum/reagent/acetone = 1,
+		/datum/reagent/potassium = 1,
+		/datum/reagent/carbon = 1
+	)
 
 /datum/chemical_reaction/ryetalyn
 	results = list(/datum/reagent/medicine/ryetalyn = 2)
@@ -197,3 +205,32 @@
 	// Chlorine is a good enough substitute for bromine right?
 	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/carbon = 1, /datum/reagent/chlorine = 1, /datum/reagent/diethylamine = 1, /datum/reagent/consumable/ethanol = 1)
 	mix_message = "The mixture fizzes gently."
+
+/datum/chemical_reaction/styptic_powder
+	results = list(/datum/reagent/medicine/styptic_powder = 2)
+	required_reagents = list(
+		/datum/reagent/aluminium = 1,
+		/datum/reagent/hydrogen = 1,
+		/datum/reagent/oxygen = 1,
+		/datum/reagent/medicine/bicaridine = 1,
+	)
+	mix_message = "The solution yields an astringent powder."
+
+/datum/chemical_reaction/silver_sulfadiazine
+	results = list(
+		/datum/reagent/medicine/silver_sulfadiazine = 5,
+		/datum/reagent/silicon = 1, // The silicon from the kelotane gets left over.
+	)
+	// 	C10H9AgN4O2S is the chemical compound for silver sulf in real life. we conveniently have all of these chemicals, so let's replicate it here
+	required_reagents = list(
+		/datum/reagent/medicine/kelotane = 1, // Kelotane brings the carbon
+		/datum/reagent/ammonia = 1, // Ammonia brings the hydrogen and nitrogen
+		/datum/reagent/silver = 1,
+		/datum/reagent/oxygen = 1,
+		/datum/reagent/sulfur = 1
+	)
+	mix_message = "A strong and cloying odor begins to bubble from the mixture."
+
+/datum/chemical_reaction/sterilizine
+	results = list(/datum/reagent/space_cleaner/sterilizine = 3)
+	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/dylovene = 1, /datum/reagent/toxin/acid/hydrochloric = 1)

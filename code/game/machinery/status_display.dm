@@ -35,11 +35,13 @@
 	var/message1 = ""
 	var/message2 = ""
 
+TYPEINFO_DEF(/obj/item/wallframe/status_display)
+	default_materials = list(/datum/material/iron=14000, /datum/material/glass=8000)
+
 /obj/item/wallframe/status_display
 	name = "status display frame"
 	desc = "Used to build status displays, just secure to the wall."
 	icon_state = "unanchoredstatusdisplay"
-	custom_materials = list(/datum/material/iron=14000, /datum/material/glass=8000)
 	result_path = /obj/machinery/status_display/evac
 	pixel_shift = 32
 
@@ -127,7 +129,7 @@
 		qdel(overlay)
 
 	var/obj/effect/overlay/status_display_text/new_status_display_text = new(src, line_y, message)
-	vis_contents += new_status_display_text
+	add_viscontents(new_status_display_text)
 	return new_status_display_text
 
 /obj/machinery/status_display/update_appearance(updates=ALL)
@@ -170,7 +172,7 @@
 			if(message1 == "" && message2 == "")
 				return
 
-	. += emissive_appearance(icon, "outline", alpha = src.alpha)
+	. += emissive_appearance(icon, "outline", alpha = 90)
 
 // Timed process - performs nothing in the base class
 /obj/machinery/status_display/process()

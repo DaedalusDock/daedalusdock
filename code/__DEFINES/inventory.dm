@@ -11,13 +11,18 @@
 #define WEIGHT_CLASS_BULKY 4
 /// Usually represents objects that require two hands to operate, (e.g. shotgun, two-handed melee weapons)
 #define WEIGHT_CLASS_HUGE 5
-/// Essentially means it cannot be picked up or placed in an inventory, (e.g. mech parts, safe)
+/// Essentially means it cannot be placed in an inventory, (e.g. mech parts, safe)
 #define WEIGHT_CLASS_GIGANTIC 6
+
+/// Weight class that can fit in pockets
+#define POCKET_WEIGHT_CLASS WEIGHT_CLASS_SMALL
 
 //Inventory depth: limits how many nested storage items you can access directly.
 //1: stuff in mob, 2: stuff in backpack, 3: stuff in box in backpack, etc
-#define INVENTORY_DEPTH 3
-#define STORAGE_VIEW_DEPTH 2
+///
+#define REACH_DEPTH_SELF 1
+/// A storage depth ontop of SELF. REACH_DEPTH_STORAGE(1) would allow an item inside of a backpack you are carrying.
+#define REACH_DEPTH_STORAGE(level) (level + REACH_DEPTH_SELF)
 
 //ITEM INVENTORY SLOT BITMASKS
 /// Suit slot (armors, costumes, space suits, etc.)
@@ -112,6 +117,10 @@
 //defines for the index of hands
 #define LEFT_HANDS 1
 #define RIGHT_HANDS 2
+/// Checks if the value is "left" - same as ISEVEN, but used primarily for hand or foot index contexts
+#define IS_RIGHT_INDEX(value) (value % 2 == 0)
+/// Checks if the value is "right" - same as ISODD, but used primarily for hand or foot index contexts
+#define IS_LEFT_INDEX(value) (value % 2 != 0)
 
 //flags for female outfits: How much the game can safely "take off" the uniform without it looking weird
 /// For when there's simply no need for a female version of this uniform.
@@ -180,7 +189,6 @@ GLOBAL_LIST_INIT(detective_vest_allowed, typecacheof(list(
 	/obj/item/storage/fancy/cigarettes,
 	/obj/item/taperecorder,
 	/obj/item/tank/internals/emergency_oxygen,
-	/obj/item/tank/internals/plasmaman,
 	/obj/item/storage/belt/holster/shoulder,
 	/obj/item/storage/belt/holster/shoulder/nukie,
 	/obj/item/storage/belt/holster/shoulder/thermal,
@@ -197,7 +205,6 @@ GLOBAL_LIST_INIT(security_vest_allowed, typecacheof(list(
 	/obj/item/reagent_containers/spray/pepper,
 	/obj/item/restraints/handcuffs,
 	/obj/item/tank/internals/emergency_oxygen,
-	/obj/item/tank/internals/plasmaman,
 	/obj/item/storage/belt/holster/shoulder,
 	/obj/item/storage/belt/holster/shoulder/nukie,
 	/obj/item/storage/belt/holster/shoulder/thermal,
@@ -232,3 +239,27 @@ GLOBAL_LIST_INIT(security_wintercoat_allowed, typecacheof(list(
 #define LOCATION_HEAD "on your head"
 /// String for items placed in the neck slot.
 #define LOCATION_NECK "around your neck"
+
+// Base equipment delays
+/// Delay base for Undersuit equipment.
+#define EQUIP_DELAY_UNDERSUIT (5 SECONDS)
+/// Delay base efor Oversuit equipment.
+#define EQUIP_DELAY_OVERSUIT (7 SECONDS)
+/// Delay base for things like coats that are trivially removed or put on.
+#define EQUIP_DELAY_COAT (2 SECONDS)
+/// Delay base for masks
+#define EQUIP_DELAY_MASK (1 SECONDS)
+/// Delay base for back-worn objects.
+#define EQUIP_DELAY_BACK (2 SECONDS)
+/// Delay base for belts.
+#define EQUIP_DELAY_BELT (1 SECONDS)
+/// Delay base for gloves.
+#define EQUIP_DELAY_GLOVES (1 SECONDS)
+/// Delay base for shoes.
+#define EQUIP_DELAY_SHOES (1 SECONDS)
+
+// Flags for self equipping items
+/// Allow movement during equip/unequip
+#define EQUIP_ALLOW_MOVEMENT (1<<0)
+/// Apply a slowdown when equipping or unequipping.
+#define EQUIP_SLOWDOWN (1<<1)

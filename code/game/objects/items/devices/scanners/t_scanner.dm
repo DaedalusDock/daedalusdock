@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/t_scanner)
+	default_materials = list(/datum/material/iron=150)
+
 /obj/item/t_scanner
 	name = "\improper T-ray scanner"
 	desc = "A terahertz-ray emitter and scanner used to detect underfloor objects such as cables and pipes."
@@ -11,7 +14,6 @@
 	worn_icon_state = "electronic"
 	lefthand_file = 'icons/mob/inhands/misc/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
-	custom_materials = list(/datum/material/iron=150)
 
 /obj/item/t_scanner/Destroy()
 	STOP_PROCESSING(SSobj, src)

@@ -1,10 +1,13 @@
 /datum/job/detective
 	title = JOB_DETECTIVE
-	description = "Help security solve crimes or take on private cases for wealthy clients. \
-		Look badass and abuse every substance."
+	description = "Investigate crimes. Solve crimes. Cover up crimes."
 	faction = FACTION_STATION
+
+	pinpad_key = "columbo"
+
 	total_positions = 1
 	spawn_positions = 1
+
 	supervisors = "nobody"
 	minimal_player_age = 7
 	exp_requirements = 300
@@ -20,7 +23,6 @@
 			SPECIES_HUMAN = /datum/outfit/job/detective,
 			SPECIES_TESHARI = /datum/outfit/job/detective,
 			SPECIES_VOX = /datum/outfit/job/detective,
-			SPECIES_PLASMAMAN = /datum/outfit/job/detective/plasmaman,
 		),
 	)
 
@@ -28,9 +30,10 @@
 		/datum/job_department/service,
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_ASSISTANT * 2.5 // You start barely wealthier than the riff-raff.
 
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM)
+	mind_traits = list(TRAIT_DICK)
 
 	mail_goodies = list(
 		/obj/item/storage/fancy/cigarettes = 25,
@@ -42,16 +45,24 @@
 		/obj/item/ammo_box/c38/trac = 5,
 	)
 
-	family_heirlooms = list(/obj/item/reagent_containers/food/drinks/bottle/whiskey)
+	family_heirlooms = list(/obj/item/reagent_containers/cup/glass/bottle/whiskey)
 	rpg_title = "Thiefcatcher"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
+
+/datum/job/detective/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/detective)
+
+/datum/job/detective/before_roundstart_possess(mob/living/spawning)
+	. = ..()
+	spawning.Sleeping(10 SECONDS)
 
 /datum/outfit/job/detective
 	name = JOB_DETECTIVE
 	jobtype = /datum/job/detective
 
-	id_trim = /datum/id_trim/job/detective
+	id_template = /datum/access_template/job/detective
 	uniform = /obj/item/clothing/under/rank/security/detective
 	suit = /obj/item/clothing/suit/det_suit
 	belt = /obj/item/modular_computer/tablet/pda/detective
@@ -68,16 +79,6 @@
 		/obj/item/clothing/glasses/sunglasses,
 		/obj/item/gun/ballistic/revolver/detective,
 		)
-
-
-/datum/outfit/job/detective/plasmaman
-	name = JOB_DETECTIVE + " (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/white
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/detective/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()
@@ -96,10 +97,3 @@
 	gloves = /obj/item/clothing/gloves/color/latex
 	head = /obj/item/clothing/head/flatcap
 	shoes = /obj/item/clothing/shoes/laceup
-
-/datum/outfit/job/detective/forensic/plasmaman
-	name = "Forensic Technician (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/enviroslacks
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/white

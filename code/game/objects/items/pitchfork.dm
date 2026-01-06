@@ -4,6 +4,9 @@
  * Essentially spears with different stats and sprites.
  * Also fireproof for some reason.
  */
+TYPEINFO_DEF(/obj/item/pitchfork)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
+
 /obj/item/pitchfork
 	icon_state = "pitchfork0"
 	base_icon_state = "pitchfork"
@@ -25,7 +28,6 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/pitchfork/update_icon_state()

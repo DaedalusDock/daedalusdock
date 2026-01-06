@@ -1,5 +1,9 @@
 /// How many seconds between each fuel depletion tick ("use" proc)
 #define WELDER_FUEL_BURN_INTERVAL 9
+TYPEINFO_DEF(/obj/item/weldingtool)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
+	default_materials = list(/datum/material/iron=70, /datum/material/glass=30)
+
 /obj/item/weldingtool
 	name = "welding tool"
 	desc = "A standard edition welder provided by Nanotrasen."
@@ -24,12 +28,10 @@
 	light_on = FALSE
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
 	resistance_flags = FIRE_PROOF
 	heat = 3800
 	tool_behaviour = TOOL_WELDER
 	toolspeed = 1
-	custom_materials = list(/datum/material/iron=70, /datum/material/glass=30)
 	///Whether the welding tool is on or off.
 	var/welding = FALSE
 	var/status = TRUE //Whether the welder is secured or unsecured (able to attach rods to it to make a flamethrower)
@@ -98,7 +100,7 @@
 
 /obj/item/weldingtool/screwdriver_act(mob/living/user, obj/item/tool)
 	flamethrower_screwdriver(tool, user)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/weldingtool/attackby(obj/item/tool, mob/user, params)
 	if(istype(tool, /obj/item/stack/rods))
@@ -134,37 +136,24 @@
 	else
 		return ..()
 
-/obj/item/weldingtool/afterattack(atom/attacked_atom, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-
-	if(isOn() && !QDELETED(attacked_atom) && isliving(attacked_atom)) // can't ignite something that doesn't exist
-		handle_fuel_and_temps(1, user)
-		var/mob/living/attacked_mob = attacked_atom
-		if(attacked_mob.ignite_mob())
-			message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
-			log_game("[key_name(user)] set [key_name(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
-
-	if(!status && attacked_atom.is_refillable())
-		reagents.trans_to(attacked_atom, reagents.total_volume, transfered_by = user)
-		to_chat(user, span_notice("You empty [src]'s fuel tank into [attacked_atom]."))
+/obj/item/weldingtool/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!status && interacting_with.is_refillable())
+		reagents.trans_to(interacting_with, reagents.total_volume, transfered_by = user)
+		to_chat(user, span_notice("You empty [src]'s fuel tank into [interacting_with]."))
 		update_appearance()
+		return ITEM_INTERACT_SUCCESS
 
-/obj/item/weldingtool/attack_qdeleted(atom/attacked_atom, mob/user, proximity)
+/obj/item/weldingtool/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
-	if(!proximity)
+	if(!isOn() || QDELETED(target) || !isliving(target)) // can't ignite something that doesn't exist
 		return
 
-	if(isOn())
-		handle_fuel_and_temps(1, user)
+	handle_fuel_and_temps(1, user)
 
-		if(!QDELETED(attacked_atom) && isliving(attacked_atom)) // can't ignite something that doesn't exist
-			var/mob/living/attacked_mob = attacked_atom
-			if(attacked_mob.ignite_mob())
-				message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
-				log_game("[key_name(user)] set [key_name(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
-
+	var/mob/living/attacked_mob = target
+	if(attacked_mob.ignite_mob())
+		message_admins("[ADMIN_LOOKUPFLW(user)] set [key_name_admin(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
+		log_game("[key_name(user)] set [key_name(attacked_mob)] on fire with [src] at [AREACOORD(user)]")
 
 /obj/item/weldingtool/attack_self(mob/user)
 	if(src.reagents.has_reagent(/datum/reagent/toxin/plasma))
@@ -310,12 +299,14 @@
 	else
 		return ""
 
+TYPEINFO_DEF(/obj/item/weldingtool/largetank)
+	default_materials = list(/datum/material/glass=60)
+
 /obj/item/weldingtool/largetank
 	name = "industrial welding tool"
 	desc = "A slightly larger welder with a larger tank."
 	icon_state = "indwelder"
 	max_fuel = 40
-	custom_materials = list(/datum/material/glass=60)
 
 /obj/item/weldingtool/largetank/flamethrower_screwdriver()
 	return
@@ -333,17 +324,22 @@
 	switched_on(user)
 
 
+TYPEINFO_DEF(/obj/item/weldingtool/mini)
+	default_materials = list(/datum/material/iron=30, /datum/material/glass=10)
+
 /obj/item/weldingtool/mini
 	name = "emergency welding tool"
 	desc = "A miniature welder used during emergencies."
 	icon_state = "miniwelder"
 	max_fuel = 10
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/iron=30, /datum/material/glass=10)
 	change_icons = FALSE
 
 /obj/item/weldingtool/mini/flamethrower_screwdriver()
 	return
+
+TYPEINFO_DEF(/obj/item/weldingtool/abductor)
+	default_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 5000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 
 /obj/item/weldingtool/abductor
 	name = "alien welding tool"
@@ -351,7 +347,6 @@
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "welder"
 	toolspeed = 0.1
-	custom_materials = list(/datum/material/iron = 5000, /datum/material/silver = 2500, /datum/material/plasma = 5000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 	light_system = NO_LIGHT_SUPPORT
 	light_outer_range = 0
 	change_icons = FALSE
@@ -361,13 +356,18 @@
 		reagents.add_reagent(/datum/reagent/fuel, 1)
 	..()
 
+TYPEINFO_DEF(/obj/item/weldingtool/hugetank)
+	default_materials = list(/datum/material/iron=70, /datum/material/glass=120)
+
 /obj/item/weldingtool/hugetank
 	name = "upgraded industrial welding tool"
 	desc = "An upgraded welder based of the industrial welder."
 	icon_state = "upindwelder"
 	inhand_icon_state = "upindwelder"
 	max_fuel = 80
-	custom_materials = list(/datum/material/iron=70, /datum/material/glass=120)
+
+TYPEINFO_DEF(/obj/item/weldingtool/experimental)
+	default_materials = list(/datum/material/iron = 1000, /datum/material/glass = 500, /datum/material/plasma = 1500, /datum/material/uranium = 200)
 
 /obj/item/weldingtool/experimental
 	name = "experimental welding tool"
@@ -375,7 +375,6 @@
 	icon_state = "exwelder"
 	inhand_icon_state = "exwelder"
 	max_fuel = 40
-	custom_materials = list(/datum/material/iron = 1000, /datum/material/glass = 500, /datum/material/plasma = 1500, /datum/material/uranium = 200)
 	change_icons = 0
 	can_off_process = 1
 	light_outer_range = 1

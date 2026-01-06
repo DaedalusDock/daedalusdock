@@ -70,8 +70,8 @@
 /mob/living/basic/cow/proc/set_tip_react_blackboard(mob/living/carbon/tipper)
 	if(!HAS_TRAIT_FROM(src, TRAIT_IMMOBILIZED, TIPPED_OVER) || !ai_controller)
 		return
-	ai_controller.blackboard[BB_BASIC_MOB_TIP_REACTING] = TRUE
-	ai_controller.blackboard[BB_BASIC_MOB_TIPPER] = tipper
+	ai_controller.set_blackboard_key(BB_BASIC_MOB_TIP_REACTING, TRUE)
+	ai_controller.set_blackboard_key(BB_BASIC_MOB_TIPPER, tipper)
 
 /datum/ai_controller/basic_controller/cow
 	blackboard = list(
@@ -81,7 +81,7 @@
 
 	ai_traits = STOP_MOVING_WHEN_PULLED
 	ai_movement = /datum/ai_movement/basic_avoidance
-	idle_behavior = /datum/idle_behavior/idle_random_walk
+	default_behavior = /datum/ai_behavior/idle_random_walk
 	planning_subtrees = list(
 		/datum/ai_planning_subtree/tip_reaction,
 		/datum/ai_planning_subtree/random_speech/cow,
@@ -151,7 +151,7 @@
 
 /datum/ai_controller/basic_controller/cow/moonicorn
 	blackboard = list(
-		BB_TARGETTING_DATUM = new /datum/targetting_datum/basic/moonicorn(),
+		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic/moonicorn,
 		BB_BASIC_MOB_TIP_REACTING = FALSE,
 		BB_BASIC_MOB_TIPPER = null,
 	)
@@ -171,9 +171,9 @@
 	action_cooldown = 2 SECONDS
 
 ///moonicorns will not attack people holding something that could tame them.
-/datum/targetting_datum/basic/moonicorn
+/datum/targeting_strategy/basic/moonicorn
 
-/datum/targetting_datum/basic/moonicorn/can_attack(mob/living/living_mob, atom/the_target)
+/datum/targeting_strategy/basic/moonicorn/can_attack(mob/living/living_mob, atom/the_target)
 	. = ..()
 	if(!.)
 		return FALSE

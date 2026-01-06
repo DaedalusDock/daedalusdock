@@ -5,6 +5,9 @@ RSF
 */
 ///Extracts the related object from an associated list of objects and values, or lists and objects.
 #define OBJECT_OR_LIST_ELEMENT(from, input) (islist(input) ? from[input] : input)
+TYPEINFO_DEF(/obj/item/rsf)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/rsf
 	name = "\improper Rapid-Service-Fabricator"
 	desc = "A device used to rapidly deploy service items."
@@ -20,7 +23,6 @@ RSF
 	density = FALSE
 	anchored = FALSE
 	item_flags = NOBLUDGEON
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	///The current matter count
 	var/matter = 0
 	///The max amount of matter in the device
@@ -31,7 +33,7 @@ RSF
 	var/dispense_cost = 0
 	w_class = WEIGHT_CLASS_NORMAL
 	///An associated list of atoms and charge costs. This can contain a separate list, as long as it's associated item is an object
-	var/list/cost_by_item = list(/obj/item/reagent_containers/food/drinks/drinkingglass = 20,
+	var/list/cost_by_item = list(/obj/item/reagent_containers/cup/glass/drinkingglass = 20,
 								/obj/item/paper = 10,
 								/obj/item/storage/dice = 200,
 								/obj/item/pen = 50,
@@ -115,17 +117,23 @@ RSF
 		return FALSE
 	return TRUE
 
-/obj/item/rsf/afterattack(atom/A, mob/user, proximity)
+/obj/item/rsf/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return
+
 	if(cooldown > world.time)
-		return
-	. = ..()
-	if(!proximity || !is_allowed(A))
-		return
+		return NONE
+
+	if (!is_allowed(interacting_with))
+		return NONE
+
 	if(use_matter(dispense_cost, user))//If we can charge that amount of charge, we do so and return true
 		playsound(loc, 'sound/machines/click.ogg', 10, TRUE)
-		var/atom/meme = new to_dispense(get_turf(A))
+		var/atom/meme = new to_dispense(get_turf(interacting_with))
 		to_chat(user, span_notice("[action_type] [meme.name]..."))
 		cooldown = world.time + cooldowndelay
+		return ITEM_INTERACT_SUCCESS
+	return ITEM_INTERACT_BLOCKING
 
 ///A helper proc. checks to see if we can afford the amount of charge that is passed, and if we can docs the charge from our base, and returns TRUE. If we can't we return FALSE
 /obj/item/rsf/proc/use_matter(charge, mob/user)

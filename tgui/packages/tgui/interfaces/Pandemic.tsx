@@ -1,3 +1,5 @@
+import { Tooltip } from 'tgui-core/components';
+
 import { BooleanLike } from '../../common/react';
 import { useBackend, useLocalState } from '../backend';
 import {
@@ -11,7 +13,6 @@ import {
   Section,
   Stack,
   Tabs,
-  Tooltip,
 } from '../components';
 import { Window } from '../layouts';
 

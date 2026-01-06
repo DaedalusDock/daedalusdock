@@ -3,9 +3,15 @@
 	description = "Serve food, cook meat, keep the crew fed."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
+
+	pinpad_key = "starvation"
+
+	starting_paycheck_amount = 4 // They get a healthy cash injection to start so they can buy produce.
+
 	total_positions = 2
 	spawn_positions = 1
 	exp_granted_type = EXP_TYPE_CREW
+
 	var/cooks = 0 //Counts cooks amount
 	/// List of areas that are counted as the kitchen for the purposes of CQC. Defaults to just the kitchen. Mapping configs can and should override this.
 	var/list/kitchen_areas = list(/area/station/service/kitchen)
@@ -19,29 +25,27 @@
 			SPECIES_HUMAN = /datum/outfit/job/cook,
 			SPECIES_TESHARI = /datum/outfit/job/cook,
 			SPECIES_VOX = /datum/outfit/job/cook,
-			SPECIES_PLASMAMAN = /datum/outfit/job/cook/plasmaman,
 		),
 		"Chef" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cook/chef,
 			SPECIES_TESHARI = /datum/outfit/job/cook/chef,
 			SPECIES_VOX = /datum/outfit/job/cook/chef,
-			SPECIES_PLASMAMAN = /datum/outfit/job/cook/chef/plasmaman,
 		),
 		"Culinary Artist" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cook/chef,
 			SPECIES_TESHARI = /datum/outfit/job/cook/chef,
 			SPECIES_VOX = /datum/outfit/job/cook/chef,
-			SPECIES_PLASMAMAN = /datum/outfit/job/cook/chef/plasmaman,
 		),
 	)
 
+	mind_traits = list(TRAIT_CHEF)
 	liver_traits = list(TRAIT_CULINARY_METABOLISM)
 
 	departments_list = list(
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/reagent_containers/food/condiment/saltshaker, /obj/item/kitchen/rollingpin, /obj/item/clothing/head/chefhat)
+	family_heirlooms = list(/obj/item/reagent_containers/condiment/saltshaker, /obj/item/kitchen/rollingpin, /obj/item/clothing/head/chefhat)
 	rpg_title = "Tavern Chef"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
@@ -77,32 +81,20 @@
 
 	mail_goodies = list(
 		/obj/item/storage/box/ingredients/random = 80,
-		/obj/item/reagent_containers/glass/bottle/caramel = 20,
-		/obj/item/reagent_containers/food/condiment/flour = 20,
-		/obj/item/reagent_containers/food/condiment/rice = 20,
-		/obj/item/reagent_containers/food/condiment/enzyme = 15,
-		/obj/item/reagent_containers/food/condiment/soymilk = 15,
+		/obj/item/reagent_containers/cup/bottle/caramel = 20,
+		/obj/item/reagent_containers/condiment/flour = 20,
+		/obj/item/reagent_containers/condiment/rice = 20,
+		/obj/item/reagent_containers/condiment/enzyme = 15,
+		/obj/item/reagent_containers/condiment/soymilk = 15,
 		/obj/item/knife/kitchen = 4,
 		/obj/item/knife/butcher = 2
 	)
-
-
-/datum/job/cook/award_service(client/winner, award)
-	winner.give_award(award, winner.mob)
-
-	var/datum/venue/restaurant = SSrestaurant.all_venues[/datum/venue/restaurant]
-	var/award_score = restaurant.total_income
-	var/award_status = winner.get_award_status(/datum/award/score/chef_tourist_score)
-	if(award_score > award_status)
-		award_score -= award_status
-	winner.give_award(/datum/award/score/chef_tourist_score, winner.mob, award_score)
-
 
 /datum/outfit/job/cook
 	name = "Cook"
 	jobtype = /datum/job/cook
 
-	id_trim = /datum/id_trim/job/cook
+	id_template = /datum/access_template/job/cook
 	uniform = /obj/item/clothing/under/rank/civilian/chef
 	suit = /obj/item/clothing/suit/apron/chef
 	backpack_contents = list(
@@ -116,22 +108,13 @@
 
 	skillchips = list(/obj/item/skillchip/job/chef)
 
-/datum/outfit/job/cook/plasmaman
-	name = "Cook (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/chef
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/white
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
-
 /* Commenting this out for now, since it overrides alternate job title outfits
 /datum/outfit/job/cook/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()
 	var/datum/job/cook/J = SSjob.GetJobType(jobtype)
 	if(J) // Fix for runtime caused by invalid job being passed
 		if(J.cooks>0)//Cooks
-			id_trim = /datum/id_trim/job/cook
+			id_template = /datum/access_template/job/cook
 			suit = /obj/item/clothing/suit/apron/chef
 			head = /obj/item/clothing/head/soft/mime
 		if(!visualsOnly)
@@ -144,14 +127,5 @@
 
 /datum/outfit/job/cook/chef
 	name = "Chef"
-	id_trim = /datum/id_trim/job/cook/chef
-	suit = /obj/item/clothing/suit/toggle/chef
-
-/datum/outfit/job/cook/chef/plasmaman
-	name = "Chef (Plasmaman)"
-
-	id_trim = /datum/id_trim/job/cook/chef
-	uniform = /obj/item/clothing/under/plasmaman/chef
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/white
+	id_template = /datum/access_template/job/cook/chef
 	suit = /obj/item/clothing/suit/toggle/chef

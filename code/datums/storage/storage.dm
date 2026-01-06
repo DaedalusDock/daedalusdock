@@ -157,14 +157,14 @@
 	RegisterSignal(parent, COMSIG_MOUSEDROP_ONTO, PROC_REF(on_mousedrop_onto))
 	RegisterSignal(parent, COMSIG_MOUSEDROPPED_ONTO, PROC_REF(on_mousedropped_onto))
 	RegisterSignal(parent, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp_act))
-	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
 	RegisterSignal(parent, COMSIG_ITEM_PRE_ATTACK, PROC_REF(on_preattack))
 	RegisterSignal(parent, COMSIG_OBJ_DECONSTRUCT, PROC_REF(on_deconstruct))
 	RegisterSignal(parent, COMSIG_ITEM_ATTACK_SELF, PROC_REF(mass_empty))
 	RegisterSignal(parent, list(COMSIG_CLICK_ALT, COMSIG_ATOM_ATTACK_GHOST, COMSIG_ATOM_ATTACK_HAND_SECONDARY), PROC_REF(open_storage_on_signal))
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY_SECONDARY, PROC_REF(open_storage_attackby_secondary))
-	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(close_distance))
+	RegisterSignal(parent, COMSIG_MOVABLE_MOVED, PROC_REF(update_viewability))
 	RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, PROC_REF(update_actions))
+	RegisterSignal(parent, COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED, PROC_REF(contents_changed_w_class))
 
 /datum/storage/proc/on_deconstruct()
 	SIGNAL_HANDLER
@@ -192,8 +192,12 @@
 		return
 
 	gone.item_flags &= ~IN_STORAGE
+
 	remove_and_refresh(gone)
 	gone.on_exit_storage(src)
+
+	SEND_SIGNAL(parent, COMSIG_ATOM_REMOVED_ITEM, gone)
+	SEND_SIGNAL(src, COMSIG_STORAGE_REMOVED_ITEM, gone)
 
 	parent.update_appearance()
 
@@ -214,7 +218,8 @@
 	if(isnull(new_real_loc))
 		return
 
-	new_real_loc.flags_1 |= HAS_DISASSOCIATED_STORAGE_1
+	if(parent != new_real_loc)
+		new_real_loc.flags_1 |= HAS_DISASSOCIATED_STORAGE_1
 
 	RegisterSignal(new_real_loc, COMSIG_ATOM_ENTERED, PROC_REF(handle_enter))
 	RegisterSignal(new_real_loc, COMSIG_ATOM_EXITED, PROC_REF(handle_exit))
@@ -301,7 +306,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	thing.plane = initial(thing.plane)
 	thing.mouse_opacity = initial(thing.mouse_opacity)
 	thing.screen_loc = null
-	if(thing.maptext)
+	if(numerical_stacking && thing.maptext)
 		thing.maptext = ""
 
 /**
@@ -338,39 +343,39 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	if(!check_weight_class(to_insert))
 		if(messages && user)
-			to_chat(user, span_warning("\The [to_insert] is too big for \the [parent]!"))
+			to_chat(user, span_warning("\The [to_insert] is too large for \the [parent]."))
 		return FALSE
 
 	if(!check_slots_full(to_insert))
 		if(messages && user)
-			to_chat(user, span_warning("\The [to_insert] can't fit into \the [parent]! Make some space!"))
+			to_chat(user, span_warning("\The [to_insert] cannot fit into \the [parent]."))
 		return FALSE
 
 	if(!check_total_weight(to_insert))
 		if(messages && user)
-			to_chat(user, span_warning("\The [to_insert] can't fit into \the [parent]! Make some space!"))
+			to_chat(user, span_warning("\The [to_insert] cannot fit into \the [parent]."))
 		return FALSE
 
 	if(!check_typecache_for_item(to_insert))
 		if(messages && user)
-			to_chat(user, span_warning("\The [parent] cannot hold \the [to_insert]!"))
+			to_chat(user, span_warning("\The [parent] cannot hold \the [to_insert]."))
 		return FALSE
 
 	if(is_type_in_typecache(to_insert, cant_hold) || HAS_TRAIT(to_insert, TRAIT_NO_STORAGE_INSERT) || (can_hold_trait && !HAS_TRAIT(to_insert, can_hold_trait)))
 		if(messages && user)
-			to_chat(user, span_warning("\The [parent] cannot hold \the [to_insert]!"))
+			to_chat(user, span_warning("\The [parent] cannot hold \the [to_insert]."))
 		return FALSE
 
 	if(HAS_TRAIT(to_insert, TRAIT_NODROP))
 		if(messages)
-			to_chat(user, span_warning("\The [to_insert] is stuck on your hand!"))
+			to_chat(user, span_warning("\The [to_insert] is stuck on your hand."))
 		return FALSE
 
 	var/datum/storage/biggerfish = parent.loc.atom_storage // this is valid if the container our parent is being held in is a storage item
 
 	if(biggerfish && biggerfish.max_specific_storage < max_specific_storage)
 		if(messages && user)
-			to_chat(user, span_warning("[to_insert] can't fit in [parent] while [parent.loc] is in the way!"))
+			to_chat(user, span_warning("[to_insert] cannot fit in [parent] while [parent.loc] is in the way."))
 		return FALSE
 
 	if(isitem(parent))
@@ -408,7 +413,12 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	to_insert.forceMove(real_location)
 	item_insertion_feedback(user, to_insert, override)
 	real_location.update_appearance()
+
+	SEND_SIGNAL(parent, COMSIG_ATOM_STORED_ITEM, to_insert, user, force)
 	SEND_SIGNAL(src, COMSIG_STORAGE_INSERTED_ITEM, to_insert, user, override, force)
+
+	if(get(real_location, /mob) != user)
+		to_insert.do_pickup_animation(real_location, get_turf(user))
 	return TRUE
 
 /**
@@ -449,15 +459,17 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 /// Checks if the total weight would exceed our capacity when adding the item.
 /datum/storage/proc/check_total_weight(obj/item/to_insert)
-	var/total_weight = to_insert.w_class
-
-	for(var/obj/item/thing in real_location)
-		total_weight += thing.w_class
-
-	if(total_weight > max_total_storage)
+	if((get_total_weight() + (to_insert?.w_class || 0)) > max_total_storage)
 		return FALSE
 
 	return TRUE
+
+/// Returns a sum of all of our content's weight classes.
+/datum/storage/proc/get_total_weight()
+	var/total_weight = 0
+	for(var/obj/item/thing in real_location)
+		total_weight += thing.w_class
+	return total_weight
 
 /// Checks if the item is in our can_hold list.
 /datum/storage/proc/check_typecache_for_item(obj/item/to_insert)
@@ -542,10 +554,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	if(istype(thing) && ismob(parent.loc))
 		var/mob/mobparent = parent.loc
-		thing.dropped(mobparent, TRUE)
+		thing.unequipped(mobparent, TRUE)
 
 	if(newLoc)
-		reset_item(thing)
 		thing.forceMove(newLoc)
 
 		if(rustle_sound && !silent)
@@ -557,12 +568,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	if(animated)
 		animate_parent()
-
-	refresh_views()
-
-	if(isobj(parent))
-		parent.update_appearance()
-
 	return TRUE
 
 /**
@@ -593,7 +598,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  */
 /datum/storage/proc/remove_type(type, atom/destination, amount = INFINITY, check_adjacent = FALSE, force = FALSE, mob/user, list/inserted)
 	// Make sure whoever is reaching, can reach.
-	if(!force && check_adjacent && (!user || !user.CanReach(destination) || !user.CanReach(real_location)))
+	if(!force && check_adjacent && (!user || !destination.IsReachableBy(user) || !can_be_reached_by(user)))
 		return FALSE
 
 	var/list/taking = typecache_filter_list(real_location.contents, typecacheof(type))
@@ -735,10 +740,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
  * @param mob/user the user who is dumping the contents
  */
 /datum/storage/proc/dump_content_at(atom/dest_object, mob/user)
-	if(locked || (dest_object == parent))
-		return
-
-	if(!user.CanReach(parent) || !user.CanReach(dest_object))
+	if(!can_dump_contents(dest_object, user))
 		return
 
 	if(SEND_SIGNAL(dest_object, COMSIG_STORAGE_DUMP_CONTENT, real_location, user) & STORAGE_DUMP_HANDLED)
@@ -768,6 +770,18 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 
 	remove_all(dump_loc)
 
+/datum/storage/proc/can_dump_contents(atom/destination, mob/user)
+	if(locked || (destination == parent))
+		return FALSE
+
+	if(!can_be_reached_by(user) || !destination.IsReachableBy(user))
+		return FALSE
+
+	return TRUE
+
+/datum/storage/proc/is_reachable(mob/user)
+	return parent.IsReachableBy(user)
+
 /// Signal handler for whenever something gets mouse-dropped onto us.
 /datum/storage/proc/on_mousedropped_onto(datum/source, obj/item/dropping, mob/user)
 	SIGNAL_HANDLER
@@ -786,19 +800,6 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		return
 
 	attempt_insert(dropping, user)
-
-/// Signal handler for whenever we're attacked by an object.
-/datum/storage/proc/on_attackby(datum/source, obj/item/thing, mob/user, params)
-	SIGNAL_HANDLER
-
-	if(!thing.attackby_storage_insert(src, parent, user))
-		return FALSE
-
-	if(iscyborg(user))
-		return TRUE
-
-	attempt_insert(thing, user)
-	return TRUE
 
 /// Signal handler for whenever we're attacked by a mob.
 /datum/storage/proc/on_attack(datum/source, mob/user, list/modifiers)
@@ -826,6 +827,15 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		var/try_quickdraw = LAZYACCESS(modifiers, ALT_CLICK)
 		INVOKE_ASYNC(src, PROC_REF(open_storage), user, try_quickdraw)
 		return TRUE
+
+/// Called directly from the attack chain if [insert_on_attack] is TRUE.
+/// Handles inserting an item into the storage when clicked.
+/datum/storage/proc/item_interact_insert(mob/living/user, obj/item/thing)
+	if(iscyborg(user))
+		return ITEM_INTERACT_BLOCKING
+
+	attempt_insert(thing, user)
+	return ITEM_INTERACT_SUCCESS
 
 /// Generates the numbers on an item in storage to show stacking.
 /datum/storage/proc/process_numerical_display()
@@ -889,7 +899,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		for(var/obj/item/item in contents_for_display())
 			item.mouse_opacity = MOUSE_OPACITY_OPAQUE
 			item.screen_loc = "[current_x]:[screen_pixel_x],[current_y]:[screen_pixel_y]"
-			item.maptext = ""
+			if(numerical_stacking)
+				item.maptext = ""
 			item.plane = ABOVE_HUD_PLANE
 
 			current_x++
@@ -922,7 +933,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	return COMPONENT_NO_AFTERATTACK
 
 /// Opens the storage to the mob, showing them the contents to their UI.
-/datum/storage/proc/open_storage(mob/to_show, performing_quickdraw)
+/datum/storage/proc/open_storage(mob/to_show, performing_quickdraw, skip_canreach = FALSE)
 	if(isobserver(to_show))
 		if(to_show.active_storage == src)
 			hide_contents(to_show)
@@ -930,7 +941,7 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			show_contents(to_show)
 		return FALSE
 
-	if(!to_show.CanReach(parent))
+	if(!skip_canreach && !can_be_reached_by(to_show))
 		to_chat(to_show, span_warning("You cannot reach [parent]."))
 		return FALSE
 
@@ -951,6 +962,8 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 		if(open_sound)
 			playsound(parent, open_sound, 50, TRUE, -5)
 
+		if(!silent && isturf(real_location.loc))
+			to_show.animate_interact(real_location)
 		return TRUE
 
 	var/obj/item/to_remove = get_quickdraw_item()
@@ -963,7 +976,9 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	INVOKE_ASYNC(src, PROC_REF(put_in_hands_async), to_show, to_remove)
 
 	if(!silent)
-		to_show.visible_message(span_warning("[to_show] draws [to_remove] from [parent]!"), span_notice("You draw [to_remove] from [parent]."))
+		to_show.visible_message(span_warning("[to_show] draws [to_remove] from [parent]."))
+		if(isturf(real_location.loc))
+			to_show.animate_interact(real_location)
 
 	return TRUE
 
@@ -978,12 +993,12 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 			to_chat(toshow, span_notice("You fumble for [toremove] and it falls on the floor."))
 		return TRUE
 
-/// Signal handler for whenever a mob walks away with us, close if they can't reach us.
-/datum/storage/proc/close_distance(datum/source)
+/// Close the storage for people who can no longer see it.
+/datum/storage/proc/update_viewability(datum/source)
 	SIGNAL_HANDLER
 
 	for(var/mob/user in can_see_contents())
-		if (!user.CanReach(parent))
+		if (!can_be_reached_by(user))
 			hide_contents(user)
 
 /// Close the storage UI for everyone viewing us.
@@ -1062,6 +1077,10 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 	if(!length(is_using) && close_sound)
 		playsound(parent, close_sound, 50, TRUE, -5)
 
+/// Relay for parent.IsReachableBy
+/datum/storage/proc/can_be_reached_by(mob/user)
+	return parent.IsReachableBy(user)
+
 /datum/storage/proc/action_trigger(datum/signal_source, datum/action/source)
 	SIGNAL_HANDLER
 
@@ -1089,3 +1108,19 @@ GLOBAL_LIST_EMPTY(cached_storage_typecaches)
 /datum/storage/proc/animate_parent()
 	animate(parent, time = 1.5, loop = 0, transform = matrix().Scale(1.07, 0.9))
 	animate(time = 2, transform = null)
+
+/// Signal proc for [COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED] to drop items out of our storage if they're suddenly too heavy.
+/datum/storage/proc/contents_changed_w_class(datum/source, obj/item/changed, old_w_class, new_w_class)
+	SIGNAL_HANDLER
+
+	if(check_weight_class(changed) && check_total_weight()) // The object is not passed because we're already containing it and it's weight is accounted for.
+		return
+
+	if(!attempt_remove(changed, parent.drop_location()))
+		return
+
+	changed.visible_message(
+		span_warning("[changed] falls out of [parent]."),
+		blind_message = span_hear("You hear an object hit the floor."),
+		vision_distance = COMBAT_MESSAGE_RANGE,
+	)

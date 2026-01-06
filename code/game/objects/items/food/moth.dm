@@ -33,6 +33,8 @@
 	foodtypes = VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/toasted_seeds
 	name = "toasted seeds"
 	desc = "While they're far from filling, toasted seeds are a popular snack amongst the moths. Salt, sugar, or even some more exotic flavours may be added for some extra pep."
@@ -52,6 +54,8 @@
 	tastes = list("seeds" = 1, "nuts" = 1, "chocolate" = 1, "salt" = 1, "popcorn" = 1, "potato" = 1)
 	foodtypes = GRAIN | NUTS | VEGETABLES | SUGAR
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/refreshed/plus)
 
 /obj/item/food/mothic_pizza_dough
 	name = "mothic pizza dough"
@@ -74,6 +78,8 @@
 	foodtypes = DAIRY | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/sweet_chili_cabbage_wrap
 	name = "sweet chili cabbage wrap"
 	desc = "Grilled cheese and salad in a cabbage wrap, topped with delicious sweet chili sauce."
@@ -84,6 +90,8 @@
 	foodtypes = DAIRY | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/loaded_curds
 	name = "ozlsettitæloskekllön ede pommes" //ozlsettit = overflowing (ozl = over, sett = flow, it = ing), ælo = cheese, skekllön = curds (skeklit = squeaking, llön = pieces/bits), ede = and, pommes = fries (hey, France!)
 	desc = "What's better than cheese curds? Deep fried cheese curds! What's better than deep fried cheese curds? Deep fried cheese curds with chili (and more cheese) on top! And what's better than that? Putting it on fries!"
@@ -93,6 +101,8 @@
 	tastes = list("cheese" = 1, "oil" = 1, "chili" = 1, "fries" = 1)
 	foodtypes = DAIRY | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized/plus)
 
 /obj/item/food/baked_cheese
 	name = "baked cheese wheel"
@@ -114,6 +124,8 @@
 	tastes = list("cheese" = 1, "bread" = 1)
 	foodtypes = DAIRY | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized/plus)
 
 //Baked Green Lasagna at the Whistlestop Cafe
 /obj/item/food/raw_green_lasagne
@@ -140,6 +152,8 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	burns_in_oven = TRUE
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/green_lasagne/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/green_lasagne_slice, 6, 30, table_required = TRUE)
 
@@ -152,6 +166,8 @@
 	tastes = list("cheese" = 1, "pesto" = 1, "pasta" = 1)
 	foodtypes = VEGETABLES | GRAIN | NUTS
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/raw_baked_rice
 	name = "big rice pan"
@@ -176,6 +192,8 @@
 	foodtypes = VEGETABLES | GRAIN
 	w_class = WEIGHT_CLASS_NORMAL
 	burns_in_oven = TRUE
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/big_baked_rice/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/lil_baked_rice, 6, 30, table_required = TRUE)
@@ -255,6 +273,8 @@
 	foodtypes = DAIRY | GRAIN | FRIED
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/raw_stuffed_peppers
 	name = "raw voltölpaprik" //voltöl = stuffed (vol = full, töl = push), paprik (from German paprika) = bell pepper
 	desc = "A pepper with the top removed and a herby cheese and onion mix stuffed inside. Probably shouldn't be eaten raw."
@@ -279,6 +299,8 @@
 	w_class = WEIGHT_CLASS_SMALL
 	burns_in_oven = TRUE
 
+	food_buffs = list(/datum/status_effect/food/energized/plus)
+
 /obj/item/food/fueljacks_lunch
 	name = "\improper Fueljack's lunch"
 	desc = "A dish made from fried vegetables, popular amongst fueljacks- the brave moths who operate the fuel skimmers to keep the fleet running. Given the constant need for fuel, and the limited windows in which the stars align for harvesting (literally), they'll often take packed meals to save on trips to the mess, which they heat using the fresh canisters."
@@ -289,6 +311,8 @@
 	foodtypes = DAIRY | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/mac_balls
 	name = "macheronirölen"
 	desc = "Fried balls of macaroni cheese dipped in corn batter, served with tomato sauce. A popular snack across the galaxy, and especially on the Mothic Fleet- where they tend to use Ready-Donk as the base."
@@ -298,6 +322,8 @@
 	tastes = list("pasta" = 1, "cornbread" = 1, "cheese" = 1)
 	foodtypes = DAIRY | VEGETABLES | FRIED | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/sustenance_bar
 	name = "surplus fleet PSB"
@@ -369,6 +395,8 @@
 	foodtypes = VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/soup/moth_bean_stew
 	name = "prickeldröndolhaskl" //prickeld = spicy, röndol = bean, haskl = stew
 	desc = "A spicy bean stew with lots of veggies, commonly served aboard the fleet as a filling and satisfying meal with rice or bread."
@@ -378,6 +406,8 @@
 	tastes = list("beans" = 1, "cabbage" = 1, "spicy sauce" = 1)
 	foodtypes = VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/soup/moth_oat_stew
 	name = "häfmisklhaskl" //häfmiskl = oat (häf from German hafer meaning oat, miskl meaning seed), haskl = stew
@@ -389,6 +419,8 @@
 	foodtypes = VEGETABLES | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/soup/moth_fire_soup
 	name = "tömpröttkrakklmæsch" //tömprött = heart (tömp = thump, rött = muscle), krakkl = fire, mæsch = soup
 	desc = "Tömpröttkrakklmæsch, or heartburn soup, is a cold soup dish that originated amongst the jungle moths, and is named for two things- its rosy pink colour, and its scorchingly hot chilli heat."
@@ -398,6 +430,8 @@
 	tastes = list("love" = 1, "hate" = 1)
 	foodtypes = VEGETABLES | DAIRY
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/soup/rice_porridge
 	name = "rice porridge"
@@ -409,6 +443,8 @@
 	foodtypes = GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/soup/hua_mulan_congee
 	name = "\improper Hua Mulan congee"
 	desc = "Nobody is quite sure why this smiley bowl of rice porridge with eggs and bacon is named after a mythological Chinese figure- it's just sorta what it's always been called."
@@ -418,6 +454,8 @@
 	tastes = list("bacon" = 1, "eggs" = 1)
 	foodtypes = MEAT | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/soup/toechtauese_rice_porridge
 	name = "töchtaüse rice porridge"
@@ -429,6 +467,8 @@
 	foodtypes = GRAIN | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/soup/cornmeal_porridge
 	name = "cornmeal porridge"
 	desc = "A plate of cornmeal porridge. It's more flavourful than most porridges, and makes a good base for other flavours, too."
@@ -438,6 +478,8 @@
 	tastes = list("cornmeal" = 1)
 	foodtypes = GRAIN
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/soup/cheesy_porridge //milk, polenta, firm cheese, curd cheese, butter
 	name = "cheesy porridge"
@@ -449,6 +491,8 @@
 	foodtypes = DAIRY | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/soup/fried_eggplant_polenta
 	name = "fried eggplant and polenta"
 	desc = "Polenta loaded with cheese, served with a few discs of fried eggplant and some tomato sauce. Lække!"
@@ -458,6 +502,8 @@
 	tastes = list("cornmeal" = 1, "cheese" = 1, "eggplant" = 1, "tomato sauce" = 1)
 	foodtypes = DAIRY | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 //Salads: the bread and butter of mothic cuisine
 /obj/item/food/caprese_salad
@@ -470,6 +516,8 @@
 	foodtypes = DAIRY | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/salad/fleet_salad
 	name = "lörtonknusksolt" //lörton = fleet, knusksolt = salad (knusk = crisp, solt = bowl)
 	desc = "Lörtonknusksolt, or Fleet Salad in GalCom, is commonly seen at the snack bars and canteens aboard the Fleet. The grilled cheese makes it particularly filling, while the croutons provide a crunchy kick."
@@ -479,6 +527,8 @@
 	tastes = list("cheese" = 1, "salad" = 1, "bread" = 1)
 	foodtypes = DAIRY | VEGETABLES | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/salad/cotton_salad
 	name = "flöfrölenknusksolt"
@@ -490,6 +540,8 @@
 	foodtypes = VEGETABLES | CLOTH
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/salad/moth_kachumbari
 	name = "\improper Kæniatknusksolt" //Kæniat = Kenyan, knusksolt = salad
 	desc = "Originally a Kenyan recipe, kachumbari is yet another cross-cultural favourite from humanity that has been adopted by the moths- though some ingredients have been necessarily changed."
@@ -499,6 +551,8 @@
 	tastes = list("onion" = 1, "tomato" = 1, "corn" = 1, "chili" = 1, "cilantro" = 1)
 	foodtypes = VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 //Pizza
 /obj/item/food/raw_mothic_margherita
@@ -515,7 +569,7 @@
 
 /obj/item/food/pizza/mothic_margherita
 	name = "mothic margherita pizza"
-	desc = "A key characteristic of mothic pizza is that it's sold by weight- single slices are available for discretionary credits, while a meal ticket can buy a whole pie."
+	desc = "A key characteristic of mothic pizza is that it's sold by weight- single slices are available for discretionary marks, while a meal ticket can buy a whole pie."
 	icon = 'icons/obj/food/moth.dmi'
 	icon_state = "margherita_pizza"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 25, /datum/reagent/consumable/nutriment/protein = 8, /datum/reagent/consumable/tomatojuice = 6, /datum/reagent/consumable/nutriment/vitamin = 5)
@@ -524,6 +578,8 @@
 	slice_type = /obj/item/food/pizzaslice/mothic_margherita
 	boxtag = "Margherita alla Moffuchi"
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pizzaslice/mothic_margherita
 	name = "mothic margherita slice"
 	desc = "A slice of mothic margherita pizza, the most humble of pizzas."
@@ -531,6 +587,8 @@
 	icon_state = "margherita_slice"
 	tastes = list("crust" = 1, "tomato" = 1, "cheese" = 1)
 	foodtypes = GRAIN | VEGETABLES | DAIRY
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/raw_mothic_firecracker
 	name = "raw mothic firecracker pizza"
@@ -555,6 +613,8 @@
 	slice_type = /obj/item/food/pizzaslice/mothic_firecracker
 	boxtag = "Vesuvian Firecracker"
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pizzaslice/mothic_firecracker
 	name = "mothic firecracker slice"
 	desc = "A spicy slice of something quite nice."
@@ -562,6 +622,8 @@
 	icon_state = "firecracker_slice"
 	tastes = list("crust" = 1, "chili" = 1, "corn" = 1, "cheese" = 1, "bbq sauce" = 1)
 	foodtypes = GRAIN | VEGETABLES | DAIRY
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/raw_mothic_five_cheese
 	name = "raw mothic five-cheese pizza"
@@ -586,6 +648,8 @@
 	slice_type = /obj/item/food/pizzaslice/mothic_five_cheese
 	boxtag = "Cheeseplosion"
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pizzaslice/mothic_five_cheese
 	name = "mothic five-cheese slice"
 	desc = "It's the cheesiest slice in the galaxy!"
@@ -593,6 +657,8 @@
 	icon_state = "five_cheese_slice"
 	tastes = list("crust" = 1, "cheese" = 1, "more cheese" = 1, "excessive amounts of cheese" = 1)
 	foodtypes = GRAIN | VEGETABLES | DAIRY
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/raw_mothic_white_pie
 	name = "raw mothic white-pie pizza"
@@ -617,6 +683,8 @@
 	slice_type = /obj/item/food/pizzaslice/mothic_white_pie
 	boxtag = "Pane Bianco"
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pizzaslice/mothic_white_pie
 	name = "mothic white-pie slice"
 	desc = "Cheesy, garlicky, herby, delicious!"
@@ -624,6 +692,8 @@
 	icon_state = "white_pie_slice"
 	tastes = list("crust" = 1, "cheese" = 1, "more cheese" = 1, "excessive amounts of cheese" = 1)
 	foodtypes = GRAIN | VEGETABLES | DAIRY
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/raw_mothic_pesto
 	name = "raw mothic pesto pizza"
@@ -648,6 +718,8 @@
 	slice_type = /obj/item/food/pizzaslice/mothic_pesto
 	boxtag = "Presto Pesto"
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pizzaslice/mothic_pesto
 	name = "mothic pesto slice"
 	desc = "A slice of presto pesto pizza."
@@ -655,6 +727,8 @@
 	icon_state = "pesto_slice"
 	tastes = list("crust" = 1, "pesto" = 1, "cheese" = 1)
 	foodtypes = GRAIN | VEGETABLES | DAIRY | NUTS
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/raw_mothic_garlic
 	name = "raw mothic garlic pizzabread"
@@ -679,6 +753,8 @@
 	slice_type = /obj/item/food/pizzaslice/mothic_pesto
 	boxtag = "Garlic Bread alla Moffuchi"
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pizzaslice/mothic_garlic
 	name = "mothic garlic pizzabread slice"
 	desc = "The best combination of oily, garlicky, and crusty known to mothkind."
@@ -686,6 +762,8 @@
 	icon_state = "garlic_slice"
 	tastes = list("dough" = 1, "garlic" = 1, "butter" = 1)
 	foodtypes = GRAIN | VEGETABLES
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 //Bread
 /obj/item/food/bread/corn
@@ -698,6 +776,8 @@
 	foodtypes = GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/bread/corn/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/breadslice/corn, 6, 20)
 
@@ -708,6 +788,8 @@
 	icon_state = "cornbread_slice"
 	foodtypes = GRAIN
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 //Sweets
 /obj/item/food/moth_cheese_cakes
@@ -720,6 +802,8 @@
 	foodtypes = SUGAR | FRIED | DAIRY | GRAIN
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/cake/mothmallow
 	name = "mothmallow tray"
 	desc = "A light and fluffy vegan marshmallow flavoured with vanilla and rum and topped with soft chocolate. These are known to the moths as höllflöfstarkken: cloud squares." //höllflöf = cloud (höll = wind, flöf = cotton), starkken = squares
@@ -728,6 +812,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 15, /datum/reagent/consumable/sugar = 10)
 	tastes = list("vanilla" = 1, "clouds" = 1, "chocolate" = 1)
 	foodtypes = VEGETABLES | SUGAR
+
+	food_buffs = list(/datum/status_effect/food/refreshed)
 
 /obj/item/food/cake/mothmallow/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/cakeslice/mothmallow, 6, 20)
@@ -741,6 +827,8 @@
 	tastes = list("vanilla" = 1, "clouds" = 1, "chocolate" = 1)
 	foodtypes = VEGETABLES | SUGAR
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/soup/red_porridge
 	name = "eltsløsk ül a priktæolk" //eltsløsk = red porridge, ül a = with, prikt = sour, æolk = cream
 	desc = "Red porridge with yoghurt. The name and vegetable ingredients obscure the sweet nature of the dish, which is commonly served as a dessert aboard the fleet."
@@ -749,6 +837,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment/vitamin = 4, /datum/reagent/consumable/sugar = 6)
 	tastes = list("sweet beets" = 1, "sugar" = 1, "sweetened yoghurt" = 1)
 	foodtypes = VEGETABLES | SUGAR | DAIRY
+
+	food_buffs = list(/datum/status_effect/food/refreshed)
 
 //misc food
 /obj/item/food/bubblegum/wake_up
@@ -762,7 +852,7 @@
 	name = "\improper Activin 12 Hour medicated gum packet"
 	desc = "Stay awake during long shifts in the maintenance tunnels with Activin! The approval seal of the Mothic Nomad Fleet is emblazoned on the packaging, alongside a litany of health and safety disclaimers in both Mothic and Galactic Common."
 	icon_state = "bubblegum_wake_up"
-	custom_premium_price = PAYCHECK_EASY * 1.5
+	custom_premium_price = PAYCHECK_ASSISTANT * 0.4
 
 /obj/item/storage/box/gum/wake_up/examine_more(mob/user)
 	. = ..()

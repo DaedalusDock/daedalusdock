@@ -23,12 +23,14 @@
 	log_message("scanned [key_name(user)]", LOG_MECHCOMP)
 	return TRUE
 
-/obj/item/mcobject/messaging/hand_scanner/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
+/obj/item/mcobject/messaging/hand_scanner/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!isclosedturf(target))
-		return
+		return NONE
 
 	if(!user.dropItemToGround(src, silent = TRUE))
-		return
+		return NONE
 
 	forceMove(target)
+	return ITEM_INTERACT_SUCCESS

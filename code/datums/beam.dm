@@ -127,7 +127,7 @@
 			II.DrawBox(null,1,(length-N),32,32)//in the future if you want to improve this, remove the drawbox and instead use a 513 filter to cut away at the final object's icon
 			X.icon = II
 		else
-			X.vis_contents += visuals
+			X.add_viscontents(visuals)
 		X.transform = rot_matrix
 
 		//Calculate pixel offsets (If necessary)

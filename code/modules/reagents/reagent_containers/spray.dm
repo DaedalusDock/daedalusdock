@@ -13,6 +13,10 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_SMALL
 	throw_range = 7
+	amount_per_transfer_from_this = 5
+	volume = 250
+	possible_transfer_amounts = list(5,10)
+
 	var/stream_mode = FALSE //whether we use the more focused mode
 	var/current_range = 3 //the range of tiles the sprayer will reach.
 	var/spray_range = 3 //the range of tiles the sprayer will reach when in spray mode.
@@ -20,38 +24,51 @@
 	var/can_fill_from_container = TRUE
 	/// Are we able to toggle between stream and spray modes, which change the distance and amount sprayed?
 	var/can_toggle_range = TRUE
-	amount_per_transfer_from_this = 5
-	volume = 250
-	possible_transfer_amounts = list(5,10)
 
-/obj/item/reagent_containers/spray/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(istype(target, /obj/structure/sink) || istype(target, /obj/structure/janitorialcart) || istype(target, /obj/machinery/hydroponics))
-		return
+	var/spray_sound = 'sound/effects/spritz.ogg'
 
-	if((target.is_drainable() && !target.is_refillable()) && (get_dist(src, target) <= 1) && can_fill_from_container)
+/obj/item/reagent_containers/spray/ranged_interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	return try_spray(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
+
+/obj/item/reagent_containers/spray/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	// This is a hack to make spray bottles fillable from / transferable to these sources
+	// However it can be completely removed when these objects are updated to use the new interaction system
+	// (because the desired effect will just work out of the box)
+	if(istype(interacting_with, /obj/structure/sink) || istype(interacting_with, /obj/structure/janitorialcart) || istype(interacting_with, /obj/machinery/hydroponics))
+		return NONE
+
+	// Always skip on storage and tables
+	if(ATOM_HAS_FIRST_CLASS_INTERACTION(interacting_with))
+		return NONE
+
+	return try_spray(interacting_with, user) ? ITEM_INTERACT_SUCCESS : ITEM_INTERACT_BLOCKING
+
+/obj/item/reagent_containers/spray/proc/try_spray(atom/target, mob/living/user)
+	var/adjacent = user.Adjacent(target)
+
+	if((target.is_drainable() && !target.is_refillable()) && adjacent && can_fill_from_container)
 		if(!target.reagents.total_volume)
 			to_chat(user, span_warning("[target] is empty."))
-			return
+			return FALSE
 
 		if(reagents.holder_full())
 			to_chat(user, span_warning("[src] is full."))
-			return
+			return FALSE
 
 		var/trans = target.reagents.trans_to(src, 50, transfered_by = user) //transfer 50u , using the spray's transfer amount would take too long to refill
 		to_chat(user, span_notice("You fill \the [src] with [trans] units of the contents of \the [target]."))
-		return
+		return FALSE
 
 	if(reagents.total_volume < amount_per_transfer_from_this)
 		to_chat(user, span_warning("Not enough left!"))
-		return
+		return FALSE
 
 	spray(target, user)
 
-	playsound(src.loc, 'sound/effects/spray2.ogg', 50, TRUE, -6)
+	playsound(src.loc, spray_sound, 50, TRUE, -6)
 	user.changeNext_move(CLICK_CD_RANGE*2)
 	user.newtonian_move(get_dir(target, user))
-	return
+	return TRUE
 
 /// Handles creating a chem puff that travels towards the target atom, exposing reagents to everything it hits on the way.
 /obj/item/reagent_containers/spray/proc/spray(atom/target, mob/user)
@@ -199,6 +216,7 @@
 	stream_range = 4
 	amount_per_transfer_from_this = 5
 	list_reagents = list(/datum/reagent/consumable/condensedcapsaicin = 50)
+	spray_sound = 'sound/effects/spray2.ogg'
 
 /obj/item/reagent_containers/spray/pepper/empty //for fabricator printing
 	list_reagents = null
@@ -208,9 +226,9 @@
 	return OXYLOSS
 
 // Fix pepperspraying yourself
-/obj/item/reagent_containers/spray/pepper/afterattack(atom/A as mob|obj, mob/user)
-	if (A.loc == user)
-		return
+/obj/item/reagent_containers/spray/pepper/try_spray(atom/target, mob/living/user)
+	if (target.loc == user)
+		return FALSE
 	. = ..()
 
 //water flower
@@ -293,9 +311,9 @@
 	amount_per_transfer_from_this = 10
 	volume = 600
 
-/obj/item/reagent_containers/spray/chemsprayer/afterattack(atom/A as mob|obj, mob/user)
+/obj/item/reagent_containers/spray/chemsprayer/try_spray(atom/target, mob/living/user)
 	// Make it so the bioterror spray doesn't spray yourself when you click your inventory items
-	if (A.loc == user)
+	if (target.loc == user)
 		return
 	. = ..()
 
@@ -312,7 +330,7 @@
 		..(the_targets[i], user)
 
 /obj/item/reagent_containers/spray/chemsprayer/bioterror
-	list_reagents = list(/datum/reagent/toxin/sodium_thiopental = 100, /datum/reagent/toxin/lexorin = 100, /datum/reagent/toxin/venom = 100, /datum/reagent/consumable/condensedcapsaicin = 100, /datum/reagent/toxin/initropidril = 100, /datum/reagent/toxin/polonium = 100)
+	list_reagents = list(/datum/reagent/toxin/sodium_thiopental = 100, /datum/reagent/toxin/lexorin = 100, /datum/reagent/toxin/venom = 100, /datum/reagent/consumable/condensedcapsaicin = 100, /datum/reagent/medicine/adenosine = 100, /datum/reagent/toxin/polonium = 100)
 
 
 /obj/item/reagent_containers/spray/chemsprayer/janitor
@@ -368,7 +386,7 @@
 	spray_range = 4
 	stream_range = 2
 	volume = 100
-	custom_premium_price = PAYCHECK_HARD * 2
+	custom_premium_price = PAYCHECK_ASSISTANT * 3
 
 /obj/item/reagent_containers/spray/syndicate/Initialize(mapload)
 	. = ..()

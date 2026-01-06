@@ -28,23 +28,8 @@
 	///List of all Human DNA scanned with this sampler.
 	var/list/stored_dna_human = list()
 
-/obj/item/dna_probe/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-	if(!proximity_flag || !target)
-		return
-
-	if((allowed_scans & DNA_PROBE_SCAN_PLANTS) && istype(target, /obj/machinery/hydroponics))
-		var/obj/machinery/hydroponics/hydro_tray = target
-		if(!hydro_tray.myseed)
-			return
-		if(stored_dna_plants[hydro_tray.myseed.type])
-			to_chat(user, span_notice("Plant data already present in local storage."))
-			return
-		if(hydro_tray.plant_status != HYDROTRAY_PLANT_HARVESTABLE) // So it's bit harder.
-			to_chat(user, span_alert("Plant needs to be ready to harvest to perform full data scan.")) //Because space dna is actually magic
-			return
-		stored_dna_plants[hydro_tray.myseed.type] = TRUE
-		to_chat(user, span_notice("Plant data added to local storage."))
+/obj/item/dna_probe/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
 
 	if(allowed_scans & DNA_PROBE_SCAN_ANIMALS)
 		var/static/list/non_simple_animals = typecacheof(list(/mob/living/carbon/alien))
@@ -60,6 +45,7 @@
 				return
 			stored_dna_animal[living_target.type] = TRUE
 			to_chat(user, span_notice("Animal data added to local storage."))
+			return ITEM_INTERACT_SUCCESS
 
 	if((allowed_scans & DNA_PROBE_SCAN_HUMANS) && ishuman(target))
 		var/mob/living/carbon/human/human_target = target
@@ -71,7 +57,7 @@
 			return
 		stored_dna_human[human_target.dna.unique_identity] = TRUE
 		to_chat(user, span_notice("Humanoid data added to local storage."))
-
+		return ITEM_INTERACT_SUCCESS
 
 #define CARP_MIX_DNA_TIMER (15 SECONDS)
 

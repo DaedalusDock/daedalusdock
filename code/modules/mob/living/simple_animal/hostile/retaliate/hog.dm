@@ -5,7 +5,7 @@
 	icon_living = "hog"
 	icon_dead = "hog_dead"
 	icon_gib = "brownbear_gib"
-	speed = 0
+	move_delay_modifier = 0
 	maxHealth = 80
 	health = 80
 	harm_intent_damage = 5
@@ -86,7 +86,7 @@
 	overlay.icon = 'icons/mob/animal.dmi'
 	overlay.icon_state = "hog_alert_overlay"
 	overlay.layer += 1
-	vis_contents += overlay
+	add_viscontents(overlay)
 	QDEL_IN(overlay, 1.5 SECONDS)
 	playsound(src, 'sound/creatures/hog/hogscream.ogg', 50, TRUE)
 

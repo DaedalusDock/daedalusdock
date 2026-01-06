@@ -9,6 +9,9 @@
 	max_integrity = 200
 	integrity_failure = 0.5
 
+	/// If true, skip base mirror behaviour.
+	var/magic_mirror = FALSE
+
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 
 /obj/structure/mirror/Initialize(mapload)
@@ -25,6 +28,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 
 	if(!ishuman(user))
 		return TRUE
+
+	if(magic_mirror)
+		return FALSE //Pass control to child proc.
+
 	var/mob/living/carbon/human/hairdresser = user
 
 	//handle facial hair (if necessary)
@@ -55,6 +62,29 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 	if(broken)
 		return list()// no message spam
 	return ..()
+
+/obj/structure/mirror/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	if(!nearby)
+		return
+
+	if(broken)
+		var/datum/roll_result/result = user.get_examine_result("mirror_broken", 11, /datum/rpg_skill/forensics, only_once = TRUE)
+		if(result?.outcome >= SUCCESS)
+			result.do_skill_sound(user)
+			to_chat(
+				user,
+				result.create_tooltip("The corpse of a mirror lies grotesquely bolted to the wall. Below it lies shards that no longer fit into the whole. The shards are still clear, this work must be recent."),
+			)
+		return
+
+	var/datum/roll_result/result = user.get_examine_result("mirror_reflection", 15, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("An old mirror hangs on the wall. You are unable to find yourself in it's reflection."),
+		)
 
 /obj/structure/mirror/attacked_by(obj/item/I, mob/living/user)
 	if(broken || !istype(user) || !I.force)
@@ -124,6 +154,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/mirror, 28)
 	name = "magic mirror"
 	desc = "Turn and face the strange... face."
 	icon_state = "magic_mirror"
+
+	magic_mirror = TRUE
 
 	///Flags this race must have to be selectable with this type of mirror.
 	var/race_flags = MIRROR_MAGIC

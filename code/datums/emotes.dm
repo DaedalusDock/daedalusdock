@@ -57,6 +57,8 @@
 	var/sound
 	/// Used for the honk borg emote.
 	var/vary = FALSE
+	/// Determines if the player can use this emote via the *me command or keybinds.
+	var/can_player_use = TRUE
 	/// Can only code call this event instead of the player.
 	var/only_forced_audio = FALSE
 	/// The cooldown between the uses of the emote.
@@ -123,12 +125,23 @@
 				ghost.show_message("[FOLLOW_LINK(ghost, user)]<span class='emote'> [dchatmsg]</span>")
 
 	if(emote_type == EMOTE_AUDIBLE)
-	//PARIAH EDIT
-		user.audible_message(msg, deaf_message = "<span class='emote'>You see how <b>[user]</b>[space][msg]</span>", audible_message_flags = EMOTE_MESSAGE, separation = space)
+
+		user.audible_message(
+			msg,
+			deaf_message = "<span class='emote'>You see how <b>[user]</b>[space][msg]</span>",
+			audible_message_flags = EMOTE_MESSAGE,
+			separation = space
+		)
 	else
-		user.visible_message(msg, blind_message = "<span class='emote'>You hear how <b>[user]</b>[space][msg]</span>", visible_message_flags = EMOTE_MESSAGE, separation = space)
-	//PARIAH EDIT END
+		user.visible_message(
+			msg,
+			blind_message = span_hear("You hear how <b>[user]</b>[space][msg]"),
+			visible_message_flags = EMOTE_MESSAGE,
+			separation = space
+	)
+
 	SEND_SIGNAL(user, COMSIG_MOB_EMOTED(key))
+	return TRUE
 
 /**
  * For handling emote cooldown, return true to allow the emote to happen.

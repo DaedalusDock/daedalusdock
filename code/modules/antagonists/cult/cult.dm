@@ -5,6 +5,7 @@
 
 /datum/antagonist/cult
 	name = "Cultist"
+
 	roundend_category = "cultists"
 	antagpanel_category = "Cult"
 	suicide_cry = "FOR NAR'SIE!!"
@@ -143,7 +144,7 @@
 		magic.Grant(current)
 	current.throw_alert("bloodsense", /atom/movable/screen/alert/bloodsense)
 	if(cult_team.cult_risen)
-		current.AddComponent(/datum/component/cult_eyes, initial_delay = 0 SECONDS)
+		current.AddComponentFrom(CULT_TRAIT, /datum/component/cult_eyes, initial_delay = 0 SECONDS)
 
 	add_team_hud(current)
 
@@ -159,8 +160,7 @@
 	communion.Remove(current)
 	magic.Remove(current)
 	current.clear_alert("bloodsense")
-	if (HAS_TRAIT(current, TRAIT_UNNATURAL_RED_GLOWY_EYES))
-		qdel(current.GetComponent(/datum/component/cult_eyes))
+	current.RemoveComponentFrom(CULT_TRAIT, /datum/component/cult_eyes)
 
 /datum/antagonist/cult/on_mindshield(mob/implanter)
 	if(!silent)
@@ -198,6 +198,9 @@
 			qdel(o)
 
 /datum/antagonist/cult/master
+	name = "Cult Leader"
+	name_prefix = "the"
+
 	ignore_implant = TRUE
 	show_in_antagpanel = FALSE //Feel free to add this later
 	hud_icon = 'icons/mob/huds/antag_hud.dmi'
@@ -228,7 +231,7 @@
 	current?.update_mob_action_buttons()
 	current.apply_status_effect(/datum/status_effect/cult_master)
 	if(cult_team.cult_risen)
-		current.AddComponent(/datum/component/cult_eyes, initial_delay = 0 SECONDS)
+		current.AddComponentFrom(CULT_TRAIT, /datum/component/cult_eyes, initial_delay = 0 SECONDS)
 	add_team_hud(current, /datum/antagonist/cult)
 
 /datum/antagonist/cult/master/remove_innate_effects(mob/living/mob_override)
@@ -281,7 +284,7 @@
 			if(mind.current)
 				SEND_SOUND(mind.current, 'sound/hallucinations/i_see_you2.ogg')
 				to_chat(mind.current, span_cultlarge(span_warning("The veil weakens as your cult grows, your eyes begin to glow...")))
-				mind.current.AddComponent(/datum/component/cult_eyes)
+				mind.current.AddComponentFrom(CULT_TRAIT, /datum/component/cult_eyes)
 		cult_risen = TRUE
 		log_game("The blood cult has risen with [cultplayers] players.")
 
@@ -426,7 +429,7 @@
 			return CULT_LOSS
 	return CULT_VICTORY
 
-/datum/team/cult/roundend_report()
+/datum/team/cult/roundend_report_article_column_body()
 	var/list/parts = list()
 	var/victory = check_cult_victory()
 
@@ -448,7 +451,7 @@
 			count++
 
 	if(members.len)
-		parts += "<span class='header'>The cultists were:</span>"
+		parts += "<span class='header antagonist'>The cultists were:</span>"
 		parts += printplayerlist(members)
 
 	return "<div class='panel redborder'>[parts.Join("<br>")]</div>"
@@ -539,6 +542,7 @@
 /datum/outfit/cultist
 	name = "Cultist (Preview only)"
 
+	head = /obj/item/clothing/head/hooded/cult_hoodie/alt
 	uniform = /obj/item/clothing/under/color/black
 	suit = /obj/item/clothing/suit/hooded/cultrobes/alt
 	shoes = /obj/item/clothing/shoes/cult/alt
@@ -547,8 +551,4 @@
 /datum/outfit/cultist/post_equip(mob/living/carbon/human/equipped, visualsOnly)
 	equipped.eye_color_left = BLOODCULT_EYE
 	equipped.eye_color_right = BLOODCULT_EYE
-	equipped.update_body()
-
-	var/obj/item/clothing/suit/hooded/hooded = locate() in equipped
-	hooded.MakeHood() // This is usually created on Initialize, but we run before atoms
-	hooded.ToggleHood()
+	equipped.update_eyes(TRUE)

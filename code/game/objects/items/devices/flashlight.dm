@@ -1,7 +1,10 @@
+TYPEINFO_DEF(/obj/item/flashlight)
+	default_materials = list(/datum/material/iron=50, /datum/material/glass=20)
+
 /obj/item/flashlight
 	name = "flashlight"
 	desc = "A hand-held emergency light."
-	custom_price = PAYCHECK_EASY
+	custom_price = PAYCHECK_ASSISTANT * 0.5
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "flashlight"
 	inhand_icon_state = "flashlight"
@@ -11,7 +14,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = list(/datum/material/iron=50, /datum/material/glass=20)
 	actions_types = list(/datum/action/item_action/toggle_light)
 	light_system = OVERLAY_LIGHT_DIRECTIONAL
 	light_outer_range = 4
@@ -168,7 +170,7 @@
 
 /obj/item/flashlight/pen
 	name = "penlight"
-	desc = "A pen-sized light, used by medical staff. It can also be used to create a hologram to alert people of incoming medical assistance."
+	desc = "A pen-sized light, used by medical staff."
 	icon_state = "penlight"
 	inhand_icon_state = ""
 	worn_icon_state = "pen"
@@ -176,43 +178,6 @@
 	flags_1 = CONDUCT_1
 	light_outer_range = 2
 	var/holo_cooldown = 0
-
-/obj/item/flashlight/pen/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(!proximity_flag)
-		if(holo_cooldown > world.time)
-			to_chat(user, span_warning("[src] is not ready yet!"))
-			return
-		var/T = get_turf(target)
-		if(locate(/mob/living) in T)
-			new /obj/effect/temp_visual/medical_holosign(T,user) //produce a holographic glow
-			holo_cooldown = world.time + 10 SECONDS
-			return
-
-// see: [/datum/wound/burn/proc/uv()]
-/obj/item/flashlight/pen/paramedic
-	name = "paramedic penlight"
-	desc = "A high-powered UV penlight intended to help stave off infection in the field on serious burned patients. Probably really bad to look into."
-	icon_state = "penlight_surgical"
-	/// Our current UV cooldown
-	COOLDOWN_DECLARE(uv_cooldown)
-	/// How long between UV fryings
-	var/uv_cooldown_length = 30 SECONDS
-	/// How much sanitization to apply to the burn wound
-	var/uv_power = 1
-
-/obj/effect/temp_visual/medical_holosign
-	name = "medical holosign"
-	desc = "A small holographic glow that indicates a medic is coming to treat a patient."
-	icon_state = "medi_holo"
-	duration = 30
-
-/obj/effect/temp_visual/medical_holosign/Initialize(mapload, creator)
-	. = ..()
-	playsound(loc, 'sound/machines/ping.ogg', 50, FALSE) //make some noise!
-	if(creator)
-		visible_message(span_danger("[creator] created a medical hologram!"))
-
 
 /obj/item/flashlight/seclite
 	name = "seclite"
@@ -227,6 +192,9 @@
 	hitsound = 'sound/weapons/genhit1.ogg'
 
 // the desk lamps are a bit special
+TYPEINFO_DEF(/obj/item/flashlight/lamp)
+	default_materials = null
+
 /obj/item/flashlight/lamp
 	name = "desk lamp"
 	desc = "A desk lamp with an adjustable mount."
@@ -241,7 +209,6 @@
 	light_color = LIGHT_COLOR_FAINT_BLUE
 	w_class = WEIGHT_CLASS_BULKY
 	flags_1 = CONDUCT_1
-	custom_materials = null
 	on = TRUE
 
 
@@ -275,19 +242,24 @@
 	name = "flare"
 	desc = "A red Daedalus issued flare. There are instructions on the side, it reads 'pull cord, make light'."
 	w_class = WEIGHT_CLASS_SMALL
-	light_outer_range = 7 // Pretty bright.
 	icon_state = "flare"
 	inhand_icon_state = "flare"
 	worn_icon_state = "flare"
 	actions_types = list()
+
+
+	heat = 1000
+	light_power = 0.9
+	light_outer_range = 7 // Pretty bright.
+	light_color = LIGHT_COLOR_FLARE
+	light_system = OVERLAY_LIGHT
+
+	grind_results = list(/datum/reagent/sulfur = 15)
+
 	/// How many seconds of fuel we have left
 	var/fuel = 0
 	var/on_damage = 7
 	var/produce_heat = 1500
-	heat = 1000
-	light_color = LIGHT_COLOR_FLARE
-	light_system = OVERLAY_LIGHT
-	grind_results = list(/datum/reagent/sulfur = 15)
 
 /obj/item/flashlight/flare/Initialize(mapload)
 	. = ..()
@@ -313,9 +285,8 @@
 	on = FALSE
 	force = initial(src.force)
 	damtype = initial(src.damtype)
-	if(ismob(loc))
-		var/mob/U = loc
-		update_brightness(U)
+	if(equipped_to)
+		update_brightness(equipped_to)
 	else
 		update_brightness(null)
 
@@ -389,6 +360,9 @@
 	color = LIGHT_COLOR_GREEN
 	light_color = LIGHT_COLOR_GREEN
 
+TYPEINFO_DEF(/obj/item/flashlight/slime)
+	default_materials = null
+
 /obj/item/flashlight/slime
 	gender = PLURAL
 	name = "glowing slime extract"
@@ -398,7 +372,6 @@
 	inhand_icon_state = "slime"
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_BELT
-	custom_materials = null
 	light_outer_range = 7 //luminosity when on
 	light_system = OVERLAY_LIGHT
 
@@ -431,14 +404,12 @@
 		..()
 	return
 
-/obj/item/flashlight/emp/afterattack(atom/movable/A, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/flashlight/emp/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/A = interacting_with // Yes i am supremely lazy
 
 	if(emp_cur_charges > 0)
 		emp_cur_charges -= 1
-
 		if(ismob(A))
 			var/mob/M = A
 			log_combat(user, M, "attacked", "EMP-light")
@@ -450,7 +421,7 @@
 		A.emp_act(EMP_HEAVY)
 	else
 		to_chat(user, span_warning("\The [src] needs time to recharge!"))
-	return
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/flashlight/emp/debug //for testing emp_act()
 	name = "debug EMP flashlight"

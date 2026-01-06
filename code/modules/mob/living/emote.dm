@@ -201,47 +201,20 @@
 		return
 
 	if(user.gender == MALE)
-		if(!involuntary)
-			return pick('sound/emotes/male/gasp_m1.ogg',
-					'sound/emotes/male/gasp_m2.ogg',
-					'sound/emotes/male/gasp_m3.ogg',
-					'sound/emotes/male/gasp_m4.ogg',
-					'sound/emotes/male/gasp_m5.ogg',
-					'sound/emotes/male/gasp_m6.ogg',
-					)
-		else return pick('sound/emotes/male/gasp_m1.ogg',
-					'sound/emotes/male/gasp_m2.ogg',
-					'sound/emotes/male/gasp_m3.ogg',
-					'sound/emotes/male/gasp_m4.ogg',
-					'sound/emotes/male/gasp_m5.ogg',
-					'sound/emotes/male/gasp_m6.ogg',
-					'goon/sounds/voice/gasp/male_gasp_1.ogg',
-					'goon/sounds/voice/gasp/male_gasp_2.ogg',
-					'goon/sounds/voice/gasp/male_gasp_3.ogg',
-					'goon/sounds/voice/gasp/male_gasp_4.ogg',
-					'goon/sounds/voice/gasp/male_gasp_5.ogg',
-					)
+		return pick(
+			'sound/emotes/male/gasp_m1.ogg',
+			'sound/emotes/male/gasp_m3.ogg',
+			'sound/emotes/male/gasp_m4.ogg',
+			'sound/emotes/male/gasp_m5.ogg',
+		)
 	else
-		if(!involuntary)
-			return pick('sound/emotes/female/gasp_f1.ogg',
-					'sound/emotes/female/gasp_f2.ogg',
-					'sound/emotes/female/gasp_f3.ogg',
-					'sound/emotes/female/gasp_f4.ogg',
-					'sound/emotes/female/gasp_f5.ogg',
-					'sound/emotes/female/gasp_f6.ogg',
-					)
-		else return pick('sound/emotes/female/gasp_f1.ogg',
-					'sound/emotes/female/gasp_f2.ogg',
-					'sound/emotes/female/gasp_f3.ogg',
-					'sound/emotes/female/gasp_f4.ogg',
-					'sound/emotes/female/gasp_f5.ogg',
-					'sound/emotes/female/gasp_f6.ogg',
-					'goon/sounds/voice/gasp/female_gasp_1.ogg',
-					'goon/sounds/voice/gasp/female_gasp_2.ogg',
-					'goon/sounds/voice/gasp/female_gasp_3.ogg',
-					'goon/sounds/voice/gasp/female_gasp_4.ogg',
-					'goon/sounds/voice/gasp/female_gasp_5.ogg',
-					)
+		return pick(
+			'sound/emotes/female/gasp_f1.ogg',
+			'sound/emotes/female/gasp_f4.ogg',
+			'sound/emotes/female/gasp_f5.ogg',
+			'sound/emotes/female/gasp_f6.ogg',
+		)
+
 
 /datum/emote/living/giggle
 	key = "giggle"
@@ -314,6 +287,18 @@
 	if(. && iscarbon(user))
 		var/mob/living/carbon/C = user
 		return !C.silent
+
+/datum/emote/living/laugh/run_emote(mob/user, params, type_override, intentional)
+	. = ..()
+	if(!.)
+		return
+
+	if(intentional && prob(40))
+		for(var/mob/living/carbon/human/H in oview(user, world.view))
+			if(H.mind?.assigned_role?.title != JOB_CLOWN)
+				continue
+
+			H.apply_status_effect(/datum/status_effect/skill_mod/laugh)
 
 /datum/emote/living/laugh/get_sound(mob/living/user)
 	if(!ishuman(user) || user.mind?.miming)

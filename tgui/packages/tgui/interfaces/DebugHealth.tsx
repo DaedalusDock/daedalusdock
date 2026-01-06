@@ -1,4 +1,5 @@
 import { toTitleCase } from 'common/string';
+import { Tooltip } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
 import {
@@ -9,7 +10,6 @@ import {
   Section,
   Stack,
   Tabs,
-  Tooltip,
 } from '../components';
 import { TableCell, TableRow } from '../components/Table';
 import { Window } from '../layouts';

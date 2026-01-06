@@ -14,14 +14,17 @@ Regenerative extracts:
 /obj/item/slimecross/regenerative/proc/core_effect_before(mob/living/carbon/human/target, mob/user)
 	return
 
-/obj/item/slimecross/regenerative/afterattack(atom/target,mob/user,prox)
-	. = ..()
-	if(!prox || !isliving(target))
-		return
+/obj/item/slimecross/regenerative/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(!isliving(target))
+		return NONE
+
 	var/mob/living/H = target
 	if(H.stat == DEAD)
 		to_chat(user, span_warning("[src] will not work on the dead!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(H != user)
 		user.visible_message(span_notice("[user] crushes [src] over [H], the milky goo quickly regenerating all of [H.p_their()] injuries!"),
 			span_notice("You squeeze [src], and it bursts over [H], the milky goo regenerating [H.p_their()] injuries."))
@@ -33,6 +36,7 @@ Regenerative extracts:
 	core_effect(H, user)
 	playsound(target, 'sound/effects/splat.ogg', 40, TRUE)
 	qdel(src)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/slimecross/regenerative/grey
 	colour = "grey" //Has no bonus effect.

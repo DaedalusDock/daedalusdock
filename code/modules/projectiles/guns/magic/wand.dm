@@ -31,16 +31,17 @@
 		return
 	..()
 
-/obj/item/gun/magic/wand/afterattack(atom/target, mob/living/user)
+/obj/item/gun/magic/wand/try_fire_gun(atom/target, mob/living/user, proximity, params)
 	if(!charges)
 		shoot_with_empty_chamber(user)
-		return
+		return FALSE
+
 	if(target == user)
 		if(no_den_usage)
 			var/area/A = get_area(user)
 			if(istype(A, /area/centcom/wizard_station))
 				to_chat(user, span_warning("You know better than to violate the security of The Den, best wait until you leave to use [src]."))
-				return
+				return FALSE
 			else
 				no_den_usage = 0
 		zap_self(user)

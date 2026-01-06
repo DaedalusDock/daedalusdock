@@ -26,6 +26,8 @@
 	foodtypes = MEAT
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/raw_headcheese
 	name = "raw headcheese block"
 	desc = "A common food on Jitarai, headcheese is traditionally made of an animal's head, with the organs removed, boiled until it falls apart, at which point it is collected, strained of moisture, salted heavily, packed into blocks, and left to dry and age for several months. The resulting hard block tastes similar to cheese."
@@ -50,6 +52,8 @@
 	foodtypes = MEAT | GROSS
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/headcheese/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/headcheese_slice, 5, 30, table_required = TRUE)
 
@@ -63,6 +67,8 @@
 	foodtypes = MEAT | GROSS
 	w_class = WEIGHT_CLASS_TINY
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/shredded_lungs
 	name = "crispy shredded lung stirfry"
 	desc = "Crispy lung strips, with veggies and a spicy sauce. Delicious, if you like lungs."
@@ -72,6 +78,8 @@
 	tastes = list("meat" = 1, "heat" = 1, "veggies" = 1)
 	foodtypes = MEAT | VEGETABLES | GROSS
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
 
 /obj/item/food/tsatsikh
 	name = "tsatsikh"
@@ -83,6 +91,8 @@
 	foodtypes = MEAT | GROSS
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/liver_pate
 	name = "liver pate"
 	desc = "A rich, meaty paste made from liver, meat, and a few additions for extra flavour."
@@ -92,6 +102,8 @@
 	tastes = list("liver" = 1)
 	foodtypes = MEAT
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
 
 /obj/item/food/moonfish_eggs
 	name = "moonfish eggs"
@@ -113,6 +125,8 @@
 	foodtypes = SEAFOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/lizard_escargot
 	name = "desert snail cocleas"
 	desc = "Another example of cultural crossover between unathi and humans, desert snail escargot is closer to the Roman dish cocleas than the contemporary French escargot. It's a common street food in the desert cities."
@@ -123,6 +137,8 @@
 	foodtypes = MEAT | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/fried_blood_sausage
 	name = "fried blood sausage"
 	desc = "A blood sausage, battered and deep fried. Commonly served with fries as a quick and simple snack on the streets of Zagoskeld."
@@ -132,6 +148,8 @@
 	tastes = list("black pudding" = 1, "batter" = 1, "oil" = 1)
 	foodtypes = MEAT | FRIED
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/warm)
 
 //Why does like, every language on the planet besides English call them pommes? Who knows, who cares- the lizards call them it too, because funny.
 /obj/item/food/lizard_fries
@@ -154,6 +172,8 @@
 	foodtypes = MEAT | VEGETABLES | GROSS
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/crispy_headcheese
 	name = "crispy breaded headcheese"
 	desc = "A delicious snack from the streets of Zagoskeld, consisting of headcheese coated in rootbread breadcrumbs. Commonly served with fries."
@@ -164,6 +184,8 @@
 	foodtypes = MEAT | VEGETABLES | NUTS | GROSS
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/kebab/picoss_skewers
 	name = "picoss skewer"
 	desc = "A popular Jitarai streetfood consisting of vinegar-marinated armorfish on a skewer with onion and chillis."
@@ -173,6 +195,8 @@
 	tastes = list("fish" = 1, "acid" = 1, "onion" = 1, "heat" = 1)
 	foodtypes = SEAFOOD | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
 
 /obj/item/food/nectar_larvae
 	name = "nectar larvae"
@@ -194,6 +218,8 @@
 	foodtypes = VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 //Fish Dishes
 /obj/item/food/grilled_moonfish
 	name = "grilled moonfish"
@@ -206,6 +232,8 @@
 	burns_on_grill = TRUE
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/moonfish_demiglace
 	name = "moonfish demiglace"
 	desc = "A slab of beautifully seared moonfish on a bed of potatoes and carrots, with a wine and demiglace reduction on top. Simply marvelous."
@@ -216,6 +244,8 @@
 	foodtypes = SEAFOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/lizard_surf_n_turf
 	name = "\improper Zagosk surf 'n' turf smorgasbord"
 	desc = "A massive platter of Jitarai's finest meat and seafood, typically shared by groups at the beach. Of course, nothing's stopping you eating it on your own... fatass."
@@ -225,6 +255,8 @@
 	tastes = list("surf" = 1, "turf" = 1)
 	foodtypes = MEAT | SEAFOOD | VEGETABLES
 	w_class = WEIGHT_CLASS_BULKY
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
 
 //Spaghetti Dishes
 
@@ -237,6 +269,8 @@
 	tastes = list("gnocchi" = 1)
 	foodtypes = VEGETABLES | NUTS
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/spaghetti/snail_nizaya
 	name = "desert snail nizaya"
 	desc = "A high class pasta dish from Jitarai's vineyard region. Traditionally made with only the finest Jitarai wine... but the human swill will do, in a pinch."
@@ -245,6 +279,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/protein = 2, /datum/reagent/consumable/nutriment/vitamin = 6)
 	tastes = list("snails" = 1, "wine" = 1, "gnocchi" = 1)
 	foodtypes = VEGETABLES | MEAT | NUTS
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
 
 /obj/item/food/spaghetti/garlic_nizaya
 	name = "garlic-and-oil nizaya"
@@ -255,6 +291,8 @@
 	tastes = list("garlic" = 1, "oil" = 1, "gnocchi" = 1)
 	foodtypes = VEGETABLES | NUTS
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/spaghetti/demit_nizaya
 	name = "demit nizaya"
 	desc = "A sweet, creamy nizaya pasta dish made with korta milk and nectar."
@@ -264,6 +302,8 @@
 	tastes = list("peppery sweet" = 1, "veggies" = 1, "gnocchi" = 1)
 	foodtypes = VEGETABLES | SUGAR | NUTS
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/spaghetti/mushroom_nizaya
 	name = "mushroom nizaya"
 	desc = "A nizaya pasta dish made with seraka mushrooms and quality oil. Has a pronounced nutty flavour."
@@ -272,6 +312,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("savouriness" = 1, "nuttiness" = 1, "gnocchi" = 1)
 	foodtypes = VEGETABLES
+
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
 
 //Dough Dishes
 
@@ -332,6 +374,8 @@
 	foodtypes = VEGETABLES | NUTS
 	burns_on_grill = TRUE
 
+	food_buffs = list(/datum/status_effect/food/energized, /datum/status_effect/food/warm)
+
 /obj/item/food/rootroll
 	name = "rootroll"
 	desc = "A dense, chewy roll, made from roots. A nice companion to a bowl of soup."
@@ -342,6 +386,8 @@
 	tastes = list("roll" = 1) // the roll tastes of roll.
 	foodtypes = VEGETABLES | NUTS
 	burns_in_oven = TRUE
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 //Bread Dishes
 
@@ -374,6 +420,8 @@
 	foodtypes = VEGETABLES | NUTS
 	venue_value = FOOD_PRICE_TRASH
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/breadslice/root/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/customizable_reagent_holder, null, CUSTOM_INGREDIENT_ICON_STACK)
@@ -390,6 +438,8 @@
 	foodtypes = VEGETABLES | NUTS
 	boxtag = "Jitarai Flatbread"
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pizza/italic_flatbread
 	name = "\improper Italic flatbread"
 	desc = "The introduction of human foods to Jitarai led to an advancement in unathi cooking- the Italic flatbread is now a common sight on the menus of takeout stores on the planet."
@@ -400,6 +450,8 @@
 	slice_type = null
 	foodtypes = VEGETABLES | NUTS | MEAT
 	boxtag = "Italic Flatbread"
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/pizza/imperial_flatbread
 	name = "\improper Imperial flatbread"
@@ -424,6 +476,8 @@
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 //Soup Dishes
 /obj/item/food/soup/atrakor_dumplings
 	name = "\improper Shanra dumpling soup"
@@ -434,6 +488,8 @@
 	tastes = list("bone broth" = 1, "onion" = 1, "potato" = 1)
 	foodtypes = MEAT | VEGETABLES | NUTS
 
+	food_buffs = list(/datum/status_effect/food/energized, /datum/status_effect/food/healthy/blood)
+
 /obj/item/food/soup/meatball_noodles
 	name = "meatball noodle soup"
 	desc = "A hearty noodle soup made from meatballs and nizaya in a rich broth. Commonly topped with a handful of chopped nuts."
@@ -442,6 +498,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/protein = 6, /datum/reagent/consumable/nutriment/vitamin = 2)
 	tastes = list("bone broth" = 1, "meat" = 1, "gnocchi" = 1, "peanuts" = 1)
 	foodtypes = MEAT | VEGETABLES | NUTS
+
+	food_buffs = list(/datum/status_effect/food/energized, /datum/status_effect/food/healthy/blood)
 
 /obj/item/food/soup/black_broth
 	name = "\improper Jitarai black broth"
@@ -452,6 +510,8 @@
 	tastes = list("vinegar" = 1, "metal" = 1)
 	foodtypes = MEAT | VEGETABLES | GROSS
 
+	food_buffs = list( /datum/status_effect/food/healthy/blood)
+
 /obj/item/food/soup/jellyfish
 	name = "jellyfish stew"
 	desc = "A slimy bowl of jellyfish stew. It jiggles if you shake it."
@@ -461,6 +521,8 @@
 	tastes = list("slime" = 1)
 	foodtypes = MEAT | VEGETABLES | GROSS
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/soup/rootbread_soup
 	name = "rootbread soup"
 	desc = "A big bowl of spicy, savoury soup made with rootbread. Heavily seasoned, and very tasty."
@@ -469,6 +531,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 3, /datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/vitamin = 3)
 	tastes = list("bread" = 1, "egg" = 1, "chili" = 1, "garlic" = 1)
 	foodtypes = MEAT | VEGETABLES
+
+	food_buffs = list(/datum/status_effect/food/energized, /datum/status_effect/food/healthy/blood)
 
 //Egg Dishes
 /obj/item/food/black_eggs
@@ -481,6 +545,8 @@
 	foodtypes = MEAT | BREAKFAST | GROSS
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/patzikula
 	name = "patzikula"
 	desc = "A smooth and spicy tomato-based sauce topped with eggs and baked. Delicious."
@@ -490,6 +556,8 @@
 	tastes = list("eggs" = 1, "tomato" = 1, "heat" = 1)
 	foodtypes = VEGETABLES | MEAT | BREAKFAST
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/warm)
 
 //Cakes/Sweets
 
@@ -501,6 +569,8 @@
 	food_reagents = list(/datum/reagent/consumable/sugar = 10, /datum/reagent/consumable/nutriment = 5, /datum/reagent/consumable/korta_nectar = 5)
 	tastes = list("peppery heat" = 1, "sweetness" = 1)
 	foodtypes = NUTS | SUGAR
+
+	food_buffs = list(/datum/status_effect/food/refreshed)
 
 /obj/item/food/cake/korta_brittle/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/cakeslice/korta_brittle, 5, 30, table_required = TRUE)
@@ -514,6 +584,8 @@
 	tastes = list("peppery heat" = 1, "sweetness" = 1)
 	foodtypes = NUTS | SUGAR
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/snowcones/korta_ice
 	name = "korta ice"
 	desc = "Shaved ice, korta nectar and berries. A sweet treat to eat to beat summer heat!"
@@ -523,6 +595,8 @@
 	tastes = list("peppery sweet" = 1, "berry" = 1)
 	foodtypes = NUTS | SUGAR | FRUIT
 
+	food_buffs = list(/datum/status_effect/food/refreshed, /datum/status_effect/food/cold)
+
 /obj/item/food/kebab/candied_mushrooms
 	name = "candied mushrooms"
 	desc = "A slightly bizarre dish from Jitarai, consisting of seraka mushrooms coated with caramel on a skewer. Carries a pronounced 'sweet and savoury' kick."
@@ -531,6 +605,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2, /datum/reagent/consumable/nutriment/vitamin = 2, /datum/reagent/consumable/caramel = 3)
 	tastes = list("savouriness" = 1, "sweetness" = 1)
 	foodtypes = SUGAR | VEGETABLES | GROSS
+
+	food_buffs = list(/datum/status_effect/food/refreshed)
 
 //Misc Dishes
 /obj/item/food/sauerkraut
@@ -543,6 +619,8 @@
 	foodtypes = VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/lizard_dumplings
 	name = "\improper Jitarai dumplings"
 	desc = "Mashed root vegetables, mixed with korta flour and boiled to produce a large, round and slightly spicy dumpling. Commonly eaten in soup."
@@ -552,6 +630,8 @@
 	tastes = list("potato" = 1, "earthy heat" = 1)
 	foodtypes = VEGETABLES | NUTS
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/steeped_mushrooms
 	name = "steeped seraka mushrooms"

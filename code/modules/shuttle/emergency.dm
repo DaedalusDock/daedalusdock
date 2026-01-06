@@ -97,7 +97,7 @@
 		to_chat(user, span_warning("You don't have an ID."))
 		return
 
-	if(!(ACCESS_MANAGEMENT in ID.access))
+	if(!(ACCESS_FACTION_LEADER in ID.access))
 		to_chat(user, span_warning("The access level of your card is not high enough."))
 		return
 
@@ -198,7 +198,7 @@
 		attempt_hijack_stage(user)
 
 /obj/machinery/computer/emergency_shuttle/proc/attempt_hijack_stage(mob/living/user)
-	if(!user.CanReach(src))
+	if(!IsReachableBy(user))
 		return
 	if(!user?.mind?.get_hijack_speed())
 		to_chat(user, span_warning("You manage to open a user-mode shell on [src], and hundreds of lines of debugging output fly through your vision. It is probably best to leave this alone."))
@@ -443,7 +443,7 @@
 		if(SHUTTLE_CALL)
 			if(time_left <= 0)
 				//move emergency shuttle to station
-				if(initiate_docking(SSshuttle.getDock("emergency_home")) != DOCKING_SUCCESS)
+				if(Dock(SSshuttle.getDock("emergency_home")) != DOCKING_SUCCESS)
 					setTimer(20)
 					return
 				mode = SHUTTLE_DOCKED
@@ -502,7 +502,7 @@
 				for(var/obj/docking_port/mobile/M in SSshuttle.mobile_docking_ports)
 					M.post_emergency_launch()
 				if(prob(10))
-					SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_TRANSIT))
+					SSuniverse.SetUniversalState(/datum/universal_state/resonance_jump, list(ZTRAIT_RESERVED))
 				setTimer(SSshuttle.emergency_escape_time * engine_coeff)
 				priority_announce("The Icarus has entered the resonance gate and is enroute to it's destination. Estimate [timeLeft(600)] minutes until the shuttle docks at Sector Control.", "LRSV Icarus Announcement")
 				INVOKE_ASYNC(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker, poll_hearts))
@@ -761,7 +761,7 @@
 
 /obj/docking_port/mobile/emergency/shuttle_build/register()
 	. = ..()
-	initiate_docking(SSshuttle.getDock("emergency_home"))
+	Dock(SSshuttle.getDock("emergency_home"))
 
 #undef TIME_LEFT
 #undef ENGINES_START_TIME

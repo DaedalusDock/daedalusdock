@@ -31,7 +31,7 @@
 	taste_description = "the bomb"
 	color = "#8B2500"
 
-/datum/reagent/blob/explosive_lattice/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message, touch_protection, mob/camera/blob/overmind)
+/datum/reagent/blob/explosive_lattice/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0, mob/camera/blob/overmind)
 	. = ..()
 	var/brute_loss = 0
 	var/burn_loss = 0

@@ -89,10 +89,12 @@
 	icon_state = "forge"
 	anchored = TRUE
 	max_integrity = 200
+
+	var/checked_faction = ROLE_WIZARD
+
 	var/mob/living/current_wizard = null
 	var/next_check = 0
 	var/cooldown = 600
-	var/faction = ROLE_WIZARD
 	var/braindead_check = 0
 
 /obj/structure/academy_wizard_spawner/New()
@@ -107,7 +109,7 @@
 	if(next_check < world.time)
 		if(!current_wizard)
 			for(var/mob/living/L in GLOB.player_list)
-				if(L.z == src.z && L.stat != DEAD && !(faction in L.faction))
+				if(L.z == src.z && L.stat != DEAD && !(checked_faction in L.faction))
 					summon_wizard()
 					break
 		else
@@ -133,7 +135,7 @@
 		var/mob/dead/observer/C = pick(candidates)
 		message_admins("[ADMIN_LOOKUPFLW(C)] was spawned as Wizard Academy Defender")
 		current_wizard.ghostize() // on the off chance braindead defender gets back in
-		current_wizard.key = C.key
+		current_wizard.PossessByPlayer(C.key)
 
 /obj/structure/academy_wizard_spawner/proc/summon_wizard()
 	var/turf/T = src.loc
@@ -275,9 +277,9 @@
 			explosion(get_turf(user), devastation_range = -1, light_impact_range = 2, flame_range = 2, explosion_cause = src)
 		if(9)
 			//Cold
-			var/datum/disease/D = new /datum/disease/cold()
+			var/datum/pathogen/D = new /datum/pathogen/cold()
 			T.visible_message(span_userdanger("[user] looks a little under the weather!"))
-			user.ForceContractDisease(D, FALSE, TRUE)
+			user.try_contract_pathogen(D, FALSE, TRUE)
 		if(10)
 			//Nothing
 			T.visible_message(span_userdanger("Nothing seems to happen."))
@@ -330,7 +332,7 @@
 			if(LAZYLEN(candidates))
 				var/mob/dead/observer/C = pick(candidates)
 				message_admins("[ADMIN_LOOKUPFLW(C)] was spawned as Dice Servant")
-				H.key = C.key
+				H.PossessByPlayer(C.key)
 
 			var/datum/action/cooldown/spell/summon_mob/summon_servant = new(user.mind || user, H)
 			summon_servant.Grant(user)

@@ -1,5 +1,5 @@
 ## NPM
-/**/node_modules
+node_modules
 
 ## Yarn
 /.yarn
@@ -9,5 +9,6 @@
 .swcrc
 /docs
 /public
-/packages/tgui-polyfill
 /packages/tgfont/static
+
+!/public/tgui.html

@@ -90,24 +90,38 @@
 		REMOVE_TRAIT(src, TRAIT_NODROP, REVERSE_BEAR_TRAP_TRAIT)
 	struggling = FALSE
 
-/obj/item/reverse_bear_trap/attack(mob/living/target, mob/living/user)
+/obj/item/reverse_bear_trap/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	var/mob/living/target = interacting_with
+
 	if(target.get_item_by_slot(ITEM_SLOT_HEAD))
-		to_chat(user, span_warning("Remove [target.p_their()] headgear first!"))
-		return
-	target.visible_message(span_warning("[user] starts forcing [src] onto [target]'s head!"), \
-		span_userdanger("[target] starts forcing [src] onto your head!"), "<i>You hear clanking.</i>")
+		to_chat(user, span_warning("Remove [target.p_their()] headgear first."))
+		return ITEM_INTERACT_BLOCKING
+
+	target.visible_message(
+		span_warning("[user] starts forcing [src] onto [target]'s head."),
+		span_userdanger("[target] starts forcing [src] onto your head."),
+		span_hear("You hear clanking.")
+	)
 	to_chat(user, span_danger("You start forcing [src] onto [target]'s head..."))
 
 	if(!do_after(user, target, 3 SECONDS) || target.get_item_by_slot(ITEM_SLOT_HEAD))
-		return
-	target.visible_message(span_warning("[user] forces and locks [src] onto [target]'s head!"), \
-		span_userdanger("[target] locks [src] onto your head!"), "<i>You hear a click, and then a timer ticking down.</i>")
+		return ITEM_INTERACT_BLOCKING
+
+	target.visible_message(
+		span_warning("[user] forces and locks [src] onto [target]'s head."),
+		span_userdanger("[target] locks [src] onto your head!"),
+		span_hear("You hear a click, and then a timer ticking down.")
+	)
 	to_chat(user, span_danger("You force [src] onto [target]'s head and click the padlock shut."))
 
-	user.dropItemToGround(src)
+	user.dropItemToGround(src, TRUE)
 	target.equip_to_slot_if_possible(src, ITEM_SLOT_HEAD)
 	arm()
 	notify_ghosts("[user] put a reverse bear trap on [target]!", source = src, action = NOTIFY_ORBIT, flashwindow = FALSE, ghost_sound = 'sound/machines/beep.ogg', notify_volume = 75, header = "Reverse bear trap armed")
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/reverse_bear_trap/proc/snap()
 	reset()

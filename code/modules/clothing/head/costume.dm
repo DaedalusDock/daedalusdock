@@ -115,9 +115,12 @@
 			var/obj/item/clothing/suit/cardborg/CB = H.wear_suit
 			CB.disguise(user, src)
 
-/obj/item/clothing/head/cardborg/dropped(mob/living/user)
+/obj/item/clothing/head/cardborg/unequipped(mob/living/user)
 	..()
 	user.remove_alt_appearance("standard_borg_disguise")
+
+TYPEINFO_DEF(/obj/item/clothing/head/bronze)
+	default_armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = -5, ENERGY = -15, BOMB = 10, BIO = 0, FIRE = 20, ACID = 20)
 
 /obj/item/clothing/head/bronze
 	name = "bronze hat"
@@ -126,7 +129,6 @@
 	icon_state = "clockwork_helmet_old"
 	clothing_flags = SNUG_FIT
 	flags_inv = HIDEEARS|HIDEHAIR
-	armor = list(BLUNT = 5, PUNCTURE = 0, SLASH = 0, LASER = -5, ENERGY = -15, BOMB = 10, BIO = 0, FIRE = 20, ACID = 20)
 
 /obj/item/clothing/head/irs
 	name = "internal revenue service cap"

@@ -18,6 +18,9 @@
 	var/list/mode_reports
 	var/list/mode_false_report_weight
 
+	/// Contains gamemode data, if the file isn't found it uses code defaults.
+	var/tmp/list/gamemode_data = list()
+
 	var/motd
 	var/policy
 
@@ -78,7 +81,9 @@
 		directory = _directory
 	if(entries)
 		CRASH("/datum/controller/configuration/Load() called more than once!")
+
 	InitEntries()
+
 	if(fexists("[directory]/config.txt") && LoadEntries("config.txt") <= 1)
 		var/list/legacy_configs = list("game_options.txt", "dbconfig.txt", "comms.txt")
 		for(var/I in legacy_configs)
@@ -87,11 +92,16 @@
 				for(var/J in legacy_configs)
 					LoadEntries(J)
 				break
+
+	if (fexists("[directory]/ezdb.txt"))
+		LoadEntries("ezdb.txt")
+
 	loadmaplist(CONFIG_MAPS_FILE)
 	LoadMOTD()
 	LoadTopicRateWhitelist()
 	LoadPolicy()
 	LoadChatFilter()
+	LoadGamemodeData()
 
 	loaded = TRUE
 
@@ -433,6 +443,17 @@ Example config:
 		ic_outside_pda_filter_reasons[line] = "No reason available"
 
 	update_chat_filter_regexes()
+
+/// Load the antagonist json.
+/datum/controller/configuration/proc/LoadGamemodeData()
+	if(!fexists("[directory]/gamemode_config.toml"))
+		return
+
+	try
+		gamemode_data = rustg_read_toml_file("[directory]/gamemode_config.toml")
+
+	catch
+		CRASH("Gamemode toml is malformed.")
 
 /// Will update the internal regexes of the chat filter based on the filter reasons
 /datum/controller/configuration/proc/update_chat_filter_regexes()

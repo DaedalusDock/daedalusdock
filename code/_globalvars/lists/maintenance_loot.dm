@@ -27,6 +27,7 @@ GLOBAL_LIST_INIT(trash_loot, list(//junk: useless, very easy to get, or ghetto c
 
 		/obj/item/c_tube = 1,
 		/obj/item/disk/data = 1,
+		/obj/item/disk/data/floppy = 1,
 		/obj/item/folder/yellow = 1,
 		/obj/item/hand_labeler = 1,
 		/obj/item/paper = 1,
@@ -46,7 +47,7 @@ GLOBAL_LIST_INIT(trash_loot, list(//junk: useless, very easy to get, or ghetto c
 		/obj/item/food/urinalcake = 1,
 		/obj/item/light/bulb = 1,
 		/obj/item/light/tube = 1,
-		/obj/item/reagent_containers/food/drinks/drinkingglass = 1,
+		/obj/item/reagent_containers/cup/glass/drinkingglass = 1,
 
 		/obj/item/airlock_painter = 1,
 		/obj/item/airlock_painter/decal = 1,
@@ -77,14 +78,14 @@ GLOBAL_LIST_INIT(common_loot, list( //common: basic items
 		/obj/item/geiger_counter = 1,
 		/obj/item/mop = 1,
 		/obj/item/pushbroom = 1,
-		/obj/item/reagent_containers/glass/bucket = 1,
+		/obj/item/reagent_containers/cup/bucket = 1,
 		/obj/item/screwdriver = 1,
 		/obj/item/t_scanner = 1,
 		/obj/item/toy/crayon/spraycan = 1,
 		/obj/item/weldingtool = 1,
 		/obj/item/wirecutters = 1,
 		/obj/item/wrench = 1,
-		) = 1,
+		) = 100,
 
 	list(//equipment
 		/obj/effect/spawner/random/clothing/gloves = 1,
@@ -101,7 +102,7 @@ GLOBAL_LIST_INIT(common_loot, list( //common: basic items
 		/obj/item/storage/backpack = 1,
 		/obj/item/storage/belt/fannypack = 1,
 		/obj/item/storage/wallet/random = 1,
-		) = 1,
+		) = 100,
 
 	list(//construction and crafting
 		/obj/item/sign = 1,
@@ -121,31 +122,31 @@ GLOBAL_LIST_INIT(common_loot, list( //common: basic items
 		/obj/item/assembly/timer = 1,
 		/obj/item/stack/package_wrap = 1,
 		/obj/item/stack/wrapping_paper = 1,
-		) = 1,
+		) = 100,
 
 	list(//medical and chemicals
 		/obj/item/grenade/chem_grenade/cleaner = 1,
 		/obj/item/lead_pipe = 1,
-		/obj/item/reagent_containers/glass/beaker = 1,
-		/obj/item/reagent_containers/glass/rag = 1,
+		/obj/item/reagent_containers/cup/beaker = 1,
+		/obj/item/reagent_containers/cup/rag = 1,
 		/obj/item/reagent_containers/hypospray/medipen/pumpup = 2,
 		/obj/item/reagent_containers/syringe = 1,
 		/obj/item/stock_parts/cell/lead = 1,
 		/obj/item/storage/box/matches = 1,
 		/obj/item/storage/fancy/cigarettes/dromedaryco = 1,
-		) = 1,
+		) = 100,
 
 	list(//food
-		/obj/item/reagent_containers/food/drinks/bottle/beer = 1,
-		/obj/item/reagent_containers/food/drinks/coffee = 1,
-		) = 1,
+		/obj/item/reagent_containers/cup/glass/bottle/beer = 1,
+		/obj/item/reagent_containers/cup/glass/coffee = 1,
+		) = 100,
 
 	list(//misc
 		/obj/item/bodybag = 1,
 		/obj/item/extinguisher = 1,
 		/obj/item/grenade/smokebomb = 1,
 		/obj/item/radio/off = 1,
-		/obj/item/stack/spacecash/c10 = 1,
+		/obj/item/stack/spacecash/c1/ten = 1,
 		/obj/item/stack/sticky_tape = 1,
 		/obj/item/tank/internals/emergency_oxygen = 1,
 
@@ -154,7 +155,14 @@ GLOBAL_LIST_INIT(common_loot, list( //common: basic items
 		/obj/item/clothing/head/hardhat/red = 1,
 		/obj/item/flashlight = 1,
 		/obj/item/flashlight/flare = 1,
-		) = 1,
+		) = 100,
+
+	list( //cassettes
+		/obj/item/tape/music/carmen = 10,
+		/obj/item/tape/music/red = 5,
+		/obj/item/tape/music/white = 5,
+		/obj/item/tape/rats = 1,
+		) = 20,
 	))
 
 
@@ -208,13 +216,13 @@ GLOBAL_LIST_INIT(uncommon_loot, list(//uncommon: useful items
 			/obj/item/stack/medical/bruise_pack = 1,
 			) = 1,
 		list(//medical chems
-			/obj/item/reagent_containers/glass/bottle/dylovene = 1,
+			/obj/item/reagent_containers/cup/bottle/dylovene = 1,
 			/obj/item/reagent_containers/hypospray/medipen = 1,
 			) = 1,
 		list(//drinks
-			/obj/item/reagent_containers/food/drinks/bottle/vodka = 1,
-			/obj/item/reagent_containers/food/drinks/drinkingglass/filled/nuka_cola = 1,
-			/obj/item/reagent_containers/food/drinks/soda_cans/grey_bull = 1,
+			/obj/item/reagent_containers/cup/glass/bottle/vodka = 1,
+			/obj/item/reagent_containers/cup/glass/drinkingglass/filled/nuka_cola = 1,
+			/obj/item/reagent_containers/cup/soda_cans/grey_bull = 1,
 			) = 1,
 		list(//sprayers
 			/obj/item/reagent_containers/spray = 1,
@@ -283,7 +291,7 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 		/obj/item/throwing_star = 1,
 		/obj/item/weldingtool/hugetank = 1,
 		/obj/item/paint_sprayer = 1,
-		) = 1,
+		) = 100,
 
 	list(//equipment
 		/obj/item/clothing/glasses/hud/security = 1,
@@ -294,7 +302,7 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 		/obj/item/clothing/head/helmet/justice = 1,
 		/obj/item/storage/belt/military/assault = 1,
 		/obj/item/storage/belt/security = 1,
-		) = 1,
+		) = 100,
 
 	list(//medical and chemicals
 		list(//medkits
@@ -307,14 +315,17 @@ GLOBAL_LIST_INIT(rarity_loot, list(//rare: really good items
 			/obj/item/reagent_containers/hypospray/medipen/meralyne = 1,
 			/obj/item/reagent_containers/syringe/contraband/methamphetamine = 1,
 			) = 1,
-		) = 1,
+		) = 100,
 
 	list(//misc
 		/obj/item/book/granter/crafting_recipe/trash_cannon = 1,
 		/obj/item/disk/nuclear/fake = 1,
 		/obj/item/skillchip/brainwashing = 1,
-		/obj/item/tattoo_kit = 1,
-		) = 1,
+		) = 100,
+
+	list(//rare cassette shit
+		/obj/item/storage/box/carmen = 1,
+	) = 10,
 
 ))
 

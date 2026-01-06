@@ -10,7 +10,7 @@
 
 
 /datum/reagent/uranium/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(tox_damage * removed, FALSE)
+	C.adjustToxLoss(tox_damage * removed, FALSE, cause_of_death = "Uranium poisoning")
 	return TRUE
 
 /datum/reagent/uranium/expose_turf(turf/exposed_turf, reac_volume)
@@ -25,12 +25,16 @@
 		glow.reagents.add_reagent(type, reac_volume)
 
 //Mutagenic chem side-effects.
-/datum/reagent/uranium/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+/datum/reagent/uranium/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.radiation_damage += 2
+		plant_tick.mutation_power += 0.2
+
+/datum/reagent/uranium/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
 	. = ..()
-	mytray.mutation_roll(user)
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_plant_health(-round(chems.get_reagent_amount(src.type) * 1))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(src.type) * 2))
+	plant_dna.try_mutate_stats(1)
+	plant_dna.try_activate_latent_gene(2)
+	return plant_dna.try_mutate_type(1)
 
 /datum/reagent/uranium/radium
 	name = "Radium"
@@ -42,11 +46,10 @@
 	material = null
 
 
-/datum/reagent/uranium/radium/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_plant_health(-round(chems.get_reagent_amount(src.type) * 1))
-		mytray.adjust_toxic(round(chems.get_reagent_amount(src.type) * 1))
+/datum/reagent/uranium/radium/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.radiation_damage += 2
+		plant_tick.mutation_power += 0.2
 
 /datum/reagent/fuel/oil
 	name = "Oil"
@@ -91,7 +94,7 @@
 		exposed_mob.adjust_fire_stacks(reac_volume / 10)
 
 /datum/reagent/fuel/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.5 * removed, 0)
+	C.adjustToxLoss(0.5 * removed, 0, cause_of_death = "Ingesting fuel")
 	return TRUE
 
 /datum/reagent/space_cleaner
@@ -126,7 +129,7 @@
 
 	exposed_turf.AddComponent(/datum/component/smell, INTENSITY_STRONG, SCENT_ODOR, "bleach", 3, 5 MINUTES)
 
-/datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+/datum/reagent/space_cleaner/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(methods & (TOUCH|VAPOR))
 		exposed_mob.wash(clean_types)
@@ -145,7 +148,7 @@
 /datum/reagent/space_cleaner/ez_clean/affect_blood(mob/living/carbon/C, removed)
 	C.adjustBruteLoss(1.665*removed, FALSE)
 	C.adjustFireLoss(1.665*removed, FALSE)
-	C.adjustToxLoss(1.665*removed, FALSE)
+	C.adjustToxLoss(1.665*removed, FALSE, cause_of_death = "Ingesting space cleaner")
 	return TRUE
 
 /datum/reagent/space_cleaner/ez_clean/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
@@ -153,6 +156,26 @@
 	if((methods & (TOUCH|VAPOR)) && !issilicon(exposed_mob))
 		exposed_mob.adjustBruteLoss(1.5)
 		exposed_mob.adjustFireLoss(1.5)
+
+/datum/reagent/space_cleaner/sterilizine
+	name = "Sterilizine"
+	description = "Sterilizes wounds in preparation for surgery and thoroughly removes blood."
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#c8a5dc"
+	touch_met = 5
+	value = 2.2
+
+	clean_types = CLEAN_WASH | CLEAN_TYPE_HIDDEN_BLOOD
+
+/datum/reagent/space_cleaner/sterilizine/expose_obj(obj/exposed_obj, reac_volume)
+	. = ..()
+	exposed_obj?.germ_level -= min(volume*20, exposed_obj.germ_level)
+
+/datum/reagent/space_cleaner/sterilizine/affect_touch(mob/living/carbon/C, removed)
+	. = ..()
+	if(C.germ_level < INFECTION_LEVEL_TWO) // rest and antibiotics is required to cure serious infections
+		C.germ_level -= min(removed*20, C.germ_level)
 
 ///Used for clownery
 /datum/reagent/lube
@@ -217,7 +240,7 @@
 /datum/reagent/stimulants/overdose_process(mob/living/carbon/C)
 	if(prob(25))
 		C.stamina.adjust(2.5)
-		C.adjustToxLoss(1, 0)
+		C.adjustToxLoss(1, 0, cause_of_death = "Stimulant overdose")
 		C.losebreath++
 		. = TRUE
 
@@ -228,13 +251,10 @@
 	color = "#515151"
 	taste_description = "ash"
 
-
-// Ash is also used IRL in gardening, as a fertilizer enhancer and weed killer
-/datum/reagent/ash/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_plant_health(round(chems.get_reagent_amount(src.type) * 1))
-		mytray.adjust_weedlevel(-1)
+/datum/reagent/ash/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.plant_growth_delta += 0.4
+		plant_tick.plant_health_delta += 0.2
 
 // [Original ants concept by Keelin on Goon]
 /datum/reagent/ants
@@ -331,7 +351,7 @@
 	value = DISPENSER_REAGENT_VALUE
 
 /datum/reagent/acetone/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(removed * 3, FALSE)
+	C.adjustToxLoss(removed * 3, FALSE, cause_of_death = "Ingesting acetone")
 	return TRUE
 
 /datum/reagent/acetone/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
@@ -341,3 +361,23 @@
 		paperaffected.clearpaper()
 		to_chat(usr, span_notice("The solution dissolves the ink on the paper."))
 		return
+
+/datum/reagent/hydrazine
+
+	name = "Hydrazine"
+	description = "A toxic, colorless, flammable liquid with a strong ammonia-like odor, in hydrate form."
+	taste_description = "sweet tasting metal"
+	reagent_state = LIQUID
+	color = "#808080"
+	metabolization_rate = 0.1
+	touch_met = 5
+	value = DISPENSER_REAGENT_VALUE
+
+/datum/reagent/hydrazine/affect_blood(mob/living/carbon/C, removed)
+	C.adjustToxLoss(removed * 4, FALSE, cause_of_death = "Ingesting hydrazine")
+	return TRUE
+
+/datum/reagent/hydrazine/affect_touch(mob/living/carbon/C, removed)
+	C.adjustToxLoss(removed * 0.2, FALSE)
+	C.adjust_fire_stacks(removed / 12)
+	return TRUE

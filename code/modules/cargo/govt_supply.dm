@@ -1,5 +1,5 @@
 /obj/machinery/computer/cargo/express/government
-	name = "government supply console"
+	name = "federation supply console"
 
 	stationcargo = FALSE
 	podType = /obj/structure/closet/supplypod/safe
@@ -25,14 +25,13 @@
 			"cost" = P.get_cost(),
 			"id" = pack,
 			"desc" = P.desc || P.name,
-			"goody" = P.goody,
 			"access" = P.access
 		))
 
 	sortTim(., GLOBAL_PROC_REF(cmp_text_asc))
 
 /obj/machinery/computer/cargo/express/government/can_purchase_pack(datum/supply_pack/pack)
-	return pack.supply_flags & SUPPLY_PACK_GOVERNMENT
+	return pack.supply_flags & SUPPLY_PACK_FEDERATION
 
 /obj/machinery/computer/cargo/express/government/emag_act(mob/living/user)
 	return

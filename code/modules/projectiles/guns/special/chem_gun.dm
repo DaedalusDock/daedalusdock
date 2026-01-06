@@ -1,5 +1,8 @@
 //his isn't a subtype of the syringe gun because the syringegun subtype is made to hold syringes
 //this is meant to hold reagents/obj/item/gun/syringe
+TYPEINFO_DEF(/obj/item/gun/chem)
+	default_materials = list(/datum/material/iron=2000)
+
 /obj/item/gun/chem
 	name = "reagent gun"
 	desc = "An Aether syringe gun, modified to automatically synthesise chemical darts, and instead hold reagents."
@@ -8,7 +11,6 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	throw_range = 7
 	force = 4
-	custom_materials = list(/datum/material/iron=2000)
 	clumsy_check = FALSE
 	fire_sound = 'sound/items/syringeproj.ogg'
 	var/time_per_syringe = 250

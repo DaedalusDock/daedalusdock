@@ -19,7 +19,7 @@
 	///0-100, amount of blood in this decal, used for making footprints and affecting the alpha of bloody footprints
 	var/bloodiness = 0
 
-/obj/effect/decal/cleanable/Initialize(mapload, list/datum/disease/diseases, list/blood_dna)
+/obj/effect/decal/cleanable/Initialize(mapload, list/datum/pathogen/diseases, list/blood_dna)
 	. = ..()
 	if (random_icon_states && (icon_state == initial(icon_state)) && length(random_icon_states) > 0)
 		icon_state = pick(random_icon_states)
@@ -45,9 +45,9 @@
 					return INITIALIZE_HINT_QDEL
 
 	if(LAZYLEN(diseases))
-		var/list/datum/disease/diseases_to_add = list()
-		for(var/datum/disease/D in diseases)
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+		var/list/datum/pathogen/diseases_to_add = list()
+		for(var/datum/pathogen/D in diseases)
+			if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 				diseases_to_add += D
 		if(LAZYLEN(diseases_to_add))
 			AddComponent(/datum/component/infective, diseases_to_add)
@@ -73,7 +73,7 @@
 		return TRUE
 
 /obj/effect/decal/cleanable/attackby(obj/item/W, mob/user, params)
-	if((istype(W, /obj/item/reagent_containers/glass) && !istype(W, /obj/item/reagent_containers/glass/rag)) || istype(W, /obj/item/reagent_containers/food/drinks))
+	if((istype(W, /obj/item/reagent_containers/cup) && !istype(W, /obj/item/reagent_containers/cup/rag)) || istype(W, /obj/item/reagent_containers/cup/glass))
 		if(src.reagents && W.reagents)
 			. = 1 //so the containers don't splash their content on the src while scooping.
 			if(!src.reagents.total_volume)
@@ -109,16 +109,18 @@
 	SIGNAL_HANDLER
 	if(AM == src)
 		return
+	if(HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
 	if(iscarbon(AM) && blood_color && bloodiness >= 40)
 		SEND_SIGNAL(AM, COMSIG_STEP_ON_BLOOD, src)
 		update_appearance()
 
 /obj/effect/decal/cleanable/wash(clean_types)
 	. = ..()
-	if (. || (clean_types & clean_type))
+	if (clean_types & clean_type)
 		qdel(src)
 		return TRUE
-	return .
 
 /**
  * Checks if this decal is a valid decal that can be blood crawled in.

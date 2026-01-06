@@ -8,10 +8,12 @@
 
 #define AIMING_BEAM_ANGLE_CHANGE_THRESHOLD 0.1
 
+TYPEINFO_DEF(/obj/item/gun/energy/beam_rifle)
+	default_materials = null
+
 /obj/item/gun/energy/beam_rifle
 	name = "particle acceleration rifle"
 	desc = "An energy-based anti material marksman rifle that uses highly charged particle beams moving at extreme velocities to decimate whatever is unfortunate enough to be targeted by one."
-	desc_controls = "Hold down left click while scoped to aim, when weapon is fully aimed (Tracer goes from red to green as it charges), release to fire. Moving while aiming or changing where you're pointing at while aiming will delay the aiming process depending on how much you changed."
 	icon = 'icons/obj/guns/energy.dmi'
 	icon_state = "esniper"
 	inhand_icon_state = null
@@ -19,7 +21,6 @@
 	fire_sound = 'sound/weapons/beam_sniper.ogg'
 	slot_flags = ITEM_SLOT_BACK
 	force = 15
-	custom_materials = null
 	recoil = 4
 	ammo_x_offset = 3
 	ammo_y_offset = 3
@@ -89,7 +90,7 @@
 	set_user(user)
 	return ..()
 
-/obj/item/gun/energy/beam_rifle/dropped(mob/user)
+/obj/item/gun/energy/beam_rifle/unequipped(mob/user)
 	set_user()
 	return ..()
 
@@ -296,25 +297,22 @@
 		sync_ammo()
 		var/atom/target = M.client.mouse_object_ref?.resolve()
 		if(target)
-			afterattack(target, M, FALSE, M.client.mouseParams, passthrough = TRUE)
+			try_fire_gun(target, M, FALSE, M.client.mouseParams, passthrough = TRUE)
+
 	stop_aiming()
 	QDEL_LIST(current_tracers)
 	return ..()
 
-/obj/item/gun/energy/beam_rifle/afterattack(atom/target, mob/living/user, flag, params, passthrough = FALSE)
-	if(flag) //It's adjacent, is the user, or is on the user's person
-		if(target in user.contents) //can't shoot stuff inside us.
-			return
-		if(!ismob(target) || user.combat_mode) //melee attack
-			return
-		if(target == user && user.zone_selected != BODY_ZONE_PRECISE_MOUTH) //so we can't shoot ourselves (unless mouth selected)
-			return
+/obj/item/gun/energy/beam_rifle/try_fire_gun(atom/target, mob/living/user, proximity, params, passthrough)
+	if(target == user && user.zone_selected != BODY_ZONE_PRECISE_MOUTH) //so we can't shoot ourselves (unless mouth selected)
+		return
 	if(!passthrough && (aiming_time > aiming_time_fire_threshold))
 		return
 	if(lastfire > world.time + delay)
 		return
-	lastfire = world.time
+
 	. = ..()
+	lastfire = world.time
 	stop_aiming()
 
 /obj/item/gun/energy/beam_rifle/proc/sync_ammo()

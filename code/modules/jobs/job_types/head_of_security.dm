@@ -1,6 +1,6 @@
 /datum/job/head_of_security
 	title = JOB_SECURITY_MARSHAL
-	description = "Coordinate security personnel, ensure Management's needs are met."
+	description = "Coordinate security personnel, ensure the Federation's needs are met."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_CAPTAIN)
 	head_announce = list(RADIO_CHANNEL_SECURITY)
@@ -22,7 +22,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/hos,
-			SPECIES_PLASMAMAN = /datum/outfit/job/hos/plasmaman,
 		),
 	)
 
@@ -34,7 +33,7 @@
 	mind_traits = list(TRAIT_DONUT_LOVER)
 	liver_traits = list(TRAIT_LAW_ENFORCEMENT_METABOLISM, TRAIT_ROYAL_METABOLISM)
 
-	paycheck = PAYCHECK_COMMAND
+	paycheck = PAYCHECK_ASSISTANT * 10
 	paycheck_department = ACCOUNT_SEC
 
 	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law)
@@ -43,6 +42,10 @@
 
 	voice_of_god_power = 1.4 //Command staff has authority
 
+
+/datum/job/head_of_security/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/security_marshal)
 
 /datum/job/head_of_security/get_captaincy_announcement(mob/living/captain)
 	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
@@ -54,7 +57,7 @@
 		</div>
 		<br>
 		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
-		You are loudly and proudly a member of the Federation Galaxia, and you push your corps to carry out Management's will.
+		You are loudly and proudly a member of the Federation, and you push your corps to carry out its will.
 		Ensure the Superintendent is pleased, and your team follows your orders. Insubordination is not tolerated.
 		</div>
 	"}
@@ -68,7 +71,7 @@
 	jobtype = /datum/job/head_of_security
 
 	id = /obj/item/card/id/advanced/silver
-	id_trim = /datum/id_trim/job/head_of_security
+	id_template = /datum/access_template/job/head_of_security
 	uniform = /obj/item/clothing/under/rank/security/marshal
 	suit = /obj/item/clothing/suit/armor/vest/ballistic
 	suit_store = /obj/item/gun/energy/e_gun
@@ -84,9 +87,7 @@
 	l_pocket = /obj/item/restraints/handcuffs
 	r_pocket = /obj/item/assembly/flash/handheld
 
-	backpack = /obj/item/storage/backpack/security
-	satchel = /obj/item/storage/backpack/satchel/sec
-	duffelbag = /obj/item/storage/backpack/duffelbag/sec
+	back = /obj/item/storage/backpack/security
 
 	box = /obj/item/storage/box/survival/security
 	chameleon_extras = list(
@@ -94,15 +95,6 @@
 		/obj/item/stamp/hos,
 		)
 	implants = list(/obj/item/implant/mindshield)
-
-/datum/outfit/job/hos/plasmaman
-	name = "Security Marshal (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/security/head_of_security
-	gloves = /obj/item/clothing/gloves/color/plasmaman/black
-	head = /obj/item/clothing/head/helmet/space/plasmaman/security/head_of_security
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/hos/mod
 	name = "Security Marshal (MODsuit)"

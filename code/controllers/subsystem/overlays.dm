@@ -133,3 +133,11 @@ SUBSYSTEM_DEF(overlays)
 			appearance.overlays += .(new /mutable_appearance(overlay))
 
 	return appearance
+
+/// Remove lighting underlays from an appearance. Not recursive since I cannot fathom why that'd happen.
+/proc/remove_lighting_underlays(mutable_appearance/appearance)
+	for(var/mutable_appearance/underlay as anything in appearance.underlays)
+		if(underlay.plane == O_LIGHTING_VISUAL_PLANE)
+			appearance.underlays -= underlay
+
+	return appearance

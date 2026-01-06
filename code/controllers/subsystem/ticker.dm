@@ -29,20 +29,21 @@ SUBSYSTEM_DEF(ticker)
 	var/list/mob/dead/new_player/ready_players
 
 	///Media track for the music played in the lobby
-	var/datum/media/login_music
+	var/list/datum/media/login_music = list()
 	///Media track for the round end music.
 	var/datum/media/credits_music
 
 	var/round_end_sound //music/jingle played when the world reboots
 	var/round_end_sound_sent = TRUE //If all clients have loaded it
 
+	/// Container for the round end report procs and data.
+	var/datum/round_end_report/round_end_report
 	var/list/datum/mind/minds = list() //The characters in the game. Used for objective tracking.
 
 	var/delay_end = FALSE //if set true, the round will not restart on it's own
 	var/admin_delay_notice = "" //a message to display to anyone who tries to restart the world after a delay
 	var/ready_for_reboot = FALSE //all roundend preparation done with, all that's left is reboot
 
-	var/tipped = FALSE //Did we broadcast the tip of the day yet?
 	var/selected_tip // What will be the tip of the day?
 
 	var/timeLeft //pregame timer
@@ -122,6 +123,9 @@ SUBSYSTEM_DEF(ticker)
 	if(GLOB.is_debug_server)
 		mode = new /datum/game_mode/extended
 
+	if(CONFIG_GET(flag/hide_gamemode_name))
+		mode_display_name = "Secret"
+
 	return ..()
 
 /datum/controller/subsystem/ticker/fire()
@@ -129,15 +133,18 @@ SUBSYSTEM_DEF(ticker)
 		if(GAME_STATE_STARTUP)
 			if(Master.initializations_finished_with_no_players_logged_in)
 				start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
+
 			for(var/client/C in GLOB.clients)
 				window_flash(C, ignorepref = TRUE) //let them know lobby has opened up.
-			to_chat(world, span_notice("<b>Welcome to [station_name()]!</b>"))
+				to_chat(C, systemtext("WELCOME, [uppertext(C.ckey)]"))
+
 			var/newround_staple = CONFIG_GET(string/chat_newgame_staple)
 			send2chat("New round starting on [SSmapping.config.map_name][newround_staple ? ", [newround_staple]" : null]!", CONFIG_GET(string/chat_announce_new_game))
 			current_state = GAME_STATE_PREGAME
 			SEND_SIGNAL(src, COMSIG_TICKER_ENTER_PREGAME)
 
 			fire()
+
 		if(GAME_STATE_PREGAME)
 				//lobby stats for statpanels
 			if(isnull(timeLeft))
@@ -194,10 +201,6 @@ SUBSYSTEM_DEF(ticker)
 				return
 			timeLeft -= wait
 
-			if(timeLeft <= 300 && !tipped)
-				send_tip_of_the_round(world, selected_tip)
-				tipped = TRUE
-
 			if(timeLeft <= 0)
 				SEND_SIGNAL(src, COMSIG_TICKER_ENTER_SETTING_UP)
 				current_state = GAME_STATE_SETTING_UP
@@ -230,7 +233,7 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/setup()
-	to_chat(world, span_boldannounce("Starting game..."))
+	to_chat(world, systemtext("Starting game..."))
 	var/init_start = world.timeofday
 
 	ready_players = list() // This needs to be reset every setup, incase the gamemode fails to start.
@@ -243,7 +246,7 @@ SUBSYSTEM_DEF(ticker)
 	if(!initialize_gamemode())
 		return FALSE
 
-	to_chat(world, span_boldannounce("The gamemode is: [get_mode_name()]."))
+	to_chat(world, systemtext("The gamemode is: [get_mode_name()]."))
 	if(mode_display_name)
 		message_admins("The real gamemode is: [get_mode_name(TRUE)].")
 	to_chat(world, "<br><hr><br>")
@@ -252,8 +255,8 @@ SUBSYSTEM_DEF(ticker)
 
 	// There may be various config settings that have been set or modified by this point.
 	// This is the point of no return before spawning in new players, let's run over the
-	// job trim singletons and update them based on any config settings.
-	SSid_access.refresh_job_trim_singletons()
+	// job template singletons and update them based on any config settings.
+	SSid_access.refresh_job_template_singletons()
 
 	CHECK_TICK
 
@@ -261,7 +264,12 @@ SUBSYSTEM_DEF(ticker)
 		toggle_ooc(FALSE) // Turn it off
 
 	CHECK_TICK
-	GLOB.start_landmarks_list = shuffle(GLOB.start_landmarks_list) //Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
+
+	//Shuffle the order of spawn points so they dont always predictably spawn bottom-up and right-to-left
+	GLOB.start_landmarks_list = shuffle(GLOB.start_landmarks_list)
+	for(var/name in GLOB.start_landmarks_by_name)
+		GLOB.start_landmarks_by_name[name] = shuffle(GLOB.start_landmarks_by_name[name])
+
 	create_characters() //Create player characters
 	collect_minds()
 	equip_characters()
@@ -298,6 +306,7 @@ SUBSYSTEM_DEF(ticker)
 	mode.setup_antags()
 	PostSetup()
 	SSticker.ready_players = null
+	SSlobby.game_status?.alpha = 0
 	return TRUE
 
 /datum/controller/subsystem/ticker/proc/PostSetup()
@@ -311,21 +320,18 @@ SUBSYSTEM_DEF(ticker)
 	send2adminchat("Server", "Round [GLOB.round_id ? "#[GLOB.round_id]:" : "of"] [SSticker.get_mode_name()] has started[allmins.len ? ".":" with no active admins online!"]")
 	setup_done = TRUE
 
-	for(var/i in GLOB.start_landmarks_list)
-		var/obj/effect/landmark/start/S = i
+	for(var/obj/effect/landmark/start/S as anything in GLOB.start_landmarks_list)
 		if(istype(S)) //we can not runtime here. not in this important of a proc.
 			S.after_round_start()
 		else
 			stack_trace("[S] [S.type] found in start landmarks list, which isn't a start landmark!")
 
 	// handle persistence stuff that requires ckeys, in this case hardcore mode and temporal scarring
-	for(var/i in GLOB.player_list)
-		if(!ishuman(i))
-			continue
-		var/mob/living/carbon/human/iter_human = i
-
+	for(var/mob/living/carbon/human/iter_human in GLOB.player_list)
+		iter_human.client?.give_award(/datum/award/achievement/enter_the_pool, iter_human)
 		if(!iter_human.hardcore_survival_score)
 			continue
+
 		if(iter_human.mind?.special_role)
 			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!"))
 		else
@@ -353,8 +359,6 @@ SUBSYSTEM_DEF(ticker)
 		qdel(bomb)
 
 /datum/controller/subsystem/ticker/proc/create_characters()
-	var/list/spawn_spots = SSjob.latejoin_trackers.Copy()
-	var/list/spawn_spots_reload = spawn_spots.Copy() //In case we run out, we need something to reload from.
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player.mind)
 			//New player has logged out.
@@ -367,20 +371,23 @@ SUBSYSTEM_DEF(ticker)
 			if(PLAYER_READY_TO_PLAY)
 				GLOB.joined_player_list += player.ckey
 				var/atom/spawn_loc = player.mind.assigned_role.get_roundstart_spawn_point()
-				if(spawn_loc) //If we've been given an override, just take it and get out of here.
-					player.create_character(spawn_loc)
+				player.create_character(spawn_loc)
 
-				else //We haven't been passed an override destination. Give us the usual treatment.
-					if(!length(spawn_spots))
-						spawn_spots = spawn_spots_reload.Copy()
-
-					spawn_loc = pick_n_take(spawn_spots)
-					player.create_character(spawn_loc)
 			else //PLAYER_NOT_READY
 				//Reload their player panel so they see latejoin instead of ready.
 				player.npp.update()
 
 		CHECK_TICK
+
+/// Returns a (probably) unused latejoin spawn point. Used by roundstart code to spread players out.
+/datum/controller/subsystem/ticker/proc/get_random_spawnpoint()
+	var/static/list/spawnpoints
+	if(!length(spawnpoints))
+		if(length(SSjob.latejoin_trackers))
+			spawnpoints = SSjob.latejoin_trackers.Copy()
+		else
+			return SSjob.get_last_resort_spawn_points()
+	return pick_n_take(spawnpoints)
 
 /datum/controller/subsystem/ticker/proc/collect_minds()
 	for(var/i in GLOB.new_player_list)
@@ -426,7 +433,7 @@ SUBSYSTEM_DEF(ticker)
 
 /datum/controller/subsystem/ticker/proc/get_captain_or_backup()
 	var/list/spare_id_candidates = list()
-	var/datum/job_department/management = SSjob.get_department_type(/datum/job_department/command)
+	var/datum/job_department/federation = SSjob.get_department_type(/datum/job_department/command)
 
 	// Find a suitable player to hold captaincy.
 	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
@@ -443,7 +450,7 @@ SUBSYSTEM_DEF(ticker)
 
 		// Keep a rolling tally of who'll get the cap's spare ID vault code.
 		// Check assigned_role's priority and curate the candidate list appropriately.
-		if(new_player_human.mind.assigned_role.departments_bitflags & management.department_bitflags)
+		if(new_player_human.mind.assigned_role.departments_bitflags & federation.department_bitflags)
 			spare_id_candidates += new_player_human
 
 		CHECK_TICK
@@ -464,17 +471,23 @@ SUBSYSTEM_DEF(ticker)
 	return .
 
 /datum/controller/subsystem/ticker/proc/transfer_characters()
-	var/list/livings = list()
-	for(var/i in GLOB.new_player_list)
-		var/mob/dead/new_player/player = i
-		var/mob/living = player.transfer_character()
-		if(living)
-			qdel(player)
-			living.notransform = TRUE
-			living.client?.init_verbs()
-			livings += living
-	if(livings.len)
-		addtimer(CALLBACK(src, PROC_REF(release_characters), livings), 30, TIMER_CLIENT_TIME)
+	var/list/pawns = list()
+	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
+		if(!player.new_character)
+			continue
+
+		var/mob/pawn = player.new_character
+		pawn.mind.assigned_role?.before_roundstart_possess(pawn)
+
+		player.transfer_character()
+
+		pawn.mind.assigned_role?.after_roundstart_possess(pawn)
+		pawn.notransform = TRUE
+		pawn.client?.init_verbs()
+		pawns += pawn
+
+	if(pawns.len)
+		addtimer(CALLBACK(src, PROC_REF(release_characters), pawns), 3 SECONDS, TIMER_CLIENT_TIME)
 
 /datum/controller/subsystem/ticker/proc/release_characters(list/livings)
 	for(var/I in livings)
@@ -539,7 +552,6 @@ SUBSYSTEM_DEF(ticker)
 
 	delay_end = SSticker.delay_end
 
-	tipped = SSticker.tipped
 	selected_tip = SSticker.selected_tip
 
 	timeLeft = SSticker.timeLeft
@@ -646,10 +658,10 @@ SUBSYSTEM_DEF(ticker)
 
 	var/skip_delay = check_rights()
 	if(delay_end && !skip_delay)
-		to_chat(world, span_boldannounce("An admin has delayed the round end."))
+		to_chat(world, systemtext("An admin has delayed the round end."))
 		return
 
-	to_chat(world, span_boldannounce("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
+	to_chat(world, systemtext("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
 
 	var/roll_credits_in = CONFIG_GET(number/eor_credits_delay) * 10
 	if(roll_credits)
@@ -663,7 +675,7 @@ SUBSYSTEM_DEF(ticker)
 	sleep(delay - (world.time - start_wait))
 
 	if(delay_end && !skip_delay)
-		to_chat(world, span_boldannounce("Reboot was cancelled by an admin."))
+		to_chat(world, systemtext("Reboot was cancelled by an admin."))
 		return
 	if(end_string)
 		end_state = end_string
@@ -675,7 +687,7 @@ SUBSYSTEM_DEF(ticker)
 	else if(gamelogloc)
 		to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
 
-	log_game(span_boldannounce("Rebooting World. [reason]"))
+	log_game(systemtext("Rebooting World. [reason]"))
 
 	world.Reboot()
 
@@ -704,14 +716,16 @@ SUBSYSTEM_DEF(ticker)
 	if(!istype(track))
 		CRASH("Non-datum/media given to set_login_music()!")
 
-	if(credits_music == login_music)
-		credits_music = track
-	login_music = track
+	login_music -= track
+	login_music.Insert(1, track)
 
 	for(var/mob/dead/new_player/player as anything in GLOB.new_player_list)
 		if(!player.client)
 			continue
-		player.client.playtitlemusic()
+
+		player.persistent_client.playlist.push_to_front(track)
+		player.persistent_client.playlist.cycle_track()
+		player.persistent_client.playlist.play_track()
 
 /datum/controller/subsystem/ticker/proc/pick_login_music()
 	var/list/title_music_data = SSmedia.get_track_pool(MEDIA_TAG_LOBBYMUSIC_COMMON)
@@ -723,6 +737,7 @@ SUBSYSTEM_DEF(ticker)
 
 	if(rustg_file_exists("data/last_round_lobby_music.txt")) //The define isn't truthy
 		old_login_music_t = rustg_file_read("data/last_round_lobby_music.txt")
+
 	var/list/music_tracks = title_music_data + rare_music_data
 	//Filter map-specific tracks
 	for(var/datum/media/music_filtered as anything in music_tracks)
@@ -731,6 +746,7 @@ SUBSYSTEM_DEF(ticker)
 		if(music_filtered.map && music_filtered.map != SSmapping.config.map_name)
 			rare_music_data -= music_filtered
 			title_music_data -= music_filtered
+
 	//Remove the previous song
 	if(old_login_music)
 		//Remove the old login music from the current pool if it wouldn't empty the pool.
@@ -739,22 +755,23 @@ SUBSYSTEM_DEF(ticker)
 		else if(length(title_music_data) > 1)
 			title_music_data -= old_login_music
 
+	if(length(title_music_data))
+		login_music += shuffle(title_music_data)
+
 	//Try to set a song json
 	var/use_rare_music = prob(10)
 	if(use_rare_music && length(rare_music_data))
-		login_music = pick(rare_music_data)
-	if(!login_music && length(title_music_data))
-		login_music = pick(title_music_data)
+		login_music.Insert(1, pick(rare_music_data))
 
 	//If there's no valid jsons, fallback to the classic ROUND_START_MUSIC_LIST.
-	if(!login_music)
-		var/music = pick(world.file2list(ROUND_START_MUSIC_LIST, "\n"))
-		var/list/split_path = splittext(music, "/")
+	if(!length(login_music))
 		//Construct a minimal music track to satisfy the system.
-		login_music = new(name = split_path[length(split_path)], path = music)
+		for(var/music in shuffle(world.file2list(ROUND_START_MUSIC_LIST)))
+			var/list/split_path = splittext(music, "/")
+			login_music += new /datum/media(name = split_path[length(split_path)], path = music)
 
 	//Write the last round file to our current choice
-	rustg_file_write(login_music.path, "data/last_round_lobby_music.txt")
+	rustg_file_write(login_music[1].path, "data/last_round_lobby_music.txt")
 
 /datum/controller/subsystem/ticker/proc/pick_credits_music()
 	var/list/music_data = SSmedia.get_track_pool(MEDIA_TAG_ROUNDEND_COMMON)
@@ -773,10 +790,15 @@ SUBSYSTEM_DEF(ticker)
 ///Generate a list of gamemodes we can play.
 /datum/controller/subsystem/ticker/proc/draft_gamemodes()
 	var/list/datum/game_mode/runnable_modes = list()
-	for(var/path in subtypesof(/datum/game_mode))
+	for(var/datum/game_mode/path as anything in subtypesof(/datum/game_mode))
+		if(isabstract(path))
+			continue
+
 		var/datum/game_mode/M = new path()
 		if(!(M.weight == GAMEMODE_WEIGHT_NEVER) && !M.check_for_errors())
 			runnable_modes[path] = M.weight
+		else
+			qdel(M)
 	return runnable_modes
 
 /datum/controller/subsystem/ticker/proc/get_mode_name(bypass_secret)
@@ -816,15 +838,15 @@ SUBSYSTEM_DEF(ticker)
 	CHECK_TICK
 	//Configure mode and assign player to special mode stuff
 	var/can_continue = 0
-	can_continue = src.mode.execute_roundstart() //Choose antagonists
+	can_continue = mode.execute_roundstart() //Choose antagonists
 	CHECK_TICK
-	can_continue = can_continue && SSjob.DivideOccupations(mode.required_jobs) //Distribute jobs
+	can_continue = can_continue && SSjob.DivideOccupations(mode.get_required_jobs()) //Distribute jobs
 	CHECK_TICK
 
 	if(!GLOB.Debug2)
 		if(!can_continue)
-			log_game("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
-			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause: [mode.setup_error].")
+			log_game("[get_mode_name(TRUE)] failed pre_setup, cause(s): [english_list(mode.setup_error)].")
+			message_admins("[get_mode_name(TRUE)] failed pre_setup, cause(s): [english_list(mode.setup_error)].")
 			to_chat(world, "<B>Error setting up [get_mode_name(TRUE)].</B> Reverting to pre-game lobby.")
 			mode.on_failed_execute()
 			QDEL_NULL(mode)

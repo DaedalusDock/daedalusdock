@@ -28,10 +28,57 @@
 
 	storage_type = /datum/storage/backpack
 
+	equip_delay_self = EQUIP_DELAY_BACK
+	equip_delay_other = EQUIP_DELAY_BACK * 1.5
+	strip_delay = EQUIP_DELAY_BACK * 1.5
+
+	var/zipper_open = FALSE
+
 /obj/item/storage/backpack/Initialize()
 	. = ..()
 	atom_storage.max_slots = 21
 	atom_storage.max_total_storage = 21
+
+/obj/item/storage/backpack/examine(mob/user)
+	. = ..()
+	. += span_info("The zipper is [zipper_open ? "open" : "closed"].")
+
+/obj/item/storage/backpack/get_controls_info()
+	. = ..()
+	. += "Control Click (while holding) - Toggle zipper."
+
+/obj/item/storage/backpack/can_pickpocket(mob/living/user)
+	var/mob/wearer = loc
+	if(!ismob(wearer))
+		return FALSE
+
+	if(wearer.get_item_by_slot(ITEM_SLOT_BACK) != src)
+		return FALSE
+
+	if(!(REVERSE_DIR(wearer.dir) & get_dir(wearer, user)))
+		return
+
+	return wearer.IsReachableBy(user)
+
+/obj/item/storage/backpack/CtrlClick(mob/user, list/params)
+	. = ..()
+	if(!.)
+		return
+
+	if(user != loc)
+		return
+
+	toggle_zipper(user)
+
+/obj/item/storage/backpack/proc/toggle_zipper(mob/user)
+	zipper_open = !zipper_open
+	user?.changeNext_move(CLICK_CD_RAPID)
+	user?.visible_message(span_notice("[user] [zipper_open ? "unzips" : "zips"] [user.p_their()] [name]."))
+
+	if(zipper_open)
+		ADD_TRAIT(src, TRAIT_INSTANT_PICKPOCKET, INNATE_TRAIT)
+	else
+		REMOVE_TRAIT(src, TRAIT_INSTANT_PICKPOCKET, INNATE_TRAIT)
 
 /*
  * Backpack Types
@@ -53,6 +100,9 @@
 	resistance_flags = FIRE_PROOF
 	item_flags = NO_MAT_REDEMPTION
 
+TYPEINFO_DEF(/obj/item/storage/backpack/holding)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 50)
+
 /obj/item/storage/backpack/holding
 	name = "bag of holding"
 	desc = "A backpack that opens into a localized pocket of bluespace."
@@ -60,7 +110,6 @@
 	inhand_icon_state = "holdingpack"
 	resistance_flags = FIRE_PROOF
 	item_flags = NO_MAT_REDEMPTION
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 60, ACID = 50)
 
 /obj/item/storage/backpack/holding/Initialize()
 	. = ..()
@@ -334,7 +383,7 @@
 	atom_storage.set_holdable(cant_hold_list = list(/obj/item/storage/backpack/satchel/flat)) //muh recursive backpacks)
 
 /obj/item/storage/backpack/satchel/flat/PopulateContents()
-	var/datum/supply_pack/costumes_toys/randomised/contraband/C = new
+	var/datum/supply_pack/misc/contraband/C = new
 	for(var/i in 1 to 2)
 		var/ctype = pick(C.contains)
 		new ctype(src)
@@ -671,7 +720,7 @@
 	new /obj/item/gun/ballistic/automatic/pistol/aps(src)
 	new /obj/item/ammo_box/magazine/m9mm_aps/fire(src)
 	new /obj/item/ammo_box/magazine/m9mm_aps/fire(src)
-	new /obj/item/reagent_containers/food/drinks/bottle/vodka/badminka(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/vodka/badminka(src)
 	new /obj/item/reagent_containers/hypospray/medipen/stimulants(src)
 	new /obj/item/grenade/syndieminibomb(src)
 

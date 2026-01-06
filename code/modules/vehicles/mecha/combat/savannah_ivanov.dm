@@ -12,6 +12,9 @@
  * A two person mecha that delegates moving to the driver and shooting to the pilot.
  * ...Hilarious, right?
  */
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha/combat/savannah_ivanov)
+	default_armor = list(BLUNT = 45, PUNCTURE = 40, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 40, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha/combat/savannah_ivanov
 	name = "\improper Savannah-Ivanov"
 	desc = "An insanely overbulked mecha that handily crushes single-pilot opponents. The price is that you need two pilots to use it."
@@ -22,7 +25,6 @@
 	mecha_flags = ADDING_ACCESS_POSSIBLE | CANSTRAFE | IS_ENCLOSED | HAS_LIGHTS
 	movedelay = 3
 	max_integrity = 450 //really tanky, like damn
-	armor = list(BLUNT = 45, PUNCTURE = 40, SLASH = 0, LASER = 30, ENERGY = 30, BOMB = 40, BIO = 0, FIRE = 100, ACID = 100)
 	max_temperature = 30000
 	wreckage = /obj/structure/mecha_wreckage/savannah_ivanov
 	max_occupants = 2
@@ -98,16 +100,16 @@
 			playsound(chassis, 'sound/items/rped.ogg', 50, TRUE)
 		if(2)
 			chassis.visible_message(span_warning("[chassis] begins to shake, the sounds of electricity growing louder."))
-			chassis.Shake(5, 5, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
+			chassis.Shake(1, 1, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
 		if(3)
 			chassis.visible_message(span_warning("[chassis] assumes a pose as it rattles violently."))
-			chassis.Shake(7, 7, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
+			chassis.Shake(2, 2, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
 			chassis.spark_system.start()
 			chassis.update_appearance(UPDATE_ICON_STATE)
 		if(4)
 			chassis.visible_message(span_warning("[chassis] sparks and shutters as it finalizes preparation."))
 			playsound(chassis, 'sound/mecha/skyfall_power_up.ogg', 50, TRUE)
-			chassis.Shake(10, 10, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
+			chassis.Shake(3, 3, SKYFALL_SINGLE_CHARGE_TIME-1) // -1 gives space between the animates, so they don't interrupt eachother
 			chassis.spark_system.start()
 		if(SKYFALL_CHARGELEVEL_LAUNCH)
 			chassis.visible_message(span_danger("[chassis] leaps into the air!"))

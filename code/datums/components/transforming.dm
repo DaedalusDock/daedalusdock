@@ -163,6 +163,7 @@
  * source - the item being transformed / parent
  */
 /datum/component/transforming/proc/set_active(obj/item/source)
+	ADD_TRAIT(source, TRAIT_TRANSFORM_ACTIVE, REF(src))
 	if(sharpness_on)
 		source.sharpness = sharpness_on
 	if(force_on)
@@ -179,7 +180,7 @@
 
 	source.hitsound = hitsound_on
 	source.wielded_hitsound = hitsound_on
-	source.w_class = w_class_on
+	source.set_weight_class(w_class_on)
 	source.icon_state = "[source.icon_state]_on"
 
 /*
@@ -189,6 +190,7 @@
  * source - the item being un-transformed / parent
  */
 /datum/component/transforming/proc/set_inactive(obj/item/source)
+	REMOVE_TRAIT(source, TRAIT_TRANSFORM_ACTIVE, REF(src))
 	if(sharpness_on)
 		source.sharpness = initial(source.sharpness)
 	if(force_on)
@@ -205,7 +207,7 @@
 
 	source.hitsound = initial(source.hitsound)
 	source.wielded_hitsound = initial(source.wielded_hitsound)
-	source.w_class = initial(source.w_class)
+	source.set_weight_class(initial(source.w_class))
 	source.icon_state = initial(source.icon_state)
 
 /*

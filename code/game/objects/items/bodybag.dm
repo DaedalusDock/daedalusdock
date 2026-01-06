@@ -13,11 +13,14 @@
 	else
 		deploy_bodybag(user, get_turf(src))
 
-/obj/item/bodybag/afterattack(atom/target, mob/user, proximity)
-	. = ..()
-	if(proximity)
-		if(isopenturf(target))
-			deploy_bodybag(user, target)
+/obj/item/bodybag/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(user.combat_mode)
+		return
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
+	if(isopenturf(target))
+		deploy_bodybag(user, target)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/bodybag/proc/deploy_bodybag(mob/user, atom/location)
 	var/obj/structure/closet/body_bag/R = new unfoldedbag_path(location)
@@ -80,7 +83,7 @@
 	user.last_special = world.time + CLICK_CD_BREAKOUT
 	to_chat(user, span_notice("You claw at the fabric of [src], trying to tear it open..."))
 	to_chat(loc, span_warning("Someone starts trying to break free of [src]!"))
-	if(!do_after(user, src, 12 SECONDS, timed_action_flags = (IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM)))
+	if(!do_after(user, src, 12 SECONDS, timed_action_flags = (DO_IGNORE_TARGET_LOC_CHANGE|DO_IGNORE_HELD_ITEM)))
 		return
 	// you are still in the bag? time to go unless you KO'd, honey!
 	// if they escape during this time and you rebag them the timer is still clocking down and does NOT reset so they can very easily get out.

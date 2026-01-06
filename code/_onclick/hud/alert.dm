@@ -95,6 +95,43 @@
 /mob/proc/has_alert(category)
 	return !isnull(alerts[category])
 
+// PRIVATE = only edit, use, or override these if you're editing the system as a whole
+
+// Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there
+/datum/hud/proc/reorganize_alerts(mob/viewmob)
+	var/mob/screenmob = viewmob || mymob
+	if(!screenmob.client)
+		return
+	var/list/alerts = mymob.alerts
+	if(!hud_shown)
+		for(var/i in 1 to alerts.len)
+			screenmob.client.screen -= alerts[alerts[i]]
+		return 1
+	for(var/i in 1 to alerts.len)
+		var/atom/movable/screen/alert/alert = alerts[alerts[i]]
+		if(alert.icon_state == "template")
+			alert.icon = ui_style
+		switch(i)
+			if(1)
+				. = ui_alert1
+			if(2)
+				. = ui_alert2
+			if(3)
+				. = ui_alert3
+			if(4)
+				. = ui_alert4
+			if(5)
+				. = ui_alert5 // Right now there's 5 slots
+			else
+				. = ""
+		alert.screen_loc = .
+		screenmob.client.screen |= alert
+	if(!viewmob)
+		for(var/M in mymob.observers)
+			reorganize_alerts(M)
+	return 1
+
+DEFINE_INTERACTABLE(/atom/movable/screen/alert)
 /atom/movable/screen/alert
 	icon = 'icons/hud/screen_alert.dmi'
 	icon_state = "default"
@@ -110,8 +147,32 @@
 	/// Boolean. If TRUE, the Click() proc will attempt to Click() on the master first if there is a master.
 	var/click_master = TRUE
 
+/atom/movable/screen/alert/Destroy()
+	severity = 0
+	master_ref = null
+	owner = null
+	screen_loc = ""
+	return ..()
+
 /atom/movable/screen/alert/can_usr_use(mob/user)
 	return owner == usr
+
+/atom/movable/screen/alert/Click(location, control, params)
+	. = ..()
+	if(.)
+		return FALSE
+
+	if(usr != owner)
+		return FALSE
+	var/list/modifiers = params2list(params)
+	if(LAZYACCESS(modifiers, SHIFT_CLICK)) // screen objects don't do the normal Click() stuff so we'll cheat
+		to_chat(usr, span_boldnotice("[name]</span> - <span class='info'>[desc]"))
+		return FALSE
+	var/datum/our_master = master_ref?.resolve()
+	if(our_master && click_master)
+		return usr.client.Click(our_master, location, control, params)
+
+	return TRUE
 
 /atom/movable/screen/alert/MouseEntered(location,control,params)
 	. = ..()
@@ -407,27 +468,6 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	add_overlay(receiving)
 	src.receiving = receiving
 	src.offerer = offerer
-
-/// Gives the player the option to succumb while in critical condition
-/atom/movable/screen/alert/succumb
-	name = "Succumb"
-	desc = "Shuffle off this mortal coil."
-	icon_state = ALERT_SUCCUMB
-
-/atom/movable/screen/alert/succumb/Click()
-	. = ..()
-	if(!.)
-		return
-
-	var/mob/living/living_owner = owner
-	var/last_whisper = tgui_input_text(usr, "Do you have any last words?", "Final Words")
-	if (!last_whisper)
-		return
-
-	if (length(last_whisper))
-		living_owner.say("#[last_whisper]")
-
-	living_owner.succumb(whispered = length(last_whisper) > 0)
 
 //ALIENS
 
@@ -839,62 +879,37 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	desc = "You are in very bad shape. Max stamina reduced by 100 and stamina regen reduced by 5."
 	icon_state = ALERT_SOFTCRIT
 
-// PRIVATE = only edit, use, or override these if you're editing the system as a whole
+/atom/movable/screen/alert/lying_down
+	name = "Prone"
+	desc = "You are prone. Click to attempt to stand up."
+	icon_state = "paralysis"
 
-// Re-render all alerts - also called in /datum/hud/show_hud() because it's needed there
-/datum/hud/proc/reorganize_alerts(mob/viewmob)
-	var/mob/screenmob = viewmob || mymob
-	if(!screenmob.client)
-		return
-	var/list/alerts = mymob.alerts
-	if(!hud_shown)
-		for(var/i in 1 to alerts.len)
-			screenmob.client.screen -= alerts[alerts[i]]
-		return 1
-	for(var/i in 1 to alerts.len)
-		var/atom/movable/screen/alert/alert = alerts[alerts[i]]
-		if(alert.icon_state == "template")
-			alert.icon = ui_style
-		switch(i)
-			if(1)
-				. = ui_alert1
-			if(2)
-				. = ui_alert2
-			if(3)
-				. = ui_alert3
-			if(4)
-				. = ui_alert4
-			if(5)
-				. = ui_alert5 // Right now there's 5 slots
-			else
-				. = ""
-		alert.screen_loc = .
-		screenmob.client.screen |= alert
-	if(!viewmob)
-		for(var/M in mymob.observers)
-			reorganize_alerts(M)
-	return 1
-
-/atom/movable/screen/alert/Click(location, control, params)
+/atom/movable/screen/alert/lying_down/Click(location, control, params)
 	. = ..()
-	if(.)
-		return FALSE
+	if(!.)
+		return
 
-	if(usr != owner)
-		return FALSE
-	var/list/modifiers = params2list(params)
-	if(LAZYACCESS(modifiers, SHIFT_CLICK)) // screen objects don't do the normal Click() stuff so we'll cheat
-		to_chat(usr, span_boldnotice("[name]</span> - <span class='info'>[desc]"))
-		return FALSE
-	var/datum/our_master = master_ref?.resolve()
-	if(our_master && click_master)
-		return usr.client.Click(our_master, location, control, params)
+	var/mob/living/living_owner = owner
+	living_owner.set_resting(FALSE)
 
-	return TRUE
+/atom/movable/screen/alert/shock
+	name = "Traumatic Shock"
+	desc = "You've endured a significant amount of pain."
+	icon_state = "convulsing"
 
-/atom/movable/screen/alert/Destroy()
-	severity = 0
-	master_ref = null
-	owner = null
-	screen_loc = ""
-	return ..()
+/atom/movable/screen/alert/status_effect/sleepy_time
+	name = "Sleep?"
+	desc = "Click to try to sleep."
+	icon_state = "trywakeup"
+
+/atom/movable/screen/alert/status_effect/sleepy_time/Click(location, control, params)
+	. = ..()
+	if(!.)
+		return
+
+	astype(attached_effect, /datum/status_effect/buckled_to_bed).toggle_sleep_intent()
+
+/atom/movable/screen/alert/status_effect/sleepy_time/end
+	name = "Wake up?"
+	desc = "Click to try to wake up."
+	icon_state = "trysleep"

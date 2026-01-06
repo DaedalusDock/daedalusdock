@@ -84,7 +84,7 @@
 
 // If this is uncommented, will attempt to load and initialize prof.dll/libprof.so.
 // We do not ship byond-tracy. Build it yourself here: https://github.com/mafemergency/byond-tracy/
-// #define USE_BYOND_TRACY
+//#define USE_BYOND_TRACY
 
 ///Uncomment this to force all verbs to run into overtime all of the time
 ///Essentially negating the reserve 2%
@@ -106,11 +106,18 @@
 /// Uncomment this to enable debugging tools for map making.
 //#define DEBUG_MAPS
 
+/// Uncomment this to allow spitting out pathfinding debug information. (for types that support it.)
+/// This has a runtime memory and perf cost.
+// #define DEBUG_PATHFINDING
+
 /// Set this value to FALSE to test job requirements working.
 #define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
 
-/// Force codex SQLite generation and loading despite being a debug server.
+/// Force codex SQLite generation and loading despite being a debug server. Also forces the codex to always regenerate on world start.
 //#define FORCE_CODEX_DATABASE 1
+
+/// Enable DEBUG_AI_LOG
+// #define DEBUG_AI
 
 /////////////////////// REFERENCE TRACKING
 
@@ -247,6 +254,7 @@
 #define FORCE_MAP "runtimestation"
 #endif
 #define FORCE_MAP_DIRECTORY "_maps"
+#warn LOW MEMORY MODE ENABLED.
 #endif
 
 #ifdef DEBUG
@@ -269,3 +277,10 @@
 #define GC_FAILURE_HARD_LOOKUP
 #endif
 
+#ifdef LOWMEMORYMODE
+#warn LOWMEMORYMODE is enabled!
+#endif
+
+#ifdef DEBUG_AI
+#warn DEBUG_AI is enabled!
+#endif

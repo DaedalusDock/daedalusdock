@@ -439,7 +439,7 @@
 /turf/template_noop,
 /area/ruin/unpowered/no_grav)
 "jJ" = (
-/obj/item/reagent_containers/glass/beaker/bluespace{
+/obj/item/reagent_containers/cup/beaker/bluespace{
 	pixel_y = 5
 	},
 /obj/structure/table/reinforced/rglass,
@@ -707,11 +707,11 @@
 "qU" = (
 /obj/machinery/light/cold/directional/north,
 /obj/structure/table/reinforced/rglass,
-/obj/item/reagent_containers/glass/bottle/epinephrine{
+/obj/item/reagent_containers/cup/bottle/epinephrine{
 	pixel_x = -5;
 	pixel_y = 3
 	},
-/obj/item/reagent_containers/glass/bottle/dylovene,
+/obj/item/reagent_containers/cup/bottle/dylovene,
 /turf/open/floor/mineral/titanium/tiled/blue,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "qX" = (
@@ -924,7 +924,7 @@
 /obj/machinery/door/airlock/vault{
 	name = "Secured Door"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/away/generic3,
+/obj/effect/mapping_helpers/access/all/away/generic3/airlock,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility/secretroom)
 "vZ" = (
@@ -1113,7 +1113,6 @@
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "zq" = (
 /obj/structure/table/reinforced/rglass,
-/obj/item/food/grown/tomato/blue/bluespace,
 /turf/open/floor/glass,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "zu" = (
@@ -1877,15 +1876,15 @@
 	},
 /obj/effect/turf_decal/siding/wood/corner,
 /obj/structure/table/reinforced/rglass,
-/obj/item/reagent_containers/glass/bottle/nutrient/l4z{
+/obj/item/reagent_containers/cup/bottle/nutrient/l4z{
 	pixel_x = 4;
 	pixel_y = 6
 	},
-/obj/item/reagent_containers/glass/bottle/nutrient/rh{
+/obj/item/reagent_containers/cup/bottle/nutrient/rh{
 	pixel_x = -4;
 	pixel_y = 6
 	},
-/obj/item/reagent_containers/glass/bottle/mutagen,
+/obj/item/reagent_containers/cup/bottle/mutagen,
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "QA" = (
@@ -2083,9 +2082,7 @@
 "TE" = (
 /obj/structure/table/reinforced/rglass,
 /obj/item/hatchet,
-/obj/item/cultivator,
 /obj/item/shovel/spade,
-/obj/item/secateurs,
 /turf/open/floor/glass,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "TO" = (
@@ -2099,16 +2096,6 @@
 /obj/machinery/light/cold/directional/north,
 /obj/structure/hedge/opaque,
 /turf/open/floor/iron/grimy,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"TV" = (
-/obj/structure/table/reinforced/rglass,
-/obj/item/grown/bananapeel/bluespace,
-/turf/open/floor/glass,
-/area/ruin/space/has_grav/powered/hilbertresearchfacility)
-"Uc" = (
-/obj/structure/table/reinforced/rglass,
-/obj/item/food/grown/banana/bluespace,
-/turf/open/floor/glass,
 /area/ruin/space/has_grav/powered/hilbertresearchfacility)
 "Ui" = (
 /obj/effect/decal/cleanable/dirt/dust,
@@ -2595,7 +2582,7 @@ Rj
 CO
 Rj
 Ti
-TV
+zq
 Bo
 Ut
 Ut
@@ -2673,7 +2660,7 @@ Rj
 CO
 Rj
 Zc
-Uc
+yi
 Bo
 ch
 Ut

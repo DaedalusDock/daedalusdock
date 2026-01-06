@@ -20,7 +20,7 @@
 /datum/station_trait/blackout
 	name = "Blackout"
 	trait_type = STATION_TRAIT_NEGATIVE
-	weight = 3
+	weight = 0
 	show_in_report = TRUE
 	report_message = "Station lights seem to be damaged, be safe when starting your shift today."
 
@@ -93,7 +93,7 @@
 	for(var/mob/living/simple_animal/bot/found_bot in GLOB.alive_mob_list)
 		/// The bot's language holder - so we can randomize and change their language
 		var/datum/language_holder/bot_languages = found_bot.get_language_holder()
-		bot_languages.selected_language = bot_languages.get_random_spoken_language()
+		bot_languages.set_selected_language(bot_languages.get_random_spoken_language())
 
 /datum/station_trait/revenge_of_pun_pun
 	name = "Revenge of Pun Pun"
@@ -113,8 +113,8 @@
 			/obj/item/chair = 20,
 			/obj/item/melee/baseball_bat = 10,
 			/obj/item/melee/chainofcommand/kitty = 10,
-			/obj/item/reagent_containers/food/drinks/bottle = 20,
-			/obj/item/reagent_containers/food/drinks/bottle/kong = 5,
+			/obj/item/reagent_containers/cup/glass/bottle = 20,
+			/obj/item/reagent_containers/cup/glass/bottle/kong = 5,
 			/obj/item/switchblade/extended = 10,
 			/obj/item/sign/random = 10,
 			/obj/item/gun/ballistic/automatic/pistol = 1,

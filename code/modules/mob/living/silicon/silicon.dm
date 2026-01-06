@@ -72,8 +72,7 @@
 	ADD_TRAIT(src, TRAIT_LITERATE, ROUNDSTART_TRAIT)
 	ADD_TRAIT(src, TRAIT_NOFIRE_SPREAD, ROUNDSTART_TRAIT)
 	ADD_TRAIT(src, TRAIT_ASHSTORM_IMMUNE, ROUNDSTART_TRAIT)
-
-
+	ADD_TRAIT(src, TRAIT_ADVANCED_RACE_THEORY, ROUNDSTART_TRAIT)
 
 /mob/living/silicon/Destroy()
 	QDEL_NULL(radio)
@@ -409,6 +408,11 @@
 
 /mob/living/silicon/rust_heretic_act()
 	adjustBruteLoss(500)
+
+/mob/living/silicon/zap_act(power, zap_flags)
+	. = ..()
+	if((zap_flags & ZAP_MOB_STUN) && (zap_flags & ZAP_MOB_DAMAGE))
+		emp_act(EMP_LIGHT)
 
 /mob/living/silicon/on_floored_start()
 	return // Silicons are always standing by default.

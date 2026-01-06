@@ -138,7 +138,7 @@
 /obj/machinery/door/airlock/external/ruin{
 	name = "Emergency Launch Catwalk"
 	},
-/obj/effect/mapping_helpers/airlock/access/all/engineering/general,
+/obj/effect/mapping_helpers/access/all/engineering/general/airlock,
 /turf/open/floor/plating,
 /area/shuttle/escape)
 "aM" = (

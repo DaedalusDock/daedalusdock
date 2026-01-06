@@ -1,12 +1,14 @@
 #define MAX_CARGO_LIMIT 3
 
+TYPEINFO_DEF(/obj/vehicle/ridden/trolley)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 20, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
+
 /obj/vehicle/ridden/trolley
 	name = "trolley"
 	desc = "It's mostly used to move crates around in bulk."
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "trolley"
 	max_integrity = 150
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 20, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 20, ACID = 0)
 	var/cargo_limit = MAX_CARGO_LIMIT
 	var/amount_of_cargo = 0
 
@@ -109,7 +111,7 @@
 /obj/vehicle/ridden/trolley/proc/load_cargo(obj/structure/closet/crate/cargo)
 	cargo.close()
 	cargo.forceMove(src)
-	vis_contents += cargo
+	add_viscontents(cargo)
 	cargo.vis_flags = VIS_INHERIT_ID
 	cargo.layer = ABOVE_MOB_LAYER
 	cargo.pixel_y = 4
@@ -134,7 +136,7 @@
 	cargo.pixel_y = initial(pixel_y)
 	cargo.layer = initial(layer)
 	cargo.vis_flags &= ~VIS_INHERIT_ID
-	vis_contents -= cargo
+	remove_viscontents(cargo)
 	cargo.forceMove(deposit_turf)
 	user.visible_message(
 		span_notice("[user] unloads [cargo] from [src]."),

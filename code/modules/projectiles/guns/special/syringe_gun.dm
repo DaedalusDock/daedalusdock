@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/gun/syringe)
+	default_materials = list(/datum/material/iron=2000)
+
 /obj/item/gun/syringe
 	name = "medical syringe gun"
 	desc = "A spring loaded gun designed to fit syringes, used to incapacitate unruly patients from a distance."
@@ -15,7 +18,6 @@
 	force = 6
 	base_pixel_x = -4
 	pixel_x = -4
-	custom_materials = list(/datum/material/iron=2000)
 	clumsy_check = FALSE
 	fire_sound = 'sound/items/syringeproj.ogg'
 	var/load_sound = 'sound/weapons/gun/shotgun/insert_shell.ogg'
@@ -67,23 +69,27 @@
 
 	return TRUE
 
-/obj/item/gun/syringe/attackby(obj/item/A, mob/user, params, show_msg = TRUE)
-	if(istype(A, /obj/item/reagent_containers/syringe/bluespace))
-		to_chat(user, span_notice("[A] is too big to load into [src]."))
-		return TRUE
-	if(istype(A, /obj/item/reagent_containers/syringe))
-		if(syringes.len < max_syringes)
-			if(!user.transferItemToLoc(A, src))
-				return FALSE
-			to_chat(user, span_notice("You load [A] into \the [src]."))
-			syringes += A
-			recharge_newshot()
-			update_appearance()
-			playsound(loc, load_sound, 40)
-			return TRUE
-		else
-			to_chat(user, span_warning("[src] cannot hold more syringes!"))
-	return FALSE
+/obj/item/gun/syringe/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(istype(tool, /obj/item/reagent_containers/syringe/bluespace))
+		to_chat(user, span_warning("[tool] is too big to load into [src]."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(!istype(tool, /obj/item/reagent_containers/syringe))
+		return NONE
+
+	if(syringes.len >= max_syringes)
+		to_chat(user, span_warning("[src] can not hold any more syringes."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(!user.transferItemToLoc(tool, src))
+		return ITEM_INTERACT_BLOCKING
+
+	to_chat(user, span_notice("You load [tool] into \the [src]."))
+	syringes += tool
+	recharge_newshot()
+	update_appearance()
+	playsound(loc, load_sound, 40)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/syringe/update_overlays()
 	. = ..()
@@ -155,24 +161,28 @@
 	. = ..()
 	chambered = new /obj/item/ammo_casing/dnainjector(src)
 
-/obj/item/gun/syringe/dna/attackby(obj/item/A, mob/user, params, show_msg = TRUE)
-	if(istype(A, /obj/item/dnainjector))
-		var/obj/item/dnainjector/D = A
-		if(D.used)
-			to_chat(user, span_warning("This injector is used up!"))
-			return
-		if(syringes.len < max_syringes)
-			if(!user.transferItemToLoc(D, src))
-				return FALSE
-			to_chat(user, span_notice("You load \the [D] into \the [src]."))
-			syringes += D
-			recharge_newshot()
-			update_appearance()
-			playsound(loc, load_sound, 40)
-			return TRUE
-		else
-			to_chat(user, span_warning("[src] cannot hold more syringes!"))
-	return FALSE
+/obj/item/gun/syringe/dna/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(!istype(tool, /obj/item/dnainjector))
+		return NONE
+
+	var/obj/item/dnainjector/D = tool
+	if(D.used)
+		to_chat(user, span_warning("This injector is used up."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(syringes.len >= max_syringes)
+		to_chat(user, span_warning("[src] cannot hold any more syringes."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(!user.transferItemToLoc(D, src))
+		return ITEM_INTERACT_BLOCKING
+
+	to_chat(user, span_notice("You load \the [D] into \the [src]."))
+	syringes += D
+	recharge_newshot()
+	update_appearance()
+	playsound(loc, load_sound, 40)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gun/syringe/blowgun
 	name = "blowgun"

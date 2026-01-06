@@ -16,7 +16,7 @@
 		IMPCHEM_HUD = 'icons/mob/huds/hud.dmi',
 		IMPTRACK_HUD = 'icons/mob/huds/hud.dmi',
 		GLAND_HUD = 'icons/mob/huds/hud.dmi',
-		SENTIENT_DISEASE_HUD = 'icons/mob/huds/hud.dmi',
+		SENTIENT_PATHOGEN_HUD = 'icons/mob/huds/hud.dmi',
 	)
 
 	hud_type = /datum/hud/human
@@ -47,7 +47,7 @@
 	var/eye_color_heterochromatic = FALSE
 	var/sclera_color = ""
 
-	var/skin_tone = "caucasian1" //Skin tone
+	var/skin_tone = "Fjällröker" //Skin tone
 
 	var/lip_style = null //no lipstick by default- arguably misleading, as it could be used for general makeup
 	var/lip_color = "white"
@@ -59,7 +59,6 @@
 	var/underwear_color = "#000000"
 	var/undershirt = "Nude" //Which undershirt the player wants
 	var/socks = "Nude" //Which socks the player wants
-	var/backpack = DBACKPACK //Which backpack type the player has chosen.
 	var/jumpsuit_style = PREF_SUIT //suit/skirt
 
 	//Equipment slots
@@ -101,3 +100,5 @@
 
 	///A lazylist of preference-applied appearance mods present on this human. Type:Instance
 	var/list/appearance_mods
+
+	var/list/time_of_death_stats

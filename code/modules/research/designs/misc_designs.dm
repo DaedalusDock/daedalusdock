@@ -5,7 +5,7 @@
 
 /datum/design/health_hud
 	name = "Health Scanner HUD"
-	desc = "A heads-up display that scans the humans in view and provides accurate data about their health status."
+	desc = "A heads-up display that scans people in view and provides accurate data about their health status."
 	id = "health_hud"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
@@ -15,7 +15,7 @@
 
 /datum/design/security_hud
 	name = "Security HUD"
-	desc = "A heads-up display that scans the humans in view and provides accurate data about their ID status."
+	desc = "A heads-up display that scans people in view and provides accurate data about their ID status."
 	id = "security_hud"
 	build_type = FABRICATOR
 	materials = list(/datum/material/iron = 500, /datum/material/glass = 500)
@@ -419,15 +419,6 @@
 	build_type = FABRICATOR | AUTOLATHE
 	materials = list(/datum/material/iron = 100)
 	build_path = /obj/item/gas_filter
-	category = list(DCAT_ATMOS)
-	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
-
-/datum/design/plasmaman_gas_filter
-	name = "Plasmaman gas filter"
-	id = "plasmaman_gas_filter"
-	build_type = FABRICATOR | AUTOLATHE
-	materials = list(/datum/material/iron = 100)
-	build_path = /obj/item/gas_filter/plasmaman
 	category = list(DCAT_ATMOS)
 	mapload_design_flags = DESIGN_FAB_ENGINEERING | DESIGN_FAB_OMNI
 

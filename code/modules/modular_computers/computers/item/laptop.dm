@@ -85,7 +85,7 @@
 /obj/item/modular_computer/laptop/proc/try_toggle_open(mob/living/user)
 	if(issilicon(user))
 		return
-	if(!isturf(loc) && !ismob(loc)) // No opening it in backpack.
+	if(!isturf(loc) && !equipped_to) // No opening it in backpack.
 		return
 	if(!user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return
@@ -106,11 +106,11 @@
 	if(screen_on)
 		to_chat(user, span_notice("You close \the [src]."))
 		slowdown = initial(slowdown)
-		w_class = initial(w_class)
+		set_weight_class(initial(w_class))
 	else
 		to_chat(user, span_notice("You open \the [src]."))
 		slowdown = slowdown_open
-		w_class = w_class_open
+		set_weight_class(w_class_open)
 
 	screen_on = !screen_on
 	display_overlays = screen_on

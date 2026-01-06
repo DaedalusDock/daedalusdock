@@ -49,9 +49,17 @@
 /mob/living/proc/try_make_grab(atom/movable/target, grab_type, use_offhand)
 	return canUseTopic(src, USE_IGNORE_TK|USE_CLOSE) && make_grab(target, grab_type, use_offhand)
 
+/// DO NOT CALL DIRECTLY. USE THE ABOVE.
 /mob/living/proc/make_grab(atom/movable/target, grab_type = /datum/grab/simple, use_offhand)
+	PRIVATE_PROC(TRUE)
+
 	if(SEND_SIGNAL(src, COMSIG_LIVING_TRY_GRAB, target, grab_type) & COMSIG_LIVING_CANCEL_GRAB)
 		return
+
+	// REALLY SHITTY CODE TO FIX A GAMEBREAKING BUG. I HATE GRAB CODE WHY DID I PORT THIS?
+	if(src == target)
+		if(ispath(grab_type, /datum/grab/normal) && grab_type != /datum/grab/normal/passive)
+			grab_type = /datum/grab/normal/passive
 
 	// Resolve to the 'topmost' atom in the buckle chain, as grabbing someone buckled to something tends to prevent further interaction.
 	var/atom/movable/original_target = target
@@ -63,7 +71,7 @@
 
 		if(grabbed_mob && grabbed_mob != original_target)
 			target = grabbed_mob
-			to_chat(src, span_warning("As \the [original_target] is buckled to \the [target], you try to grab that instead!"))
+			to_chat(src, span_warning("As \the [original_target] is buckled to \the [target], you try to grab that instead."))
 
 	if(!istype(target))
 		return
@@ -76,8 +84,8 @@
 
 
 	if(QDELETED(grab))
-		if(original_target != src && ismob(original_target))
-			to_chat(original_target, span_warning("\The [src] tries to grab you, but fails!"))
+		if(original_target != src && ismob(original_target) && astype(original_target, /mob).stat == CONSCIOUS)
+			to_chat(original_target, span_warning("\The [src] tries to grab you, but fails."))
 		return null
 
 	for(var/obj/item/hand_item/grab/competing_grab in target.grabbed_by)
@@ -103,7 +111,7 @@
 
 	for(var/obj/item/hand_item/grab/G in active_grabs)
 		var/atom/movable/pulling = G.affecting
-		if(!MultiZAdjacent(src, pulling))
+		if(!MultiZAdjacent(pulling))
 			qdel(G)
 		else if(!isturf(loc))
 			qdel(G)

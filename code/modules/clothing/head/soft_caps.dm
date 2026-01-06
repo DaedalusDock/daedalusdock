@@ -10,7 +10,7 @@
 
 	var/flipped = FALSE
 
-/obj/item/clothing/head/soft/dropped()
+/obj/item/clothing/head/soft/unequipped()
 	icon_state = "[soft_type]soft"
 	flipped = FALSE
 	..()

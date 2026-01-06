@@ -86,14 +86,14 @@
 /obj/machinery/power/turbine/screwdriver_act(mob/living/user, obj/item/tool)
 	if(active)
 		to_chat(user, "You can't open [src] while it's on!")
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	if(!anchored)
 		to_chat(user, span_notice("Anchor [src] first!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	if(panel_open && !installed_part)
 		to_chat(user, "You need to install [initial(part_path.name)] first!")
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	tool.play_tool_sound(src, 50)
 	panel_open = !panel_open
@@ -104,7 +104,7 @@
 	var/descriptor = panel_open ? "open" : "close"
 	balloon_alert(user, "you [descriptor] the maintenance hatch of [src]")
 	update_appearance()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/turbine/wrench_act(mob/living/user, obj/item/tool)
 	return default_change_direction_wrench(user, tool)
@@ -329,15 +329,15 @@
 /obj/machinery/power/turbine/core_rotor/multitool_act(mob/living/user, obj/item/tool)
 	if(!all_parts_connected && activate_parts(user))
 		balloon_alert(user, "all parts are linked")
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/turbine/core_rotor/multitool_act_secondary(mob/living/user, obj/item/tool)
 	if(!all_parts_connected)
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	var/obj/item/multitool/multitool = tool
 	multitool.buffer = src
 	to_chat(user, span_notice("You store linkage information in [tool]'s buffer."))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /**
  * Called to activate the complete machine, checks for part presence, correct orientation and installed parts

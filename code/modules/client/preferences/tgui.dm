@@ -47,3 +47,17 @@
 	for (var/datum/tgui/tgui as anything in client.mob?.tgui_open_uis)
 		// Force it to reload either way
 		tgui.update_static_data(client.mob)
+
+
+/datum/preference/toggle/ui_scale
+	category = PREFERENCE_CATEGORY_GAME_PREFERENCES
+	savefile_key = "ui_scale"
+	savefile_identifier = PREFERENCE_PLAYER
+	default_value = TRUE
+
+/datum/preference/toggle/ui_scale/apply_to_client(client/client, value)
+	if(!istype(client))
+		return
+
+	spawn(-1)
+		client.refresh_tgui()

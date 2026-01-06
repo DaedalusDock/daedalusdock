@@ -66,6 +66,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define istransparentturf(A) (TURF_IS_MIMICKING(A))
 
+#define isflockturf(A) (istype(A, /turf/open/floor/flock) || istype(A, /turf/closed/wall/flock))
+
 //Mobs
 #define isliving(A) (istype(A, /mob/living))
 
@@ -79,7 +81,6 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 //Human sub-species
 #define isabductor(A) (is_species(A, /datum/species/abductor))
 #define islizard(A) (is_species(A, /datum/species/lizard))
-#define isplasmaman(A) (is_species(A, /datum/species/plasmaman))
 #define isvox(A) (is_species(A, /datum/species/vox))
 #define ispodperson(A) (is_species(A, /datum/species/pod))
 #define isflyperson(A) (is_species(A, /datum/species/fly))
@@ -90,7 +91,6 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isskeleton(A) (is_species(A, /datum/species/skeleton))
 #define ismoth(A) (is_species(A, /datum/species/moth))
 #define isethereal(A) (is_species(A, /datum/species/ethereal))
-#define isvampire(A) (is_species(A,/datum/species/vampire))
 #define isdullahan(A) (is_species(A, /datum/species/dullahan))
 #define ismonkey(A) (is_species(A, /datum/species/monkey))
 #define isandroid(A) (is_species(A, /datum/species/android))
@@ -184,6 +184,11 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 
 #define isaicamera(A) (istype(A, /mob/camera/ai_eye))
 
+#define isflockmob(A) (istype(A, /mob/camera/flock) || istype(A, /mob/living/simple_animal/flock))
+#define isflockdrone(A) (istype(A, /mob/living/simple_animal/flock/drone))
+#define isflockbit(A) (istype(A, /mob/living/simple_animal/flock/bit))
+#define isflocktrace(A) (istype(A, /mob/camera/flock/trace))
+
 //Objects
 #define isobj(A) istype(A, /obj) //override the byond proc because it returns true on children of /atom/movable that aren't objs
 
@@ -238,6 +243,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 #define isfalsewall(A) (istype(A, /obj/structure/falsewall))
 
 #define isgrab(A) (istype(A, /obj/item/hand_item/grab))
+
+#define istable(A) (istype(A, /obj/structure/table))
 
 //Assemblies
 #define isassembly(O) (istype(O, /obj/item/assembly))

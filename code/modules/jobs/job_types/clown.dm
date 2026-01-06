@@ -2,6 +2,9 @@
 	title = JOB_CLOWN
 	description = "Entertain the crew, make bad jokes, go on a holy quest to find bananium, HONK!"
 	faction = FACTION_STATION
+
+	pinpad_key = "pantomime"
+
 	total_positions = 2
 	spawn_positions = 2
 	exp_granted_type = EXP_TYPE_CREW
@@ -14,12 +17,10 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/clown,
-			SPECIES_PLASMAMAN = /datum/outfit/job/clown/plasmaman,
 		),
 
 		"Mime" = list(
 			SPECIES_HUMAN = /datum/outfit/job/mime,
-			SPECIES_PLASMAMAN = /datum/outfit/job/mime/plasmaman,
 		),
 	)
 
@@ -48,12 +49,13 @@
 		return
 
 	spawned.apply_pref_name(/datum/preference/name/clown)
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/entertainer)
 
 /datum/outfit/job/clown
 	name = "Clown"
 	jobtype = /datum/job/clown
 
-	id_trim = /datum/id_trim/job/clown
+	id_template = /datum/access_template/job/clown
 	uniform = /obj/item/clothing/under/rank/civilian/clown
 	backpack_contents = list(
 		/obj/item/stamp/clown = 1,
@@ -67,22 +69,11 @@
 	mask = /obj/item/clothing/mask/gas/clown_hat
 	l_pocket = /obj/item/bikehorn
 
-	backpack = /obj/item/storage/backpack/clown
-	satchel = /obj/item/storage/backpack/clown
-	duffelbag = /obj/item/storage/backpack/duffelbag/clown //strangely has a duffel
+	back = /obj/item/storage/backpack/clown
 
 	box = /obj/item/storage/box/hug/survival
 	chameleon_extras = /obj/item/stamp/clown
 	implants = list(/obj/item/implant/sad_trombone)
-
-/datum/outfit/job/clown/plasmaman
-	name = "Clown (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/clown
-	gloves = /obj/item/clothing/gloves/color/plasmaman/clown
-	head = /obj/item/clothing/head/helmet/space/plasmaman/clown
-	mask = /obj/item/clothing/mask/gas/clown_hat/plasmaman
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/clown/mod
 	name = "Clown (MODsuit)"
@@ -119,12 +110,12 @@
 	name = "Mime"
 	jobtype = /datum/job/clown
 
-	id_trim = /datum/id_trim/job/mime
+	id_template = /datum/access_template/job/mime
 	uniform = /obj/item/clothing/under/rank/civilian/mime
 	suit = /obj/item/clothing/suit/toggle/suspenders
 	backpack_contents = list(
 		/obj/item/book/mimery = 1,
-		/obj/item/reagent_containers/food/drinks/bottle/bottleofnothing = 1,
+		/obj/item/reagent_containers/cup/glass/bottle/bottleofnothing = 1,
 		/obj/item/stamp/mime = 1,
 		)
 	belt = /obj/item/modular_computer/tablet/pda/mime
@@ -134,19 +125,8 @@
 	mask = /obj/item/clothing/mask/gas/mime
 	shoes = /obj/item/clothing/shoes/laceup
 
-	backpack = /obj/item/storage/backpack/mime
-	satchel = /obj/item/storage/backpack/mime
-
+	back = /obj/item/storage/backpack/mime
 	chameleon_extras = /obj/item/stamp/mime
-
-/datum/outfit/job/mime/plasmaman
-	name = "Mime (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/mime
-	gloves = /obj/item/clothing/gloves/color/plasmaman/white
-	head = /obj/item/clothing/head/helmet/space/plasmaman/mime
-	mask = /obj/item/clothing/mask/gas/mime/plasmaman
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/mime/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	..()

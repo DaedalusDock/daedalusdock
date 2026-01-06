@@ -2,46 +2,46 @@
 /datum/wound/burn
 	pain_factor = 1.875
 	wound_type = WOUND_BURN
-	max_bleeding_stage = 0
+	min_bleeding_stage = INFINITY
 
 /datum/wound/burn/bleeding()
 	return FALSE
 
 /datum/wound/burn/moderate
 	stages = list(
-		"ripped burn" = 10,
-		"moderate burn" = 5,
+		"fresh skin" = 0,
 		"healing moderate burn" = 2,
-		"fresh skin" = 0
-		)
+		"moderate burn" = 5,
+		"ripped burn" = 10,
+	)
 
 /datum/wound/burn/large
 	stages = list(
-		"ripped large burn" = 20,
-		"large burn" = 15,
+		"fresh skin" = 0,
 		"healing large burn" = 5,
-		"fresh skin" = 0
-		)
+		"large burn" = 15,
+		"ripped large burn" = 20,
+	)
 
 /datum/wound/burn/severe
 	stages = list(
-		"ripped severe burn" = 35,
-		"severe burn" = 30,
+		"burn scar" = 0,
 		"healing severe burn" = 10,
-		"burn scar" = 0
-		)
+		"severe burn" = 30,
+		"ripped severe burn" = 35,
+	)
 
 /datum/wound/burn/deep
 	stages = list(
-		"ripped deep burn" = 45,
-		"deep burn" = 40,
+		"large burn scar" = 0,
 		"healing deep burn" = 15,
-		"large burn scar" = 0
-		)
+		"deep burn" = 40,
+		"ripped deep burn" = 45,
+	)
 
 /datum/wound/burn/carbonised
 	stages = list(
-		"carbonised area" = 50,
+		"massive burn scar" = 0,
 		"healing carbonised area" = 20,
-		"massive burn scar" = 0
-		)
+		"carbonised area" = 50,
+	)

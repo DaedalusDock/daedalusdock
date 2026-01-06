@@ -133,7 +133,7 @@
 				continue
 			return TRUE
 
-//Helper for quickly creating a new limb - used by augment code in species.dm spec_attacked_by
+//Helper for quickly creating a new limb - used by augment code in species.dm
 //
 // FUCK YOU AUGMENT CODE - With love, Kapu
 /mob/living/carbon/proc/newBodyPart(zone)
@@ -167,35 +167,3 @@
 			new_bodypart = new /obj/item/bodypart/chest/alien()
 	if(new_bodypart)
 		new_bodypart.update_limb(src)
-
-
-
-/proc/skintone2hex(skin_tone)
-	. = 0
-	switch(skin_tone)
-		if("caucasian1")
-			. = "#ffe0d1"
-		if("caucasian2")
-			. = "#fcccb3"
-		if("caucasian3")
-			. = "#e8b59b"
-		if("latino")
-			. = "#d9ae96"
-		if("mediterranean")
-			. = "#c79b8b"
-		if("asian1")
-			. = "#ffdeb3"
-		if("asian2")
-			. = "#e3ba84"
-		if("arab")
-			. = "#c4915e"
-		if("indian")
-			. = "#b87840"
-		if("african1")
-			. = "#754523"
-		if("african2")
-			. = "#471c18"
-		if("albino")
-			. = "#fff4e6"
-		if("orange")
-			. = "#ffc905"

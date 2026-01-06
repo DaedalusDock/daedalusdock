@@ -3,8 +3,12 @@
 	description = "Clean up trash and blood. Replace broken lights. Slip people over."
 	department_head = list(JOB_HEAD_OF_PERSONNEL)
 	faction = FACTION_STATION
+
+	pinpad_key = "REEEEEEEJANNIESGETOUT"
+
 	total_positions = 2
 	spawn_positions = 1
+
 	exp_granted_type = EXP_TYPE_CREW
 
 	employers = list(
@@ -14,7 +18,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/janitor,
-			SPECIES_PLASMAMAN = /datum/outfit/job/janitor/plasmaman,
 		),
 	)
 
@@ -22,7 +25,7 @@
 		/datum/job_department/service,
 		)
 
-	family_heirlooms = list(/obj/item/mop, /obj/item/clothing/suit/caution, /obj/item/reagent_containers/glass/bucket, /obj/item/paper/fluff/stations/soap)
+	family_heirlooms = list(/obj/item/mop, /obj/item/clothing/suit/caution, /obj/item/reagent_containers/cup/bucket, /obj/item/paper/fluff/stations/soap)
 
 	mail_goodies = list(
 		/obj/item/grenade/chem_grenade/cleaner = 30,
@@ -37,22 +40,17 @@
 	name = "Janitor"
 	jobtype = /datum/job/janitor
 
-	id_trim = /datum/id_trim/job/janitor
+	id_template = /datum/access_template/job/janitor
 	uniform = /obj/item/clothing/under/rank/civilian/janitor
-	belt = /obj/item/modular_computer/tablet/pda/janitor
+	belt = /obj/item/taperecorder/empty
 	ears = /obj/item/radio/headset/headset_srv
-
-/datum/outfit/job/janitor/plasmaman
-	name = "Janitor (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/janitor
-	gloves = /obj/item/clothing/gloves/color/plasmaman/janny
-	head = /obj/item/clothing/head/helmet/space/plasmaman/janitor
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
+	gloves = /obj/item/clothing/gloves/cleaning
 
 /datum/outfit/job/janitor/pre_equip(mob/living/carbon/human/H, visualsOnly)
 	. = ..()
+	if(SSmedia.get_track_pool(/obj/item/tape/music/roundstart::media_tag))
+		l_pocket = /obj/item/tape/music/roundstart
+
 	if(GARBAGEDAY in SSevents.holidays)
 		backpack_contents += /obj/item/gun/ballistic/revolver
 		r_pocket = /obj/item/ammo_box/a357

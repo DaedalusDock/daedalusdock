@@ -60,76 +60,43 @@
 	return TRUE
 
 /mob/living/carbon/hitby(atom/movable/AM, skipcatch, hitpush = TRUE, blocked = FALSE, datum/thrownthing/throwingdatum)
-	if(!skipcatch && can_catch_item() && istype(AM, /obj/item) && !HAS_TRAIT(AM, TRAIT_UNCATCHABLE) && isturf(AM.loc))
+	if(!skipcatch && istype(AM, /obj/item) && isturf(AM.loc) && !HAS_TRAIT(AM, TRAIT_UNCATCHABLE) && can_catch_item())
 		var/obj/item/I = AM
-		I.attack_hand(src)
-		if(get_active_held_item() == I) //if our attack_hand() picks up the item...
-			visible_message(span_warning("[src] catches [I]!"), \
-							span_userdanger("You catch [I] in mid-air!"))
-			throw_mode_off(THROW_MODE_TOGGLE)
-			return TRUE
+		var/datum/roll_result/result = stat_roll(11, /datum/rpg_skill/fine_motor)
+		result.do_skill_sound(src)
+		if(result.outcome >= SUCCESS)
+			I.attack_hand(src)
+			if(get_active_held_item() == I) //if our attack_hand() picks up the item...
+				visible_message(
+					span_obviousnotice("[src] catches [I]."),
+					ignored_mobs = list(src),
+				)
+				throw_mode_off(THROW_MODE_TOGGLE)
+				to_chat(src, result.create_tooltip("Your hand snaps into place, catching [I] with ease."))
+				result.do_skill_sound(src)
+				return TRUE
+		else
+			to_chat(src, result.create_tooltip("You [pick("undershoot", "overshoot")] [I] whilst attempting to catch [I.p_them()]."))
+
 	return ..()
 
-
-/mob/living/carbon/attacked_by(obj/item/I, mob/living/user)
-	var/obj/item/bodypart/affecting
-	if(user == src)
-		affecting = get_bodypart(deprecise_zone(user.zone_selected)) //we're self-mutilating! yay!
-	else
-		var/zone_hit_chance = 80
-		if(body_position == LYING_DOWN) // half as likely to hit a different zone if they're on the ground
-			zone_hit_chance += 10
-		affecting = get_bodypart(ran_zone(user.zone_selected, zone_hit_chance))
-	if(!affecting) //missing limb? we select the first bodypart (you can never have zero, because of chest)
-		affecting = bodyparts[1]
-
-	SEND_SIGNAL(I, COMSIG_ITEM_ATTACK_ZONE, src, user, affecting)
-	send_item_attack_message(I, user, affecting.plaintext_zone, affecting)
-	if(I.stamina_damage)
-		stamina.adjust(-1 * (I.stamina_damage * (prob(I.stamina_critical_chance) ? I.stamina_critical_modifier : 1)))
-
-	if(I.force)
-		var/attack_direction = get_dir(user, src)
-
-		apply_damage(I.force, I.damtype, affecting, sharpness = I.sharpness, attack_direction = attack_direction)
-
-		if(I.damtype == BRUTE && IS_ORGANIC_LIMB(affecting))
-			if(prob(33))
-				I.add_mob_blood(src)
-				var/turf/location = get_turf(src)
-				add_splatter_floor(location)
-
-				if(get_dist(user, src) <= 1) //people with TK won't get smeared with blood
-					user.add_mob_blood(src)
-
-				if(affecting.body_zone == BODY_ZONE_HEAD)
-					if(wear_mask)
-						wear_mask.add_mob_blood(src)
-						update_worn_mask()
-
-					if(wear_neck)
-						wear_neck.add_mob_blood(src)
-						update_worn_neck()
-
-					if(head)
-						head.add_mob_blood(src)
-						update_worn_head()
-
-		return TRUE //successful attack
-
-/mob/living/carbon/send_item_attack_message(obj/item/I, mob/living/user, hit_area, obj/item/bodypart/hit_bodypart)
+/mob/living/carbon/send_item_attack_message(obj/item/I, mob/living/user, hit_area)
 	if(!I.force && !length(I.attack_verb_simple) && !length(I.attack_verb_continuous))
 		return
-	var/message_verb_continuous = length(I.attack_verb_continuous) ? "[pick(I.attack_verb_continuous)]" : "attacks"
 
+	var/message_verb_continuous = length(I.attack_verb_continuous) ? "[pick(I.attack_verb_continuous)]" : "attacks"
 	var/message_hit_area = ""
+
 	if(hit_area)
 		message_hit_area = " in the [hit_area]"
+
 	var/attack_message = "<b>[src]</b> [message_verb_continuous][message_hit_area] with [I]!"
-	if(user in viewers(src, null))
-		attack_message = "<b>[user]</b> [message_verb_continuous] <b>[src]</b>[message_hit_area] with [I]!"
+
 	if(user == src)
 		attack_message = "<b>[user]</b> [message_verb_continuous] [user.p_them()]self[message_hit_area] with [I]!"
+	else if(user in viewers(src))
+		attack_message = "<b>[user]</b> [message_verb_continuous] <b>[src]</b>[message_hit_area] with [I]!"
+
 	user.visible_message(
 		span_danger(attack_message),
 		span_danger(attack_message),
@@ -149,14 +116,14 @@
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user, modifiers) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		. = TRUE
 	for(var/thing in diseases)
-		var/datum/disease/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-			user.ContactContractDisease(D)
+		var/datum/pathogen/D = thing
+		if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+			user.try_contact_contract_pathogen(D)
 
 	for(var/thing in user.diseases)
-		var/datum/disease/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-			ContactContractDisease(D)
+		var/datum/pathogen/D = thing
+		if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+			try_contact_contract_pathogen(D)
 
 	return . || FALSE
 
@@ -165,14 +132,14 @@
 
 	if(try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		for(var/thing in diseases)
-			var/datum/disease/D = thing
-			if((D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN) && prob(85))
-				user.ContactContractDisease(D)
+			var/datum/pathogen/D = thing
+			if((D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN) && prob(85))
+				user.try_contact_contract_pathogen(D)
 
 	for(var/thing in user.diseases)
-		var/datum/disease/D = thing
-		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-			ContactContractDisease(D)
+		var/datum/pathogen/D = thing
+		if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+			try_contact_contract_pathogen(D)
 
 	if(!user.combat_mode)
 		help_shake_act(user)
@@ -180,10 +147,10 @@
 
 	if(..()) //successful monkey bite.
 		for(var/thing in user.diseases)
-			var/datum/disease/D = thing
-			if(D.spread_flags & (DISEASE_SPREAD_SPECIAL | DISEASE_SPREAD_NON_CONTAGIOUS))
+			var/datum/pathogen/D = thing
+			if(D.spread_flags & (PATHOGEN_SPREAD_SPECIAL | PATHOGEN_SPREAD_NON_CONTAGIOUS))
 				continue
-			ForceContractDisease(D)
+			try_contract_pathogen(D)
 		return TRUE
 
 
@@ -208,26 +175,37 @@
 					updatehealth()
 		return 1
 
-/mob/living/carbon/proc/dismembering_strike(mob/living/attacker, dam_zone)
+/**
+ * Really weird proc that attempts to dismebmer the passed zone if it is at max damage
+ * Unless the attacker is an NPC, in which case it disregards the zone and picks a random one
+ *
+ * Cannot dismember heads
+ *
+ * Returns a falsy value (null) on success, and a truthy value (the hit zone) on failure
+ */
+/mob/living/proc/dismembering_strike(mob/living/attacker, dam_zone)
+	return dam_zone
+
+/mob/living/carbon/dismembering_strike(mob/living/attacker, dam_zone)
 	if(!attacker.limb_destroyer)
 		return dam_zone
+
 	var/obj/item/bodypart/affecting
 	if(dam_zone && attacker.client)
 		affecting = get_bodypart(ran_zone(dam_zone))
 	else
 		var/list/things_to_ruin = shuffle(bodyparts.Copy())
-		for(var/B in things_to_ruin)
-			var/obj/item/bodypart/bodypart = B
+		for(var/obj/item/bodypart/bodypart as anything in things_to_ruin)
 			if(bodypart.body_zone == BODY_ZONE_HEAD || bodypart.body_zone == BODY_ZONE_CHEST)
 				continue
 			if(!affecting || ((affecting.get_damage() / affecting.max_damage) < (bodypart.get_damage() / bodypart.max_damage)))
 				affecting = bodypart
+
 	if(affecting)
 		dam_zone = affecting.body_zone
 		if(affecting.get_damage() >= affecting.max_damage)
 			affecting.dismember()
 			return null
-		return affecting.body_zone
 	return dam_zone
 
 /**
@@ -250,7 +228,7 @@
 
 	var/list/holding = list(target.get_active_held_item() = 60, target.get_inactive_held_item() = 30)
 
-	var/roll = stat_roll(10, /datum/rpg_skill/skirmish).outcome
+	var/datum/roll_result/result = stat_roll(14, /datum/rpg_skill/bloodsport, defender = target)
 
 	//Handle unintended consequences
 	for(var/obj/item/I in holding)
@@ -258,7 +236,23 @@
 		if(prob(hurt_prob) && I.on_disarm_attempt(target, src))
 			return
 
-	if(roll == CRIT_SUCCESS)
+	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.
+		target.apply_damage(STAMINA_DISARM_DMG * 2, STAMINA, BODY_ZONE_CHEST)
+		target.visible_message(
+			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest."),
+			null,
+			span_hear("You hear aggressive shuffling followed by a loud thud."),
+			COMBAT_MESSAGE_RANGE,
+		)
+
+		log_combat(src, target, "kicks", addition = "dealing stam damage")
+		return
+
+	else
+		target.apply_damage(STAMINA_DISARM_DMG, STAMINA, BODY_ZONE_CHEST)
+
+	var/can_shove = (loc != target.loc) && !target.IsKnockdown()
+	if(can_shove && result.outcome == CRIT_SUCCESS)
 		var/shove_dir = get_dir(loc, target.loc)
 		var/turf/target_shove_turf = get_step(target.loc, shove_dir)
 		var/shove_blocked = FALSE //Used to check if a shove is blocked so that if it is knockdown logic can be applied
@@ -270,45 +264,35 @@
 		if(!target.Move(target_shove_turf, shove_dir))
 			shove_blocked = TRUE
 
-		if(!can_hit_something)
+		if(can_hit_something)
 			//Don't hit people through windows, ok?
 			if(!directional_blocked && SEND_SIGNAL(target_shove_turf, COMSIG_CARBON_DISARM_COLLIDE, src, target, shove_blocked) & COMSIG_CARBON_SHOVE_HANDLED)
 				return
 
+		result.do_skill_sound(src)
+		to_chat(src, result.create_tooltip("[target.p_they(TRUE)] [target.p_are()] off-balance, knock [target.p_them()] to the ground!"))
+
 		target.Knockdown(SHOVE_KNOCKDOWN_SOLID)
 		target.visible_message(
-			span_danger("<b>[name]</b> shoves <b>[target.name]</b>, knocking [target.p_them()] down!"),
-			span_userdanger("You're knocked down from a shove by [name]!"),
-			span_hear("You hear aggressive shuffling followed by a loud thud!"),
+			span_danger("<b>[name]</b> shoves <b>[target.name]</b>, knocking [target.p_them()] down."),
+			null,
+			span_hear("You hear aggressive shuffling, followed by a loud thud."),
 			COMBAT_MESSAGE_RANGE,
 		)
 		log_combat(src, target, "shoved", "knocking them down")
 		target.release_all_grabs()
 		return
 
-	if(target.IsKnockdown()) //KICK HIM IN THE NUTS //That is harm intent.
-		target.apply_damage(STAMINA_DISARM_DMG * 4, STAMINA, BODY_ZONE_CHEST)
-		target.visible_message(
-			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
-			span_danger("<b>[name]</b> kicks <b>[target.name]</b> in [target.p_their()] chest, knocking the wind out of them!"),
-			span_hear("You hear aggressive shuffling followed by a loud thud!"),
-			COMBAT_MESSAGE_RANGE,
-			//src
-		)
-
-		log_combat(src, target, "kicks", addition = "dealing stam/oxy damage")
-		return
-
 	target.visible_message(
-		span_danger("<b>[name]</b> shoves <b>[target.name]</b>!"),
+		span_danger("<b>[name]</b> shoves <b>[target.name]</b>."),
 		null,
-		span_hear("You hear aggressive shuffling!"),
+		span_hear("You hear aggressive shuffling."),
 		COMBAT_MESSAGE_RANGE,
 	)
 
 	var/append_message = ""
 
-	if(roll >= SUCCESS && length(target.held_items))
+	if(result.outcome >= SUCCESS && length(target.held_items))
 		var/list/dropped = list()
 		for(var/obj/item/I in target.held_items)
 			if(target.dropItemToGround(I))
@@ -320,6 +304,10 @@
 				)
 				dropped += I
 		append_message = "causing them to drop [length(dropped) ? english_list(dropped) : "nothing"]"
+
+		if(length(dropped))
+			result.do_skill_sound(src)
+			to_chat(src, result.create_tooltip("[target.p_their(TRUE)] grip is weak, break it and disarm [target.p_them()]!"))
 
 	log_combat(src, target, "shoved", addition = append_message)
 
@@ -344,10 +332,11 @@
 		organ.emp_act(severity)
 
 ///Adds to the parent by also adding functionality to propagate shocks through pulling and doing some fluff effects.
-/mob/living/carbon/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)
+/mob/living/carbon/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)
 	. = ..()
 	if(!.)
 		return
+
 	//Propagation through pulling, fireman carry
 	if(!(flags & SHOCK_ILLUSION))
 		if(undergoing_cardiac_arrest() && resuscitate())
@@ -355,32 +344,62 @@
 
 		var/list/shocking_queue = list()
 		shocking_queue += get_all_grabbed_movables()
-		shocking_queue -= source
 
-		if(iscarbon(buckled) && source != buckled)
+		if(iscarbon(buckled))
 			shocking_queue += buckled
+
 		for(var/mob/living/carbon/carried in buckled_mobs)
-			if(source != carried)
-				shocking_queue += carried
+			shocking_queue += carried
+
 		//Found our victims, now lets shock them all
 		for(var/victim in shocking_queue)
 			var/mob/living/carbon/C = victim
-			C.electrocute_act(shock_damage*0.75, src, 1, flags)
+			C.electrocute_act(shock_damage*0.75, 1, flags)
+
 	//Stun
-	var/should_stun = (!(flags & SHOCK_TESLA) || siemens_coeff > 0.5) && !(flags & SHOCK_NOSTUN)
+	var/should_stun = (!(flags & SHOCK_USE_AVG_SIEMENS) || siemens_coeff > 0.5) && !(flags & SHOCK_NOSTUN)
 	if(should_stun)
-		Paralyze(40)
-	//Jitter and other fluff.
-	do_jitter_animation(300)
-	adjust_timed_status_effect(20 SECONDS, /datum/status_effect/jitter)
+		var/stun_coeff = (flags & SHOCK_ILLUSION) ? rand(3, 6) : (shock_damage / 5)
+		var/stun_duration = (min(stun_coeff, 10) SECONDS) * stun_multiplier
+		Disorient(4 SECONDS + stun_duration, 100, FALSE, paralyze = stun_duration, overstam = TRUE, stack_status = FALSE)
+
+	//Fluff
 	adjust_timed_status_effect(4 SECONDS, /datum/status_effect/speech/stutter)
-	addtimer(CALLBACK(src, PROC_REF(secondary_shock), should_stun), 2 SECONDS)
 	return shock_damage
 
-///Called slightly after electrocute act to apply a secondary stun.
-/mob/living/carbon/proc/secondary_shock(should_stun)
-	if(should_stun)
-		Paralyze(60)
+/// Returns an average siemen's coeffecient of the user's worn items
+/mob/living/carbon/proc/get_average_siemens_coeff()
+	var/list/zones = list(
+		"[HEAD]" = 1,
+		"[CHEST]" = 1,
+		"[ARMS]" = 1,
+		"[LEGS]" = 1,
+		"[HANDS]" = 1,
+		"[FEET]" = 1,
+	)
+
+	for(var/obj/item/I in get_all_worn_items(FALSE))
+		if(I.siemens_coefficient == 1) // we follow thermodynamics here, thank you very much!
+			continue
+
+		var/list/covered_slots = bitfield_to_list(I.body_parts_covered)
+		var/coeff = I.siemens_coefficient
+		for(var/bit in covered_slots)
+			if(ARMS & bit)
+				bit = ARMS
+			else if(LEGS & bit)
+				bit = LEGS
+			else if(FEET & bit)
+				bit = FEET
+			else if(HANDS & bit)
+				bit = HANDS
+
+			if(zones["[bit]"] > coeff)
+				zones["[bit]"] = coeff
+
+	var/sum = (zones["[HEAD]"] * 0.1) + (zones["[CHEST]"] * 0.5) + (zones["[ARMS]"] * 0.15) + (zones["[LEGS]"] * 0.15) + (zones["[HANDS]"] * 0.05) + (zones["[FEET]"] * 0.05)
+
+	return CEILING(sum, 0.01)
 
 /mob/living/carbon/proc/share_blood_on_touch(mob/living/carbon/human/who_touched_us)
 	return
@@ -412,49 +431,51 @@
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/helper)
 	if(on_fire)
-		to_chat(helper, span_warning("You can't put [p_them()] out with just your bare hands!"))
-		return
+		var/datum/roll_result/result = helper.stat_roll(9, /datum/rpg_skill/electric_body)
+		if(result.outcome >= SUCCESS)
+			result.do_skill_sound(helper)
+			to_chat(helper, result.create_tooltip("[p_they(TRUE)] are <b>ON FIRE</b>, don't touch them you dolt!"))
+			return
+		else
+			spreadFire(helper)
 
 	if(SEND_SIGNAL(src, COMSIG_CARBON_PRE_HELP_ACT, helper) & COMPONENT_BLOCK_HELP_ACT)
 		return
 
-	if(helper == src)
-		check_self_for_injuries()
-		return
-
 	if(body_position == LYING_DOWN)
 		if(buckled)
-			to_chat(helper, span_warning("You need to unbuckle [src] first to do that!"))
+			to_chat(helper, span_warning("You need to unbuckle [src] first to do that."))
 			return
-		helper.visible_message(span_notice("[helper] shakes [src] trying to get [p_them()] up!"), \
-						null, span_hear("You hear the rustling of clothes."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You shake [src] trying to pick [p_them()] up!"))
-		to_chat(src, span_notice("[helper] shakes you to get you up!"))
+
+		helper.visible_message(
+			span_notice("<b>[helper]</b> shakes <b>[src]</b>, trying to get [p_them()] up."), \
+			null,
+			span_hear("You hear the rustling of clothes."),
+			DEFAULT_MESSAGE_RANGE,
+		)
 		share_blood_on_touch(helper, ITEM_SLOT_OCLOTHING | ITEM_SLOT_ICLOTHING)
 
 	else if(deprecise_zone(helper.zone_selected) == BODY_ZONE_HEAD && get_bodypart(BODY_ZONE_HEAD)) //Headpats!
-		helper.visible_message(span_notice("[helper] gives [src] a pat on the head to make [p_them()] feel better!"), \
-					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You give [src] a pat on the head to make [p_them()] feel better!"))
-		to_chat(src, span_notice("[helper] gives you a pat on the head to make you feel better! "))
+		helper.visible_message(
+			span_notice("<b>[helper]</b> gives <b>[src]</b> a pat on the head."),
+			null,
+			vision_distance = DEFAULT_MESSAGE_RANGE,
+		)
 
 		if(HAS_TRAIT(src, TRAIT_BADTOUCH))
 			to_chat(helper, span_warning("[src] looks visibly upset as you pat [p_them()] on the head."))
 		share_blood_on_touch(helper, ITEM_SLOT_HEAD|ITEM_SLOT_MASK)
 
 	else if ((helper.zone_selected == BODY_ZONE_PRECISE_GROIN) && !isnull(src.getorgan(/obj/item/organ/tail)))
-		helper.visible_message(span_notice("[helper] pulls on [src]'s tail!"), \
-					null, span_hear("You hear a soft patter."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You pull on [src]'s tail!"))
-		to_chat(src, span_notice("[helper] pulls on your tail!"))
+		helper.visible_message(span_notice("<b>[helper]</b> pulls on <b>[src]</b>'s tail."), vision_distance = DEFAULT_MESSAGE_RANGE)
 		if(HAS_TRAIT(src, TRAIT_BADTOUCH)) //How dare they!
 			to_chat(helper, span_warning("[src] makes a grumbling noise as you pull on [p_their()] tail."))
 
 	else
-		helper.visible_message(span_notice("[helper] hugs [src] to make [p_them()] feel better!"), \
-					null, span_hear("You hear the rustling of clothes."), DEFAULT_MESSAGE_RANGE, list(helper, src))
-		to_chat(helper, span_notice("You hug [src] to make [p_them()] feel better!"))
-		to_chat(src, span_notice("[helper] hugs you to make you feel better!"))
+		helper.visible_message(
+			span_notice("<b>[helper]</b> hugs <b>[src]</b> to make [p_them()] feel better."),
+			null,
+			span_hear("You hear the rustling of clothes."), DEFAULT_MESSAGE_RANGE)
 
 		// Warm them up with hugs
 		share_bodytemperature(helper)

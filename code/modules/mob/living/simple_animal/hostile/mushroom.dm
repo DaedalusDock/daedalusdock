@@ -29,7 +29,7 @@
 	environment_smash = ENVIRONMENT_SMASH_NONE
 	stat_attack = DEAD
 	mouse_opacity = MOUSE_OPACITY_ICON
-	speed = 1
+	move_delay_modifier = 1
 	robust_searching = 1
 	unique_name = 1
 	speak_emote = list("squeaks")
@@ -79,7 +79,7 @@
 	if(isliving(the_target))
 		var/mob/living/L = the_target
 
-		if (!faction_check_mob(L) && attack_same == 2)
+		if (!faction_check_atom(L) && attack_same == 2)
 			return FALSE
 		if(L.stat > stat_attack)
 			return FALSE
@@ -121,7 +121,7 @@
 		UpdateMushroomCap()
 		. = 1
 
-/mob/living/simple_animal/hostile/mushroom/death(gibbed)
+/mob/living/simple_animal/hostile/mushroom/death(gibbed, cause_of_death = "Unknown")
 	..(gibbed)
 	UpdateMushroomCap()
 

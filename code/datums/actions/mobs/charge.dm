@@ -187,8 +187,10 @@
 	cooldown_time = 6 SECONDS
 	charge_delay = 1.5 SECONDS
 	charge_distance = 4
+	/// How long to shake before charging
 	var/shake_duration = 1 SECONDS
-	var/shake_pixel_shift = 15
+	/// Intensity of shaking animation
+	var/shake_pixel_shift = 2
 
 /datum/action/cooldown/mob_cooldown/charge/basic_charge/do_charge_indicator(atom/charger, atom/charge_target)
 	charger.Shake(shake_pixel_shift, shake_pixel_shift, shake_duration)
@@ -210,7 +212,7 @@
 	var/mob/living/living_target = target
 	if(ishuman(living_target))
 		var/mob/living/carbon/human/human_target = living_target
-		if(human_target.check_shields(source, 0, "the [source.name]", attack_type = LEAP_ATTACK) && living_source)
+		if(human_target.check_block(source, 0, "the [source.name]", attack_type = LEAP_ATTACK) && living_source)
 			living_source.Stun(6, ignore_canstun = TRUE)
 			return
 

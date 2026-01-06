@@ -2,7 +2,7 @@
 GLOBAL_LIST_INIT(channel_tokens, list(
 	RADIO_CHANNEL_COMMON = RADIO_KEY_COMMON,
 	RADIO_CHANNEL_SCIENCE = RADIO_TOKEN_SCIENCE,
-	RADIO_CHANNEL_COMMAND = RADIO_TOKEN_COMMAND,
+	RADIO_CHANNEL_FEDERATION = RADIO_TOKEN_FEDERATION,
 	RADIO_CHANNEL_MEDICAL = RADIO_TOKEN_MEDICAL,
 	RADIO_CHANNEL_ENGINEERING = RADIO_TOKEN_ENGINEERING,
 	RADIO_CHANNEL_SECURITY = RADIO_TOKEN_SECURITY,
@@ -14,13 +14,15 @@ GLOBAL_LIST_INIT(channel_tokens, list(
 	RADIO_CHANNEL_AI_PRIVATE = RADIO_TOKEN_AI_PRIVATE
 ))
 
+TYPEINFO_DEF(/obj/item/radio/headset)
+	default_materials = list(/datum/material/iron=75)
+
 /obj/item/radio/headset
 	name = "radio headset"
 	desc = "An updated, modular intercom that fits over the head. Takes encryption keys."
 	icon_state = "headset"
 	inhand_icon_state = "headset"
 	worn_icon_state = null // So that each subtype uses their own icon state
-	custom_materials = list(/datum/material/iron=75)
 
 	subspace_transmission = TRUE
 	canhear_range = 0 // can't hear headsets from very far away

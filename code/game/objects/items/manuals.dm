@@ -462,13 +462,13 @@
 /obj/item/book/manual/codex/surgery
 	name = "A.P. Surgical Journal, #### Edition"
 	starting_title = "A.P. Surgical Journal, #### Edition"
-	desc = "A reprint of the Aether Pharmaceutical surgical journal, Detailing the 'latest' methods of medicial butchering."
+	desc = "A reprint of the Aether Association surgical journal, Detailing the 'latest' methods of medicial butchering."
 	icon_state = "bookaether"
 	target_entry = "Guide to Surgery"
 
 /obj/item/book/manual/codex/surgery/Initialize()
 	//Station gets the outdated ones :smug:
-	name = "A.P. Surgical Journal, [CURRENT_STATION_YEAR-rand(1,3)] Edition"
+	name = "A.P. Surgical Journal, '67 Edition"
 	starting_title = name
 	. = ..()
 

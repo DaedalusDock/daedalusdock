@@ -17,28 +17,51 @@
 
 /obj/item/stack
 	icon = 'icons/obj/stack_objects.dmi'
-	gender = PLURAL
+	maptext_x = -4
+	maptext_y = 2
+
 	material_modifier = 0.05 //5%, so that a 50 sheet stack has the effect of 5k materials instead of 100k.
 	max_integrity = 100
 
 	var/list/datum/stack_recipe/recipes
+	/// The name of one piece of the stack.
 	var/singular_name
+	/// The gender of a single instance of the stack.
+	var/singular_gender = NEUTER
+
+	/// The name used to describe the group of objects.
+	var/stack_name = "stack"
+	/// The gender of the stack.
+	var/multiple_gender = PLURAL
+
+	/// The amount of STUFF currently in the stack.
 	var/amount = 1
-	var/max_amount = 50 //also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
-	var/is_cyborg = FALSE // It's TRUE if module is used by a cyborg, and uses its storage
+	/// The maximum amount of STUFF this stack can hold. also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
+	var/max_amount = 50
+
+	/// This path and its children should merge with this stack, defaults to src.type
+	var/merge_type = null
+	/// The weight class the stack should have at amount > 2/3rds max_amount
+	var/full_w_class = WEIGHT_CLASS_NORMAL
+	/// If FALSE, the stack changes icon state based on the ratio of amount to max amount.
+	var/novariants = TRUE
+	/// If TRUE, dynamically adjust the name of the item based on singular/plural quantities.
+	var/dynamically_set_name = FALSE
+	/// list that tells you how much is in a single unit.
+	var/list/mats_per_unit
+	/// Datum material type that this stack is made of
+	var/material_type
+
 	var/datum/robot_energy_storage/source
 	var/cost = 1 // How much energy from storage it costs
-	var/merge_type = null // This path and its children should merge with this stack, defaults to src.type
-	var/full_w_class = WEIGHT_CLASS_NORMAL //The weight class the stack should have at amount > 2/3rds max_amount
-	var/novariants = TRUE //Determines whether the item should update it's sprites based on amount.
-	var/list/mats_per_unit //list that tells you how much is in a single unit.
-	///Datum material type that this stack is made of
-	var/material_type
+	/// It's TRUE if module is used by a cyborg, and uses its storage
+	var/is_cyborg = FALSE
+
 	//NOTE: When adding grind_results, the amounts should be for an INDIVIDUAL ITEM - these amounts will be multiplied by the stack size in on_grind()
 	var/obj/structure/table/tableVariant // we tables now (stores table variant to be built from this stack)
 
 	// The following are all for medical treatment, they're here instead of /stack/medical because sticky tape can be used as a makeshift bandage or splint
-	/// If set and this used as a splint for a broken bone wound, this is used as a multiplier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
+	/// If set and this used as a splint for a broken bone wound, this is used as a modifier for applicable slowdowns (lower = better) (also for speeding up burn recoveries)
 	var/splint_slowdown = null
 	/// Like splint_factor but for burns instead of bone wounds. This is a multiplier used to speed up burn recoveries
 	var/burn_cleanliness_bonus
@@ -65,12 +88,15 @@
 	if(absorption_capacity)
 		src.absorption_capacity = absorption_capacity
 
+	// Not typeinfo() for speed reasons. Hot ass code!
+	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[type] ||= new __typeinfo_path
+
 	if(LAZYLEN(mat_override))
 		set_mats_per_unit(mat_override, mat_amt)
 	else if(LAZYLEN(mats_per_unit))
 		set_mats_per_unit(mats_per_unit, 1)
-	else if(LAZYLEN(custom_materials))
-		set_mats_per_unit(custom_materials, amount ? 1/amount : 1)
+	else if(LAZYLEN(typeinfo.default_materials))
+		set_mats_per_unit(typeinfo.default_materials, amount ? 1/amount : 1)
 
 	. = ..()
 	// HELLO THIS IS KAPU. THIS IS BROKEN.
@@ -102,6 +128,53 @@
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
 
+/obj/item/stack/update_appearance(updates)
+	. = ..()
+	update_gender()
+	update_maptext()
+
+/obj/item/stack/update_name(updates)
+	if(dynamically_set_name)
+		if(amount > 1)
+			name = initial(name)
+		else
+			name = singular_name
+	return ..()
+
+/// Update the gender var based on if the stack contains 1 or more items.
+/obj/item/stack/proc/update_gender() // Maybe the funniest proc name ever
+	if(amount > 1)
+		gender = multiple_gender
+	else
+		gender = singular_gender
+
+/obj/item/stack/equipped(mob/user, slot, initial)
+	. = ..()
+	update_maptext()
+
+/obj/item/stack/unequipped(mob/user, silent)
+	. = ..()
+	update_maptext()
+
+/obj/item/stack/on_enter_storage(datum/storage/master_storage)
+	. = ..()
+	update_maptext()
+
+/obj/item/stack/on_exit_storage(datum/storage/master_storage)
+	. = ..()
+	update_maptext()
+
+/// Set the maptext for the item that shows how much junk is inside the trunk.
+/obj/item/stack/proc/update_maptext()
+	if(item_flags & (IN_INVENTORY|IN_STORAGE))
+		maptext = MAPTEXT("<span style='text-align: right'>[amount]</span>")
+	else
+		maptext = null
+
+/obj/item/stack/examine_properties(mob/user)
+	. = ..()
+	. += PROPERTY_STACKABLE
+
 /** Sets the amount of materials per unit for this stack.
  *
  * Arguments:
@@ -124,10 +197,38 @@
 	return is_update ? ..() : set_mats_per_unit(materials, multiplier/(amount || 1))
 
 
-/obj/item/stack/on_grind()
-	. = ..()
-	for(var/i in 1 to length(grind_results)) //This should only call if it's ground, so no need to check if grind_results exists
-		grind_results[grind_results[i]] *= get_amount() //Gets the key at position i, then the reagent amount of that key, then multiplies it by stack size
+/obj/item/stack/do_grind(datum/reagents/target_holder, mob/user)
+	var/current_amount = get_amount()
+	if(current_amount <= 0 || QDELETED(src)) //just to get rid of this 0 amount/deleted stack we return success
+		return TRUE
+
+	if(reagents)
+		reagents.trans_to(target_holder, reagents.total_volume, transfered_by = user)
+	var/available_volume = target_holder.maximum_volume - target_holder.total_volume
+
+	//compute total volume of reagents that will be occupied by grind_results
+	var/total_volume = 0
+	for(var/reagent in grind_results)
+		total_volume += grind_results[reagent]
+
+	//compute number of pieces(or sheets) from available_volume
+	var/available_amount = min(current_amount, round(available_volume / total_volume))
+	if(available_amount <= 0)
+		return FALSE
+
+	//Now transfer the grind results scaled by available_amount
+	var/list/grind_reagents = grind_results.Copy()
+	for(var/reagent in grind_reagents)
+		grind_reagents[reagent] *= available_amount
+	target_holder.add_reagent_list(grind_reagents)
+
+	/**
+	 * use available_amount of sheets/pieces, return TRUE only if all sheets/pieces of this stack were used
+	 * we don't delete this stack when it reaches 0 because we expect the all in one grinder, etc to delete
+	 * this stack if grinding was successful
+	 */
+	use(available_amount, check = FALSE)
+	return available_amount == current_amount
 
 /obj/item/stack/grind_requirements()
 	if(is_cyborg)
@@ -140,12 +241,15 @@
 	return list()//empty list
 
 /obj/item/stack/proc/update_weight()
+	var/new_w_class
 	if(amount <= (max_amount * (1/3)))
-		w_class = clamp(full_w_class-2, WEIGHT_CLASS_TINY, full_w_class)
+		new_w_class = clamp(full_w_class-2, WEIGHT_CLASS_TINY, full_w_class)
 	else if (amount <= (max_amount * (2/3)))
-		w_class = clamp(full_w_class-1, WEIGHT_CLASS_TINY, full_w_class)
+		new_w_class = clamp(full_w_class-1, WEIGHT_CLASS_TINY, full_w_class)
 	else
-		w_class = full_w_class
+		new_w_class = full_w_class
+
+	set_weight_class(new_w_class)
 
 /obj/item/stack/update_icon_state()
 	if(novariants)
@@ -171,16 +275,10 @@
 
 	if(singular_name)
 		if(plural)
-			. += span_notice("There are [get_amount()] [singular_name]\s in the stack.")
-		else
-			. += span_notice("There is [get_amount()] [singular_name] in the stack.")
+			. += span_notice("There are [get_amount()] [singular_name]\s in the [stack_name].")
 
 	else if(plural)
-		. += span_notice("There are [get_amount()] in the stack.")
-	else
-		. += span_notice("There is [get_amount()] in the stack.")
-
-	. += span_notice("<b>Right-click</b> with an empty hand to take a custom amount.")
+		. += span_notice("There are [get_amount()] in the [stack_name].")
 
 	if(absorption_capacity < initial(absorption_capacity))
 		if(absorption_capacity == 0)
@@ -397,15 +495,21 @@
 /obj/item/stack/use(used, transfer = FALSE, check = TRUE) // return 0 = borked; return 1 = had enough
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return FALSE
+
 	if(is_cyborg)
 		return source.use_charge(used * cost)
+
 	if (amount < used)
 		return FALSE
+
 	amount -= used
+
 	if(check && is_zero_amount(delete_if_zero = TRUE))
 		return TRUE
+
 	if(length(mats_per_unit))
 		update_custom_materials()
+
 	update_appearance()
 	update_weight()
 	return TRUE
@@ -536,26 +640,31 @@
 		merge(hitting)
 	. = ..()
 
-/obj/item/stack/attack(mob/living/M, mob/living/user, params)
+/obj/item/stack/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
 	if(splint_slowdown)
-		return try_splint(M, user)
+		return try_splint(interacting_with, user)
 
-	if(!user.combat_mode && absorption_capacity && ishuman(M))
-		var/obj/item/bodypart/BP = M.get_bodypart(user.zone_selected, TRUE)
-		if(BP.bandage)
-			to_chat(user, span_warning("[M]'s [BP.plaintext_zone] is already bandaged."))
-			return FALSE
+	if(!absorption_capacity || !ishuman(interacting_with))
+		return NONE
 
-		if(do_after(user, M, 5 SECONDS, DO_PUBLIC, display = src))
-			if(user == M)
-				user.visible_message(span_notice("[user] applies [src] to [user.p_their()] [BP.plaintext_zone]."))
-			else
-				user.visible_message(span_notice("[user] applies [src] to [M]'s [BP.plaintext_zone]."))
-			BP.apply_bandage(src)
-		return
+	var/mob/living/carbon/human/target = interacting_with
+	var/obj/item/bodypart/BP = target.get_bodypart(user.zone_selected, TRUE)
+	if(BP.bandage)
+		to_chat(user, span_warning("[target]'s [BP.plaintext_zone] is already bandaged."))
+		return ITEM_INTERACT_BLOCKING
 
-	return ..()
+	if(!do_after(user, target, 5 SECONDS, DO_PUBLIC, display = src))
+		return ITEM_INTERACT_BLOCKING
 
+	if(user == target)
+		user.visible_message(span_notice("[user] applies [src] to [user.p_their()] [BP.plaintext_zone]."))
+	else
+		user.visible_message(span_notice("[user] applies [src] to [target]'s [BP.plaintext_zone]."))
+	BP.apply_bandage(src)
+	return ITEM_INTERACT_SUCCESS
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/stack/attack_hand(mob/user, list/modifiers)
@@ -573,14 +682,17 @@
 
 	if(is_cyborg || !user.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
+
 	if(is_zero_amount(delete_if_zero = TRUE))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 	var/max = get_amount()
 	var/stackmaterial = tgui_input_number(user, "How many sheets do you wish to take out of this stack?", "Stack Split", max_value = max)
 	if(!stackmaterial || QDELETED(user) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_DEXTERITY))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
 	split_stack(user, stackmaterial, user)
-	to_chat(user, span_notice("You take [stackmaterial] sheets out of the stack."))
+	to_chat(user, span_notice("You take [stackmaterial] [singular_name || "sheets"] out of the [stack_name]."))
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 /** Splits the stack into two stacks.
@@ -610,7 +722,7 @@
 	if(can_merge(W, inhand = TRUE))
 		var/obj/item/stack/S = W
 		if(merge(S))
-			to_chat(user, span_notice("Your [S.name] stack now contains [S.get_amount()] [S.singular_name]\s."))
+			to_chat(user, span_notice("[S] [stack_name] of [S.name] now contains [S.get_amount()] [S.singular_name]\s."))
 	else
 		. = ..()
 

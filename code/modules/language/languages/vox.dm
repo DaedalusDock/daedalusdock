@@ -1,6 +1,6 @@
 /datum/language/vox
-	name = "Vox-pidgin"
-	desc = "The common tongue of the various Vox ships making up the Shoal. It sounds like chaotic shrieking to everyone else."
+	name = "Voks-pidgin"
+	desc = "It sounds like chaotic shrieking."
 	key = "V"
 	space_chance = 40
 	syllables = list(

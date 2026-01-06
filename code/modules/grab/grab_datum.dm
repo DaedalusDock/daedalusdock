@@ -107,15 +107,21 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		to_chat(G.assailant, span_warning("[string_process(G, fail_down)]"))
 		return
 
+/// DO NOT CALL THIS DIRECTLY GOOD LORD!!! This should ONLY be called by /obj/item/hand_item/grab/Destroy()
 /datum/grab/proc/let_go(obj/item/hand_item/grab/G)
 	SHOULD_NOT_OVERRIDE(TRUE)
 	if(!G)
 		return
 
-	let_go_effect(G)
+	remove_bodyzone_effects(G, G.target_zone)
+	if(G.is_grab_unique(src))
+		remove_unique_grab_effects(G.affecting)
 
-	if(!QDELETED(G))
-		qdel(G)
+	update_stage_effects(G, src, TRUE)
+	G.affecting.update_offsets()
+
+	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
+	SEND_SIGNAL(G.assailant, COMSIG_LIVING_NO_LONGER_GRABBING, G.affecting)
 
 /datum/grab/proc/on_target_change(obj/item/hand_item/grab/G, old_zone, new_zone)
 	remove_bodyzone_effects(G, old_zone, new_zone)
@@ -181,11 +187,10 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 */
 
 // What happens when you upgrade from one grab state to the next.
-/datum/grab/proc/upgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
+/datum/grab/proc/upgrade_effect(obj/item/hand_item/grab/G)
 	SHOULD_CALL_PARENT(TRUE)
 
 	G.remove_competing_grabs()
-	update_stage_effects(G, old_grab)
 
 // Conditions to see if upgrading is possible
 /datum/grab/proc/can_upgrade(obj/item/hand_item/grab/G)
@@ -193,7 +198,7 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 		return FALSE
 
 	var/mob/living/L = G.get_affecting_mob()
-	if(!isliving(L))
+	if(!isliving(L) || L == G.assailant)
 		return FALSE
 
 	if(!(L.status_flags & CANPUSH) || HAS_TRAIT(L, TRAIT_PUSHIMMUNE))
@@ -211,8 +216,9 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 	return TRUE
 
 // What happens when you downgrade from one grab state to the next.
-/datum/grab/proc/downgrade_effect(obj/item/hand_item/grab/G, datum/grab/old_grab)
-	update_stage_effects(G, old_grab)
+/datum/grab/proc/downgrade_effect(obj/item/hand_item/grab/G)
+	SEND_SIGNAL(G.assailant, COMSIG_LIVING_GRAB_DOWNGRADE, G)
+	return
 
 // Conditions to see if downgrading is possible
 /datum/grab/proc/can_downgrade(obj/item/hand_item/grab/G)
@@ -221,56 +227,68 @@ GLOBAL_LIST_EMPTY(all_grabstates)
 // What happens when you let go of someone by either dropping the grab
 // or by downgrading from the lowest grab state.
 /datum/grab/proc/let_go_effect(obj/item/hand_item/grab/G)
-	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
-	SEND_SIGNAL(G.assailant, COMSIG_LIVING_NO_LONGER_GRABBING, G.affecting)
+	PRIVATE_PROC(TRUE)
 
 	remove_bodyzone_effects(G, G.target_zone)
 	if(G.is_grab_unique(src))
-		remove_unique_grab_effects(G)
+		remove_unique_grab_effects(G.affecting)
 
 	update_stage_effects(G, src, TRUE)
+
+	SEND_SIGNAL(G.affecting, COMSIG_ATOM_NO_LONGER_GRABBED, G.assailant)
+	SEND_SIGNAL(G.assailant, COMSIG_LIVING_NO_LONGER_GRABBING, G.affecting)
 
 /// Add effects that apply based on damage_stage here
 /datum/grab/proc/update_stage_effects(obj/item/hand_item/grab/G, datum/grab/old_grab, dropping_grab)
 	var/old_damage_stage = old_grab?.damage_stage || GRAB_PASSIVE
 	var/new_stage = dropping_grab ? GRAB_PASSIVE : damage_stage
 
+	var/trait_source = ref(G)
+	var/atom/movable/affected_movable = G.affecting
+
 	switch(new_stage) // Current state.
 		if(GRAB_PASSIVE)
-			REMOVE_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
-			REMOVE_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
+			REMOVE_TRAIT(affected_movable, TRAIT_IMMOBILIZED, trait_source)
+			REMOVE_TRAIT(affected_movable, TRAIT_HANDS_BLOCKED, trait_source)
 			if(old_damage_stage >= GRAB_AGGRESSIVE)
-				REMOVE_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
+				REMOVE_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source)
+				REMOVE_TRAIT(affected_movable, TRAIT_FLOORED, trait_source)
+				affected_movable.layer -= 0.001
 
 		if(GRAB_AGGRESSIVE)
 			if(old_damage_stage >= GRAB_NECK) // Grab got downgraded.
-				REMOVE_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
+				REMOVE_TRAIT(affected_movable, TRAIT_FLOORED, trait_source)
 			else // Grab got upgraded from a passive one.
-				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
-				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
-				ADD_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_IMMOBILIZED, trait_source)
+				ADD_TRAIT(affected_movable, TRAIT_HANDS_BLOCKED, trait_source)
+				ADD_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source)
+				affected_movable.layer += 0.001
 
 		if(GRAB_NECK, GRAB_KILL)
 			if(old_damage_stage < GRAB_AGGRESSIVE)
-				ADD_TRAIT(G.affecting, TRAIT_AGGRESSIVE_GRAB, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, REF(G))
+				affected_movable.layer += 0.001
 			if(old_damage_stage <= GRAB_AGGRESSIVE)
-				ADD_TRAIT(G.affecting, TRAIT_FLOORED, REF(G))
-				ADD_TRAIT(G.affecting, TRAIT_HANDS_BLOCKED, REF(G))
-				ADD_TRAIT(G.affecting, TRAIT_IMMOBILIZED, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_FLOORED, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_HANDS_BLOCKED, REF(G))
+				ADD_TRAIT(affected_movable, TRAIT_IMMOBILIZED, REF(G))
 
+	//DEBUG CODE
+	if((new_stage < GRAB_AGGRESSIVE) && HAS_TRAIT_FROM_ONLY(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source))
+		stack_trace("AAAAAA a grab victim somehow still has trait_aggressive_grab when they shouldnt, removing it!")
+		REMOVE_TRAIT(affected_movable, TRAIT_AGGRESSIVE_GRAB, trait_source)
 
 /// Apply effects that should only be applied when a grab type is first used on a mob.
-/datum/grab/proc/apply_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/proc/apply_unique_grab_effects(atom/movable/affecting)
 	SHOULD_CALL_PARENT(TRUE)
-	if(same_tile && ismob(G.affecting))
-		G.affecting.add_passmob(REF(G))
+	if(same_tile && ismob(affecting))
+		affecting.add_passmob(ref(src))
 
 /// Remove effects added by apply_unique_grab_effects()
-/datum/grab/proc/remove_unique_grab_effects(obj/item/hand_item/grab/G)
+/datum/grab/proc/remove_unique_grab_effects(atom/movable/affecting)
 	SHOULD_CALL_PARENT(TRUE)
-	if(same_tile && ismob(G.affecting))
-		G.affecting.remove_passmob(REF(G))
+	if(same_tile && ismob(affecting))
+		affecting.remove_passmob(ref(src))
 
 /// Handles special targeting like eyes and mouth being covered.
 /// CLEAR OUT ANY EFFECTS USING remove_bodyzone_effects()

@@ -6,7 +6,7 @@
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	resistance_flags = NONE
-	custom_premium_price = PAYCHECK_HARD * 3.5
+	custom_premium_price = PAYCHECK_ASSISTANT * 5.3
 	clothing_traits = list(TRAIT_FINGERPRINT_PASSTHROUGH)
 	/// For storing our tackler datum so we can remove it after
 	var/datum/component/tackler
@@ -35,7 +35,7 @@
 		var/mob/living/carbon/human/H = user
 		tackler = H.AddComponent(/datum/component/tackler, stamina_cost=tackle_stam_cost, base_knockdown = base_knockdown, range = tackle_range, speed = tackle_speed, skill_mod = skill_mod, min_distance = min_distance)
 
-/obj/item/clothing/gloves/tackler/dropped(mob/user)
+/obj/item/clothing/gloves/tackler/unequipped(mob/user)
 	. = ..()
 	if(!ishuman(user))
 		return

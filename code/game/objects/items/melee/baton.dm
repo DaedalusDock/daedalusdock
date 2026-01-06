@@ -15,6 +15,9 @@
 	stamina_critical_chance = 5
 	force = 12
 
+	has_combat_mode_interaction = TRUE
+	fingerprint_flags_interact_with_atom = FINGERPRINT_ITEM_SUCCESS | FINGERPRINT_OBJECT_SUCCESS
+
 	/// Whether this baton is active or not
 	var/active = TRUE
 	/// Default wait time until can stun again.
@@ -78,18 +81,31 @@
 	else
 		icon_state = initial(icon_state)
 
-/**
- * Ok, think of baton attacks like a melee attack chain:
- */
-/obj/item/melee/baton/attack(mob/living/target, mob/living/user, params)
+/obj/item/melee/baton/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(flipped && !active)
-		return ..() // Go straight up the chain
+		return NONE
 
-	if(melee_baton_attack(target, user))
-		if(!baton_effect(target, user))
-			return ..()
+	if(!isliving(interacting_with))
+		return NONE
 
-	add_fingerprint(user) //Only happens if we didn't go up the chain
+	if(melee_baton_attack(interacting_with, user))
+		if(!baton_effect(interacting_with, user))
+			return ITEM_INTERACT_ATTACK
+
+	return ITEM_INTERACT_BLOCKING
+
+// /**
+//  * Ok, think of baton attacks like a melee attack chain:
+//  */
+// /obj/item/melee/baton/attack(mob/living/target, mob/living/user, params)
+// 	if(flipped && !active)
+// 		return ..() // Go straight up the chain
+
+// 	if(melee_baton_attack(target, user))
+// 		if(!baton_effect(target, user))
+// 			return ..()
+
+// 	add_fingerprint(user) //Only happens if we didn't go up the chain
 
 /obj/item/melee/baton/equipped(mob/user, slot, initial)
 	. = ..()
@@ -99,7 +115,7 @@
 	var/mob/living/L = user
 	user_flip(L, L.combat_mode)
 
-/obj/item/melee/baton/dropped(mob/user, silent)
+/obj/item/melee/baton/unequipped(mob/user, silent)
 	. = ..()
 	UnregisterSignal(user, COMSIG_LIVING_TOGGLE_COMBAT_MODE)
 	user_flip(null, FALSE)
@@ -152,6 +168,8 @@
 	return CONTEXTUAL_SCREENTIP_SET
 
 /obj/item/melee/baton/proc/melee_baton_attack(mob/living/target, mob/living/user)
+	user.changeNext_move(combat_click_delay)
+
 	if(clumsy_check(user, target))
 		return
 
@@ -185,11 +203,11 @@
 /obj/item/melee/baton/proc/check_parried(mob/living/carbon/human/human_target, mob/living/user)
 	if(!ishuman(human_target))
 		return
-	if (human_target.check_shields(src, 0, "[user]'s [name]", MELEE_ATTACK))
+	if (human_target.check_block(src, 0, "[user]'s [name]", MELEE_ATTACK))
 		playsound(human_target, 'sound/weapons/genhit.ogg', 50, TRUE)
 		return TRUE
-	if(check_martial_counter(human_target, user))
-		return TRUE
+
+	return FALSE
 
 /obj/item/melee/baton/proc/baton_effect(mob/living/target, mob/living/user)
 	if(on_stun_sound)
@@ -356,6 +374,9 @@
 	playsound(user ? user : src, on_sound, 50, TRUE)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
+TYPEINFO_DEF(/obj/item/melee/baton/security)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 0, FIRE = 80, ACID = 80)
+
 /obj/item/melee/baton/security
 	name = "stun baton"
 	desc = "A stun baton for incapacitating people with. Left click to stun, right click to harm."
@@ -370,7 +391,6 @@
 	attack_verb_continuous = list("beats")
 	attack_verb_simple = list("beat")
 
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 0, FIRE = 80, ACID = 80)
 
 	throwforce = 7
 	charged_stamina_damage = 130
@@ -553,7 +573,7 @@
 
 /obj/item/melee/baton/security/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	. = ..()
-	if(active && prob(throw_stun_chance) && isliving(hit_atom))
+	if(!. && active && prob(throw_stun_chance) && isliving(hit_atom))
 		baton_effect(hit_atom, thrownby?.resolve())
 
 /obj/item/melee/baton/security/emp_act(severity)
@@ -629,6 +649,9 @@
 		QDEL_NULL(sparkler)
 	return ..()
 
+TYPEINFO_DEF(/obj/item/melee/baton/security/boomerang)
+	default_materials = list(/datum/material/iron = 10000, /datum/material/glass = 4000, /datum/material/silver = 10000, /datum/material/gold = 2000)
+
 /obj/item/melee/baton/security/boomerang
 	name = "\improper OZtek Boomerang"
 	desc = "A device invented in 2486 for the great Space Emu War by the confederacy of Australicus, these high-tech boomerangs also work exceptionally well at stunning crewmembers. Just be careful to catch it when thrown!"
@@ -644,7 +667,6 @@
 	cell_hit_cost = 2000
 	throw_stun_chance = 99  //Have you prayed today?
 	convertible = FALSE
-	custom_materials = list(/datum/material/iron = 10000, /datum/material/glass = 4000, /datum/material/silver = 10000, /datum/material/gold = 2000)
 	can_be_flipped = FALSE
 
 /obj/item/melee/baton/security/boomerang/Initialize(mapload)

@@ -417,8 +417,6 @@
 
 /datum/config_entry/flag/irc_first_connection_alert // do we notify the irc channel when somebody is connecting for the first time?
 
-/datum/config_entry/flag/check_randomizer
-
 /datum/config_entry/string/ipintel_email
 
 /datum/config_entry/string/ipintel_email/ValidateAndSet(str_val)
@@ -467,6 +465,10 @@
 /datum/config_entry/number/client_warn_version
 	default = null
 	min_val = 500
+
+/datum/config_entry/number/client_warn_build
+	default = null
+	min_val = 0
 
 /datum/config_entry/string/client_warn_message
 	default = "Your version of byond may have issues or be blocked from accessing this server in the future."
@@ -584,6 +586,12 @@
 /datum/config_entry/flag/reopen_roundstart_suicide_roles_command_report
 
 /datum/config_entry/flag/auto_profile
+
+/datum/config_entry/number/drift_dump_threshold
+	default = 4 SECONDS
+
+/datum/config_entry/number/drift_profile_delay
+	default = 15 SECONDS
 
 /datum/config_entry/string/centcom_ban_db // URL for the CentCom Galactic Ban DB API
 

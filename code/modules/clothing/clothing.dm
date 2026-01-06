@@ -76,18 +76,6 @@
 	if(!icon_state)
 		item_flags |= ABSTRACT
 
-/obj/item/clothing/MouseDrop(atom/over_object)
-	. = ..()
-	var/mob/M = usr
-
-	if(ismecha(M.loc)) // stops inventory actions in a mech
-		return
-
-	if(!M.incapacitated() && loc == M && istype(over_object, /atom/movable/screen/inventory/hand))
-		var/atom/movable/screen/inventory/hand/H = over_object
-		if(M.putItemFromInventoryInHandIfPossible(src, H.held_index))
-			add_fingerprint(usr)
-
 //This code is cursed, moths are cursed, and someday I will destroy it. but today is not that day.
 /obj/item/food/clothing
 	name = "temporary moth clothing snack item"
@@ -103,35 +91,24 @@
 	/// A weak reference to the clothing that created us
 	var/datum/weakref/clothing
 
-/obj/item/food/clothing/MakeEdible()
-	AddComponent(/datum/component/edible,\
-		initial_reagents = food_reagents,\
-		food_flags = food_flags,\
-		foodtypes = foodtypes,\
-		volume = max_volume,\
-		eat_time = eat_time,\
-		tastes = tastes,\
-		eatverbs = eatverbs,\
-		bite_consumption = bite_consumption,\
-		microwaved_type = microwaved_type,\
-		junkiness = junkiness,\
-		after_eat = CALLBACK(src, PROC_REF(after_eat)))
-
-/obj/item/food/clothing/proc/after_eat(mob/eater)
+/obj/item/food/clothing/post_bite(mob/living/eater, mob/living/feeder, bitecount)
+	. = ..()
 	var/obj/item/clothing/resolved_clothing = clothing.resolve()
 	if (resolved_clothing)
 		resolved_clothing.take_damage(MOTH_EATING_CLOTHING_DAMAGE, sound_effect = FALSE, damage_flag = BOMB, armor_penetration = 100) //This leaves clothing shreds.
 	else
 		qdel(src)
 
-/obj/item/clothing/attack(mob/living/M, mob/living/user, params)
-	if(user.combat_mode || !ismoth(M))
-		return ..()
+/obj/item/clothing/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with) || !ismoth(interacting_with))
+		return NONE
+
 	if(isnull(moth_snack))
 		moth_snack = new
 		moth_snack.name = name
 		moth_snack.clothing = WEAKREF(src)
-	moth_snack.attack(M, user, params)
+
+	return interacting_with.base_item_interaction(user, moth_snack, modifiers)
 
 /obj/item/clothing/attackby(obj/item/W, mob/user, params)
 	if(!istype(W, repairable_by))
@@ -201,12 +178,6 @@
 		(.):Insert(1, "Armor Information")
 		(.):Insert(2, jointext(armor_info, ""))
 
-	if(clothing_flags & STOPSPRESSUREDAMAGE)
-		. += "- Wearing [gender == PLURAL ? "these" : "it"] will protect you from the vacuum of space."
-
-	if(clothing_flags & THICKMATERIAL)
-		. += "- The material is exceptionally thick."
-
 	if(!isnull(min_cold_protection_temperature) && min_cold_protection_temperature >= SPACE_SUIT_MIN_TEMP_PROTECT)
 		. += "- [pronoun] provide[pronoun_s] very good protection against very cold temperatures."
 
@@ -217,8 +188,6 @@
 			. += "- [pronoun] offer[pronoun_s] the wearer some protection from fire."
 		if (1601 to 35000)
 			. += "- [pronoun] offer[pronoun_s] the wearer robust protection from fire."
-
-
 
 /// Set the clothing's integrity back to 100%, remove all damage to bodyparts, and generally fix it up
 /obj/item/clothing/proc/repair(mob/user, params)
@@ -307,7 +276,7 @@
 	QDEL_NULL(moth_snack)
 	return ..()
 
-/obj/item/clothing/dropped(mob/living/user)
+/obj/item/clothing/unequipped(mob/living/user)
 	..()
 	if(!istype(user))
 		return
@@ -515,21 +484,6 @@ BLIND     // can't see anything
 	flags_inv ^= visor_flags_inv
 	flags_cover ^= initial(flags_cover)
 	icon_state = "[initial(icon_state)][up ? "up" : ""]"
-	if(visor_vars_to_toggle & VISOR_FLASHPROTECT)
-		flash_protect ^= initial(flash_protect)
-	if(visor_vars_to_toggle & VISOR_TINT)
-		tint ^= initial(tint)
-
-	if(iscarbon(loc))
-		var/mob/living/carbon/C = loc
-		C.update_slots_for_item(src, force_obscurity_update = TRUE)
-
-/obj/item/clothing/head/helmet/space/plasmaman/visor_toggling() //handles all the actual toggling of flags
-	up = !up
-	SEND_SIGNAL(src, COMSIG_CLOTHING_VISOR_TOGGLE, up)
-	clothing_flags ^= visor_flags
-	flags_inv ^= visor_flags_inv
-	icon_state = "[initial(icon_state)]"
 	if(visor_vars_to_toggle & VISOR_FLASHPROTECT)
 		flash_protect ^= initial(flash_protect)
 	if(visor_vars_to_toggle & VISOR_TINT)

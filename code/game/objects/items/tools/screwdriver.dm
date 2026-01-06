@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/screwdriver)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	default_materials = list(/datum/material/iron=75)
+
 /obj/item/screwdriver
 	name = "screwdriver"
 	desc = "You can be totally screwy with this."
@@ -12,7 +16,7 @@
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_TINY
 
-	force = 5
+	force = 7
 	throwforce = 5
 	throw_range = 5
 	stamina_cost = 5
@@ -20,14 +24,12 @@
 	stamina_critical_chance = 30
 
 
-	custom_materials = list(/datum/material/iron=75)
 	attack_verb_continuous = list("stabs")
 	attack_verb_simple = list("stab")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	usesound = list('sound/items/screwdriver.ogg', 'sound/items/screwdriver2.ogg')
 	tool_behaviour = TOOL_SCREWDRIVER
 	toolspeed = 1
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	drop_sound = 'sound/items/handling/screwdriver_drop.ogg'
 	pickup_sound = 'sound/items/handling/screwdriver_pickup.ogg'
 	sharpness = SHARP_POINTY
@@ -59,13 +61,15 @@
 	. = ..()
 	AddElement(/datum/element/eyestab)
 
+TYPEINFO_DEF(/obj/item/screwdriver/abductor)
+	default_materials = list(/datum/material/iron=5000, /datum/material/silver=2500, /datum/material/plasma = 1000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
+
 /obj/item/screwdriver/abductor
 	name = "alien screwdriver"
 	desc = "An ultrasonic screwdriver."
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "screwdriver_a"
 	inhand_icon_state = "screwdriver_nuke"
-	custom_materials = list(/datum/material/iron=5000, /datum/material/silver=2500, /datum/material/plasma = 1000, /datum/material/titanium = 2000, /datum/material/diamond = 2000)
 	usesound = 'sound/items/pshoom.ogg'
 	toolspeed = 0.1
 	random_color = FALSE
@@ -74,6 +78,9 @@
 
 /obj/item/screwdriver/abductor/get_belt_overlay()
 	return mutable_appearance('icons/obj/clothing/belt_overlays.dmi', "screwdriver_alien")
+
+TYPEINFO_DEF(/obj/item/screwdriver/power)
+	default_materials = list(/datum/material/iron=3500, /datum/material/silver=1500, /datum/material/titanium=2500)
 
 /obj/item/screwdriver/power
 	name = "hand drill"
@@ -84,7 +91,6 @@
 	worn_icon_state = "drill"
 	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
-	custom_materials = list(/datum/material/iron=3500, /datum/material/silver=1500, /datum/material/titanium=2500) //what research value?
 	force = 8 //might or might not be too high, subject to change
 	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 8

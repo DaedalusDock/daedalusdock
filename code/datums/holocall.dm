@@ -43,9 +43,9 @@
 	var/head_call = FALSE
 
 //creates a holocall made by `caller` from `calling_pad` to `callees`
-/datum/holocall/New(mob/living/caller, obj/machinery/holopad/calling_pad, list/callees, elevated_access = FALSE)
+/datum/holocall/New(mob/living/calling_mob, obj/machinery/holopad/calling_pad, list/callees, elevated_access = FALSE)
 	call_start_time = world.time
-	user = caller
+	user = calling_mob
 	calling_pad.outgoing_call = src
 	calling_holopad = calling_pad
 	head_call = elevated_access
@@ -228,12 +228,14 @@
 	caller_image = image(user)
 	user.setDir(olddir)
 
+TYPEINFO_DEF(/obj/item/disk/holodisk)
+	default_materials = list(/datum/material/iron = 100, /datum/material/glass = 100)
+
 /obj/item/disk/holodisk
 	name = "holorecord disk"
 	desc = "Stores recorder holocalls."
 	icon_state = "holodisk"
 	obj_flags = UNIQUE_RENAME
-	custom_materials = list(/datum/material/iron = 100, /datum/material/glass = 100)
 	var/datum/holorecord/record
 	//Preset variables
 	var/preset_image_type

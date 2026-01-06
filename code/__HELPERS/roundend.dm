@@ -2,8 +2,9 @@
 #define POPCOUNT_ESCAPEES "escapees" //Not dead and on centcom/shuttles marked as escaped
 #define POPCOUNT_SHUTTLE_ESCAPEES "shuttle_escapees" //Emergency shuttle only.
 #define POPCOUNT_ESCAPEES_HUMANONLY "human_escapees"
-#define PERSONAL_LAST_ROUND "personal last round"
-#define SERVER_LAST_ROUND "server last round"
+#define ROUNDEND_PERSONAL_LAST "personal last round"
+#define ROUNDEND_SERVER_LAST "server last round"
+#define ROUNDEND_CURRENT "current round"
 
 /datum/controller/subsystem/ticker/proc/gather_roundend_feedback()
 	gather_antag_data()
@@ -82,7 +83,7 @@
 			var/list/npc_nest = file_data["[escape_status]"]["npcs"]
 			var/name_to_use = initial(M.name)
 			if(ishuman(M))
-				name_to_use = "Unknown Human" //Monkeymen and other mindless corpses
+				name_to_use = "Unknown Minervan" //Monkeymen and other mindless corpses
 			if(npc_nest.Find(name_to_use))
 				file_data["[escape_status]"]["npcs"][name_to_use] += 1
 			else
@@ -173,6 +174,7 @@
 		if(!istype(channel))
 			stack_trace("Non-channel in newscaster channel list")
 			continue
+
 		file_data["[pos]"] = list("channel name" = "[channel.channel_name]", "author" = "[channel.author]", "censored" = channel.censored ? 1 : 0, "author censored" = channel.author_censor ? 1 : 0, "messages" = list())
 		for(var/M in channel.messages)
 			var/datum/feed_message/message = M
@@ -188,35 +190,24 @@
 				comment_data += list(list("author" = "[comment.author]", "time stamp" = "[comment.time_stamp]", "body" = "[comment.body]"))
 			file_data["[pos]"]["messages"] += list(list("author" = "[message.author]", "time stamp" = "[message.time_stamp]", "censored" = message.body_censor ? 1 : 0, "author censored" = message.author_censor ? 1 : 0, "photo file" = "[message.photo_file]", "photo caption" = "[message.caption]", "body" = "[message.body]", "comments" = comment_data))
 		pos++
-	if(GLOB.news_network.wanted_issue.active)
-		file_data["wanted"] = list("author" = "[GLOB.news_network.wanted_issue.scanned_user]", "criminal" = "[GLOB.news_network.wanted_issue.criminal]", "description" = "[GLOB.news_network.wanted_issue.body]", "photo file" = "[GLOB.news_network.wanted_issue.photo_file]")
+
+	if(length(GLOB.news_network.wanted_issues))
+		file_data["wanted"] = list()
+		for(var/datum/wanted_message/wanted_issue as anything in GLOB.news_network.wanted_issues)
+			file_data["wanted"] += list(list(
+				"author" = "[wanted_issue.scanned_user]",
+				"criminal" = "[wanted_issue.criminal]",
+				"description" = "[wanted_issue.body]",
+				"photo file" = "[wanted_issue.photo_file]"
+			))
+
 	WRITE_FILE(json_file, json_encode(file_data))
-
-///Handles random hardcore point rewarding if it applies.
-/datum/controller/subsystem/ticker/proc/HandleRandomHardcoreScore(client/player_client)
-	if(!ishuman(player_client?.mob))
-		return FALSE
-	var/mob/living/carbon/human/human_mob = player_client.mob
-	if(!human_mob.hardcore_survival_score) ///no score no glory
-		return FALSE
-
-	if(human_mob.mind && (human_mob.mind.special_role || length(human_mob.mind.antag_datums) > 0))
-		var/didthegamerwin = TRUE
-		for(var/datum/antagonist/antag_datums as anything in human_mob.mind.antag_datums)
-			for(var/datum/objective/objective_datum as anything in antag_datums.objectives)
-				if(!objective_datum.check_completion())
-					didthegamerwin = FALSE
-		if(!didthegamerwin)
-			return FALSE
-		player_client.give_award(/datum/award/score/hardcore_random, human_mob, round(human_mob.hardcore_survival_score * 2))
-	else if(human_mob.onCentCom())
-		player_client.give_award(/datum/award/score/hardcore_random, human_mob, round(human_mob.hardcore_survival_score))
-
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	set waitfor = FALSE
 
-	to_chat(world, "<span class='infoplain'><BR><BR><BR><span class='big bold'>The round has ended.</span></span>")
+	to_chat(world, "<hr>")
+	to_chat(world, span_big(systemtext("The round has ended.")))
 	log_game("The round has ended.")
 
 	for(var/datum/callback/roundend_callbacks as anything in round_end_events)
@@ -233,9 +224,6 @@
 	display_report(popcount)
 
 	CHECK_TICK
-
-	for(var/client/C in GLOB.clients)
-		HandleRandomHardcoreScore(C)
 
 	// Add AntagHUD to everyone, see who was really evil the whole time!
 	for(var/datum/atom_hud/alternate_appearance/basic/antagonist_hud/antagonist_hud in GLOB.active_alternate_appearances)
@@ -280,6 +268,11 @@
 
 	CHECK_TICK
 
+	for(var/mob/M in popcount["human_escapees_list"])
+		M.client?.give_award(/datum/award/achievement/survive_the_night, M)
+
+	CHECK_TICK
+
 	SSdbcore.SetRoundEnd()
 
 	//Collects persistence features
@@ -302,357 +295,61 @@
 	else
 		CRASH("Attempted standard reboot without ticker roundend completion")
 
-//Common part of the report
-/datum/controller/subsystem/ticker/proc/build_roundend_report()
-	var/list/parts = list()
-
-	//AI laws
-	parts += law_report()
-
-	CHECK_TICK
-
-	//Antagonists
-	parts += antag_report()
-
-	parts += hardcore_random_report()
-
-	CHECK_TICK
-	//Medals
-	parts += medal_report()
-	//Station Goals
-	parts += goal_report()
-	//Economy & Money
-	parts += market_report()
-
-	list_clear_nulls(parts)
-
-	return parts.Join()
-
-/datum/controller/subsystem/ticker/proc/survivor_report(popcount)
-	var/list/parts = list()
-	var/station_evacuated = EMERGENCY_ESCAPED_OR_ENDGAMED
-
-	if(GLOB.round_id)
-		var/statspage = CONFIG_GET(string/roundstatsurl)
-		var/info = statspage ? "<a href='?action=openLink&link=[url_encode(statspage)][GLOB.round_id]'>[GLOB.round_id]</a>" : GLOB.round_id
-		parts += "[FOURSPACES]Round ID: <b>[info]</b>"
-	parts += "[FOURSPACES]Shift Duration: <B>[DisplayTimeText(world.time - SSticker.round_start_time)]</B>"
-	parts += "[FOURSPACES]Station Integrity: <B>[GLOB.station_was_nuked ? span_redtext("Destroyed") : "[popcount["station_integrity"]]%"]</B>"
-	var/total_players = GLOB.joined_player_list.len
-	if(total_players)
-		parts+= "[FOURSPACES]Total Population: <B>[total_players]</B>"
-		if(station_evacuated)
-			parts += "<BR>[FOURSPACES]Evacuation Rate: <B>[popcount[POPCOUNT_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_ESCAPEES]/total_players)]%)</B>"
-			parts += "[FOURSPACES](on emergency shuttle): <B>[popcount[POPCOUNT_SHUTTLE_ESCAPEES]] ([PERCENT(popcount[POPCOUNT_SHUTTLE_ESCAPEES]/total_players)]%)</B>"
-		parts += "[FOURSPACES]Survival Rate: <B>[popcount[POPCOUNT_SURVIVORS]] ([PERCENT(popcount[POPCOUNT_SURVIVORS]/total_players)]%)</B>"
-		if(SSblackbox.first_death)
-			var/list/ded = SSblackbox.first_death
-			if(ded.len)
-				parts += "[FOURSPACES]First Death: <b>[ded["name"]], [ded["role"]], at [ded["area"]]. Damage taken: [ded["damage"]].[ded["last_words"] ? " Their last words were: \"[ded["last_words"]]\"" : ""]</b>"
-			//ignore this comment, it fixes the broken sytax parsing caused by the " above
-			else
-				parts += "[FOURSPACES]<i>Nobody died this shift!</i>"
-	if(GAMEMODE_WAS_DYNAMIC)
-		var/datum/game_mode/dynamic/mode = SSticker.mode
-		parts += "[FOURSPACES]Threat level: [mode.threat_level]"
-		parts += "[FOURSPACES]Threat left: [mode.mid_round_budget]"
-		if(mode.roundend_threat_log.len)
-			parts += "[FOURSPACES]Threat edits:"
-			for(var/entry as anything in mode.roundend_threat_log)
-				parts += "[FOURSPACES][FOURSPACES][entry]<BR>"
-		parts += "[FOURSPACES]Executed rules:"
-		for(var/datum/dynamic_ruleset/rule in mode.executed_rules)
-			parts += "[FOURSPACES][FOURSPACES][rule.ruletype] - <b>[rule.name]</b>: -[rule.cost + rule.scaled_times * rule.scaling_cost] threat"
-	else
-		parts += "[FOURSPACES]The gamemode was: [mode.name]."
-
-	return parts.Join("<br>")
 
 /client/proc/roundend_report_file()
 	return "data/roundend_reports/[ckey].html"
 
-/**
- * Log the round-end report as an HTML file
- *
- * Composits the roundend report, and saves it in two locations.
- * The report is first saved along with the round's logs
- * Then, the report is copied to a fixed directory specifically for
- * housing the server's last roundend report. In this location,
- * the file will be overwritten at the end of each shift.
- */
-/datum/controller/subsystem/ticker/proc/log_roundend_report()
-	var/roundend_file = file("[GLOB.log_directory]/round_end_data.html")
-	var/list/parts = list()
-	parts += "<div class='panel stationborder'>"
-	parts += GLOB.survivor_report
-	parts += "</div>"
-	parts += GLOB.common_report
-	var/content = parts.Join()
-	//Log the rendered HTML in the round log directory
-	fdel(roundend_file)
-	WRITE_FILE(roundend_file, content)
-	//Place a copy in the root folder, to be overwritten each round.
-	roundend_file = file("data/server_last_roundend_report.html")
-	fdel(roundend_file)
-	WRITE_FILE(roundend_file, content)
+/// Displays the round end report of the current round. report_type may be passed to show the user's last round, or the server's last round.
+/datum/controller/subsystem/ticker/proc/show_roundend_report(client/C, report_type = ROUNDEND_CURRENT)
+	var/datum/browser/roundend_report = new(C, "roundend", null, 800, 600)
 
-/datum/controller/subsystem/ticker/proc/show_roundend_report(client/C, report_type = null)
-	var/datum/browser/roundend_report = new(C, "roundend")
-	roundend_report.width = 800
-	roundend_report.height = 600
 	var/content
-	var/filename = C.roundend_report_file()
-	if(report_type == PERSONAL_LAST_ROUND) //Look at this player's last round
-		content = file2text(filename)
-	else if (report_type == SERVER_LAST_ROUND) //Look at the last round that this server has seen
-		content = file2text("data/server_last_roundend_report.html")
-	else //report_type is null, so make a new report based on the current round and show that to the player
-		var/list/report_parts = list(personal_report(C), GLOB.common_report)
-		content = report_parts.Join()
-		fdel(filename)
-		text2file(content, filename)
+	var/filepath = C.roundend_report_file()
+	switch(report_type)
+		if(ROUNDEND_PERSONAL_LAST)
+			content = file2text(filepath)
+		if(ROUNDEND_SERVER_LAST)
+			content = file2text("data/server_last_roundend_report.html")
+		if(ROUNDEND_CURRENT) // Generate and show personalized report of this round.
+			if(!SSticker.round_end_report)
+				CRASH("Attempted to generate a roundend report before the round was over.")
+
+			content = SSticker.round_end_report.generate_for_client(C, filepath)
+			fdel(filepath)
+			text2file(content, filepath)
+		else
+			CRASH("Bad report type: [report_type]")
+
+	var/google_font_shim = {"
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Notable&family=Pirata+One&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Quantico:ital,wght@0,400;0,700;1,400;1,700&family=Special+Elite&display=swap" rel="stylesheet">
+	"}
 
 	roundend_report.set_content(content)
+	roundend_report.add_head_content(google_font_shim)
 	roundend_report.stylesheets = list()
 	roundend_report.add_stylesheet("roundend", 'html/browser/roundend.css')
 	roundend_report.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css')
 
 	roundend_report.open(FALSE)
 
-/datum/controller/subsystem/ticker/proc/personal_report(client/C, popcount)
-	var/list/parts = list()
-	var/mob/M = C.mob
-	if(M.mind && !isnewplayer(M))
-		if(M.stat != DEAD && !isbrain(M))
-			if(EMERGENCY_ESCAPED_OR_ENDGAMED)
-				if(!M.onCentCom() && !M.onSyndieBase())
-					parts += "<div class='panel stationborder'>"
-					parts += "<span class='marooned'>You managed to survive, but were marooned on [station_name()]...</span>"
-				else
-					parts += "<div class='panel greenborder'>"
-					parts += span_greentext("You managed to survive the events on [station_name()] as [M.real_name].")
-			else
-				parts += "<div class='panel greenborder'>"
-				parts += span_greentext("You managed to survive the events on [station_name()] as [M.real_name].")
+/datum/controller/subsystem/ticker/proc/display_report(list/popcount)
+	round_end_report = new()
+	round_end_report.compile(popcount)
+	round_end_report.write_log()
 
-		else
-			parts += "<div class='panel redborder'>"
-			parts += span_redtext("You did not survive the events on [station_name()]...")
-	else
-		parts += "<div class='panel stationborder'>"
-	parts += "<br>"
-	parts += GLOB.survivor_report
-	parts += "</div>"
-
-	return parts.Join()
-
-/datum/controller/subsystem/ticker/proc/display_report(popcount)
-	GLOB.common_report = build_roundend_report()
-	GLOB.survivor_report = survivor_report(popcount)
-	log_roundend_report()
 	for(var/client/C in GLOB.clients)
 		show_roundend_report(C)
 		give_show_report_button(C)
 		CHECK_TICK
 
-/datum/controller/subsystem/ticker/proc/law_report()
-	var/list/parts = list()
-	var/borg_spacer = FALSE //inserts an extra linebreak to separate AIs from independent borgs, and then multiple independent borgs.
-	//Silicon laws report
-	for (var/i in GLOB.ai_list)
-		var/mob/living/silicon/ai/aiPlayer = i
-		var/datum/mind/aiMind = aiPlayer.deployed_shell?.mind || aiPlayer.mind
-		if(aiMind)
-			parts += "<b>[aiPlayer.name]</b> (Played by: <b>[aiMind.key]</b>)'s laws [aiPlayer.stat != DEAD ? "at the end of the round" : "when it was [span_redtext("deactivated")]"] were:"
-			parts += aiPlayer.laws.get_law_list(include_zeroth=TRUE)
-
-		parts += "<b>Total law changes: [aiPlayer.law_change_counter]</b>"
-
-		if (aiPlayer.connected_robots.len)
-			var/borg_num = aiPlayer.connected_robots.len
-			parts += "<br><b>[aiPlayer.real_name]</b>'s minions were:"
-			for(var/mob/living/silicon/robot/robo in aiPlayer.connected_robots)
-				borg_num--
-				if(robo.mind)
-					parts += "<b>[robo.name]</b> (Played by: <b>[robo.mind.key]</b>)[robo.stat == DEAD ? " [span_redtext("(Deactivated)")]" : ""][borg_num ?", ":""]"
-		if(!borg_spacer)
-			borg_spacer = TRUE
-
-	for (var/mob/living/silicon/robot/robo in GLOB.silicon_mobs)
-		if (!robo.connected_ai && robo.mind)
-			parts += "[borg_spacer?"<br>":""]<b>[robo.name]</b> (Played by: <b>[robo.mind.key]</b>) [(robo.stat != DEAD)? "[span_greentext("survived")] as an AI-less borg!" : "was [span_redtext("unable to survive")] the rigors of being a cyborg without an AI."] Its laws were:"
-
-			if(robo) //How the hell do we lose robo between here and the world messages directly above this?
-				parts += robo.laws.get_law_list(include_zeroth=TRUE)
-
-			if(!borg_spacer)
-				borg_spacer = TRUE
-
-	if(parts.len)
-		return "<div class='panel stationborder'>[parts.Join("<br>")]</div>"
-	else
-		return ""
-
-/datum/controller/subsystem/ticker/proc/goal_report()
-	var/list/parts = list()
-	if(GLOB.station_goals.len)
-		for(var/datum/station_goal/goal as anything in GLOB.station_goals)
-			parts += goal.get_result()
-		return "<div class='panel stationborder'><ul>[parts.Join()]</ul></div>"
-
-///Generate a report for how much money is on station, as well as the richest crewmember on the station.
-/datum/controller/subsystem/ticker/proc/market_report()
-	var/list/parts = list()
-
-	///total service income
-	var/tourist_income = 0
-	///This is the richest account on station at roundend.
-	var/datum/bank_account/mr_moneybags
-	///This is the station's total wealth at the end of the round.
-	var/station_vault = 0
-	///How many players joined the round.
-	var/total_players = GLOB.joined_player_list.len
-	var/static/list/typecache_bank = typecacheof(list(/datum/bank_account/department, /datum/bank_account/remote))
-	for(var/i in SSeconomy.bank_accounts_by_id)
-		var/datum/bank_account/current_acc = SSeconomy.bank_accounts_by_id[i]
-		if(typecache_bank[current_acc.type])
-			continue
-		station_vault += current_acc.account_balance
-		if(!mr_moneybags || mr_moneybags.account_balance < current_acc.account_balance)
-			mr_moneybags = current_acc
-	parts += "<div class='panel stationborder'><span class='header'>Station Economic Summary:</span><br>"
-	parts += "<span class='service'>Service Statistics:</span><br>"
-	for(var/venue_path in SSrestaurant.all_venues)
-		var/datum/venue/venue = SSrestaurant.all_venues[venue_path]
-		tourist_income += venue.total_income
-		parts += "The [venue] served [venue.customers_served] customer\s and made [venue.total_income] credits.<br>"
-	parts += "In total, they earned [tourist_income] credits[tourist_income ? "!" : "..."]<br>"
-	log_econ("Roundend service income: [tourist_income] credits.")
-	switch(tourist_income)
-		if(0)
-			parts += "[span_redtext("Service did not earn any credits...")]<br>"
-		if(1 to 2000)
-			parts += "[span_redtext("Centcom is displeased. Come on service, surely you can do better than that.")]<br>"
-			award_service(/datum/award/achievement/jobs/service_bad)
-		if(2001 to 4999)
-			parts += "[span_greentext("Centcom is satisfied with service's job today.")]<br>"
-			award_service(/datum/award/achievement/jobs/service_okay)
-		else
-			parts += "<span class='reallybig greentext'>Centcom is incredibly impressed with service today! What a team!</span><br>"
-			award_service(/datum/award/achievement/jobs/service_good)
-
-	parts += "<b>General Statistics:</b><br>"
-	parts += "There were [station_vault] credits collected by crew this shift.<br>"
-	if(total_players > 0)
-		parts += "An average of [station_vault/total_players] credits were collected.<br>"
-		log_econ("Roundend credit total: [station_vault] credits. Average Credits: [station_vault/total_players]")
-	if(mr_moneybags)
-		parts += "The most affluent crew member at shift end was <b>[mr_moneybags.account_holder] with [mr_moneybags.account_balance]</b> cr!</div>"
-	else
-		parts += "Somehow, nobody made any money this shift! This'll result in some budget cuts...</div>"
-	return parts
-
-/**
- * Awards the service department an achievement and updates the chef and bartender's highscore for tourists served.
- *
- * Arguments:
- * * award: Achievement to give service department
- */
-/datum/controller/subsystem/ticker/proc/award_service(award)
-	for(var/mob/living/carbon/human/human as anything in GLOB.human_list)
-		if(!human.client || !human.mind)
-			continue
-		var/datum/job/human_job = human.mind.assigned_role
-		if(!(human_job.departments_bitflags & DEPARTMENT_BITFLAG_SERVICE))
-			continue
-		human_job.award_service(human.client, award)
-
-
-/datum/controller/subsystem/ticker/proc/medal_report()
-	if(GLOB.commendations.len)
-		var/list/parts = list()
-		parts += "<span class='header'>Medal Commendations:</span>"
-		for (var/com in GLOB.commendations)
-			parts += com
-		return "<div class='panel stationborder'>[parts.Join("<br>")]</div>"
-	return ""
-
-///Generate a report for all players who made it out alive with a hardcore random character and prints their final score
-/datum/controller/subsystem/ticker/proc/hardcore_random_report()
-	. = list()
-	var/list/hardcores = list()
-	for(var/i in GLOB.player_list)
-		if(!ishuman(i))
-			continue
-		var/mob/living/carbon/human/human_player = i
-		if(!human_player.hardcore_survival_score || !human_player.onCentCom() || human_player.stat == DEAD) ///gotta escape nerd
-			continue
-		if(!human_player.mind)
-			continue
-		hardcores += human_player
-	if(!length(hardcores))
-		return
-	. += "<div class='panel stationborder'><span class='header'>The following people made it out as a random hardcore character:</span>"
-	. += "<ul class='playerlist'>"
-	for(var/mob/living/carbon/human/human_player in hardcores)
-		. += "<li>[printplayer(human_player.mind)] with a hardcore random score of [round(human_player.hardcore_survival_score)]</li>"
-	. += "</ul></div>"
-
-/datum/controller/subsystem/ticker/proc/antag_report()
-	var/list/result = list()
-	var/list/all_teams = list()
-	var/list/all_antagonists = list()
-
-	for(var/datum/team/A in GLOB.antagonist_teams)
-		all_teams |= A
-
-	for(var/datum/antagonist/A in GLOB.antagonists)
-		if(!A.owner)
-			continue
-		all_antagonists |= A
-
-	for(var/datum/team/T in all_teams)
-		result += T.roundend_report()
-		for(var/datum/antagonist/X in all_antagonists)
-			if(X.get_team() == T)
-				all_antagonists -= X
-		result += " "//newline between teams
-		CHECK_TICK
-
-	var/currrent_category
-	var/datum/antagonist/previous_category
-
-	sortTim(all_antagonists, GLOBAL_PROC_REF(cmp_antag_category))
-
-	for(var/datum/antagonist/A in all_antagonists)
-		if(!A.show_in_roundend)
-			continue
-		if(A.roundend_category != currrent_category)
-			if(previous_category)
-				result += previous_category.roundend_report_footer()
-				result += "</div>"
-			result += "<div class='panel redborder'>"
-			result += A.roundend_report_header()
-			currrent_category = A.roundend_category
-			previous_category = A
-		result += A.roundend_report()
-		result += "<br><br>"
-		CHECK_TICK
-
-	if(all_antagonists.len)
-		var/datum/antagonist/last = all_antagonists[all_antagonists.len]
-		result += last.roundend_report_footer()
-		result += "</div>"
-
-	return result.Join()
-
 /proc/cmp_antag_category(datum/antagonist/A,datum/antagonist/B)
 	return sorttext(B.roundend_category,A.roundend_category)
 
-
 /datum/controller/subsystem/ticker/proc/give_show_report_button(client/C)
 	var/datum/action/report/R = new
-	C.player_details.player_actions += R
+	C.persistent_client.player_actions += R
 	R.Grant(C.mob)
 	to_chat(C,"<span class='infoplain'><a href='?src=[REF(R)];report=1'>Show roundend report again</a></span>")
 
@@ -661,7 +358,7 @@
 	button_icon_state = "round_end"
 
 /datum/action/report/Trigger(trigger_flags)
-	if(owner && GLOB.common_report && SSticker.current_state == GAME_STATE_FINISHED)
+	if(owner && SSticker.round_end_report && SSticker.current_state == GAME_STATE_FINISHED)
 		SSticker.show_roundend_report(owner.client)
 
 /datum/action/report/IsAvailable(feedback = FALSE)
@@ -674,12 +371,13 @@
 		Trigger()
 		return
 
-
 /proc/printplayer(datum/mind/ply, fleecheck)
 	var/jobtext = ""
 	if(!is_unassigned_job(ply.assigned_role))
 		jobtext = " the <b>[ply.assigned_role.title]</b>"
+
 	var/text = "<b>[ply.key]</b> was <b>[ply.name]</b>[jobtext] and"
+
 	if(ply.current)
 		if(ply.current.stat == DEAD)
 			text += " [span_redtext("died")]"

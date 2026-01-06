@@ -31,8 +31,6 @@
 
 /datum/config_entry/flag/force_random_names
 
-/datum/config_entry/flag/humans_need_surnames
-
 /datum/config_entry/flag/allow_ai // allow ai job
 	default = TRUE
 
@@ -43,16 +41,6 @@
 /datum/config_entry/flag/disable_peaceborg
 
 /datum/config_entry/flag/disable_warops
-
-/datum/config_entry/number/traitor_scaling_coeff //how much does the amount of players get divided by to determine traitors [UNUSED]
-	default = 6
-	integer = FALSE
-	min_val = 0
-
-/datum/config_entry/number/brother_scaling_coeff //how many players per brother team [UNUSED]
-	default = 25
-	integer = FALSE
-	min_val = 0
 
 /// Determines the ideal player count for maximum progression per minute.
 /datum/config_entry/number/traitor_ideal_player_count
@@ -132,6 +120,8 @@
 /datum/config_entry/flag/no_summon_events //Allowed
 
 /datum/config_entry/flag/no_intercept_report //Whether or not to send a communications intercept report roundstart. This may be overridden by gamemodes.
+
+/datum/config_entry/flag/hide_gamemode_name //Whether or not to hide the gamemode name from players.
 
 /datum/config_entry/number/arrivals_shuttle_dock_window //Time from when a player late joins on the arrivals shuttle to when the shuttle docks on the station
 	default = 55
@@ -346,8 +336,6 @@
 	integer = FALSE
 
 /datum/config_entry/flag/roundstart_traits
-
-/datum/config_entry/flag/enable_night_shifts
 
 /datum/config_entry/flag/randomize_shift_time
 

@@ -95,7 +95,7 @@
 /mob/living/simple_animal/hostile/ooze/gelatinous
 	name = "Gelatinous Cube"
 	desc = "A cubic ooze native to Sholus VII.\nSince the advent of space travel this species has established itself in the waste treatment facilities of several space colonies.\nIt is often considered to be the third most infamous invasive species due to its highly aggressive and predatory nature."
-	speed = 1
+	move_delay_modifier = 1
 	damage_coeff = list(BRUTE = 1, BURN = 0.6, TOX = 0.5, CLONE = 1.5, STAMINA = 0, OXY = 1)
 	melee_damage_lower = 20
 	melee_damage_upper = 20
@@ -270,7 +270,7 @@
 	icon_state = "grapes"
 	icon_living = "grapes"
 	icon_dead = "grapes_dead"
-	speed = 1
+	move_delay_modifier = 1
 	health = 200
 	maxHealth = 200
 	damage_coeff = list(BRUTE = 1, BURN = 0.8, TOX = 0.5, CLONE = 1.5, STAMINA = 0, OXY = 1)
@@ -325,7 +325,7 @@
 
 	return TRUE
 
-/datum/action/cooldown/globules/InterceptClickOn(mob/living/caller, params, atom/target)
+/datum/action/cooldown/globules/InterceptClickOn(mob/living/invoker, params, atom/target)
 	. = ..()
 	if(!.)
 		return FALSE
@@ -334,19 +334,19 @@
 	// Well, we need to use the params of the click intercept
 	// for passing into preparePixelProjectile, so we'll handle it here instead.
 	// We just need to make sure Pre-activate and Activate return TRUE so we make it this far
-	caller.visible_message(
-		span_nicegreen("[caller] launches a mending globule!"),
+	invoker.visible_message(
+		span_nicegreen("[invoker] launches a mending globule!"),
 		span_notice("You launch a mending globule."),
 	)
 
-	var/mob/living/simple_animal/hostile/ooze/oozy = caller
+	var/mob/living/simple_animal/hostile/ooze/oozy = invoker
 	if(istype(oozy))
 		oozy.adjust_ooze_nutrition(-5)
 
 	var/modifiers = params2list(params)
-	var/obj/projectile/globule/globule = new(caller.loc)
-	globule.preparePixelProjectile(target, caller, modifiers)
-	globule.aimed_def_zone = caller.zone_selected
+	var/obj/projectile/globule/globule = new(invoker.loc)
+	globule.preparePixelProjectile(target, invoker, modifiers)
+	globule.aimed_def_zone = invoker.zone_selected
 	globule.fire()
 
 	return TRUE

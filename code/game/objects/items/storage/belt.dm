@@ -15,7 +15,12 @@
 	attack_verb_continuous = list("whips", "lashes", "disciplines")
 	attack_verb_simple = list("whip", "lash", "discipline")
 	max_integrity = 300
+
 	equip_sound = 'sound/items/equip/toolbelt_equip.ogg'
+	equip_delay_self = EQUIP_DELAY_BELT
+	equip_delay_other = EQUIP_DELAY_BELT * 1.5
+	strip_delay = EQUIP_DELAY_BELT * 1.5
+
 	var/content_overlays = FALSE //If this is true, the belt will gain overlays based on what it's holding
 
 /obj/item/storage/belt/suicide_act(mob/living/carbon/user)
@@ -40,7 +45,7 @@
 	inhand_icon_state = "utility"
 	worn_icon_state = "utility"
 	content_overlays = TRUE
-	custom_premium_price = PAYCHECK_MEDIUM * 2
+	custom_premium_price = PAYCHECK_ASSISTANT * 5
 	drop_sound = 'sound/items/handling/toolbelt_drop.ogg'
 	pickup_sound = 'sound/items/handling/toolbelt_pickup.ogg'
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION
@@ -239,8 +244,8 @@
 		/obj/item/healthanalyzer,
 		/obj/item/dnainjector,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/medigel,
@@ -260,7 +265,7 @@
 		/obj/item/clothing/mask/surgical,
 		/obj/item/clothing/mask/breath,
 		/obj/item/clothing/mask/breath/medical,
-		/obj/item/reagent_containers/glass/vial, //PARIAH EDIT ADDITION
+		/obj/item/reagent_containers/cup/vial, //PARIAH EDIT ADDITION
 		/obj/item/hypospray/mkii, //PARIAH EDIT ADDITION
 		/obj/item/scalpel,
 		/obj/item/circular_saw,
@@ -368,7 +373,7 @@
 	inhand_icon_state = "securitywebbing"
 	worn_icon_state = "securitywebbing"
 	content_overlays = FALSE
-	custom_premium_price = PAYCHECK_HARD * 3
+	custom_premium_price = PAYCHECK_ASSISTANT * 6.2
 
 /obj/item/storage/belt/security/webbing/Initialize()
 	. = ..()
@@ -412,7 +417,7 @@
 		/obj/item/stack/sheet/bone,
 		/obj/item/lighter,
 		/obj/item/storage/fancy/cigarettes,
-		/obj/item/reagent_containers/food/drinks/bottle,
+		/obj/item/reagent_containers/cup/glass/bottle,
 		/obj/item/stack/medical,
 		/obj/item/knife,
 		/obj/item/reagent_containers/hypospray,
@@ -423,7 +428,7 @@
 		/obj/item/reagent_containers/pill,
 		/obj/item/storage/pill_bottle,
 		/obj/item/stack/ore,
-		/obj/item/reagent_containers/food/drinks,
+		/obj/item/reagent_containers/cup/glass,
 		/obj/item/organ/regenerative_core,
 		/obj/item/wormhole_jaunter,
 		/obj/item/stack/marker_beacon,
@@ -474,13 +479,15 @@
 	for(var/i in 1 to 6)
 		new /obj/item/soulstone/anybody/chaplain(src)
 
+TYPEINFO_DEF(/obj/item/storage/belt/champion)
+	default_materials = list(/datum/material/gold=400)
+
 /obj/item/storage/belt/champion
 	name = "championship belt"
 	desc = "Proves to the world that you are the strongest!"
 	icon_state = "championbelt"
 	inhand_icon_state = "championbelt"
 	worn_icon_state = "championbelt"
-	custom_materials = list(/datum/material/gold=400)
 
 /obj/item/storage/belt/champion/Initialize()
 	. = ..()
@@ -523,7 +530,7 @@
 	atom_storage.max_specific_storage = WEIGHT_CLASS_SMALL
 	atom_storage.set_holdable(list(
 		/obj/item/food,
-		/obj/item/reagent_containers/food/drinks
+		/obj/item/reagent_containers/cup/glass
 		))
 
 	var/amount = 5
@@ -531,7 +538,7 @@
 	while(contents.len <= amount)
 		rig_snacks = pick(list(
 		/obj/item/food/candy,
-		/obj/item/reagent_containers/food/drinks/dry_ramen,
+		/obj/item/reagent_containers/cup/glass/dry_ramen,
 		/obj/item/food/chips,
 		/obj/item/food/sosjerky,
 		/obj/item/food/syndicake,
@@ -544,13 +551,13 @@
 		/obj/item/food/spaghetti/pastatomato,
 		/obj/item/food/rofflewaffles,
 		/obj/item/food/donkpocket,
-		/obj/item/reagent_containers/food/drinks/soda_cans/cola,
-		/obj/item/reagent_containers/food/drinks/soda_cans/space_mountain_wind,
-		/obj/item/reagent_containers/food/drinks/soda_cans/dr_gibb,
-		/obj/item/reagent_containers/food/drinks/soda_cans/starkist,
-		/obj/item/reagent_containers/food/drinks/soda_cans/space_up,
-		/obj/item/reagent_containers/food/drinks/soda_cans/lemon_lime,
-		/obj/item/reagent_containers/food/drinks/drinkingglass/filled/nuka_cola
+		/obj/item/reagent_containers/cup/soda_cans/cola,
+		/obj/item/reagent_containers/cup/soda_cans/space_mountain_wind,
+		/obj/item/reagent_containers/cup/soda_cans/dr_gibb,
+		/obj/item/reagent_containers/cup/soda_cans/starkist,
+		/obj/item/reagent_containers/cup/soda_cans/space_up,
+		/obj/item/reagent_containers/cup/soda_cans/lemon_lime,
+		/obj/item/reagent_containers/cup/glass/drinkingglass/filled/nuka_cola
 		))
 		new rig_snacks(src)
 
@@ -619,7 +626,7 @@
 		/obj/item/screwdriver,
 		/obj/item/lighter,
 		/obj/item/multitool,
-		/obj/item/reagent_containers/food/drinks/bottle/molotov,
+		/obj/item/reagent_containers/cup/glass/bottle/molotov,
 		/obj/item/grenade/c4,
 		/obj/item/food/grown/cherry_bomb,
 		/obj/item/food/grown/firelemon
@@ -678,26 +685,23 @@
 /obj/item/storage/belt/janitor/Initialize()
 	. = ..()
 	atom_storage.max_slots = 6
-	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL // Set to this so the  light replacer can fit.
 	atom_storage.set_holdable(list(
 		/obj/item/assembly/mousetrap,
-		/obj/item/clothing/gloves,
 		/obj/item/flashlight,
 		/obj/item/forcefield_projector,
 		/obj/item/grenade/chem_grenade,
 		/obj/item/lightreplacer,
-		/obj/item/flashlight,
 		/obj/item/reagent_containers/spray,
 		/obj/item/soap,
 		/obj/item/holosign_creator,
-		/obj/item/forcefield_projector,
 		/obj/item/key/janitor,
 		/obj/item/clothing/gloves,
 		/obj/item/melee/flyswatter,
 		/obj/item/assembly/mousetrap,
 		/obj/item/paint_remover,
-		/obj/item/pushbroom
-		))
+		/obj/item/pushbroom,
+		/obj/item/taperecorder,
+	))
 
 /obj/item/storage/belt/janitor/full/PopulateContents()
 	new /obj/item/lightreplacer(src)
@@ -864,26 +868,17 @@
 	atom_storage.max_slots = 6
 	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
 	atom_storage.set_holdable(list(
-		/obj/item/cultivator,
-		/obj/item/geneshears,
-		/obj/item/graft,
 		/obj/item/gun/energy/floragun,
 		/obj/item/hatchet,
 		/obj/item/plant_analyzer,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
-		/obj/item/reagent_containers/spray/pestspray,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/spray/plantbgone,
 		/obj/item/plant_analyzer,
 		/obj/item/seeds,
-		/obj/item/reagent_containers/glass/bottle,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/cultivator,
-		/obj/item/reagent_containers/spray/pestspray,
+		/obj/item/reagent_containers/cup/bottle,
+		/obj/item/reagent_containers/cup/beaker,
 		/obj/item/hatchet,
-		/obj/item/graft,
-		/obj/item/secateurs,
-		/obj/item/geneshears,
 		/obj/item/shovel/spade,
 		/obj/item/gun/energy/floragun
 		))

@@ -12,8 +12,10 @@
 		return
 	if(!ismob(M) || !M.client)
 		return
+
 	cmd_admin_pm(M.client,null)
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Admin PM Mob") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	M.client.give_award(/datum/award/achievement/the_jig_is_up, M)
 
 //shows a list of clients we could send PMs to, then forwards our choice to cmd_admin_pm
 /client/proc/cmd_admin_pm_panel()
@@ -271,7 +273,7 @@
 
 			//play the receiving admin the adminhelp sound (if they have them enabled)
 			if(recipient.prefs.toggles & SOUND_ADMINHELP)
-				SEND_SOUND(recipient, sound('sound/effects/adminhelp.ogg'))
+				SEND_SOUND(recipient, sound('goon/sounds/adminhelp.ogg'))
 		else
 			if(holder) //sender is an admin but recipient is not. Do BIG RED TEXT
 				var/already_logged = FALSE
@@ -292,7 +294,7 @@
 				var/recipient_message = "\
 				<div class='adminpmbox'>\
 				<div class='' style='color: black; background: #f88; padding: 0.2em 0.5em;'>\
-				Administrator PM from [admin_pm_href(src, key_name(src, FALSE, FALSE), "color:#00379e")]\
+				Gamemaster PM from [admin_pm_href(src, key_name(src, FALSE, FALSE), "color:#00379e")]\
 				</div>\
 				<div style='padding: 0.2em 0.5em;text-align: left'>\
 				[span_adminsay(msg)]\
@@ -319,7 +321,7 @@
 					SSblackbox.LogAhelp(recipient.current_ticket.id, "Reply", msg, recipient.ckey, src.ckey)
 
 				//always play non-admin recipients the adminhelp sound
-				SEND_SOUND(recipient, sound('sound/effects/adminhelp.ogg'))
+				SEND_SOUND(recipient, sound('goon/sounds/adminhelp.ogg'))
 
 			else //neither are admins
 				if(!current_ticket)
@@ -454,7 +456,7 @@
 
 	window_flash(C, ignorepref = TRUE)
 	//always play non-admin recipients the adminhelp sound
-	SEND_SOUND(C, 'sound/effects/adminhelp.ogg')
+	SEND_SOUND(C, 'goon/sounds/adminhelp.ogg')
 
 	C.externalreplyamount = EXTERNALREPLYCOUNT
 

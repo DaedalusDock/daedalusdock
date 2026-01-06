@@ -61,7 +61,7 @@
 			circuit.ui_interact(usr)
 		if ("open_player_panel")
 			var/datum/mind/inserter = circuit.inserter_mind?.resolve()
-			usr.client?.holder?.show_player_panel(inserter?.current)
+			usr.client?.show_player_panel(inserter?.current)
 
 	return TRUE
 

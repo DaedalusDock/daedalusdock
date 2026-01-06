@@ -1,49 +1,17 @@
-///What percentage of the crew can become traitors.
-#define NUKIE_SCALING_COEFF 0.0555 // About 1 in 18 crew
-
-/datum/game_mode/nuclear_emergency
+/datum/game_mode/one_antag/nuclear_emergency
 	name = "Nuclear Emergency"
+	config_key = "nuclear_emergency"
 
 	weight = GAMEMODE_WEIGHT_EPIC
-	restricted_jobs = list(
-		JOB_CAPTAIN,
-		JOB_SECURITY_MARSHAL,
-	)// Just to be sure that a nukie getting picked won't ever imply a Captain or HoS not getting drafted
-
 	required_enemies = 5
 	min_pop = 25
 
-	antag_datum = /datum/antagonist/nukeop
-	antag_flag = ROLE_OPERATIVE
+	antagonist_pop_ratio = 0.0555 // About 1 in 18 crew
+	antag_selector = /datum/antagonist_selector/nukeop
 
-	var/datum/antagonist/antag_leader_datum = /datum/antagonist/nukeop/leader
 	var/datum/team/nuclear/nuke_team
 
-/datum/game_mode/nuclear_emergency/pre_setup()
-	. = ..()
-
-	var/num_nukies = max(required_enemies, round(length(SSticker.ready_players) * NUKIE_SCALING_COEFF))
-
-
-	for(var/i in 1 to num_nukies)
-		if(possible_antags.len <= 0)
-			break
-
-		var/mob/M = pick_n_take(possible_antags)
-		select_antagonist(M.mind)
-
-/datum/game_mode/nuclear_emergency/give_antag_datums()
-	var/chosen_leader = FALSE
-	for(var/datum/mind/M as anything in shuffle(antagonists))
-		if (!chosen_leader)
-			chosen_leader = TRUE
-			var/datum/antagonist/nukeop/leader/new_op = M.add_antag_datum(antag_leader_datum)
-			nuke_team = new_op.nuke_team
-		else
-			var/datum/antagonist/nukeop/new_op = new antag_datum()
-			M.add_antag_datum(new_op)
-
-/datum/game_mode/nuclear_emergency/set_round_result()
+/datum/game_mode/one_antag/nuclear_emergency/set_round_result()
 	. = ..()
 	var/result = nuke_team.get_result()
 	switch(result)

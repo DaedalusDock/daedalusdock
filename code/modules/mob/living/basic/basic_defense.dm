@@ -166,7 +166,7 @@
 	adjustBruteLoss(20)
 	return
 
-/mob/living/basic/do_attack_animation(atom/A, visual_effect_icon, used_item, no_effect)
+/mob/living/basic/do_attack_animation(atom/A, visual_effect_icon, used_item, no_effect, fov_effect = TRUE, do_hurt = TRUE)
 	if(!no_effect && !visual_effect_icon && melee_damage_upper)
 		if(attack_vis_effect && !iswallturf(A)) // override the standard visual effect.
 			visual_effect_icon = attack_vis_effect
@@ -177,13 +177,13 @@
 	..()
 
 
-/mob/living/basic/update_stat()
+/mob/living/basic/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
 	if(stat != DEAD)
 		if(health <= 0)
-			death()
+			death(cause_of_death = cause_of_death)
 		else
 			set_stat(CONSCIOUS)
 
@@ -196,7 +196,7 @@
 			if (EMP_LIGHT)
 				visible_message(span_danger("[src] shakes violently, its parts coming loose!"))
 				apply_damage(maxHealth * 0.6)
-				Shake(5, 5, 1 SECONDS)
+				Shake(duration = 1 SECONDS)
 			if (EMP_HEAVY)
 				visible_message(span_danger("[src] suddenly bursts apart!"))
 				apply_damage(maxHealth)

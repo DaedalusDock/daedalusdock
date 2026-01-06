@@ -18,15 +18,15 @@
 		return INITIALIZE_HINT_QDEL
 
 	var/mob/living/wielder = loc
-	RegisterSignal(wielder, COMSIG_MOB_SWAP_HANDS, PROC_REF(try_swap_hands))
+	RegisterSignal(wielder, COMSIG_MOB_SWAPPING_HANDS, PROC_REF(try_swap_hands))
 
 	parent = WEAKREF(parent_item)
 	name = "[parent_item.name] - offhand"
 	desc = "Your second grip on [parent_item]."
 
-	RegisterSignal(parent_item, list(COMSIG_ITEM_DROPPED, COMSIG_ITEM_UNWIELD), PROC_REF(deleteme))
+	RegisterSignal(parent_item, list(COMSIG_ITEM_UNEQUIPPED, COMSIG_ITEM_UNWIELD), PROC_REF(deleteme))
 
-/obj/item/offhand/dropped(mob/user, silent = FALSE)
+/obj/item/offhand/unequipped(mob/user, silent = FALSE)
 	. = ..()
 	var/obj/item/I = parent.resolve()
 	if(QDELETED(I) || !I.wielded)

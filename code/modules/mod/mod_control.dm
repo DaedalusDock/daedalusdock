@@ -5,6 +5,9 @@
 	icon = 'icons/obj/clothing/modsuit/mod_clothing.dmi'
 	worn_icon = 'icons/mob/clothing/modsuit/mod_clothing.dmi'
 
+TYPEINFO_DEF(/obj/item/mod/control)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/item/mod/control
 	name = "MOD control unit"
 	desc = "The control unit of a Modular Outerwear Device, a powered, back-mounted suit that protects against various environments."
@@ -14,7 +17,6 @@
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
 	strip_delay = 10 SECONDS
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	actions_types = list(
 		/datum/action/item_action/mod/deploy,
 		/datum/action/item_action/mod/activate,
@@ -121,6 +123,7 @@
 /obj/item/mod/control/Destroy()
 	STOP_PROCESSING(SSobj, src)
 
+	clean_up()
 	for(var/obj/item/mod/module/module as anything in modules)
 		uninstall(module, deleting = TRUE)
 
@@ -199,43 +202,24 @@
 			module.deactivate(display_message = TRUE)
 		module.on_process(delta_time)
 
-/obj/item/mod/control/visual_equipped(mob/user, slot, initial = FALSE) //needs to be visual because we wanna show it in select equipment
+/obj/item/mod/control/visual_equipped(mob/living/user, slot, initial = FALSE) //needs to be visual because we wanna show it in select equipment
 	if(slot & slot_flags)
 		set_wearer(user)
 	else if(wearer)
 		unset_wearer()
 
-/obj/item/mod/control/dropped(mob/user)
+	return ..()
+
+/obj/item/mod/control/unequipped(mob/user)
 	. = ..()
-	if(wearer)
-		unset_wearer()
+	if(QDELETED(src))
+		return
+
+	clean_up()
 
 /obj/item/mod/control/item_action_slot_check(slot)
 	if(slot == ITEM_SLOT_BACK)
 		return TRUE
-
-/obj/item/mod/control/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
-	. = ..()
-	if(!wearer || old_loc != wearer || loc == wearer)
-		return
-
-	if(active || activating)
-		for(var/obj/item/mod/module/module as anything in modules)
-			if(!module.active)
-				continue
-			module.deactivate(display_message = FALSE)
-
-		for(var/obj/item/part as anything in get_parts())
-			seal_part(part, is_sealed = FALSE)
-
-	for(var/obj/item/part as anything in get_parts())
-		retract(null, part)
-
-	if(active)
-		finish_activation(is_on = FALSE)
-		mod_link?.end_call()
-
-	unset_wearer()
 
 /obj/item/mod/control/allow_attack_hand_drop(mob/user)
 	if(user != wearer)
@@ -247,19 +231,19 @@
 			playsound(src, 'sound/machines/scanbuzz.ogg', 25, FALSE, SILENCED_SOUND_EXTRARANGE)
 			return FALSE
 
+	return ..()
+
 /obj/item/mod/control/MouseDrop(atom/over_object)
 	if(usr != wearer || !istype(over_object, /atom/movable/screen/inventory/hand))
 		return ..()
+
 	for(var/obj/item/part as anything in get_parts())
 		if(part.loc != src)
 			balloon_alert(wearer, "retract parts first!")
 			playsound(src, 'sound/machines/scanbuzz.ogg', 25, FALSE, SILENCED_SOUND_EXTRARANGE)
 			return
-	if(!wearer.incapacitated())
-		var/atom/movable/screen/inventory/hand/ui_hand = over_object
-		if(wearer.putItemFromInventoryInHandIfPossible(src, ui_hand.held_index))
-			add_fingerprint(usr)
-			return ..()
+
+	return ..()
 
 /obj/item/mod/control/wrench_act(mob/living/user, obj/item/wrench)
 	if(..())
@@ -331,43 +315,49 @@
 	playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
 	return FALSE
 
-/obj/item/mod/control/attackby(obj/item/attacking_item, mob/living/user, params)
-	if(istype(attacking_item, /obj/item/mod/module))
+/obj/item/mod/control/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(istype(tool, /obj/item/mod/module))
+		if(!open)
+			playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
+			return ITEM_INTERACT_BLOCKING
+
+		install(tool, user)
+		return ITEM_INTERACT_SUCCESS
+
+	else if(istype(tool, /obj/item/mod/core))
 		if(!open)
 			balloon_alert(user, "open the cover first!")
 			playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
-			return FALSE
-		install(attacking_item, user)
-		return TRUE
-	else if(istype(attacking_item, /obj/item/mod/core))
-		if(!open)
-			balloon_alert(user, "open the cover first!")
-			playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
-			return FALSE
+			return ITEM_INTERACT_BLOCKING
+
 		if(core)
 			balloon_alert(user, "core already installed!")
 			playsound(src, 'sound/machines/scanbuzz.ogg', 25, TRUE, SILENCED_SOUND_EXTRARANGE)
-			return FALSE
-		var/obj/item/mod/core/attacking_core = attacking_item
+			return ITEM_INTERACT_BLOCKING
+
+		var/obj/item/mod/core/attacking_core = tool
 		attacking_core.install(src)
 		balloon_alert(user, "core installed")
 		playsound(src, 'sound/machines/click.ogg', 50, TRUE, SILENCED_SOUND_EXTRARANGE)
 		update_charge_alert()
-		return TRUE
-	else if(is_wire_tool(attacking_item) && open)
+		return ITEM_INTERACT_SUCCESS
+
+	else if(is_wire_tool(tool) && open)
 		wires.interact(user)
-		return TRUE
-	else if(open && attacking_item.GetID())
-		update_access(user, attacking_item.GetID())
-		return TRUE
-	return ..()
+		return ITEM_INTERACT_SUCCESS
+
+	else if(open && tool.GetID())
+		update_access(user, tool.GetID())
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/mod/control/get_cell()
 	if(!open)
 		return
+
 	var/obj/item/stock_parts/cell/cell = get_charge_source()
 	if(!istype(cell))
 		return
+
 	return cell
 
 /obj/item/mod/control/GetAccess()
@@ -483,10 +473,6 @@
 	wearer = null
 
 /obj/item/mod/control/proc/clean_up()
-	if(QDELING(src))
-		unset_wearer()
-		return
-
 	if(active || activating)
 		for(var/obj/item/mod/module/module as anything in modules)
 			if(!module.active)
@@ -503,9 +489,8 @@
 		finish_activation(is_on = FALSE)
 		mod_link?.end_call()
 
-	var/mob/old_wearer = wearer
-	unset_wearer()
-	old_wearer.temporarilyRemoveItemFromInventory(src)
+	if(wearer)
+		unset_wearer()
 
 /obj/item/mod/control/proc/quick_module(mob/user)
 	if(!length(modules))

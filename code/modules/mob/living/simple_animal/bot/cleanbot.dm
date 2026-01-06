@@ -59,8 +59,8 @@
 		JOB_ATMOSPHERIC_TECHNICIAN = "Technician",
 	)
 	var/static/list/medical_titles = list(
-		JOB_MEDICAL_DIRECTOR = "C.M.O.",
-		JOB_MEDICAL_DOCTOR = "M.D.",
+		JOB_AUGUR = "C.M.O.",
+		JOB_ACOLYTE = "M.D.",
 		JOB_CHEMIST = "Pharm.D.",
 	)
 	var/static/list/legal_titles = list(
@@ -93,8 +93,8 @@
 	update_appearance(UPDATE_ICON)
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/jani_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/janitor]
-	access_card.add_access(jani_trim.access + jani_trim.wildcard_access)
+	var/datum/access_template/job/jani_trim = SSid_access.template_singletons_by_path[/datum/access_template/job/janitor]
+	access_card.add_access(jani_trim.access)
 	prev_access = access_card.access.Copy()
 
 	GLOB.janitor_devices += src
@@ -242,30 +242,33 @@
 				start_patrol()
 			if(BOT_PATROL)
 				bot_patrol()
+
 	else if(target)
 		if(QDELETED(target) || !isturf(target.loc))
 			target = null
-			mode = BOT_IDLE
+			set_mode(BOT_IDLE)
 			return
 
 		if(get_dist(src, target) <= 1)
 			UnarmedAttack(target, proximity_flag = TRUE) //Rather than check at every step of the way, let's check before we do an action, so we can rescan before the other bot.
 			if(QDELETED(target)) //We done here.
 				target = null
-				mode = BOT_IDLE
+				set_mode(BOT_IDLE)
 				return
 
 		if(target && path.len == 0 && (get_dist(src,target) > 1))
-			path = jps_path_to(src, target, max_distance=30, mintargetdist=1, access = access_card?.GetAccess())
-			mode = BOT_MOVING
+			set_mode(BOT_PATHING)
+			path = jps_path_to(src, target, max_steps=30, mintargetdist=1, access = access_card?.GetAccess())
+			set_mode(BOT_MOVING)
 			if(length(path) == 0)
 				add_to_ignore(target)
 				target = null
+				set_mode(BOT_IDLE)
 
 		if(path.len > 0 && target)
 			if(!bot_move(path[path.len]))
 				target = null
-				mode = BOT_IDLE
+				set_mode(BOT_IDLE)
 			return
 
 /mob/living/simple_animal/bot/cleanbot/proc/get_targets()
@@ -323,14 +326,14 @@
 		return
 	. = ..()
 	if(ismopable(attack_target) || istype(attack_target, /obj/effect/decal/cleanable/blood))
-		mode = BOT_CLEANING
+		set_mode(BOT_CLEANING)
 		update_icon_state()
 		var/turf/T = get_turf(attack_target)
 		if(do_after(src, T, 1 SECOND))
-			T.wash(CLEAN_SCRUB)
+			T.wash(CLEAN_SCRUB|CLEAN_TYPE_HIDDEN_BLOOD) // I thought it'd be funny if cleanbots could clean hidden blood.
 			visible_message(span_notice("[src] cleans [T]."))
 		target = null
-		mode = BOT_IDLE
+		set_mode(BOT_IDLE)
 		update_icon_state()
 
 	else if(isitem(attack_target) || istype(attack_target, /obj/effect/decal))
@@ -383,7 +386,7 @@
 
 /mob/living/simple_animal/bot/cleanbot/explode()
 	var/atom/drop_loc = drop_location()
-	new /obj/item/reagent_containers/glass/bucket(drop_loc)
+	new /obj/item/reagent_containers/cup/bucket(drop_loc)
 	new /obj/item/assembly/prox_sensor(drop_loc)
 	return ..()
 

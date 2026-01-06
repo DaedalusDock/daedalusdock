@@ -74,8 +74,7 @@
 
 /mob/living/simple_animal/bot/secbot/beepsky/jr/Initialize(mapload)
 	. = ..()
-	resize = 0.8
-	update_transform()
+	update_transform(0.8)
 
 /mob/living/simple_animal/bot/secbot/pingsky
 	name = "Officer Pingsky"
@@ -95,7 +94,7 @@
 /mob/living/simple_animal/bot/secbot/beepsky/explode()
 	var/atom/Tsec = drop_location()
 	new /obj/item/stock_parts/cell/potato(Tsec)
-	var/obj/item/reagent_containers/food/drinks/drinkingglass/shotglass/drinking_oil = new(Tsec)
+	var/obj/item/reagent_containers/cup/glass/drinkingglass/shotglass/drinking_oil = new(Tsec)
 	drinking_oil.reagents.add_reagent(/datum/reagent/consumable/ethanol/whiskey, 15)
 	return ..()
 
@@ -105,8 +104,8 @@
 	update_appearance(UPDATE_ICON)
 
 	// Doing this hurts my soul, but simplebot access reworks are for another day.
-	var/datum/id_trim/job/det_trim = SSid_access.trim_singletons_by_path[/datum/id_trim/job/detective]
-	access_card.add_access(det_trim.access + det_trim.wildcard_access)
+	var/datum/access_template/job/det_trim = SSid_access.template_singletons_by_path[/datum/access_template/job/detective]
+	access_card.add_access(det_trim.access)
 	prev_access = access_card.access.Copy()
 
 	var/static/list/loc_connections = list(
@@ -126,7 +125,7 @@
 
 /mob/living/simple_animal/bot/secbot/turn_off()
 	..()
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 
 /mob/living/simple_animal/bot/secbot/bot_reset()
 	..()
@@ -136,7 +135,7 @@
 	SSmove_manager.stop_looping(src)
 	last_found = world.time
 
-/mob/living/simple_animal/bot/secbot/electrocute_act(shock_damage, source, siemens_coeff = 1, flags = NONE)//shocks only make him angry
+/mob/living/simple_animal/bot/secbot/electrocute_act(shock_damage, siemens_coeff = 1, flags = SHOCK_HANDS, stun_multiplier = 1)//shocks only make him angry
 	if(base_speed < initial(base_speed) + 3)
 		base_speed += 3
 		addtimer(VARSET_CALLBACK(src, base_speed, base_speed - 3), 60)
@@ -184,7 +183,7 @@
 	threatlevel += 6
 	if(threatlevel >= 4)
 		target = attacking_human
-		mode = BOT_HUNT
+		set_mode(BOT_HUNT)
 
 /mob/living/simple_animal/bot/secbot/proc/judgement_criteria()
 	var/final = FALSE
@@ -277,7 +276,7 @@
 	..()
 
 /mob/living/simple_animal/bot/secbot/proc/start_handcuffing(mob/living/carbon/current_target)
-	mode = BOT_ARREST
+	set_mode(BOT_ARREST)
 	playsound(src, 'sound/weapons/cablecuff.ogg', 30, TRUE, -2)
 	current_target.visible_message(span_danger("[src] is trying to put zipties on [current_target]!"),\
 						span_userdanger("[src] is trying to put zipties on you!"))
@@ -321,7 +320,7 @@
 							span_userdanger("[src] stuns you!"))
 
 	target_lastloc = target.loc
-	mode = BOT_PREP_ARREST
+	set_mode(BOT_PREP_ARREST)
 
 /mob/living/simple_animal/bot/secbot/handle_automated_action()
 	. = ..()
@@ -334,7 +333,7 @@
 			SSmove_manager.stop_looping(src)
 			look_for_perp() // see if any criminals are in range
 			if((mode == BOT_IDLE) && bot_mode_flags & BOT_MODE_AUTOPATROL) // didn't start hunting during look_for_perp, and set to patrol
-				mode = BOT_START_PATROL // switch to patrol mode
+				set_mode(BOT_START_PATROL)
 
 		if(BOT_HUNT) // hunting for perp
 			// if can't reach perp for long enough, go idle
@@ -379,7 +378,7 @@
 		if(BOT_ARREST)
 			if(!target)
 				set_anchored(FALSE)
-				mode = BOT_IDLE
+				set_mode(BOT_IDLE)
 				last_found = world.time
 				frustration = 0
 				return
@@ -392,7 +391,7 @@
 				back_to_hunt()
 				return
 			else //Try arresting again if the target escapes.
-				mode = BOT_PREP_ARREST
+				set_mode(BOT_PREP_ARREST)
 				set_anchored(FALSE)
 
 		if(BOT_START_PATROL)
@@ -405,7 +404,7 @@
 
 /mob/living/simple_animal/bot/secbot/proc/back_to_idle()
 	set_anchored(FALSE)
-	mode = BOT_IDLE
+	set_mode(BOT_IDLE)
 	target = null
 	last_found = world.time
 	frustration = 0
@@ -414,7 +413,7 @@
 /mob/living/simple_animal/bot/secbot/proc/back_to_hunt()
 	set_anchored(FALSE)
 	frustration = 0
-	mode = BOT_HUNT
+	set_mode(BOT_HUNT)
 	INVOKE_ASYNC(src, PROC_REF(handle_automated_action))
 // look for a criminal in view of the bot
 
@@ -448,7 +447,7 @@
 					playsound(src, pick('sound/voice/beepsky/criminal.ogg', 'sound/voice/beepsky/justice.ogg', 'sound/voice/beepsky/freeze.ogg'), 50, FALSE)
 
 			visible_message("<b>[src]</b> points at [nearby_carbons.name]!")
-			mode = BOT_HUNT
+			set_mode(BOT_HUNT)
 			INVOKE_ASYNC(src, PROC_REF(handle_automated_action))
 			break
 
@@ -496,10 +495,10 @@
 	return ..()
 
 /mob/living/simple_animal/bot/secbot/attack_alien(mob/living/carbon/alien/user, list/modifiers)
-	..()
+	. = ..()
 	if(!isalien(target))
 		target = user
-		mode = BOT_HUNT
+		set_mode(BOT_HUNT)
 
 /mob/living/simple_animal/bot/secbot/proc/on_entered(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER

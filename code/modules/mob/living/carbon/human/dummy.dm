@@ -75,6 +75,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 
 /mob/living/carbon/human/dummy/afterEquipItem(obj/item/item, slot, initial = FALSE)
 	item.item_flags |= IN_INVENTORY
+	item.equipped_to = src
 	return item.visual_equipped(src, slot, initial)
 
 /mob/living/carbon/human/dummy/proc/wipe_state()
@@ -103,7 +104,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	H.dna.set_all_mutant_colors(COLOR_VIBRANT_LIME)
 	H.dna.features["moth_antennae"] = get_consistent_feature_entry(GLOB.moth_antennae_list)
 	H.dna.features["moth_markings"] = get_consistent_feature_entry(GLOB.moth_markings_list)
-	H.dna.features["moth_wings"] = get_consistent_feature_entry(GLOB.wings_list)
+	H.dna.features["moth_wings"] = get_consistent_feature_entry(GLOB.moth_wings_list)
 	H.dna.features["snout"] = get_consistent_feature_entry(GLOB.snouts_list)
 	H.dna.features["spines"] = get_consistent_feature_entry(GLOB.spines_list)
 	H.dna.features["tail_human"] = get_consistent_feature_entry(GLOB.tails_list_human)

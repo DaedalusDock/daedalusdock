@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/door_assembly)
+	default_armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
+
 /obj/structure/door_assembly
 	name = "airlock assembly"
 	icon = 'icons/obj/doors/airlocks/station/airlock.dmi'
@@ -6,7 +9,6 @@
 	density = TRUE
 
 	max_integrity = 120
-	armor = list(BLUNT = 30, PUNCTURE = 30, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 10, BIO = 100, FIRE = 80, ACID = 70)
 
 	var/state = AIRLOCK_ASSEMBLY_NEEDS_WIRES
 	var/base_name = "airlock"
@@ -45,7 +47,6 @@
 	has_fill_overlays = initial(airlock_cast.has_fill_overlays)
 
 	update_appearance()
-	update_name()
 
 	AddComponent(/datum/component/simple_rotation)
 
@@ -299,7 +300,7 @@
 				qdel(src)
 	else
 		return ..()
-	update_name()
+
 	update_appearance()
 
 /obj/structure/door_assembly/update_overlays()
@@ -350,7 +351,6 @@
 		target.electronics = source.electronics
 		source.electronics.forceMove(target)
 	target.update_appearance()
-	target.update_name()
 	qdel(source)
 
 /obj/structure/door_assembly/deconstruct(disassembled = TRUE)

@@ -17,13 +17,15 @@
  * Or are used to call action() on equipped gear
  * Cooldown for gear is on the mech because exploits
  */
+TYPEINFO_DEF(/obj/vehicle/sealed/mecha)
+	default_armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 100, ACID = 100)
+
 /obj/vehicle/sealed/mecha
 	name = "mecha"
 	desc = "Exosuit"
 	icon = 'icons/mecha/mecha.dmi'
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	max_integrity = 300
-	armor = list(BLUNT = 20, PUNCTURE = 10, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 10, BIO = 0, FIRE = 100, ACID = 100)
 	force = 5
 	movedelay = 1 SECONDS
 	move_force = MOVE_FORCE_VERY_STRONG
@@ -867,7 +869,7 @@
 		return
 	//Allows the Malf to scan a mech's status and loadout, helping it to decide if it is a worthy chariot.
 	if(user.can_dominate_mechs)
-		examine(user) //Get diagnostic information!
+		user.run_examinate(src) //Get diagnostic information!
 		for(var/obj/item/mecha_parts/mecha_tracking/B in trackers)
 			to_chat(user, span_danger("Warning: Tracking Beacon detected. Enter at your own risk. Beacon Data:"))
 			to_chat(user, "[B.get_mecha_info()]")
@@ -875,7 +877,9 @@
 		//Nothing like a big, red link to make the player feel powerful!
 		to_chat(user, "<a href='?src=[REF(user)];ai_take_control=[REF(src)]'>[span_userdanger("ASSUME DIRECT CONTROL?")]</a><br>")
 		return
-	examine(user)
+
+	user.run_examinate(src)
+
 	if(length(return_drivers()) > 0)
 		to_chat(user, span_warning("This exosuit has a pilot and cannot be controlled."))
 		return
@@ -1276,7 +1280,7 @@
 			A.rounds = A.rounds - ammo_needed
 			if(A.custom_materials)
 				A.set_custom_materials(A.custom_materials, A.rounds / initial(A.rounds))
-			A.update_name()
+			A.update_appearance(UPDATE_NAME)
 			return TRUE
 
 		if(A.direct_load)
@@ -1287,7 +1291,7 @@
 		to_chat(user, span_notice("You add [A.rounds] [A.ammo_type][A.rounds > 1?"s":""] to the [gun.name]"))
 		A.rounds = 0
 		A.set_custom_materials(list(/datum/material/iron=2000))
-		A.update_name()
+		A.update_appearance(UPDATE_NAME)
 		return TRUE
 	if(!fail_chat_override)
 		if(found_gun)

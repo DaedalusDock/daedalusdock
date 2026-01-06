@@ -221,12 +221,12 @@
 	build_path = /obj/item/circuitboard/machine/mech_recharger
 	mapload_design_flags = DESIGN_IMPRINTER
 
-/datum/design/board/dnascanner
-	name = "Machine Board (DNA Scanner)"
-	desc = "The circuit board for a DNA Scanner."
-	id = "dnascanner"
-	mapload_design_flags = DESIGN_IMPRINTER
-	build_path = /obj/item/circuitboard/machine/dnascanner
+// /datum/design/board/dnascanner
+// 	name = "Machine Board (DNA Scanner)"
+// 	desc = "The circuit board for a DNA Scanner."
+// 	id = "dnascanner"
+// 	mapload_design_flags = DESIGN_IMPRINTER
+// 	build_path = /obj/item/circuitboard/machine/dnascanner
 
 /datum/design/board/doppler_array
 	name = "Machine Board (Tachyon-Doppler Research Array Board)"

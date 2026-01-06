@@ -26,21 +26,6 @@
 #define SOUTHDOWN (SOUTH|DOWN)
 #define WESTDOWN (WEST|DOWN)
 
-///A replacement for /datum/gas_mixture/proc/update_values()
-#define AIR_UPDATE_VALUES(air) \
-	do{ \
-		var/list/cache = air.gas; \
-		air.total_moles = 0; \
-		for(var/g in cache) { \
-			if(cache[g] <= 0) { \
-				cache -= g \
-			} \
-			else { \
-				air.total_moles += cache[g]; \
-			} \
-		} \
-	} while(FALSE)
-
 ///Checks is a turf is simulated and has a valid zone.
 #define TURF_HAS_VALID_ZONE(T) (!isnull(T:zone) && !T:zone:invalid)
 
@@ -118,6 +103,10 @@ GLOBAL_REAL_VAR(list/gzn_check) = list(NORTH, SOUTH, EAST, WEST)
 //This ensures that fires don't grind to a near-halt while still remaining active forever.
 #define FIRE_GAS_MIN_BURNRATE			0.01
 #define FIRE_LIQUID_MIN_BURNRATE			0.0025
+
+
+/// The minimum amount of fuel in mols required for a fire to exist.
+#define FIRE_MINIMUM_FUEL_MOL_TO_EXIST 0.005
 
 // Converts liquid fuel units to mols
 #define LIQUIDFUEL_AMOUNT_TO_MOL(amount) round(amount * 0.45, ATMOS_PRECISION)

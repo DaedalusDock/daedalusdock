@@ -71,11 +71,13 @@
 	name = "green striped beanie"
 	icon_state = "beaniestripedgreen"
 
+TYPEINFO_DEF(/obj/item/clothing/head/beanie/durathread)
+	default_armor = list(BLUNT = 15, PUNCTURE = 5, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 10, BIO = 0, FIRE = 30, ACID = 5)
+
 /obj/item/clothing/head/beanie/durathread
 	name = "durathread beanie"
 	desc = "A beanie made from durathread, its resilient fibres provide some protection to the wearer."
 	icon_state = "beaniedurathread"
-	armor = list(BLUNT = 15, PUNCTURE = 5, SLASH = 0, LASER = 15, ENERGY = 25, BOMB = 10, BIO = 0, FIRE = 30, ACID = 5)
 
 /obj/item/clothing/head/beanie/waldo
 	name = "red striped bobble hat"

@@ -7,6 +7,7 @@
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR 3 //Do I win the most informative but also most stupid define award?
 
 /proc/random_blood_type()
+	RETURN_TYPE(/datum/blood)
 	var/datum/blood/path = pick(\
 		4;/datum/blood/human/omin, \
 		36;/datum/blood/human/opos, \
@@ -68,9 +69,6 @@
 	if(!GLOB.socks_list.len)
 		init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, GLOB.socks_list)
 	return pick(GLOB.socks_list)
-
-/proc/random_backpack()
-	return pick(GLOB.backpacklist)
 
 /proc/random_features()
 	//For now we will always return none for tail_human and ears. | "For now" he says.
@@ -134,90 +132,23 @@
 		else
 			return pick(GLOB.facial_hairstyles_list)
 
-/proc/random_unique_name(gender, attempts_to_find_unique_name=10)
-	for(var/i in 1 to attempts_to_find_unique_name)
-		if(gender==FEMALE)
-			. = capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
-		else
-			. = capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
-
-		if(!findname(.))
-			break
-
-/proc/random_unique_lizard_name(gender, attempts_to_find_unique_name=10)
-	for(var/i in 1 to attempts_to_find_unique_name)
-		. = capitalize(lizard_name(gender))
-
-		if(!findname(.))
-			break
-
-/proc/random_unique_vox_name(attempts_to_find_unique_name=10)
-	for(var/i in 1 to attempts_to_find_unique_name)
-		. = capitalize(vox_name())
-
-		if(!findname(.))
-			break
-
-/proc/random_unique_plasmaman_name(attempts_to_find_unique_name=10)
-	for(var/i in 1 to attempts_to_find_unique_name)
-		. = capitalize(plasmaman_name())
-
-		if(!findname(.))
-			break
-
-/proc/random_unique_ethereal_name(attempts_to_find_unique_name=10)
-	for(var/i in 1 to attempts_to_find_unique_name)
-		. = capitalize(ethereal_name())
-
-		if(!findname(.))
-			break
-
-/proc/random_unique_moth_name(attempts_to_find_unique_name=10)
-	for(var/i in 1 to attempts_to_find_unique_name)
-		. = capitalize(pick(GLOB.moth_first)) + " " + capitalize(pick(GLOB.moth_last))
-
-		if(!findname(.))
-			break
-
-/proc/random_unique_teshari_name(attempts_to_find_unique_name = 10)
-	for(var/I in 1 to attempts_to_find_unique_name)
-		. = teshari_name()
-
-		if(!findname(.))
-			break
-
 /proc/random_skin_tone()
 	return pick(GLOB.skin_tones)
 
 GLOBAL_LIST_INIT(skin_tones, sort_list(list(
-	"albino",
-	"caucasian1",
-	"caucasian2",
-	"caucasian3",
-	"latino",
-	"mediterranean",
-	"asian1",
-	"asian2",
-	"arab",
-	"indian",
-	"african1",
-	"african2"
+	"Albino" = "#fff4e6",
+	"Fjällröker" = "#ffe0d1",
+	"Orleanian" = "#fcccb3",
+	"Saxon" = "#e8b59b",
+	"Estranian" = "#d9ae96",
+	"Ravennar" = "#c79b8b",
+	"Shaantian (North)" = "#ffdeb3",
+	"Ikkonese" = "#e3ba84",
+	"Emerati" = "#c4915e",
+	"Shaantian (South)" = "#b87840",
+	"Gondari (East)" = "#754523",
+	"Gondari (West)" = "#471c18"
 	)))
-
-GLOBAL_LIST_INIT(skin_tone_names, list(
-	"african1" = "Medium brown",
-	"african2" = "Dark brown",
-	"albino" = "Albino",
-	"arab" = "Light brown",
-	"asian1" = "Ivory",
-	"asian2" = "Beige",
-	"caucasian1" = "Porcelain",
-	"caucasian2" = "Light peach",
-	"caucasian3" = "Peach",
-	"indian" = "Brown",
-	"latino" = "Light beige",
-	"mediterranean" = "Olive",
-))
 
 /// An assoc list of species IDs to type paths
 GLOBAL_LIST_EMPTY(species_list)
@@ -244,197 +175,6 @@ GLOBAL_LIST_EMPTY(species_list)
 			return "elderly"
 		else
 			return "unknown"
-
-//some additional checks as a callback for for do_afters that want to break on losing health or on the mob taking action
-/mob/proc/break_do_after_checks(list/checked_health, check_clicks)
-	if(check_clicks && next_move > world.time)
-		return FALSE
-	return TRUE
-
-//pass a list in the format list("health" = mob's health var) to check health during this
-/mob/living/break_do_after_checks(list/checked_health, check_clicks)
-	if(islist(checked_health))
-		if(health < checked_health["health"])
-			return FALSE
-		checked_health["health"] = health
-	return ..()
-
-
-/**
- * Timed action involving one mob user. Target is optional, defaulting to user.
- *
- * Checks that `user` does not move, change hands, get stunned, etc. for the
- * given `time`. Returns `TRUE` on success or `FALSE` on failure.
- * Interaction_key is the assoc key under which the do_after is capped, with max_interact_count being the cap. Interaction key will default to target if not set.
- */
-/proc/do_after(atom/movable/user, atom/target, time, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
-	if(!user)
-		return FALSE
-
-	if(!target)
-		target = user
-	if(isnum(target))
-		CRASH("a do_after created by [user] had a target set as [target]- probably intended to be the time instead.")
-	if(isatom(time))
-		CRASH("a do_after created by [user] had a timer of [time]- probably intended to be the target instead.")
-
-	if(!interaction_key)
-		interaction_key = target //Use the direct ref to the target
-	if(interaction_key) //Do we have a interaction_key now?
-		var/current_interaction_count = LAZYACCESS(user.do_afters, interaction_key) || 0
-		if(current_interaction_count >= max_interact_count) //We are at our peak
-			return
-		LAZYSET(user.do_afters, interaction_key, current_interaction_count + 1)
-
-	var/atom/user_loc = user.loc
-	var/atom/target_loc = target.loc
-
-	var/drifting = FALSE
-	if(SSmove_manager.processing_on(user, SSspacedrift))
-		drifting = TRUE
-
-	var/holding
-	if(ismob(user))
-		var/mob/mobuser = user
-		holding = mobuser.get_active_held_item()
-		if(!(timed_action_flags & IGNORE_SLOWDOWNS))
-			time *= mobuser.cached_multiplicative_actions_slowdown
-	else
-		timed_action_flags |= IGNORE_HELD_ITEM|IGNORE_INCAPACITATED|IGNORE_SLOWDOWNS|DO_PUBLIC
-
-	var/datum/progressbar/progbar
-	if(progress)
-		if(timed_action_flags & DO_PUBLIC)
-			progbar = new /datum/world_progressbar(user, time, display)
-		else
-			progbar = new(user, time, target || user)
-
-	var/endtime = world.time + time
-	var/starttime = world.time
-	. = TRUE
-	while (world.time < endtime)
-		stoplag(1)
-
-		if(!QDELETED(progbar))
-			progbar.update(world.time - starttime)
-
-		if(drifting && !SSmove_manager.processing_on(user, SSspacedrift))
-			drifting = FALSE
-			user_loc = user.loc
-
-		if(
-			QDELETED(user) \
-			|| (!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user.loc != user_loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user:get_active_held_item() != holding) \
-			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
-			|| (extra_checks && !extra_checks.Invoke()) \
-		)
-			. = FALSE
-			break
-
-		if(user != target && \
-			(QDELETED(target) || (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && target.loc != target_loc)))
-			. = FALSE
-			break
-
-	if(!QDELETED(progbar))
-		progbar.end_progress()
-
-	if(interaction_key)
-		var/reduced_interaction_count = (LAZYACCESS(user.do_afters, interaction_key)) - 1
-		if(reduced_interaction_count > 0) // Not done yet!
-			LAZYSET(user.do_afters, interaction_key, reduced_interaction_count)
-			return
-		LAZYREMOVE(user.do_afters, interaction_key)
-
-
-///Timed action involving at least one mob user and a list of targets. interaction_key is the assoc key under which the do_after is capped under, and the max interaction count is how many of this interaction you can do at once.
-/proc/do_after_mob(mob/user, list/targets, time = 3 SECONDS, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1)
-	if(!user)
-		return FALSE
-	if(!islist(targets))
-		targets = list(targets)
-	if(!length(targets))
-		return FALSE
-	var/user_loc = user.loc
-
-	if(!(timed_action_flags & IGNORE_SLOWDOWNS))
-		time *= user.cached_multiplicative_actions_slowdown
-
-	var/drifting = FALSE
-	if(SSmove_manager.processing_on(user, SSspacedrift))
-		drifting = TRUE
-
-	var/list/originalloc = list()
-
-	for(var/atom/target in targets)
-		originalloc[target] = target.loc
-
-	if(interaction_key)
-		var/current_interaction_count = LAZYACCESS(user.do_afters, interaction_key) || 0
-		if(current_interaction_count >= max_interact_count) //We are at our peak
-			to_chat(user, span_warning("You can't do this at the moment!"))
-			return
-		LAZYSET(user.do_afters, interaction_key, current_interaction_count + 1)
-
-
-	var/holding = user.get_active_held_item()
-	var/datum/progressbar/progbar
-	if(progress)
-		progbar = new(user, time, targets[1])
-
-	var/endtime = world.time + time
-	var/starttime = world.time
-	. = TRUE
-	while(world.time < endtime)
-		stoplag(1)
-
-		if(!QDELETED(progbar))
-			progbar.update(world.time - starttime)
-		if(QDELETED(user) || !length(targets))
-			. = FALSE
-			break
-
-		if(drifting && !SSmove_manager.processing_on(user, SSspacedrift))
-			drifting = FALSE
-			user_loc = user.loc
-
-		if(
-			(!(timed_action_flags & IGNORE_USER_LOC_CHANGE) && !drifting && user_loc != user.loc) \
-			|| (!(timed_action_flags & IGNORE_HELD_ITEM) && user.get_active_held_item() != holding) \
-			|| (!(timed_action_flags & IGNORE_INCAPACITATED) && HAS_TRAIT(user, TRAIT_INCAPACITATED)) \
-			|| (extra_checks && !extra_checks.Invoke()) \
-			)
-			. = FALSE
-			break
-
-		for(var/atom/target as anything in targets)
-			if(
-				(QDELETED(target)) \
-				|| (!(timed_action_flags & IGNORE_TARGET_LOC_CHANGE) && originalloc[target] != target.loc) \
-				)
-				. = FALSE
-				break
-
-		if(!.) // In case the for-loop found a reason to break out of the while.
-			break
-
-	if(!QDELETED(progbar))
-		progbar.end_progress()
-
-	if(interaction_key)
-		var/reduced_interaction_count = (LAZYACCESS(user.do_afters, interaction_key)) - 1
-		if(reduced_interaction_count > 0) // Not done yet!
-			LAZYSET(user.do_afters, interaction_key, reduced_interaction_count)
-			return
-		LAZYREMOVE(user.do_afters, interaction_key)
-
-/// Returns the total amount of do_afters this mob is taking part in
-/mob/proc/do_after_count()
-	var/count = 0
-	for(var/key in do_afters)
-		count += do_afters[key]
-	return count
 
 /proc/is_species(A, species_datum)
 	. = FALSE
@@ -750,6 +490,11 @@ GLOBAL_LIST_EMPTY(species_list)
 /proc/get_mob_by_ckey(key)
 	if(!key)
 		return
+
+	var/mob/pmob = GLOB.persistent_clients_by_ckey[key]?.mob
+	if(pmob)
+		return pmob
+
 	var/list/mobs = sort_mobs()
 	for(var/mob/mob in mobs)
 		if(mob.ckey == key)

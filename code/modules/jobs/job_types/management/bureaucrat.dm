@@ -21,7 +21,6 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/hop,
-			SPECIES_PLASMAMAN = /datum/outfit/job/hop/plasmaman,
 		),
 	)
 
@@ -29,7 +28,7 @@
 		/datum/job_department/command,
 	)
 
-	paycheck = PAYCHECK_COMMAND
+	paycheck = PAYCHECK_ASSISTANT * 10
 	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
@@ -39,7 +38,7 @@
 		/obj/item/stack/sheet/bone = 5
 	)
 
-	family_heirlooms = list(/obj/item/reagent_containers/food/drinks/trophy/silver_cup)
+	family_heirlooms = list(/obj/item/reagent_containers/cup/glass/trophy/silver_cup)
 	rpg_title = "Knight"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 

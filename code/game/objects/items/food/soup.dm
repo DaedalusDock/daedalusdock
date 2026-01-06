@@ -1,7 +1,7 @@
 /obj/item/food/soup
 	w_class = WEIGHT_CLASS_NORMAL
 	icon = 'icons/obj/food/soupsalad.dmi'
-	trash_type = /obj/item/reagent_containers/glass/bowl
+	trash_type = /obj/item/reagent_containers/cup/bowl
 	bite_consumption = 5
 	max_volume = 80
 	food_reagents = list(/datum/reagent/consumable/nutriment = 8, /datum/reagent/water = 5, /datum/reagent/consumable/nutriment/vitamin = 4)
@@ -34,6 +34,8 @@
 	foodtypes = MEAT
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/soup/slime
 	name = "slime soup"
 	desc = "If no water is available, you may substitute tears."
@@ -51,14 +53,18 @@
 	tastes = list("iron" = 1)
 	foodtypes = GROSS
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/soup/wingfangchu
 	name = "wing fang chu"
 	desc = "A savory dish of alien wing wang in soy."
 	icon_state = "wingfangchu"
-	trash_type = /obj/item/reagent_containers/glass/bowl
+	trash_type = /obj/item/reagent_containers/cup/bowl
 	food_reagents = list(/datum/reagent/consumable/nutriment/protein = 9, /datum/reagent/consumable/soysauce = 10, /datum/reagent/consumable/nutriment/vitamin = 7)
 	tastes = list("soy" = 1)
 	foodtypes = MEAT
+
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
 
 /obj/item/food/soup/clownstears
 	name = "clown's tears"
@@ -76,6 +82,8 @@
 	tastes = list("vegetables" = 1)
 	foodtypes = VEGETABLES
 	venue_value = FOOD_PRICE_NORMAL
+
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
 
 /obj/item/food/soup/nettle
 	name = "nettle soup"
@@ -118,6 +126,9 @@
 	tastes = list("hot peppers" = 1)
 	foodtypes = VEGETABLES | MEAT
 	venue_value = FOOD_PRICE_NORMAL
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/warm)
+
 /obj/item/food/soup/coldchili
 	name = "cold chili"
 	desc = "This slush is barely a liquid!"
@@ -125,6 +136,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/protein = 6, /datum/reagent/consumable/frostoil = 3, /datum/reagent/consumable/tomatojuice = 4, /datum/reagent/consumable/nutriment/vitamin = 4)
 	tastes = list("tomato" = 1, "mint" = 1)
 	foodtypes = VEGETABLES | MEAT
+
+	food_buffs = list(/datum/status_effect/food/healthy/blood, /datum/status_effect/food/cold)
 
 /obj/item/food/soup/clownchili
 	name = "chili con carnival"
@@ -143,6 +156,8 @@
 	foodtypes = FRUIT
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/soup/tomato
 	name = "tomato soup"
 	desc = "Drinking this feels like being a vampire! A tomato vampire..."
@@ -150,6 +165,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/tomatojuice = 10, /datum/reagent/consumable/nutriment/vitamin = 3)
 	tastes = list("tomato" = 1)
 	foodtypes = VEGETABLES
+
+	food_buffs = list(/datum/status_effect/food/warm)
 
 /obj/item/food/soup/tomato/eyeball
 	name = "eyeball soup"
@@ -168,6 +185,8 @@
 	foodtypes = VEGETABLES | BREAKFAST
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/soup/mushroom
 	name = "chantrelle soup"
 	desc = "A delicious and hearty mushroom soup."
@@ -176,12 +195,16 @@
 	tastes = list("mushroom" = 1)
 	foodtypes = VEGETABLES | DAIRY
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/soup/beet
 	name = "beet soup"
 	desc = "Wait, how do you spell it again..?"
 	icon_state = "beetsoup"
 	food_reagents = list(/datum/reagent/consumable/nutriment = 9, /datum/reagent/water = 5, /datum/reagent/consumable/nutriment/vitamin = 6)
 	foodtypes = VEGETABLES
+
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
 
 /obj/item/food/soup/beet/Initialize(mapload)
 	. = ..()
@@ -198,6 +221,8 @@
 	tastes = list("jelly" = 1, "mushroom" = 1)
 	foodtypes = VEGETABLES
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/soup/amanitajelly
 	name = "amanita jelly"
 	desc = "Looks curiously toxic."
@@ -206,6 +231,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 7, /datum/reagent/drug/mushroomhallucinogen = 3, /datum/reagent/toxin/amatoxin = 6, /datum/reagent/consumable/nutriment/vitamin = 5)
 	tastes = list("jelly" = 1, "mushroom" = 1)
 	foodtypes = VEGETABLES | TOXIC
+
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
 
 /obj/item/food/soup/stew
 	name = "stew"
@@ -218,6 +245,8 @@
 	foodtypes = VEGETABLES | MEAT
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/soup/sweetpotato
 	name = "sweet potato soup"
 	desc = "Delicious sweet potato in soup form."
@@ -227,6 +256,8 @@
 	foodtypes = VEGETABLES | SUGAR
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/soup/beet/red
 	name = "red beet soup"
 	desc = "Quite a delicacy."
@@ -235,6 +266,8 @@
 	tastes = list("beet" = 1)
 	foodtypes = VEGETABLES
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/soup/onion
 	name = "french onion soup"
 	desc = "Good enough to make a grown mime cry."
@@ -242,6 +275,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 7, /datum/reagent/consumable/nutriment/protein = 8, /datum/reagent/consumable/tomatojuice = 8, /datum/reagent/consumable/nutriment/vitamin = 5)
 	tastes = list("caramelized onions" = 1)
 	foodtypes = VEGETABLES | DAIRY
+
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
 
 /obj/item/food/soup/bisque
 	name = "bisque"
@@ -252,6 +287,8 @@
 	foodtypes = MEAT
 	venue_value = FOOD_PRICE_EXOTIC
 
+	food_buffs = list(/datum/status_effect/food/healthy/blood)
+
 /obj/item/food/soup/electron
 	name = "electron soup"
 	desc = "A gastronomic curiosity of ethereal origin. It is famed for the minature weather system formed over a properly prepared soup."
@@ -260,6 +297,8 @@
 	tastes = list("mushroom" = 1, "electrons" = 4)
 	foodtypes = VEGETABLES | TOXIC
 
+	food_buffs = list(/datum/status_effect/food/energized/plus)
+
 /obj/item/food/soup/bungocurry
 	name = "bungo curry"
 	desc = "A spicy vegetable curry made with the humble bungo fruit, Exotic!"
@@ -267,6 +306,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 6, /datum/reagent/consumable/bungojuice = 9, /datum/reagent/consumable/capsaicin = 5, /datum/reagent/consumable/nutriment/vitamin = 5)
 	tastes = list("bungo" = 2, "hot curry" = 4, "tropical sweetness" = 1)
 	foodtypes = VEGETABLES | FRUIT | DAIRY
+
+	food_buffs = list(/datum/status_effect/food/refreshed)
 
 /obj/item/food/soup/mammi
 	name = "Mammi"
@@ -282,6 +323,8 @@
 	tastes = list("creamy peas"= 2, "parsnip" = 1)
 	foodtypes = VEGETABLES
 
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
+
 /obj/item/food/soup/indian_curry
 	name = "indian chicken curry"
 	desc = "A mild, creamy curry from the old subcontinent. Liked by the Space-British, because it reminds them of the Raj."
@@ -291,6 +334,8 @@
 	foodtypes = VEGETABLES | MEAT | DAIRY
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/soup/oatmeal
 	name = "oatmeal"
 	desc = "A nice bowl of oatmeal."
@@ -299,6 +344,8 @@
 	tastes = list("oats" = 1, "milk" = 1)
 	foodtypes = DAIRY | GRAIN | BREAKFAST
 
+	food_buffs = list(/datum/status_effect/food/refreshed)
+
 /obj/item/food/soup/zurek
 	name = "zurek"
 	desc = "A traditional Polish soup composed of vegetables, meat, and an egg. Goes great with bread."
@@ -306,4 +353,6 @@
 	food_reagents = list (/datum/reagent/consumable/nutriment = 8, /datum/reagent/consumable/nutriment/vitamin = 2, /datum/reagent/consumable/nutriment/protein = 2)
 	tastes = list("creamy vegetables"= 2, "sausage" = 1)
 	foodtypes = VEGETABLES | MEAT | GRAIN | BREAKFAST
+
+	food_buffs = list(/datum/status_effect/food/healthy/organs)
 

@@ -1,5 +1,3 @@
-#define COOLDOWN_NO_DISPLAY_TIME (180 SECONDS)
-
 /// Preset for an action that has a cooldown.
 /datum/action/cooldown
 	check_flags = NONE
@@ -67,19 +65,22 @@
 /datum/action/cooldown/create_button()
 	var/atom/movable/screen/movable/action_button/button = ..()
 	button.maptext = ""
-	button.maptext_x = 6
+	button.maptext_x = 3
 	button.maptext_y = 2
-	button.maptext_width = 24
+	button.maptext_width = 28
 	button.maptext_height = 12
 	return button
 
 /datum/action/cooldown/update_button_status(atom/movable/screen/movable/action_button/button, force = FALSE)
 	. = ..()
 	var/time_left = max(next_use_time - world.time, 0)
-	if(!text_cooldown || !owner || time_left == 0 || time_left >= COOLDOWN_NO_DISPLAY_TIME)
+	if(!text_cooldown || !owner || time_left == 0)
 		button.maptext = ""
 	else
-		button.maptext = MAPTEXT("<b>[round(time_left/10, 0.1)]</b>")
+		if(time_left > 60 SECONDS)
+			button.maptext = MAPTEXT("<b>[ceil(time_left/600)] min")
+		else
+			button.maptext = MAPTEXT("<b>[round(time_left/10, 0.1)]</b>")
 
 	if(!IsAvailable() || !is_action_active(button))
 		return
@@ -218,13 +219,13 @@
 	return PreActivate(user)
 
 /// Intercepts client owner clicks to activate the ability
-/datum/action/cooldown/proc/InterceptClickOn(mob/living/caller, params, atom/target)
+/datum/action/cooldown/proc/InterceptClickOn(mob/living/invoker, params, atom/target)
 	. = TRUE
 	if(istext(params))
 		params = params2list(params)
 
 	if(params?[RIGHT_CLICK])
-		unset_click_ability(caller, TRUE)
+		unset_click_ability(invoker, TRUE)
 		return
 
 	if(!target || !IsAvailable(feedback = TRUE))
@@ -236,8 +237,8 @@
 
 	// And if we reach here, the action was complete successfully
 	if(unset_after_click)
-		unset_click_ability(caller, refund_cooldown = FALSE)
-	caller.next_click = world.time + click_cd_override
+		unset_click_ability(invoker, refund_cooldown = FALSE)
+	invoker.next_click = world.time + click_cd_override
 
 	return TRUE
 
@@ -295,7 +296,7 @@
 	if(ranged_mousepointer)
 		on_who.client?.mouse_override_icon = ranged_mousepointer
 		on_who.update_mouse_pointer()
-	build_all_button_icons(UPDATE_BUTTON_STATUS)
+	build_all_button_icons(UPDATE_BUTTON_STATUS | UPDATE_BUTTON_OVERLAY)
 	return TRUE
 
 /**
@@ -311,7 +312,7 @@
 	if(ranged_mousepointer)
 		on_who.client?.mouse_override_icon = initial(on_who.client?.mouse_override_icon)
 		on_who.update_mouse_pointer()
-	build_all_button_icons(UPDATE_BUTTON_STATUS)
+	build_all_button_icons(UPDATE_BUTTON_STATUS | UPDATE_BUTTON_OVERLAY)
 	return TRUE
 
 /// Formats the action to be returned to the stat panel.

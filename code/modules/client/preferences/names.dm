@@ -35,10 +35,7 @@
 		return
 	. = prefs.update_preference(src, input)
 
-	if(istype(user, /mob/dead/new_player))
-		var/mob/dead/new_player/player = user
-		if(player.npp.active_tab == "game")
-			player.npp.change_tab("game") // Reload name
+	astype(user, /mob/dead/new_player)?.npp?.update()
 	return .
 
 /datum/preference/name/get_button(datum/preferences/prefs)
@@ -67,13 +64,6 @@
 	if (!input)
 		return input
 
-	if (CONFIG_GET(flag/humans_need_surnames) && preferences.read_preference(/datum/preference/choiced/species) == /datum/species/human)
-		var/first_space = findtext(input, " ")
-		if(!first_space) //we need a surname
-			input += " [pick(GLOB.last_names)]"
-		else if(first_space == length(input))
-			input += "[pick(GLOB.last_names)]"
-
 	return reject_bad_name(input, allow_numbers)
 
 /// The name for a backup human, when nonhumans are made into head of staff
@@ -83,9 +73,10 @@
 	savefile_key = "human_name"
 
 /datum/preference/name/backup_human/create_informed_default_value(datum/preferences/preferences)
-	var/gender = preferences.read_preference(/datum/preference/choiced/gender)
+	var/datum/name_generator/human/name_gen = new
+	name_gen.ensure_unique = TRUE
 
-	return random_unique_name(gender)
+	return name_gen.Generate()
 
 /datum/preference/name/clown
 	savefile_key = "clown_name"

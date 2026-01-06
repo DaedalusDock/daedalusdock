@@ -10,6 +10,7 @@
 	fitting = "bulb"
 
 	overlay_icon = null
+	align_with_wall = FALSE
 
 	status = LIGHT_EMPTY
 	start_with_cell = FALSE
@@ -19,20 +20,21 @@
 	// Floor lights use a steep falloff because they're pointing at the ceiling, they diffuse sharply as a result.
 	bulb_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE //+ 0.5
 
-	nightshift_inner_range = 0.5
-	nightshift_outer_range = 5
-	nightshift_falloff = LIGHTING_DEFAULT_FALLOFF_CURVE + 1
-	nightshift_light_power = 1
-	nightshift_light_color = "#f2f9f7"
-
 /obj/machinery/light/floor/has_bulb
 	status = LIGHT_OK
 	start_with_cell = TRUE
 
 /obj/machinery/light/floor/update_icon_state()
 	. = ..()
-	if(status == LIGHT_OK)
-		icon_state = on ? "floor" : "floor-off"
+	switch(status)
+		if(LIGHT_OK)
+			icon_state = base_state
+		if(LIGHT_EMPTY)
+			icon_state = "[base_state]-empty"
+		if(LIGHT_BURNED)
+			icon_state = "[base_state]-burned"
+		if(LIGHT_BROKEN)
+			icon_state = "[base_state]-broken"
 
 /obj/machinery/light/floor/deconstruct(disassembled = TRUE)
 	SHOULD_CALL_PARENT(FALSE)
@@ -64,11 +66,11 @@
 /obj/machinery/light/floor/wrench_act(mob/living/user, obj/item/tool)
 	if(status != LIGHT_EMPTY)
 		to_chat(user, span_warning("There is still a lightbulb inside of the fixture!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	if(!QDELETED(cell))
 		to_chat(user, span_warning("You must remove the cell first!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	visible_message(
 		span_notice("[user] removes [src] from [loc]."),
@@ -78,12 +80,12 @@
 
 	tool.play_tool_sound(src)
 	deconstruct()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/light/floor/screwdriver_act(mob/living/user, obj/item/tool)
 	if(status != LIGHT_EMPTY)
 		to_chat(user, span_warning("There is still a lightbulb inside of [src]."))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	if(QDELETED(cell))
 		to_chat(user, span_userdanger("You stick \the [tool] into the light socket!"))
@@ -91,12 +93,12 @@
 			do_sparks(3, TRUE, src)
 			if (prob(75))
 				electrocute_mob(user, get_area(src), src, (rand(7,10) * 0.1), TRUE)
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 	tool.play_tool_sound(loc)
 	cell.forceMove(loc)
 	cell = null
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 
 

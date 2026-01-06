@@ -21,7 +21,7 @@
 	var/id = null
 
 	/// Type path of ID card trim associated with this outfit.
-	var/id_trim = null
+	var/id_template = null
 
 	/// Type path of item to go in uniform slot
 	var/uniform = null
@@ -44,7 +44,7 @@
 	  *
 	  * Format of this list should be: list(path=count,otherpath=count)
 	  */
-	var/list/backpack_contents = null
+	var/list/backpack_contents = list()
 
 	/// Type path of item to go in belt slot
 	var/belt = null
@@ -115,6 +115,9 @@
 	  * Format of this list is (typepath, typepath, typepath)
 	  */
 	var/list/skillchips = null
+
+	/// List of languages to grant upon equipping.
+	var/list/grant_languages
 
 	///Should we preload some of this job's items?
 	var/preload = FALSE
@@ -204,12 +207,12 @@
 		else
 			EQUIP_OUTFIT_ITEM(id, ITEM_SLOT_ID)
 
-	if(!visualsOnly && id_trim && H.wear_id)
+	if(!visualsOnly && id_template && H.wear_id)
 		var/obj/item/card/id/id_card = H.wear_id.GetID(TRUE)
 		id_card.registered_age = H.age
-		if(id_trim)
-			if(!SSid_access.apply_trim_to_card(id_card, id_trim))
-				WARNING("Unable to apply trim [id_trim] to [id_card] in outfit [name].")
+		if(id_template)
+			if(!SSid_access.apply_template_to_card(id_card, id_template))
+				WARNING("Unable to apply trim [id_template] to [id_card] in outfit [name].")
 
 	if(suit_store)
 		EQUIP_OUTFIT_ITEM(suit_store, ITEM_SLOT_SUITSTORE)
@@ -241,12 +244,10 @@
 			EQUIP_OUTFIT_ITEM(r_pocket, ITEM_SLOT_RPOCKET)
 
 		if(box)
-			if(!backpack_contents)
-				backpack_contents = list()
 			backpack_contents.Insert(1, box)
 			backpack_contents[box] = 1
 
-		if(backpack_contents)
+		if(length(backpack_contents))
 			for(var/path in backpack_contents)
 				var/number = backpack_contents[path]
 				if(!isnum(number))//Default to 1
@@ -258,8 +259,10 @@
 
 	if(!visualsOnly)
 		apply_fingerprints(H)
+
 		if(internals_slot)
 			H.open_internals(H.get_item_by_slot(internals_slot))
+
 		if(implants)
 			for(var/implant_type in implants)
 				var/obj/item/implant/I = SSwardrobe.provide_type(implant_type, H)
@@ -279,6 +282,9 @@
 				if(activate_msg)
 					CRASH("Failed to activate [H]'s [skillchip_instance], on job [src]. Failure message: [activate_msg]")
 
+		if(LAZYLEN(grant_languages))
+			for(var/language_path in grant_languages)
+				H.grant_language(language_path)
 
 	H.update_body()
 	return TRUE
@@ -392,7 +398,7 @@
 	.["ears"] = ears
 	.["glasses"] = glasses
 	.["id"] = id
-	.["id_trim"] = id_trim
+	.["id_trim"] = id_template
 	.["l_pocket"] = l_pocket
 	.["r_pocket"] = r_pocket
 	.["suit_store"] = suit_store
@@ -419,16 +425,16 @@
 	ears = target.ears
 	glasses = target.glasses
 	id = target.id
-	id_trim = target.id_trim
+	id_template = target.id_template
 	l_pocket = target.l_pocket
 	r_pocket = target.r_pocket
 	suit_store = target.suit_store
 	r_hand = target.r_hand
 	l_hand = target.l_hand
 	internals_slot = target.internals_slot
-	backpack_contents = target.backpack_contents
+	backpack_contents = target.backpack_contents?.Copy()
 	box = target.box
-	implants = target.implants
+	implants = target.implants?.Copy()
 	accessory = target.accessory
 
 /// Prompt the passed in mob client to download this outfit as a json blob
@@ -457,7 +463,7 @@
 	ears = text2path(outfit_data["ears"])
 	glasses = text2path(outfit_data["glasses"])
 	id = text2path(outfit_data["id"])
-	id_trim = text2path(outfit_data["id_trim"])
+	id_template = text2path(outfit_data["id_trim"])
 	l_pocket = text2path(outfit_data["l_pocket"])
 	r_pocket = text2path(outfit_data["r_pocket"])
 	suit_store = text2path(outfit_data["suit_store"])

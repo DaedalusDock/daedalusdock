@@ -141,7 +141,6 @@
 /obj/item/gun/ballistic/automatic/m90
 	name = "\improper M-90gl Carbine"
 	desc = "A three-round burst 5.56 toploading carbine, designated 'M-90gl'. Has an attached underbarrel grenade launcher."
-	desc_controls = "Right-click to use grenade launcher."
 	icon_state = "m90"
 	w_class = WEIGHT_CLASS_BULKY
 	inhand_icon_state = "m90"
@@ -170,9 +169,10 @@
 	QDEL_NULL(underbarrel)
 	return ..()
 
-/obj/item/gun/ballistic/automatic/m90/afterattack_secondary(atom/target, mob/living/user, flag, params)
-	underbarrel.afterattack(target, user, flag, params)
-	return SECONDARY_ATTACK_CONTINUE_CHAIN
+/obj/item/gun/ballistic/automatic/m90/try_fire_gun(atom/target, mob/living/user, proximity, params)
+	if(params2list(params)?[RIGHT_CLICK])
+		return underbarrel.try_fire_gun(target, user, proximity, params)
+	return ..()
 
 /obj/item/gun/ballistic/automatic/m90/attackby(obj/item/A, mob/user, params)
 	if(isammocasing(A))
@@ -281,13 +281,13 @@
 	. += "l6_door_[cover_open ? "open" : "closed"]"
 
 
-/obj/item/gun/ballistic/automatic/l6_saw/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, flag, params)
+/obj/item/gun/ballistic/automatic/l6_saw/try_fire_gun(atom/target, mob/living/user, proximity, params)
 	if(cover_open)
 		to_chat(user, span_warning("[src]'s cover is open! Close it before firing!"))
-		return
-	else
-		. = ..()
-		update_appearance()
+		return FALSE
+
+	. = ..()
+	update_appearance()
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/gun/ballistic/automatic/l6_saw/attack_hand(mob/user, list/modifiers)

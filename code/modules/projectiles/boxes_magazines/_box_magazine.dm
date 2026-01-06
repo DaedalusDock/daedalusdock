@@ -1,4 +1,7 @@
 //Boxes of ammo
+TYPEINFO_DEF(/obj/item/ammo_box)
+	default_materials = list(/datum/material/iron = 30000)
+
 /obj/item/ammo_box
 	name = "ammo box (null_reference_exception)"
 	desc = "A box of ammo."
@@ -9,7 +12,6 @@
 	worn_icon_state = "ammobox"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
-	custom_materials = list(/datum/material/iron = 30000)
 	throwforce = 2
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 7
@@ -131,7 +133,7 @@
 	if(istype(I, /obj/item/ammo_box))
 		var/obj/item/ammo_box/AM = I
 		for(var/obj/item/ammo_casing/AC in AM.stored_ammo)
-			if(user && load_delay && !do_after(user, src, load_delay, IGNORE_USER_LOC_CHANGE, FALSE, interaction_key = "load_round"))
+			if(user && load_delay && !do_after(user, src, load_delay, DO_IGNORE_USER_LOC_CHANGE, FALSE, interaction_key = "load_round"))
 				break
 
 			var/did_load = give_round(AC, replace_spent)

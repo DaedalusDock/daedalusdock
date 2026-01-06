@@ -43,10 +43,15 @@
 		CRASH("playsound(): source is an area")
 	if(isnull(vol))
 		CRASH("Playsound received a null volume, this is probably wrong!")
+	if(islist(soundin))
+		CRASH("Playsound received a list, this is unsupported")
 
 	var/turf/turf_source = get_turf(source)
 
 	if (!turf_source || !soundin || !vol)
+		return
+
+	if(vol < SOUND_AUDIBLE_VOLUME_MIN) // never let sound go below SOUND_AUDIBLE_VOLUME_MIN or bad things will happen
 		return
 
 	//allocate a channel if necessary now so its the same for everyone
@@ -62,6 +67,8 @@
 	var/turf/above_turf = GetAbove(turf_source)
 	var/turf/below_turf = GetBelow(turf_source)
 
+	var/audible_distance = falloff_exponent ? CALCULATE_MAX_SOUND_AUDIBLE_DISTANCE(vol, maxdistance, falloff_distance, falloff_exponent) : maxdistance
+
 	if(ignore_walls)
 
 		if(above_turf && istransparentturf(above_turf))
@@ -71,16 +78,20 @@
 			listeners += SSmobs.clients_by_zlevel[below_turf.z]
 
 	else //these sounds don't carry through walls
-		listeners = get_hearers_in_view(maxdistance, turf_source)
+		listeners = get_hearers_in_view(audible_distance, turf_source)
 
 		if(above_turf && istransparentturf(above_turf))
-			listeners += get_hearers_in_view(maxdistance, above_turf)
+			listeners += get_hearers_in_view(audible_distance, above_turf)
 
 		if(below_turf && istransparentturf(turf_source))
-			listeners += get_hearers_in_view(maxdistance, below_turf)
+			listeners += get_hearers_in_view(audible_distance, below_turf)
 
-	for(var/mob/listening_mob in listeners | SSmobs.dead_players_by_zlevel[source_z])//observers always hear through walls
-		if(get_dist(listening_mob, turf_source) <= maxdistance)
+	listeners |= SSmobs.dead_players_by_zlevel[source_z]
+	if(length(SSmobs.flock_cameras_by_zlevel[source_z]))
+		listeners |= SSmobs.flock_cameras_by_zlevel[source_z]
+
+	for(var/mob/listening_mob in listeners)//observers always hear through walls
+		if(get_dist(listening_mob, turf_source) <= audible_distance)
 			listening_mob.playsound_local(turf_source, soundin, vol, vary, frequency, falloff_exponent, channel, pressure_affected, S, maxdistance, falloff_distance, 1, use_reverb)
 			. += listening_mob
 
@@ -101,15 +112,15 @@
 		else
 			sound_to_use.frequency = get_rand_frequency()
 
+	var/distance = 0
 	if(isturf(turf_source))
 		var/turf/turf_loc = get_turf(src)
 
 		//sound volume falloff with distance
-		var/distance = get_dist(turf_loc, turf_source) * distance_multiplier
+		distance = get_dist(turf_loc, turf_source) * distance_multiplier
 
 		if(max_distance && falloff_exponent) //If theres no max_distance we're not a 3D sound, so no falloff.
-			sound_to_use.volume -= (max(distance - falloff_distance, 0) ** (1 / falloff_exponent)) / ((max(max_distance, distance) - falloff_distance) ** (1 / falloff_exponent)) * sound_to_use.volume
-			//https://www.desmos.com/calculator/sqdfl8ipgf
+			sound_to_use.volume -= CALCULATE_SOUND_VOLUME(vol, distance, max_distance, falloff_distance, falloff_exponent)
 
 		if(pressure_affected)
 			//Atmosphere affects sound
@@ -130,8 +141,8 @@
 			sound_to_use.volume *= pressure_factor
 			//End Atmosphere affecting sound
 
-		if(sound_to_use.volume <= 0)
-			return //No sound
+		if(sound_to_use.volume < SOUND_AUDIBLE_VOLUME_MIN)
+			return FALSE
 
 		var/dx = turf_source.x - turf_loc.x // Hearing from the right/left
 		sound_to_use.x = dx * distance_multiplier
@@ -159,6 +170,7 @@
 	if(LAZYLEN(observers))
 		for(var/mob/dead/observer/O as anything in observers)
 			SEND_SOUND(src, sound_to_use)
+	return TRUE
 
 /proc/sound_to_playing_players(soundin, volume = 100, vary = FALSE, frequency = 0, channel = 0, pressure_affected = FALSE, sound/S)
 	if(!S)
@@ -175,20 +187,6 @@
 	var/sound/S = sound(null, FALSE, FALSE, channel, volume)
 	S.status = SOUND_UPDATE
 	SEND_SOUND(src, S)
-
-/client/proc/playtitlemusic(vol = 85)
-	set waitfor = FALSE
-	UNTIL(SSticker.login_music) //wait for SSticker init to set the login music
-
-	if(prefs && (prefs.toggles & SOUND_LOBBY))
-		SEND_SOUND(src, sound(SSticker.login_music.path, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC)) // MAD JAMS
-
-	UNTIL(SSticker.current_state >= GAME_STATE_PREGAME)
-	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.login_music.name]</i>[SSticker.login_music.author ? " by [SSticker.login_music.author]" : ""]"))
-
-/client/proc/playcreditsmusic(vol = 85)
-	SEND_SOUND(src, sound(SSticker.credits_music.path, repeat = 0, wait = 0, volume = vol, channel = CHANNEL_LOBBYMUSIC))
-	to_chat(src, span_greenannounce("Now Playing: <i>[SSticker.credits_music.name]</i>[SSticker.credits_music.author ? " by [SSticker.credits_music.author]" : ""]"))
 
 /proc/get_rand_frequency()
 	return rand(32000, 55000) //Frequency stuff only works with 45kbps oggs.
@@ -267,5 +265,6 @@
 				soundin= pick('sound/effects/paint_1.ogg','sound/effects/paint_2.ogg','sound/effects/paint_3.ogg')
 			if(SFX_BLOCK_BIG_METAL)
 				soundin = pick('sound/weapons/block/metal_block_01.ogg','sound/weapons/block/metal_block_02.ogg','sound/weapons/block/metal_block_03.ogg','sound/weapons/block/metal_block_04.ogg','sound/weapons/block/metal_block_05.ogg','sound/weapons/block/metal_block_06.ogg')
-
+			if(SFX_KEYBOARD)
+				soundin = pick('goon/sounds/keyboard1.ogg','goon/sounds/keyboard2.ogg','goon/sounds/keyboard3.ogg')
 	return soundin

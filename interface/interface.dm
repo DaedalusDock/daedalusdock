@@ -119,7 +119,7 @@
 	)
 	var/datum/http_request/issue_report = new
 	rustg_file_write(issue_body, "[GLOB.log_directory]/issue_reports/[ckey]-[world.time]-[SANITIZE_FILENAME(issue_title)].txt")
-	message_admins("BUGREPORT: Bug report filed by [ADMIN_LOOKUPFLW(src)], Title: [strip_html(issue_title)]")
+	message_admins("BUGREPORT: Bug report filed by [ADMIN_LOOKUPFLW(mob)], Title: [strip_html(issue_title)]")
 	issue_report.prepare(
 		RUSTG_HTTP_METHOD_POST,
 		"https://api.github.com/repos/[CONFIG_GET(string/issue_slug)]/issues",
@@ -155,7 +155,7 @@
 	if(prefs.lastchangelog != GLOB.changelog_hash)
 		prefs.lastchangelog = GLOB.changelog_hash
 		prefs.save_preferences()
-		winset(src, "infowindow.changelog", "font-style=;")
+		winset(src, "infobuttons.changelog", "font-style=;")
 
 /client/verb/hotkeys_help()
 	set name = "Hotkeys Help"

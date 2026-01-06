@@ -83,6 +83,9 @@
 	var/verb_yell = "yells"
 	var/speech_span
 
+	/// The list of factions this atom belongs to
+	var/list/faction
+
 	///Delay in deciseconds between inertia based movement
 	var/inertia_move_delay = 5
 
@@ -215,7 +218,7 @@
 
 	vis_locs = null //clears this atom out of all viscontents
 	if(length(vis_contents))
-		vis_contents.Cut()
+		cut_viscontents()
 
 /atom/movable/proc/update_emissive_block()
 	if(!blocks_emissive)
@@ -673,7 +676,7 @@
 ///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
 /atom/movable/proc/become_hearing_sensitive(trait_source = TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
-	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
+	if(HAS_TRAIT_NOT_FROM(src, TRAIT_HEARING_SENSITIVE, trait_source))
 		return
 
 	for(var/atom/movable/location as anything in get_nested_locs(src) + src)
@@ -689,7 +692,7 @@
 ///allows this movable to hear and adds itself to the important_recursive_contents list of itself and every movable loc its in
 /atom/movable/proc/become_radio_sensitive(trait_source = TRAIT_GENERIC)
 	ADD_TRAIT(src, TRAIT_HEARING_SENSITIVE, trait_source)
-	if(!HAS_TRAIT(src, TRAIT_HEARING_SENSITIVE))
+	if(HAS_TRAIT_NOT_FROM(src, TRAIT_HEARING_SENSITIVE, trait_source))
 		return
 
 	for(var/atom/movable/location as anything in get_nested_locs(src) + src)
@@ -1048,12 +1051,14 @@
 		dist_y = olddist_x
 		dx = dy
 		dy = olddx
+
 	thrown_thing.dist_x = dist_x
 	thrown_thing.dist_y = dist_y
 	thrown_thing.dx = dx
 	thrown_thing.dy = dy
 	thrown_thing.diagonal_error = dist_x/2 - dist_y
 	thrown_thing.start_time = world.time
+	thrown_thing.origin_turf = get_turf(src)
 
 	if(LAZYLEN(grabbed_by))
 		free_from_all_grabs()
@@ -1136,7 +1141,7 @@
 	return
 
 
-/atom/movable/proc/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect, fov_effect = TRUE)
+/atom/movable/proc/do_attack_animation(atom/attacked_atom, visual_effect_icon, obj/item/used_item, no_effect, fov_effect = TRUE, do_hurt = TRUE)
 	if(!no_effect && (visual_effect_icon || used_item))
 		do_item_attack_animation(attacked_atom, visual_effect_icon, used_item)
 
@@ -1171,7 +1176,8 @@
 		animate(AM, pixel_x = pixel_x + pixel_x_diff, pixel_y = pixel_y + pixel_y_diff, transform=rotated_transform, time = 1, easing=BACK_EASING|EASE_IN, flags = ANIMATION_PARALLEL)
 		animate(pixel_x = pixel_x - pixel_x_diff, pixel_y = pixel_y - pixel_y_diff, transform=initial_transform, time = 2, easing=SINE_EASING, flags = ANIMATION_PARALLEL)
 
-	attacked_atom.do_hurt_animation()
+	if(do_hurt)
+		attacked_atom.do_hurt_animation()
 
 /// Plays an animation for getting hit.
 /atom/proc/do_hurt_animation()
@@ -1188,7 +1194,7 @@
 */
 
 /// Gets or creates the relevant language holder. For mindless atoms, gets the local one. For atom with mind, gets the mind one.
-/atom/movable/proc/get_language_holder(get_minds = TRUE)
+/atom/movable/proc/get_language_holder(get_minds = TRUE) as /datum/language_holder
 	RETURN_TYPE(/datum/language_holder)
 	if(!language_holder)
 		language_holder = new initial_language_holder(src)
@@ -1341,3 +1347,37 @@
 	REMOVE_TRAIT(src, TRAIT_PASSMOB, source)
 	if(!HAS_TRAIT(src, TRAIT_PASSMOB))
 		pass_flags &= ~PASSMOB
+
+/atom/movable/proc/become_fluorescent()
+	ADD_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT, TRAIT_GENERIC)
+	invisibility = INVISIBILITY_MAXIMUM
+	alpha = 0
+
+/atom/movable/proc/lose_fluorescence()
+	REMOVE_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT, TRAIT_GENERIC)
+	animate(src, alpha = initial(alpha), time = 1 SECOND)
+	invisibility = initial(invisibility)
+
+/atom/movable/proc/uv_illuminate(source, animate_time = 1 SECOND, new_alpha = 255)
+	SHOULD_CALL_PARENT(TRUE)
+
+	if(!HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
+	SEND_SIGNAL(src, COMSIG_MOVABLE_UV_EXPOSE, source, animate_time, new_alpha)
+
+	ADD_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED, source)
+	return TRUE
+
+/atom/movable/proc/uv_hide(source, animate_time = 0)
+	SHOULD_CALL_PARENT(TRUE)
+
+	if(!HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENT))
+		return
+
+	SEND_SIGNAL(src, COMSIG_MOVABLE_UV_HIDE, source, animate_time)
+
+	REMOVE_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED, source)
+
+	if(!HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED))
+		return TRUE

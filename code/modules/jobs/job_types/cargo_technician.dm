@@ -17,11 +17,10 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/cargo_tech,
-			SPECIES_PLASMAMAN = /datum/outfit/job/cargo_tech/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_EASY
+	paycheck = PAYCHECK_ASSISTANT * 5
 	paycheck_department = ACCOUNT_CAR
 	departments_list = list(
 		/datum/job_department/cargo,
@@ -44,20 +43,11 @@
 	name = JOB_DECKHAND
 	jobtype = /datum/job/cargo_technician
 
-	id_trim = /datum/id_trim/job/cargo_technician
+	id_template = /datum/access_template/job/cargo_technician
 	uniform = /obj/item/clothing/under/rank/cargo/tech
 	belt = /obj/item/modular_computer/tablet/pda/cargo
 	ears = /obj/item/radio/headset/headset_cargo
 	l_hand = /obj/item/export_scanner
-
-/datum/outfit/job/cargo_tech/plasmaman
-	name = JOB_DECKHAND + " (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/cargo
-	gloves = /obj/item/clothing/gloves/color/plasmaman/cargo
-	head = /obj/item/clothing/head/helmet/space/plasmaman/cargo
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/cargo_tech/mod
 	name = JOB_DECKHAND + " (MODsuit)"

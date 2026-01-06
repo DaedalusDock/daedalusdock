@@ -7,7 +7,7 @@
 ///Universal IV that can drain blood or feed reagents over a period of time from or to a replaceable container
 /obj/machinery/iv_drip
 	name = "\improper IV drip"
-	desc = "An IV drip with an advanced infusion pump that can both drain blood into and inject liquids from attached containers. Blood packs are injected at twice the displayed rate. Right-Click to detach the IV or the attached container."
+	desc = "An IV drip with an advanced infusion pump that can both drain blood into and inject liquids from attached containers. Blood packs are injected at twice the displayed rate."
 	icon = 'icons/obj/iv_drip.dmi'
 	icon_state = "iv_drip"
 	base_icon_state = "iv_drip"
@@ -30,7 +30,7 @@
 	var/static/list/drip_containers = typecacheof(list(
 		/obj/item/reagent_containers/blood,
 		/obj/item/reagent_containers/food,
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/cup,
 		/obj/item/reagent_containers/chem_pack,
 	))
 	// If the blood draining tab should be greyed out
@@ -233,6 +233,17 @@
 	user.visible_message(span_warning("[usr] begins attaching [src] to [target]..."), span_warning("You begin attaching [src] to [target]."))
 	if(!do_after(usr, target, 1 SECONDS))
 		return
+
+	if(isliving(user) && iscarbon(target))
+		var/mob/living/carbon/carbon_target = target
+		var/mob/living/living_user = user
+		var/datum/roll_result/result = living_user.stat_roll(7, /datum/rpg_skill/anatomy)
+		if(result.outcome <= FAILURE)
+			result.do_skill_sound(user)
+			to_chat(user, result.create_tooltip("That is not where an IV should be inserted, but it will suffice."))
+			carbon_target.bleed(10)
+			carbon_target.apply_damage(5, BRUTE, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM), sharpness = SHARP_POINTY)
+
 	usr.visible_message(span_warning("[usr] attaches [src] to [target]."), span_notice("You attach [src] to [target]."))
 	var/datum/reagents/container = get_reagent_holder()
 	log_combat(usr, target, "attached", src, "containing: ([container.get_reagent_log_string()])")

@@ -31,6 +31,17 @@
 #define BLOOD_CIRC_BAD 60
 #define BLOOD_CIRC_SURVIVE 30
 
+// Mood levels
+#define MOOD_LEVEL_HAPPY4 20
+#define MOOD_LEVEL_HAPPY3 15
+#define MOOD_LEVEL_HAPPY2 10
+#define MOOD_LEVEL_HAPPY1 5
+#define MOOD_LEVEL_NEUTRAL 0
+#define MOOD_LEVEL_SAD1 -5
+#define MOOD_LEVEL_SAD2 -10
+#define MOOD_LEVEL_SAD3 -15
+#define MOOD_LEVEL_SAD4 -20
+
 // Values for flash_pain()
 #define PAIN_SMALL "weakest_pain"
 #define PAIN_MEDIUM "weak_pain"
@@ -130,14 +141,12 @@
 #define SPECIES_MONKEY "monkey"
 #define SPECIES_MOTH "moth"
 #define SPECIES_MUSHROOM "mush"
-#define SPECIES_PLASMAMAN "plasmaman"
 #define SPECIES_PODPERSON "pod"
 #define SPECIES_SAURIAN "saurian"
 #define SPECIES_SHADOW "shadow"
 #define SPECIES_SKELETON "skeleton"
 #define SPECIES_SNAIL "snail"
 #define SPECIES_TESHARI "teshari"
-#define SPECIES_VAMPIRE "vampire"
 #define SPECIES_VOX "vox"
 #define SPECIES_ZOMBIE "zombie"
 #define SPECIES_ZOMBIE_INFECTIOUS "memezombie"
@@ -171,7 +180,10 @@
 ///Heartbeat is gone... He's dead Jim :(
 #define BEAT_NONE 0
 
+/// How much oxyloss is suffered on a failed breath.
 #define HUMAN_FAILBREATH_OXYLOSS 1
+/// How much oxyloss is recovered on a successful breath.
+#define HUMAN_OXYLOSS_RECOVERY -5
 
 #define HEAT_DAMAGE_LEVEL_1 1 //Amount of damage applied when your body temperature just passes the 360.15k safety point
 #define HEAT_DAMAGE_LEVEL_2 1.5 //Amount of damage applied when your body temperature passes the 400K point
@@ -352,10 +364,10 @@
 
 ///Flags used by the flags parameter of electrocute act.
 
-///Makes it so that the shock doesn't take gloves into account.
-#define SHOCK_NOGLOVES (1 << 0)
-///Used when the shock is from a tesla bolt.
-#define SHOCK_TESLA (1 << 1)
+/// The shock is applied by hands, check gloves siemen coeff
+#define SHOCK_HANDS (1 << 0)
+/// Shock damage is reduced by the average siemen's coeff
+#define SHOCK_USE_AVG_SIEMENS (1 << 4)
 ///Used when an illusion shocks something. Makes the shock deal stamina damage and not trigger certain secondary effects.
 #define SHOCK_ILLUSION (1 << 2)
 ///The shock doesn't stun.
@@ -418,8 +430,6 @@
 #define AGE_MINOR 20  //legal age of space drinking and smoking
 #define WIZARD_AGE_MIN 30 //youngest a wizard can be
 #define APPRENTICE_AGE_MIN 29 //youngest an apprentice can be
-#define SHOES_SLOWDOWN 0 //How much shoes slow you down by default. Negative values speed you up
-#define SHOES_SPEED_SLIGHT  SHOES_SLOWDOWN - 1 // slightest speed boost to movement
 #define POCKET_STRIP_DELAY (4 SECONDS) //time taken to search somebody's pockets
 #define DOOR_CRUSH_DAMAGE 15 //the amount of damage that airlocks deal when they crush you
 
@@ -479,6 +489,8 @@
 #define CE_ANTICOAGULANT "anticoagulant"
 /// Enables brain regeneration even in poor circumstances
 #define CE_BRAIN_REGEN "brainregen"
+/// Suppresses the VISIBLE effects of hunger, hunger is still happening tho.
+#define CE_HIDE_HUNGER "hide_hunger"
 
 // Pulse levels, very simplified.
 #define PULSE_NONE 0 // So !M.pulse checks would be possible.
@@ -490,6 +502,10 @@
 #define GETPULSE_HAND 0 // Less accurate. (hand)
 #define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
 #define PULSE_MAX_BPM 250 // Highest, readable BPM by machines and humans.
+
+/// Jaundice severities.
+#define JAUNDICE_EYES 1
+#define JAUNDICE_SKIN 2
 
 // Partial stasis sources
 #define STASIS_CRYOGENIC_FREEZING "cryo"
@@ -762,6 +778,10 @@
 /// The default mob sprite size (used for shrinking or enlarging the mob sprite to regular size)
 #define RESIZE_DEFAULT_SIZE 1
 
+//Lying angles, which way your head points
+#define LYING_ANGLE_EAST 90
+#define LYING_ANGLE_WEST 270
+
 /// Get the client from the var
 #define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
 
@@ -809,11 +829,15 @@ GLOBAL_LIST_INIT(voice_type2sound_ref, voice_type2sound)
 #define BREATH_FAILED -2
 
 /// Attack missed.
-#define MOB_ATTACKEDBY_MISS 3
+#define MOB_ATTACKEDBY_MISS -1
 /// Attack completely failed (missing user, etc)
 #define MOB_ATTACKEDBY_FAIL 0
+/// Attack hit and dealt damage.
 #define MOB_ATTACKEDBY_SUCCESS 1
+/// Attack hit but did no damage.
 #define MOB_ATTACKEDBY_NO_DAMAGE 2
+/// Attack was hit but was blocked.
+#define MOB_ATTACKEDBY_BLOCKED 3
 
 #define BLIND_NOT_BLIND 0
 #define BLIND_PHYSICAL 1

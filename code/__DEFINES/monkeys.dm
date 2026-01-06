@@ -27,11 +27,14 @@
 #define MONKEY_RETALIATE_PROB 85
 
 /// amount of aggro to add to an enemy when they attack user
-#define MONKEY_HATRED_AMOUNT 4
+#define MONKEY_HATRED_AMOUNT 7
 /// amount of aggro to add to an enemy when a monkey is recruited
 #define MONKEY_RECRUIT_HATED_AMOUNT 2
+
 /// probability of reducing aggro by one when the monkey attacks
-#define MONKEY_HATRED_REDUCTION_PROB 20
+#define MONKEY_HATRED_REDUCTION_PROB 35
+/// probability of reducing aggro by one when the monkey is unable to attack
+#define MONKEY_HATRED_REDUCTION_FAILATTACK_PROB 50
 
 ///Monkey recruit cooldown
 #define MONKEY_RECRUIT_COOLDOWN 1 MINUTES

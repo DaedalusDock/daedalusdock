@@ -1,6 +1,9 @@
 /*
 	Vending machine refills can be found at /code/modules/vending/ within each vending machine's respective file
 */
+TYPEINFO_DEF(/obj/item/vending_refill)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 70, ACID = 30)
+
 /obj/item/vending_refill
 	name = "resupply canister"
 	var/machine_name = "Generic"
@@ -17,7 +20,6 @@
 	throw_speed = 1
 	throw_range = 7
 	w_class = WEIGHT_CLASS_BULKY
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 70, ACID = 30)
 
 	// Built automatically from the corresponding vending machine.
 	// If null, considered to be full. Otherwise, is list(/typepath = amount).

@@ -13,9 +13,9 @@
 #define RADIO_KEY_ENGINEERING "e"
 #define RADIO_TOKEN_ENGINEERING ":e"
 
-#define RADIO_CHANNEL_COMMAND "Management"
-#define RADIO_KEY_COMMAND "c"
-#define RADIO_TOKEN_COMMAND ":c"
+#define RADIO_CHANNEL_FEDERATION "Federation"
+#define RADIO_KEY_FEDERATION "c"
+#define RADIO_TOKEN_FEDERATION ":c"
 
 #define RADIO_CHANNEL_SCIENCE "Science"
 #define RADIO_KEY_SCIENCE "n"
@@ -107,6 +107,7 @@
 #define RADIO_AIRLOCK "airlock"
 #define RADIO_MAGNETS "magnets"
 #define RADIO_PDAMESSAGE "pdamessage"
+#define RADIO_PAGER_MESSAGE "pager_message"
 
 #define DEFAULT_SIGNALER_CODE 30
 

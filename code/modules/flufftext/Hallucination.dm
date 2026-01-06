@@ -30,6 +30,12 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	if(!hallucination)
 		return
 
+	if(hallucination >= 60)
+		apply_status_effect(/datum/status_effect/skill_mod/hallucinating)
+	else
+		remove_status_effect(/datum/status_effect/skill_mod/hallucinating)
+
+
 	hallucination = max(hallucination - (0.5 * delta_time), 0)
 	if(world.time < next_hallucination)
 		return
@@ -233,14 +239,12 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /datum/hallucination/fake_flood/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	qdel(flood_turfs)
 	flood_turfs = list()
 	if(target.client)
 		target.client.images.Remove(flood_images)
-	qdel(flood_images)
-	flood_images = list()
-	qdel(flood_image_holders)
-	flood_image_holders = list()
+	flood_images = null
+	flood_turfs = null
+	QDEL_LIST(flood_image_holders)
 	return ..()
 
 /obj/effect/hallucination/simple/xeno
@@ -1614,7 +1618,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 
 /datum/hallucination/husks/Destroy()
 	target?.client?.images -= halbody
-	QDEL_NULL(halbody)
+	halbody = null
 	return ..()
 
 //hallucination projectile code in code/modules/projectiles/projectile/special.dm

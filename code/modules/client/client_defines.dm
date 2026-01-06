@@ -93,8 +93,8 @@
 		////////////
 		//SECURITY//
 		////////////
-	// comment out the line below when debugging locally to enable the options & messages menu
-	control_freak = 1
+
+	control_freak = CONTROL_FREAK_SKIN
 
 		////////////////////////////////////
 		//things that require the database//
@@ -111,6 +111,9 @@
 	var/account_join_date = null
 	///Age of byond account in days
 	var/account_age = -1
+	///Linked Discord account ID. Null is valid if the bunker is disabled.
+	var/datum/discord_link_record/linked_discord_account = null
+
 
 	preload_rsc = PRELOAD_RSC
 
@@ -148,7 +151,7 @@
 	var/list/clicklimiter
 
 	///these persist between logins/logouts during the same round.
-	var/datum/player_details/player_details
+	var/datum/persistent_client/persistent_client
 
 	///Should only be a key-value list of north/south/east/west = atom/movable/screen.
 	var/list/char_render_holders
@@ -204,6 +207,8 @@
 
 	var/list/parallax_layers
 	var/list/parallax_layers_cached
+	var/atom/movable/screen/parallax_root/parallax_master
+
 	///this is the last recorded client eye by SSparallax/fire()
 	var/atom/movable/movingmob
 	var/turf/previous_turf
@@ -213,8 +218,8 @@
 	var/parallax_movedir = 0
 	/// How many parallax layers to show our client
 	var/parallax_layers_max = 4
-	/// Timer for the area directional animation
-	var/parallax_animate_timer
+	/// Timers for the area directional animation, one for each layer
+	var/list/parallax_animate_timers
 	/// Do we want to do parallax animations at all?
 	/// Exists to prevent laptop fires
 	var/do_parallax_animations = TRUE
@@ -277,3 +282,6 @@
 
 	/// Keeps track of what ambience we are playing. Yeah i know it sucks.
 	var/playing_ambience
+
+	/// The DPI scale of the client. 1 is equivalent to 100% window scaling, 2 will be 200% window scaling
+	var/window_scaling = null

@@ -6,6 +6,11 @@
 	dir = EAST
 	density = TRUE
 
+	light_color = LIGHT_COLOR_VIVID_GREEN
+	light_inner_range = 0.1
+	light_outer_range = 1.4
+	light_power = 1
+
 	var/obj/machinery/bodyscanner_console/linked_console
 
 /obj/machinery/bodyscanner/Initialize(mapload)
@@ -16,6 +21,11 @@
 	if(!QDELETED(linked_console))
 		qdel(linked_console)
 	return ..()
+
+/obj/machinery/bodyscanner/examine(mob/user)
+	. = ..()
+	if(occupant && get_dist(user, src) <= 1)
+		. += occupant.examine(user)
 
 /obj/machinery/bodyscanner/update_icon_state()
 	. = ..()
@@ -55,7 +65,7 @@
 /obj/machinery/bodyscanner/wrench_act(mob/living/user, obj/item/tool)
 	tool.play_tool_sound(src, 50)
 	setDir(turn(dir, 180))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bodyscanner/MouseDroppedOn(mob/living/carbon/human/target, mob/user)
 	if(!istype(target) || !can_interact(user) || HAS_TRAIT(user, TRAIT_UI_BLOCKED) || !Adjacent(user, mover = target) || target.buckled || target.has_buckled_mobs())
@@ -84,6 +94,16 @@
 	if(!user.canUseTopic(src, USE_CLOSE|USE_SILICON_REACH))
 		return
 	eject_occupant(user)
+
+/obj/machinery/bodyscanner/set_is_operational(new_value)
+	. = ..()
+	refresh_light()
+
+/obj/machinery/bodyscanner/proc/refresh_light()
+	if(is_operational)
+		set_light(l_on = TRUE)
+	else
+		set_light(l_on = FALSE)
 
 /obj/machinery/bodyscanner/proc/eject_occupant(mob/user, resisted)
 	if(!occupant)
@@ -158,7 +178,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 /obj/machinery/bodyscanner_console/wrench_act(mob/living/user, obj/item/tool)
 	tool.play_tool_sound(src, 50)
 	setDir(turn(dir, 180))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/bodyscanner_console/deconstruct(disassembled)
 	. = ..()
@@ -186,6 +206,12 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 	scan = null
 	updateUsrDialog()
 
+/obj/machinery/bodyscanner_console/proc/print_scan(list/scan_data)
+	var/obj/item/paper/thermal/printout = new()
+	printout.name = "body scan report - [scan_data["name"]]"
+	printout.setText("<tt>[jointext(get_content(scan_data), null)]</tt>")
+	printout.forceMove(drop_location())
+
 /obj/machinery/bodyscanner_console/Topic(href, href_list)
 	. = ..()
 	if(.)
@@ -201,6 +227,15 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 
 	if(href_list["erase"])
 		clear_scan()
+		return TRUE
+
+	if(href_list["print"])
+		if(!length(scan))
+			to_chat(usr, span_warning("[icon2html(src, usr)] Error: No scan stored."))
+			return FALSE
+
+		playsound(src, 'goon/sounds/printer.ogg', 50)
+		addtimer(CALLBACK(src, PROC_REF(print_scan), scan.Copy()), 3 SECONDS, TIMER_DELETE_ME)
 		return TRUE
 
 	if(href_list["send2display"])
@@ -240,6 +275,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 		<fieldset class='computerPaneSimple' style='margin: 10px auto;text-align:center'>
 				[button_element(src, "Scan", "scan=1")]
 				[button_element(src, "Eject Occupant", "eject=1")]
+				[button_element(src, "Print Scan", "print=1")]
 				[button_element(src, "Erase Scan", "erase=1")]
 				[button_element(src, "Push to Display", "send2display=1")]
 		</fieldset>
@@ -401,7 +437,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Physical Trauma:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["brute"],TRUE)]
+						[get_damage_severity(scan["brute"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -412,7 +448,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Burn Severity:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["burn"],TRUE)]
+						[get_damage_severity(scan["burn"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -423,7 +459,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Systematic Organ Failure:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["toxin"],TRUE)]
+						[get_damage_severity(scan["toxin"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -434,7 +470,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Oxygen Deprivation:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["oxygen"],TRUE)]
+						[get_damage_severity(scan["oxygen"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -445,7 +481,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 						<strong>Genetic Damage:</strong>
 					</td>
 					<td style='padding-left: 5px;padding-right: 5px'>
-						[get_severity(scan["genetic"],TRUE)]
+						[get_damage_severity(scan["genetic"],TRUE)]
 					</td>
 				</tr>
 	"}
@@ -553,21 +589,25 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 			. += "<td style='padding-left: 5px;padding-right: 5px'>"
 			if(!(limb["brute_dam"] || limb["burn_dam"]))
 				. += "None</td>"
+			else
 
-			if(limb["brute_dam"])
-				. += {"
-					<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[capitalize(get_wound_severity(limb["brute_ratio"]))] physical trauma</span><br>
-				"}
-			if(limb["burn_dam"])
-				. += {"
-					<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[capitalize(get_wound_severity(limb["burn_ratio"]))] burns</span>
-					</td>
-				"}
+				if(limb["brute_dam"])
+					. += {"
+						<span style='font-weight: bold; color: [COLOR_MEDICAL_BRUTE]'>[capitalize(get_wound_severity(limb["brute_ratio"]))] physical trauma</span><br>
+					"}
+				if(limb["burn_dam"])
+					. += {"
+						<span style='font-weight: bold; color: [COLOR_MEDICAL_BURN]'>[capitalize(get_wound_severity(limb["burn_ratio"]))] burns</span>
+					"}
+
+				. += "</td>"
+
 			. += {"
 				<td style='padding-left: 5px;padding-right: 5px'>
 					<span>[english_list(limb["scan_results"], nothing_text = "&nbsp;")]</span>
 				</td>
 			"}
+
 		. += "</tr>"
 
 	. += "<tr><th colspan='3'><center>Internal Organs</center></th></tr>"
@@ -575,7 +615,7 @@ DEFINE_INTERACTABLE(/obj/machinery/bodyscanner_console)
 		. += "<tr><td style='padding-left: 5px;padding-right: 5px'>[organ["name"]]</td>"
 
 		if(organ["damage_percent"])
-			. += "<td style='padding-left: 5px;padding-right: 5px'>[get_severity(organ["damage_percent"], TRUE)]</td>"
+			. += "<td style='padding-left: 5px;padding-right: 5px'>[get_damage_severity(organ["damage_percent"], TRUE)]</td>"
 		else
 			. += "<td style='padding-left: 5px;padding-right: 5px'>None</td>"
 

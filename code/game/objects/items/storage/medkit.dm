@@ -36,7 +36,7 @@
 		/obj/item/stack/medical/mesh = 2,
 		/obj/item/reagent_containers/hypospray/medipen = 1,
 		/obj/item/stack/splint = 1
-		)
+	)
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/emergency
@@ -48,7 +48,6 @@
 	if(empty)
 		return
 	var/static/items_inside = list(
-		/obj/item/healthanalyzer/wound = 1,
 		/obj/item/stack/gauze = 1,
 		/obj/item/stack/medical/suture = 1,
 		/obj/item/stack/medical/ointment = 1,
@@ -73,8 +72,8 @@
 		/obj/item/healthanalyzer,
 		/obj/item/dnainjector,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/cup/beaker,
+		/obj/item/reagent_containers/cup/bottle,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/medigel,
@@ -138,7 +137,7 @@
 	generate_items_inside(items_inside,src)
 
 /obj/item/storage/medkit/ancient
-	icon_state = "oldfirstaid"
+	icon_state = "medkit"
 	desc = "A first aid kit with the ability to heal common types of injuries."
 
 /obj/item/storage/medkit/ancient/PopulateContents()
@@ -245,7 +244,7 @@
 	desc = "An advanced kit to help deal with advanced wounds."
 	icon_state = "medkit_advanced"
 	inhand_icon_state = "medkit-rad"
-	custom_premium_price = PAYCHECK_HARD * 6
+	custom_premium_price = PAYCHECK_ASSISTANT * 9
 	damagetype_healed = "all"
 
 /obj/item/storage/medkit/advanced/PopulateContents()
@@ -529,7 +528,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	throw_range = 7
-	custom_premium_price = PAYCHECK_MEDIUM * 4
+	custom_premium_price = PAYCHECK_ASSISTANT * 7
 	/// var to prevent it freezing the same things over and over
 	var/cooling = FALSE
 

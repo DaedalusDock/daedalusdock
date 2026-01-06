@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/banhammer)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+
 /obj/item/banhammer
 	desc = "A banhammer."
 	name = "banhammer"
@@ -12,7 +15,6 @@
 	attack_verb_continuous = list("bans")
 	attack_verb_simple = list("ban")
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/banhammer/Initialize(mapload)
@@ -27,14 +29,17 @@ oranges says: This is a meme relating to the english translation of the ss13 rus
 mrdoombringer sez: and remember kids, if you try and PR a fix for this item's grammar, you are admitting that you are, indeed, a newfriend.
 for further reading, please see: https://github.com/tgstation/tgstation/pull/30173 and https://translate.google.com/translate?sl=auto&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=%2F%2Flurkmore.to%2FSS13&edit-text=&act=url
 */
-/obj/item/banhammer/attack(mob/M, mob/living/user)
+/obj/item/banhammer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return
+
+	var/mob/living/M = interacting_with
 	if(user.zone_selected == BODY_ZONE_HEAD)
 		M.visible_message(span_danger("[user] are stroking the head of [M] with a bangammer."), span_userdanger("[user] are stroking your head with a bangammer."), span_hear("You hear a bangammer stroking a head.")) // see above comment
 	else
 		M.visible_message(span_danger("[M] has been banned FOR NO REISIN by [user]!"), span_userdanger("You have been banned FOR NO REISIN by [user]!"), span_hear("You hear a banhammer banning someone."))
 	playsound(loc, 'sound/effects/adminhelp.ogg', 15) //keep it at 15% volume so people don't jump out of their skin too much
-	if(user.combat_mode)
-		return ..(M, user)
+	user.do_attack_animation(M, used_item = src)
 
 /obj/item/sord
 	name = "\improper SORD"
@@ -56,6 +61,9 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	span_suicide("You try to impale yourself with [src], but it's USELESS..."))
 	return SHAME
 
+TYPEINFO_DEF(/obj/item/claymore)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+
 /obj/item/claymore
 	name = "claymore"
 	desc = "What are you standing around staring at this for? Get to killing!"
@@ -74,7 +82,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/claymore/Initialize(mapload)
@@ -140,7 +147,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	user.add_stun_absorption("highlander", INFINITY, 1, " is protected by the power of Scotland!", "The power of Scotland absorbs the stun!", " is protected by the power of Scotland!")
 	user.ignore_slowdown(HIGHLANDER)
 
-/obj/item/claymore/highlander/dropped(mob/living/user)
+/obj/item/claymore/highlander/unequipped(mob/living/user)
 	. = ..()
 	user.unignore_slowdown(HIGHLANDER)
 
@@ -152,6 +159,9 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/claymore/highlander/attack(mob/living/target, mob/living/user)
 	. = ..()
+	if(.)
+		return
+
 	if(!QDELETED(target) && target.stat == DEAD && target.mind && target.mind.special_role == "highlander")
 		user.fully_heal(admin_revive = FALSE) //STEAL THE LIFE OF OUR FALLEN FOES
 		add_notch(user)
@@ -244,6 +254,9 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 /obj/item/claymore/highlander/robot/process()
 	loc.layer = ABOVE_ALL_MOB_LAYER
 
+TYPEINFO_DEF(/obj/item/katana)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+
 /obj/item/katana
 	name = "katana"
 	desc = "Woefully underpowered in D20."
@@ -263,7 +276,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/katana/suicide_act(mob/user)
@@ -272,6 +284,9 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/katana/cursed //used by wizard events, see the tendril_loot.dm file for the miner one
 	slot_flags = null
+
+TYPEINFO_DEF(/obj/item/throwing_star)
+	default_materials = list(/datum/material/iron=500, /datum/material/glass=500)
 
 /obj/item/throwing_star
 	name = "throwing star"
@@ -288,7 +303,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 	w_class = WEIGHT_CLASS_SMALL
 	sharpness = SHARP_POINTY
-	custom_materials = list(/datum/material/iron=500, /datum/material/glass=500)
 	resistance_flags = FIRE_PROOF
 
 /obj/item/throwing_star/stamina
@@ -305,6 +319,9 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 0
 	embedding = list("pain_mult" = 0, "jostle_pain_mult" = 0, "embed_chance" = 100, "fall_chance" = 0)
 
+TYPEINFO_DEF(/obj/item/switchblade)
+	default_materials = list(/datum/material/iron=12000)
+
 /obj/item/switchblade
 	name = "switchblade"
 	icon_state = "switchblade"
@@ -318,7 +335,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 5
 	throw_speed = 1.5
 	throw_range = 6
-	custom_materials = list(/datum/material/iron=12000)
 	hitsound = 'sound/weapons/genhit.ogg'
 	attack_verb_continuous = list("stubs", "pokes")
 	attack_verb_simple = list("stub", "poke")
@@ -370,6 +386,9 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		user.visible_message(span_suicide("[user] is strangling [user.p_them()]self with [src]'s cord! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return(OXYLOSS)
 
+TYPEINFO_DEF(/obj/item/cane)
+	default_materials = list(/datum/material/iron=50)
+
 /obj/item/cane
 	name = "cane"
 	desc = "A cane used by a true gentleman. Or a clown."
@@ -381,7 +400,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	force = 5
 	throwforce = 5
 	w_class = WEIGHT_CLASS_SMALL
-	custom_materials = list(/datum/material/iron=50)
 	attack_verb_continuous = list("bludgeons", "whacks", "disciplines", "thrashes")
 	attack_verb_simple = list("bludgeon", "whack", "discipline", "thrash")
 
@@ -538,7 +556,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	icon_state = "skateboard2"
 	inhand_icon_state = "skateboard2"
 	board_item_type = /obj/vehicle/ridden/scooter/skateboard/pro
-	custom_premium_price = PAYCHECK_HARD * 5
+	custom_premium_price = PAYCHECK_ASSISTANT * 4.5
 
 /obj/item/melee/skateboard/hoverboard
 	name = "hoverboard"
@@ -546,7 +564,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	icon_state = "hoverboard_red"
 	inhand_icon_state = "hoverboard_red"
 	board_item_type = /obj/vehicle/ridden/scooter/skateboard/hoverboard
-	custom_premium_price = PAYCHECK_COMMAND * 5.4 //If I can't make it a meme I'll make it RAD
+	custom_premium_price = PAYCHECK_ASSISTANT * 69
 
 /obj/item/melee/skateboard/hoverboard/admin
 	name = "Board Of Directors"
@@ -554,6 +572,9 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	icon_state = "hoverboard_nt"
 	inhand_icon_state = "hoverboard_nt"
 	board_item_type = /obj/vehicle/ridden/scooter/skateboard/hoverboard/admin
+
+TYPEINFO_DEF(/obj/item/melee/baseball_bat)
+	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 3.5)
 
 /obj/item/melee/baseball_bat
 	name = "baseball bat"
@@ -567,7 +588,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 12
 	attack_verb_continuous = list("beats", "smacks")
 	attack_verb_simple = list("beat", "smack")
-	custom_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 3.5)
 	w_class = WEIGHT_CLASS_HUGE
 	var/homerun_ready = 0
 	var/homerun_able = 0
@@ -607,8 +627,12 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/melee/baseball_bat/attack(mob/living/target, mob/living/user)
 	. = ..()
+	if(.)
+		return
+
 	if(HAS_TRAIT(user, TRAIT_PACIFISM))
 		return
+
 	// we obtain the relative direction from the bat itself to the target
 	var/relative_direction = get_cardinal_dir(src, target)
 	var/atom/throw_target = get_edge_target_turf(target, relative_direction)
@@ -664,10 +688,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	))
 
 
-/obj/item/melee/flyswatter/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(!proximity_flag)
-		return
+/obj/item/melee/flyswatter/afterattack(atom/target, mob/user, list/modifiers)
 	if(!is_type_in_typecache(target, strong_against))
 		return
 	if (HAS_TRAIT(user, TRAIT_PACIFISM))
@@ -703,13 +724,16 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	name = "\improper ACME Extendo-Hand"
 	desc = "A novelty extendo-hand produced by the ACME corporation. Originally designed to knock out roadrunners."
 
-/obj/item/extendohand/attack(atom/M, mob/living/carbon/human/user, params)
-	var/dist = get_dist(M, user)
-	if(dist < min_reach)
-		to_chat(user, span_warning("[M] is too close to use [src] on."))
-		return
-	var/list/modifiers = params2list(params)
-	M.attack_hand(user, modifiers)
+/obj/item/extendohand/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
+	if(get_dist(user, interacting_with) < min_reach)
+		to_chat(user, span_warning("[interacting_with] is too close to use [src] on."))
+		return ITEM_INTERACT_BLOCKING
+
+	interacting_with.attack_hand(user, modifiers)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/gohei
 	name = "gohei"
@@ -780,7 +804,7 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 /obj/item/highfrequencyblade/get_block_chance(mob/living/carbon/human/wielder, atom/movable/hitby, damage, attack_type, armor_penetration)
 	if((attack_type == PROJECTILE_ATTACK) && wielded)
-		return TRUE
+		return 100
 
 	. = ..()
 
@@ -809,12 +833,13 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 		return
 	return ..()
 
-/obj/item/highfrequencyblade/afterattack(atom/target, mob/user, proximity_flag, params)
+/obj/item/highfrequencyblade/afterattack(atom/target, mob/user, list/modifiers)
 	if(!wielded)
 		return ..()
-	if(!proximity_flag || !(isclosedturf(target) || isitem(target) || ismachinery(target) || isstructure(target) || isvehicle(target)))
+	if(!(isclosedturf(target) || isitem(target) || ismachinery(target) || isstructure(target) || isvehicle(target)))
 		return
-	slash(target, user, params)
+
+	slash(target, user, list2params(modifiers))
 
 /// triggered on wield of two handed item
 /obj/item/highfrequencyblade/proc/on_wield(obj/item/source, mob/user)

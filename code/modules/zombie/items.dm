@@ -19,7 +19,7 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, HAND_REPLACEMENT_TRAIT)
 
-/obj/item/zombie_hand/visual_equipped(mob/user, slot)
+/obj/item/zombie_hand/visual_equipped(mob/living/user, slot)
 	. = ..()
 	//these are intentionally inverted
 	var/i = user.get_held_index_of_item(src)
@@ -29,10 +29,7 @@
 		icon_state = icon_right
 
 /obj/item/zombie_hand/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(!proximity_flag)
-		return
-	else if(isliving(target))
+	if(isliving(target))
 		if(ishuman(target))
 			try_to_zombie_infect(target)
 		else

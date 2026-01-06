@@ -48,8 +48,8 @@
 	is_not_real_department = TRUE
 
 /datum/job_department/command
-	department_name = DEPARTMENT_MANAGEMENT
-	department_bitflags = DEPARTMENT_BITFLAG_MANAGEMENT
+	department_name = DEPARTMENT_FEDERATION
+	department_bitflags = DEPARTMENT_BITFLAG_FEDERATION
 	department_head = /datum/job/captain
 	department_experience_type = EXP_TYPE_COMMAND
 	display_order = 1
@@ -83,7 +83,7 @@
 /datum/job_department/medical
 	department_name = DEPARTMENT_MEDICAL
 	department_bitflags = DEPARTMENT_BITFLAG_MEDICAL
-	department_head = /datum/job/chief_medical_officer
+	department_head = /datum/job/augur
 	department_experience_type = EXP_TYPE_MEDICAL
 	display_order = 4
 	label_class = "medical"

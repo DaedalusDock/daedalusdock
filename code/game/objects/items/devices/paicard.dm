@@ -8,7 +8,6 @@
 	righthand_file = 'icons/mob/inhands/misc/devices_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = ITEM_SLOT_BELT
-	custom_premium_price = PAYCHECK_HARD * 1.25
 	resistance_flags = FIRE_PROOF | ACID_PROOF | INDESTRUCTIBLE
 
 	/// Spam alert prevention
@@ -110,7 +109,7 @@
 			/// The newly downloaded pAI personality
 			var/mob/living/silicon/pai/new_pai = new(src)
 			new_pai.set_real_name(candidate.name || pick(GLOB.ninja_names))
-			new_pai.key = candidate.key
+			new_pai.PossessByPlayer(candidate.key)
 			setPersonality(new_pai)
 			SSpai.candidates -= candidate
 		if("fix_speech")

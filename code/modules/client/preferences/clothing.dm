@@ -1,18 +1,3 @@
-/// Backpack preference
-/datum/preference/choiced/backpack
-	explanation = "Backpack"
-	savefile_key = "backpack"
-	savefile_identifier = PREFERENCE_CHARACTER
-
-/datum/preference/choiced/backpack/init_possible_values()
-	return GLOB.backpacklist
-
-/datum/preference/choiced/backpack/apply_to_human(mob/living/carbon/human/target, value)
-	target.backpack = value
-
-/datum/preference/choiced/backpack/create_default_value()
-	return DBACKPACK
-
 /// Jumpsuit preference
 /datum/preference/choiced/jumpsuit
 	explanation = "Uniform"

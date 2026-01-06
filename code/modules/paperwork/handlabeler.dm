@@ -36,32 +36,29 @@
 
 	return OXYLOSS
 
-/obj/item/hand_labeler/afterattack(atom/A, mob/user,proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/hand_labeler/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!mode) //if it's off, give up.
-		return
+		return NONE
 
 	if(!labels_left)
 		to_chat(user, span_warning("No labels left!"))
-		return
+		return ITEM_INTERACT_BLOCKING
 	if(!label || !length(label))
 		to_chat(user, span_warning("No text set!"))
-		return
-	if(length(A.name) + length(label) > 64)
+		return ITEM_INTERACT_BLOCKING
+	if(length(interacting_with.name) + length(label) > 64)
 		to_chat(user, span_warning("Label too big!"))
-		return
-	if(ismob(A))
+		return ITEM_INTERACT_BLOCKING
+	if(ismob(interacting_with))
 		to_chat(user, span_warning("You can't label creatures!")) // use a collar
-		return
+		return ITEM_INTERACT_BLOCKING
 
-	user.visible_message(span_notice("[user] labels [A] with \"[label]\"."), \
-		span_notice("You label [A] with \"[label]\"."))
-	A.AddComponent(/datum/component/label, label)
-	playsound(A, 'sound/items/handling/component_pickup.ogg', 20, TRUE)
+	user.visible_message(span_notice("[user] labels [interacting_with] with \"[label]\"."), \
+		span_notice("You label [interacting_with] with \"[label]\"."))
+	interacting_with.AddComponent(/datum/component/label, label)
+	playsound(interacting_with, 'sound/items/handling/component_pickup.ogg', 20, TRUE)
 	labels_left--
-
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/hand_labeler/attack_self(mob/user)
 	if(!ISADVANCEDTOOLUSER(user))
@@ -88,16 +85,14 @@
 		qdel(I)
 		labels_left = initial(labels_left) //Yes, it's capped at its initial value
 
-/obj/item/hand_labeler/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	return !mode
-
 /obj/item/hand_labeler/borg
 	name = "cyborg-hand labeler"
 
 /obj/item/hand_labeler/borg/afterattack(atom/A, mob/user, proximity)
 	. = ..()
-	if(!proximity)
+	if(. != ITEM_INTERACT_SUCCESS)
 		return
+
 	if(!iscyborg(user))
 		return
 

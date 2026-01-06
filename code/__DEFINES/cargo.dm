@@ -39,6 +39,8 @@
 
 /// The baseline unit for cargo crates. Adjusting this will change the cost of all in-game shuttles, crate export values, bounty rewards, and all supply pack import values, as they use this as their unit of measurement.
 #define CARGO_CRATE_VALUE 10
+/// How much money you get for successfully completing a cargo manifest.
+#define CARGO_MANIFEST_VALUE (CARGO_CRATE_VALUE * 1.5)
 
 GLOBAL_LIST_EMPTY(supplypod_loading_bays)
 
@@ -63,4 +65,4 @@ GLOBAL_LIST_INIT(podstyles, list(\
 #define SUPPLY_PACK_EMAG (1<<0)
 #define SUPPLY_PACK_CONTRABAND (1<<1)
 #define SUPPLY_PACK_DROPPOD_ONLY (1<<2)
-#define SUPPLY_PACK_GOVERNMENT (1<<3)
+#define SUPPLY_PACK_FEDERATION (1<<3)

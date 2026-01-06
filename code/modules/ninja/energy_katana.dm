@@ -40,13 +40,9 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-/obj/item/energy_katana/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
-
-	var/list/modifiers = params2list(click_parameters)
-
-	if(LAZYACCESS(modifiers, RIGHT_CLICK) && !target.density)
-		jaunt.teleport(user, target)
+/obj/item/energy_katana/ranged_interact_with_atom_secondary(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!interacting_with.density && jaunt.teleport(user, interacting_with))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/energy_katana/pickup(mob/living/user)
 	. = ..()
@@ -54,7 +50,7 @@
 	user.update_icons()
 	playsound(src, 'sound/items/unsheath.ogg', 25, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
-/obj/item/energy_katana/dropped(mob/user)
+/obj/item/energy_katana/unequipped(mob/user)
 	. = ..()
 	jaunt.Remove(user)
 	user.update_icons()

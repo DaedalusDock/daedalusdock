@@ -59,3 +59,20 @@
   - qol: You no longer goofily swap with others trying to move in the same direction
       as you if you're not faster than them
   - code_imp: Moved mobswap check logic into a separate proc and made it more readable
+2024-08-23:
+  Kapu1178:
+  - bugfix: Fixed an issue that caused the server to fail to restart under rare conditions.
+  - bugfix: Mobs with active players no longer show as catatonic
+2024-08-26:
+  Kapu1178:
+  - bugfix: Added fail-safe code to kill a mob's brain if the body somehow dies.
+  - bugfix: Added fail-safe code to attempt to prevent lingering grabbed status.
+  - bugfix: Withdrawal effects are properly removed.
+  - rscadd: Private Investigator's unsavory dreams.
+  - bugfix: Brute and Burn are no longer healed while sleeping.
+  - bugfix: Fixed space being unlit in some parts of the map.
+2024-08-28:
+  Kapu1178:
+  - qol: Upon death, you will be told exactly what dealt the killing blow. You can
+      click a button to see your health information at time of death.
+  - bugfix: Reduced needless(?) calls to updatehealth(), an expensive proc.

@@ -24,6 +24,9 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	))
 
 
+TYPEINFO_DEF(/obj/machinery/portable_atmospherics/canister)
+	default_armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 80, ACID = 50)
+
 /obj/machinery/portable_atmospherics/canister
 	name = "canister"
 	desc = "A canister for the storage of gas."
@@ -33,7 +36,6 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	greyscale_colors = "#ffff00#000000"
 	density = TRUE
 	volume = 2000
-	armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 0, LASER = 50, ENERGY = 100, BOMB = 10, BIO = 100, FIRE = 80, ACID = 50)
 	max_integrity = 300
 	integrity_failure = 0.4
 	//pressure_resistance = 7 * ONE_ATMOSPHERE
@@ -318,7 +320,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 
 	if(shielding_powered)
 		. += mutable_appearance(canister_overlay_file, "shielding")
-		. += emissive_appearance(canister_overlay_file, "shielding")
+		. += emissive_appearance(canister_overlay_file, "shielding", alpha = 90)
 
 	if(cell_container_opened)
 		. += mutable_appearance(canister_overlay_file, "cell_hatch")
@@ -337,16 +339,16 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	switch(air_pressure)
 		if((40 * ONE_ATMOSPHERE) to INFINITY)
 			. += mutable_appearance(canister_overlay_file, "can-3")
-			. += emissive_appearance(canister_overlay_file, "can-3-light", alpha = src.alpha)
+			. += emissive_appearance(canister_overlay_file, "can-3-light", alpha = 90)
 		if((10 * ONE_ATMOSPHERE) to (40 * ONE_ATMOSPHERE))
 			. += mutable_appearance(canister_overlay_file, "can-2")
-			. += emissive_appearance(canister_overlay_file, "can-2-light", alpha = src.alpha)
+			. += emissive_appearance(canister_overlay_file, "can-2-light", alpha = 90)
 		if((5 * ONE_ATMOSPHERE) to (10 * ONE_ATMOSPHERE))
 			. += mutable_appearance(canister_overlay_file, "can-1")
-			. += emissive_appearance(canister_overlay_file, "can-1-light", alpha = src.alpha)
+			. += emissive_appearance(canister_overlay_file, "can-1-light", alpha = 90)
 		if((10) to (5 * ONE_ATMOSPHERE))
 			. += mutable_appearance(canister_overlay_file, "can-0")
-			. += emissive_appearance(canister_overlay_file, "can-0-light", alpha = src.alpha)
+			. += emissive_appearance(canister_overlay_file, "can-0-light", alpha = 90)
 
 	update_window()
 
@@ -637,7 +639,7 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		if("restricted")
 			restricted = !restricted
 			if(restricted)
-				req_access = list(ACCESS_ENGINE)
+				req_access = list(ACCESS_ENGINEERING)
 			else
 				req_access = list()
 				. = TRUE

@@ -1,12 +1,11 @@
 /datum/job/captain
 	title = JOB_CAPTAIN
-	description = "The middle-man between the big man at home and the station's inhabitants. Ensure that quotas are met and the population is \
-	compliant."
+	description = "The middle-man between the big man at home and the station's inhabitants. Enforce the Federation's will and rule with an iron fist."
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the government."
+	supervisors = "the Federation."
 	selection_color = "#2f2f7f"
 	req_admin_notify = 1
 	minimal_player_age = 14
@@ -22,11 +21,10 @@
 	outfits = list(
 		"Default" = list(
 			SPECIES_HUMAN = /datum/outfit/job/captain,
-			SPECIES_PLASMAMAN = /datum/outfit/job/captain/plasmaman,
 		),
 	)
 
-	paycheck = PAYCHECK_COMMAND
+	paycheck = PAYCHECK_ASSISTANT * 10
 	paycheck_department = ACCOUNT_STATION_MASTER
 
 	liver_traits = list(TRAIT_ROYAL_METABOLISM)
@@ -37,12 +35,12 @@
 	)
 
 
-	family_heirlooms = list(/obj/item/reagent_containers/food/drinks/flask/gold, /obj/item/toy/captainsaid/collector)
+	family_heirlooms = list(/obj/item/reagent_containers/cup/glass/flask/gold, /obj/item/toy/captainsaid/collector)
 
 	mail_goodies = list(
 		/obj/item/clothing/mask/cigarette/cigar/havana = 20,
 		/obj/item/storage/fancy/cigarettes/cigars/havana = 15,
-		/obj/item/reagent_containers/food/drinks/bottle/champagne = 10,
+		/obj/item/reagent_containers/cup/glass/bottle/champagne = 10,
 		/obj/item/toy/captainsaid/collector = 20
 	)
 
@@ -61,7 +59,7 @@
 	allow_jumpskirt = FALSE
 
 	id = /obj/item/card/id/advanced/gold
-	id_trim = /datum/id_trim/job/captain
+	id_template = /datum/access_template/job/captain
 	uniform = /obj/item/clothing/under/suit/charcoal
 	backpack_contents = list(
 		/obj/item/assembly/flash/handheld = 1
@@ -72,9 +70,7 @@
 	gloves = /obj/item/clothing/gloves/color/white
 	shoes = /obj/item/clothing/shoes/laceup
 
-	backpack = /obj/item/storage/backpack
-	satchel = /obj/item/storage/backpack/satchel/cap
-	duffelbag = /obj/item/storage/backpack/duffelbag/captain
+	back = /obj/item/storage/backpack
 
 	chameleon_extras = list(
 		/obj/item/gun/energy/e_gun,
@@ -105,15 +101,6 @@
 	if(!celestial_charter)
 		return
 	celestial_charter.name_type = special_charter
-
-/datum/outfit/job/captain/plasmaman
-	name = JOB_CAPTAIN + " (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/captain
-	gloves = /obj/item/clothing/gloves/color/captain
-	head = /obj/item/clothing/head/helmet/space/plasmaman/captain
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/captain/mod
 	name = "Captain (MODsuit)"

@@ -1,0 +1,20 @@
+2025-09-03:
+  Kapu1178:
+  - bugfix: The Scrying Orb allows you to re-enter your body.
+  - rscadd: The Private Investigator gets a negative moodlet for having a nightmare.
+  - bugfix: Typo in mood.
+  - bugfix: Chickens can be fed wheat again.
+  - bugfix: Prospectors can access the Cargo Bay.
+  - rscadd: More items can fit in "small-skinny" boxes.
+2025-09-21:
+  Kapu1178:
+  - bugfix: Batons have an attack cooldown again.
+2025-09-24:
+  Kapu1178:
+  - rscadd: Most food now provides effects on consumption. The Chef can see what food
+      provides what benefits.
+2025-09-26:
+  Kapu1178:
+  - rscadd: Zedaphen, an extremely powerful drug that heals during sleep.
+  - rscadd: You can manually sleep in beds for any duration.
+  - bugfix: Overdosing on inaprovaline no longer permanently slows you down.

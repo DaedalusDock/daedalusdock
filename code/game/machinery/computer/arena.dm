@@ -188,7 +188,7 @@
 	M.set_species(/datum/species/human) // Could use setting per team
 	M.equipOutfit(outfits[team] ? outfits[team] : default_outfit)
 	M.faction += team //In case anyone wants to add team based stuff to arena special effects
-	M.key = ckey
+	M.PossessByPlayer(ckey)
 
 /obj/machinery/computer/arena/proc/change_outfit(mob/user,team)
 	outfits[team] = user.client.robust_dress_shop()
@@ -316,7 +316,7 @@
 	var/arena_turfs = get_arena_turfs()
 	for(var/mob/living/L in GLOB.mob_living_list)
 		if(L.stat != DEAD && (get_turf(L) in arena_turfs))
-			var/obj/item/reagent_containers/food/drinks/trophy/gold_cup/G = new(get_turf(L))
+			var/obj/item/reagent_containers/cup/glass/trophy/gold_cup/G = new(get_turf(L))
 			G.name = "[L.real_name]'s Trophy"
 
 /obj/machinery/computer/arena/ui_interact(mob/user)

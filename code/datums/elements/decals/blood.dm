@@ -1,3 +1,4 @@
+GLOBAL_LIST_EMPTY(bloody_item_images)
 /datum/element/decal/blood
 
 /datum/element/decal/blood/Attach(datum/target, _icon, _icon_state, _dir, _plane, _layer, _alpha, _color, _smoothing, _cleanable=CLEAN_TYPE_BLOOD, _description, mutable_appearance/_pic)
@@ -20,20 +21,18 @@
 	if(!_color)
 		_color = COLOR_HUMAN_BLOOD
 
-	var/item_icon = I.icon
-	var/item_icon_state = I.icon_state
-	var/static/list/blood_splatter_appearances = list()
 	//try to find a pre-processed blood-splatter. otherwise, make a new one
-	var/index = "[REF(item_icon)]-[item_icon_state]"
-	pic = blood_splatter_appearances[index]
+	var/index = BLOODY_OVERLAY_KEY(I)
+	pic = GLOB.bloody_item_images[index]
 
 	if(!pic)
 		var/icon/blood_splatter_icon = icon(I.icon, I.icon_state, null, 1)
 		blood_splatter_icon.Blend("#fff", ICON_ADD) //fills the icon_state with white (except where it's transparent)
 		blood_splatter_icon.Blend(icon(_icon, _icon_state), ICON_MULTIPLY) //adds blood and the remaining white areas become transparant
 		pic = mutable_appearance(blood_splatter_icon, I.icon_state)
-		pic.color = _color
-		blood_splatter_appearances[index] = pic
+
+	pic.color = _color
+	GLOB.bloody_item_images[index] = pic
 	return TRUE
 
 /datum/element/decal/blood/proc/get_examine_name(datum/source, mob/user, list/override)

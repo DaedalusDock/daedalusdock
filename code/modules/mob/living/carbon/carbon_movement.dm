@@ -1,10 +1,15 @@
 /mob/living/carbon/slip(knockdown_amount, obj/slipped_on, lube_flags, paralyze, force_drop = FALSE)
 	if(movement_type & (FLYING | FLOATING))
 		return FALSE
+
 	if(!(lube_flags & SLIDE_ICE))
 		log_combat(src, (slipped_on || get_turf(src)), "slipped on the", null, ((lube_flags & SLIDE) ? "(SLIDING)" : null))
 	..()
-	return loc.handle_slip(src, knockdown_amount, slipped_on, lube_flags, paralyze, force_drop)
+
+	. = loc.handle_slip(src, knockdown_amount, slipped_on, lube_flags, paralyze, force_drop)
+
+	if(.)
+		apply_status_effect(/datum/status_effect/skill_mod/slip)
 
 /mob/living/carbon/Move(NewLoc, direct, glide_size_override, z_movement_flags)
 	. = ..()
@@ -78,3 +83,23 @@
 			add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/limbless, slowdown = limbless_slowdown)
 		else
 			remove_movespeed_modifier(/datum/movespeed_modifier/limbless)
+
+
+/mob/living/carbon/proc/update_move_intent_slowdown()
+	var/modifier
+	if(m_intent == MOVE_INTENT_WALK)
+		modifier = /datum/movespeed_modifier/config_walk_run/walk
+	else if(m_intent == MOVE_INTENT_RUN)
+		modifier =  /datum/movespeed_modifier/config_walk_run/run
+	else
+		modifier = /datum/movespeed_modifier/config_walk_run/sprint
+	add_movespeed_modifier(modifier)
+
+/mob/living/carbon/update_config_movespeed()
+	update_move_intent_slowdown()
+	return ..()
+
+/mob/living/carbon/set_move_intent(new_state)
+	. = ..()
+	update_move_intent_slowdown()
+

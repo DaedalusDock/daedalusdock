@@ -9,6 +9,8 @@
 	foodtypes = GRAIN
 	venue_value = FOOD_PRICE_NORMAL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/pieslice
 	name = "pie slice"
 	icon = 'icons/obj/food/piecake.dmi'
@@ -17,6 +19,8 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
 	tastes = list("pie" = 1, "uncertainty" = 1)
 	foodtypes = GRAIN | VEGETABLES
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/pie/plain
 	name = "plain pie"
@@ -203,25 +207,6 @@
 	food_reagents = list(/datum/reagent/consumable/nutriment = 4, /datum/reagent/consumable/nutriment/vitamin = 4)
 	tastes = list("pie" = 1, "dark chocolate" = 3)
 	foodtypes = GRAIN | SUGAR
-
-/obj/item/food/pie/blumpkinpie
-	name = "blumpkin pie"
-	desc = "An odd blue pie made with toxic blumpkin."
-	icon_state = "blumpkinpie"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 13, /datum/reagent/consumable/nutriment/vitamin = 6)
-	tastes = list("pie" = 1, "a mouthful of pool water" = 1)
-	foodtypes = GRAIN | VEGETABLES
-
-/obj/item/food/pie/blumpkinpie/MakeProcessable()
-	AddElement(/datum/element/processable, TOOL_KNIFE, /obj/item/food/pieslice/blumpkin, 5, 20, table_required = TRUE)
-
-/obj/item/food/pieslice/blumpkin
-	name = "blumpkin pie slice"
-	desc = "A slice of blumpkin pie, with whipped cream on top. Is this edible?"
-	icon_state = "blumpkinpieslice"
-	food_reagents = list(/datum/reagent/consumable/nutriment = 2)
-	tastes = list("pie" = 1, "a mouthful of pool water" = 1)
-	foodtypes = GRAIN | VEGETABLES
 
 /obj/item/food/pie/dulcedebatata
 	name = "dulce de batata"

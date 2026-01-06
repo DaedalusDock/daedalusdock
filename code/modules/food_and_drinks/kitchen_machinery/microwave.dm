@@ -53,8 +53,6 @@
 
 /obj/machinery/microwave/examine(mob/user)
 	. = ..()
-	if(!operating)
-		. += span_notice("Right-click [src] to turn it on.")
 
 	if(!in_range(user, src) && !issilicon(user) && !isobserver(user))
 		. += span_warning("You're too far away to examine [src]'s contents and display!")
@@ -111,7 +109,7 @@
 		return FALSE
 	if(default_unfasten_wrench(user, tool))
 		update_appearance()
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/microwave/attackby(obj/item/O, mob/living/user, params)
 	if(operating)
@@ -158,7 +156,7 @@
 			to_chat(user, span_warning("You need more space cleaner!"))
 		return TRUE
 
-	if(istype(O, /obj/item/soap) || istype(O, /obj/item/reagent_containers/glass/rag))
+	if(istype(O, /obj/item/soap) || istype(O, /obj/item/reagent_containers/cup/rag))
 		var/cleanspeed = 50
 		if(istype(O, /obj/item/soap))
 			var/obj/item/soap/used_soap = O
@@ -219,7 +217,7 @@
 
 	if(!length(ingredients))
 		if(isAI(user))
-			examine(user)
+			user.run_examinate(src)
 		else
 			to_chat(user, span_warning("\The [src] is empty."))
 		return
@@ -239,7 +237,7 @@
 		if("use")
 			cook()
 		if("examine")
-			examine(user)
+			user.run_examinate(src)
 
 /obj/machinery/microwave/proc/eject()
 	for(var/i in ingredients)

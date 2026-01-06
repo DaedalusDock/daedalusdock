@@ -241,6 +241,43 @@
 	else
 		airlock.autoname = TRUE
 
+/obj/effect/mapping_helpers/airlock/frequency
+	name = "airlock radio frequency helper"
+	icon_state = "airlock_radio"
+
+	var/frequency_to_set
+
+/obj/effect/mapping_helpers/airlock/frequency/payload(obj/machinery/door/airlock/airlock)
+	if(airlock.frequency)
+		log_mapping("[src] at [AREACOORD(src)] tried to set frequency for the [airlock] but it's already set!")
+	else
+		airlock.set_frequency(frequency_to_set)
+
+/obj/effect/mapping_helpers/airlock/frequency/airlock_control
+	frequency_to_set = FREQ_AIRLOCK_CONTROL
+
+
+// Windoors
+/obj/effect/mapping_helpers/windoor
+	layer = WINDOW_HELPER_LAYER
+	late = TRUE
+
+/obj/effect/mapping_helpers/windoor/Initialize(mapload)
+	. = ..()
+	if(!mapload)
+		log_mapping("[src] spawned outside of mapload!")
+		return
+
+	var/obj/machinery/door/window/windoor = locate() in loc
+	if(!windoor)
+		log_mapping("[src] failed to find a windoor at [AREACOORD(src)]")
+	else
+		payload(windoor)
+	return INITIALIZE_HINT_QDEL
+
+/obj/effect/mapping_helpers/windoor/proc/payload(obj/machinery/door/window/windoor)
+	return
+
 //needs to do its thing before spawn_rivers() is called
 INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 
@@ -594,7 +631,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		else if(isopenturf(thing))
 			if(locate(/obj/structure/bed/dogbed/ian) in thing)
 				new /obj/item/clothing/head/festive(thing)
-				var/obj/item/reagent_containers/food/drinks/bottle/champagne/iandrink = new(thing)
+				var/obj/item/reagent_containers/cup/glass/bottle/champagne/iandrink = new(thing)
 				iandrink.name = "dog champagne"
 				iandrink.pixel_y += 8
 				iandrink.pixel_x += 8
@@ -727,7 +764,7 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	if(response.errored || response.status_code != 200)
 		query_in_progress = FALSE
 		CRASH("Failed to fetch mapped custom json from url [json_url], code: [response.status_code], error: [response.error]")
-	var/json_data = response["body"]
+	var/json_data = response.body
 	json_cache[json_url] = json_data
 	query_in_progress = FALSE
 	return json_data
@@ -863,11 +900,9 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/mapping_helpers/lightsout/LateInitialize()
-	var/obj/machinery/power/apc/gaypc = locate() in loc
-	if(!gaypc)
-		CRASH("Lights-Out Helper missing APC at [COORD(src)]")
-	gaypc.lighting = gaypc.setsubsystem(1) //fuck you oldcode
-	gaypc.update()
+	var/area/A = get_area(src)
+	A.lightswitch = FALSE
+	A.power_change()
 	qdel(src)
 
 // -----------

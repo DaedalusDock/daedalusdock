@@ -41,12 +41,18 @@
 		if(istype(I, /obj/item/organ/brain))
 			continue
 		if(!(I.organ_flags & (ORGAN_SYNTHETIC)) && I.damage > 0)
-			organs[I.name] = I.slot
+			organs[I.name] = I
 
 	var/obj/item/organ/O
 	var/organ_to_replace = -1
 	while(organ_to_replace == -1)
+
+		#ifndef UNIT_TESTS
 		organ_to_replace = input(user, "Which organ do you want to repair?") as null|anything in organs
+		#else
+		organ_to_replace = organs[1]
+		#endif
+
 		if(!organ_to_replace)
 			break
 		O = organs[organ_to_replace]
@@ -74,9 +80,13 @@
 	if (istype(tool, /obj/item/stack/medical/bruise_pack))
 		tool_name = "the bandaid"
 
-	var/obj/item/organ/O = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))[2])
+	var/obj/item/organ/O = (LAZYACCESS(target.surgeries_in_progress, target_zone))[2]
 	if(!O)
 		return
+
+	if(target.getorganslot(O.slot) != O)
+		return
+
 	if(!O.can_recover())
 		to_chat(user, span_warning("[O] is too far gone, it cannot be salvaged."))
 		return ..()
@@ -91,7 +101,7 @@
 	var/dam_amt = 2
 
 	dam_amt = 5
-	target.adjustToxLoss(10)
+	target.adjustToxLoss(10, cause_of_death = "A bad surgeon")
 	affected.receive_damage(dam_amt, sharpness = SHARP_EDGED|SHARP_POINTY)
 
 	for(var/obj/item/organ/I in affected.contained_organs)
@@ -362,7 +372,7 @@
 /datum/surgery_step/internal/brain_revival/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = FALSE
 
-	var/obj/item/reagent_containers/glass/S = tool
+	var/obj/item/reagent_containers/cup/S = tool
 	if(!S.reagents.has_reagent(/datum/reagent/medicine/alkysine, 5))
 		to_chat(user, span_warning("\The [S] doesn't contain enough alkysine!"))
 		return

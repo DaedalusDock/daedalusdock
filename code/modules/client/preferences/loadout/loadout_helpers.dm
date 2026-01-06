@@ -68,9 +68,6 @@
 			if(!equipped_outfit.back && length(items_to_return))
 				equipped_outfit.back = /obj/item/storage/backpack
 
-			if(!islist(equipped_outfit.backpack_contents))
-				equipped_outfit.backpack_contents = list()
-
 			for(var/obj/item/I as anything in items_to_return)
 				equipped_outfit.backpack_contents[I] = 1
 

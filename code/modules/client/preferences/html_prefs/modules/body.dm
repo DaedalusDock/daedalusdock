@@ -11,7 +11,6 @@
 
 	var/list/clothing = list(
 		/datum/preference/choiced/jumpsuit,
-		/datum/preference/choiced/backpack,
 		/datum/preference/choiced/undershirt = TRUE,
 		/datum/preference/choiced/underwear = TRUE,
 		/datum/preference/choiced/socks = TRUE,
@@ -23,7 +22,7 @@
 	<fieldset class='computerPaneNested' style='display: inline-block;min-width:32.23%;max-width:32.23%'>
 		<legend class='computerLegend tooltip'>
 			<b>Who Am I</b>
-			<span class='tooltiptext'>The eternal flame that is the soul.</span>
+			<span class='tooltiptext'>Select your shroud.</span>
 		</legend>
 	<table style='width:100%'>
 	"}

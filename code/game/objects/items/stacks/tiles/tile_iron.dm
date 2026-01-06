@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/stack/tile/iron)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+
 /obj/item/stack/tile/iron
 	name = "floor tile"
 	singular_name = "floor tile"
@@ -9,7 +12,6 @@
 	throwforce = 10
 	flags_1 = CONDUCT_1
 	turf_type = /turf/open/floor/iron
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
 	resistance_flags = FIRE_PROOF
 	matter_amount = 1
 	cost = 125
@@ -22,6 +24,10 @@
 		/obj/item/stack/tile/iron/textured_half,
 		/obj/item/stack/tile/iron/textured_corner,
 		/obj/item/stack/tile/iron/textured_large,
+		/obj/item/stack/tile/iron/iron_edge,
+		/obj/item/stack/tile/iron/iron_half,
+		/obj/item/stack/tile/iron/iron_quarter,
+		/obj/item/stack/tile/iron/iron_large,
 		/obj/item/stack/tile/iron/dark,
 		/obj/item/stack/tile/iron/dark_side,
 		/obj/item/stack/tile/iron/dark_corner,
@@ -31,6 +37,10 @@
 		/obj/item/stack/tile/iron/dark/textured_half,
 		/obj/item/stack/tile/iron/dark/textured_corner,
 		/obj/item/stack/tile/iron/dark/textured_large,
+		/obj/item/stack/tile/iron/dark/dark_edge,
+		/obj/item/stack/tile/iron/dark/dark_half,
+		/obj/item/stack/tile/iron/dark/dark_quarter,
+		/obj/item/stack/tile/iron/dark/dark_large,
 		/obj/item/stack/tile/iron/white,
 		/obj/item/stack/tile/iron/white_side,
 		/obj/item/stack/tile/iron/white_corner,
@@ -40,6 +50,10 @@
 		/obj/item/stack/tile/iron/white/textured_half,
 		/obj/item/stack/tile/iron/white/textured_corner,
 		/obj/item/stack/tile/iron/white/textured_large,
+		/obj/item/stack/tile/iron/white/white_edge,
+		/obj/item/stack/tile/iron/white/white_half,
+		/obj/item/stack/tile/iron/white/white_quarter,
+		/obj/item/stack/tile/iron/white/white_large,
 		/obj/item/stack/tile/iron/recharge_floor,
 		/obj/item/stack/tile/iron/smooth,
 		/obj/item/stack/tile/iron/smooth_edge,
@@ -54,6 +68,7 @@
 		/obj/item/stack/tile/iron/sepia,
 		/obj/item/stack/tile/iron/ported/techfloor,
 		/obj/item/stack/tile/iron/ported/techfloor_grid,
+		/obj/item/stack/tile/iron/ported/techfloor_maint,
 		/obj/item/stack/tile/iron/ported/tcomms,
 		/obj/item/stack/tile/iron/ported/lino,
 	)
@@ -120,6 +135,37 @@
 	icon_state = "tile_textured_large"
 	turf_type = /turf/open/floor/iron/textured_large
 	merge_type = /obj/item/stack/tile/iron/textured_large
+
+/obj/item/stack/tile/iron/iron_edge
+	name = "iron edge tile"
+	singular_name = "edged iron floor tile"
+	icon_state = "tile_edge"
+	turf_type = /turf/open/floor/iron/iron_edge
+	merge_type = /obj/item/stack/tile/iron/iron_edge
+	tile_rotate_dirs = list(SOUTH, NORTH, EAST, WEST)
+
+/obj/item/stack/tile/iron/iron_half
+	name = "iron half tile"
+	singular_name = "halved iron floor tile"
+	icon_state = "tile_half"
+	turf_type = /turf/open/floor/iron/iron_half
+	merge_type = /obj/item/stack/tile/iron/iron_half
+	tile_rotate_dirs = list(SOUTH, NORTH)
+
+/obj/item/stack/tile/iron/iron_quarter
+	name = "iron corner tile"
+	singular_name = "cornered iron floor tile"
+	icon_state = "tile_corner"
+	turf_type = /turf/open/floor/iron/iron_quarter
+	merge_type = /obj/item/stack/tile/iron/iron_quarter
+	tile_rotate_dirs = list(SOUTH, NORTH, EAST, WEST)
+
+/obj/item/stack/tile/iron/iron_large
+	name = "iron large tile"
+	singular_name = "large iron floor tile"
+	icon_state = "tile_large"
+	turf_type = /turf/open/floor/iron/iron_large
+	merge_type = /obj/item/stack/tile/iron/iron_large
 
 /obj/item/stack/tile/iron/dark
 	name = "dark tile"
@@ -190,6 +236,37 @@
 	turf_type = /turf/open/floor/iron/dark/textured_large
 	merge_type = /obj/item/stack/tile/iron/dark/textured_large
 
+/obj/item/stack/tile/iron/dark/dark_edge
+	name = "dark edge tile"
+	singular_name = "edged iron floor tile"
+	icon_state = "tile_dark_edge"
+	turf_type = /turf/open/floor/iron/dark/dark_edge
+	merge_type = /obj/item/stack/tile/iron/dark/dark_edge
+	tile_rotate_dirs = list(SOUTH, NORTH, EAST, WEST)
+
+/obj/item/stack/tile/iron/dark/dark_half
+	name = "dark half tile"
+	singular_name = "halved dark floor tile"
+	icon_state = "tile_dark_half"
+	turf_type = /turf/open/floor/iron/dark/dark_half
+	merge_type = /obj/item/stack/tile/iron/dark/dark_half
+	tile_rotate_dirs = list(SOUTH, NORTH)
+
+/obj/item/stack/tile/iron/dark/dark_quarter
+	name = "dark corner tile"
+	singular_name = "cornered dark floor tile"
+	icon_state = "tile_dark_corner"
+	turf_type = /turf/open/floor/iron/dark/dark_quarter
+	merge_type = /obj/item/stack/tile/iron/dark/dark_quarter
+	tile_rotate_dirs = list(SOUTH, NORTH, EAST, WEST)
+
+/obj/item/stack/tile/iron/dark/dark_large
+	name = "dark large tile"
+	singular_name = "large dark floor tile"
+	icon_state = "tile_dark_large"
+	turf_type = /turf/open/floor/iron/dark/dark_large
+	merge_type = /obj/item/stack/tile/iron/dark/dark_large
+
 /obj/item/stack/tile/iron/white
 	name = "white tile"
 	singular_name = "white floor tile"
@@ -258,6 +335,37 @@
 	icon_state = "tile_textured_white_large"
 	turf_type = /turf/open/floor/iron/white/textured_large
 	merge_type = /obj/item/stack/tile/iron/white/textured_large
+
+/obj/item/stack/tile/iron/white/white_edge
+	name = "white edge tile"
+	singular_name = "edged white floor tile"
+	icon_state = "tile_white_edge"
+	turf_type = /turf/open/floor/iron/white/white_edge
+	merge_type = /obj/item/stack/tile/iron/white/white_edge
+	tile_rotate_dirs = list(SOUTH, NORTH, EAST, WEST)
+
+/obj/item/stack/tile/iron/white/white_half
+	name = "white half tile"
+	singular_name = "halved white floor tile"
+	icon_state = "tile_white_half"
+	turf_type = /turf/open/floor/iron/white/white_half
+	merge_type = /obj/item/stack/tile/iron/white/white_half
+	tile_rotate_dirs = list(SOUTH, NORTH)
+
+/obj/item/stack/tile/iron/white/white_quarter
+	name = "white corner tile"
+	singular_name = "cornered white floor tile"
+	icon_state = "tile_white_corner"
+	turf_type = /turf/open/floor/iron/white/white_quarter
+	merge_type = /obj/item/stack/tile/iron/white/white_quarter
+	tile_rotate_dirs = list(SOUTH, NORTH, EAST, WEST)
+
+/obj/item/stack/tile/iron/white/white_large
+	name = "white large tile"
+	singular_name = "large white floor tile"
+	icon_state = "tile_white_large"
+	turf_type = /turf/open/floor/iron/white/white_large
+	merge_type = /obj/item/stack/tile/iron/white/white_large
 
 /obj/item/stack/tile/iron/recharge_floor
 	name = "recharge floor tile"
@@ -372,6 +480,14 @@
 	icon_state = "techfloor_grid_tile"
 	turf_type = /turf/open/floor/iron/ported/techfloor_grid
 	merge_type = /obj/item/stack/tile/iron/ported/techfloor_grid
+
+/obj/item/stack/tile/iron/ported/techfloor_maint
+	name = "techfloor maintenance tile"
+	singular_name = "techfloor maintenance tile"
+	desc = "A techy-looking floor tile."
+	icon_state = "techfloor_maint"
+	turf_type = /turf/open/floor/iron/ported/techfloor_maint
+	merge_type = /obj/item/stack/tile/iron/ported/techfloor_maint
 
 /obj/item/stack/tile/iron/ported/lino
 	name = "linoleum tile"

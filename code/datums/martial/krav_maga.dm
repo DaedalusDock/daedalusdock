@@ -183,9 +183,9 @@
 	if(slot == ITEM_SLOT_GLOVES)
 		style.teach(user, TRUE)
 
-/obj/item/clothing/gloves/krav_maga/dropped(mob/user)
+/obj/item/clothing/gloves/krav_maga/unequipped(mob/user)
 	. = ..()
-	if(user.get_item_by_slot(ITEM_SLOT_GLOVES) == src)
+	if(user.get_item_by_slot(ITEM_SLOT_GLOVES) != src)
 		style.remove(user)
 
 /obj/item/clothing/gloves/krav_maga/sec//more obviously named, given to sec
@@ -198,6 +198,9 @@
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
+
+TYPEINFO_DEF(/obj/item/clothing/gloves/krav_maga/combatglovesplus)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)
 
 /obj/item/clothing/gloves/krav_maga/combatglovesplus
 	name = "combat gloves plus"
@@ -212,4 +215,3 @@
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
 	resistance_flags = NONE
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 50)

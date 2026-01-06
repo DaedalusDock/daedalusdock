@@ -1,3 +1,5 @@
+import { Tooltip } from 'tgui-core/components';
+
 import { useBackend } from '../../backend';
 import {
   Box,
@@ -8,7 +10,6 @@ import {
   LabeledList,
   NumberInput,
   Section,
-  Tooltip,
 } from '../../components';
 import { getGasLabel } from '../../constants';
 import { HelpDummy, HoverHelp } from './helpers';
@@ -201,7 +202,7 @@ export const HypertorusWasteRemove = (props) => {
             unit="mol/s"
             minValue={5}
             maxValue={200}
-            onDrag={(e, value) =>
+            onDrag={(value) =>
               act('mod_filtering_rate', {
                 mod_filtering_rate: value,
               })

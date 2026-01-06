@@ -75,7 +75,7 @@
 	base_pixel_x = 11
 	base_pixel_y = 10
 
-	custom_premium_price = PAYCHECK_MEDIUM
+	custom_premium_price = PAYCHECK_ASSISTANT * 1.5
 
 /obj/item/canvas/Initialize(mapload)
 	. = ..()
@@ -248,7 +248,7 @@
 /obj/item/canvas/proc/can_select_frame(mob/user)
 	if(!istype(loc, /obj/structure/sign/painting))
 		return FALSE
-	if(!user?.CanReach(loc) || IS_DEAD_OR_INCAP(user))
+	if(!loc.IsReachableBy(user) || IS_DEAD_OR_INCAP(user))
 		return FALSE
 	if(!last_patron || !IS_WEAKREF_OF(user?.mind, last_patron))
 		return FALSE
@@ -303,7 +303,7 @@
 	else if(istype(painting_implement, /obj/item/pen))
 		var/obj/item/pen/pen = painting_implement
 		return pen.colour
-	else if(istype(painting_implement, /obj/item/soap) || istype(painting_implement, /obj/item/reagent_containers/glass/rag))
+	else if(istype(painting_implement, /obj/item/soap) || istype(painting_implement, /obj/item/reagent_containers/cup/rag))
 		return canvas_color
 
 /// Generates medium description
@@ -318,7 +318,7 @@
 		return "Crayon on canvas"
 	else if(istype(painting_implement, /obj/item/pen))
 		return "Ink on canvas"
-	else if(istype(painting_implement, /obj/item/soap) || istype(painting_implement, /obj/item/reagent_containers/glass/rag))
+	else if(istype(painting_implement, /obj/item/soap) || istype(painting_implement, /obj/item/reagent_containers/cup/rag))
 		return //These are just for cleaning, ignore them
 	else
 		return "Unknown medium"
@@ -399,7 +399,7 @@
 	pixels_per_unit = 20
 	w_class = WEIGHT_CLASS_BULKY
 
-	custom_premium_price = PAYCHECK_HARD * 1.25
+	custom_premium_price = PAYCHECK_ASSISTANT * 1.2
 
 /obj/item/canvas/thirtysix_twentyfour/Initialize()
 	. = ..()
@@ -422,7 +422,7 @@
 	pixels_per_unit = 18
 	w_class = WEIGHT_CLASS_BULKY
 
-	custom_premium_price = PAYCHECK_HARD * 1.75
+	custom_premium_price = PAYCHECK_ASSISTANT * 2.7
 
 /obj/item/canvas/fortyfive_twentyseven/Initialize()
 	. = ..()
@@ -430,15 +430,20 @@
 	icon = 'icons/obj/artstuff_64x64.dmi'
 	icon_state = "45x27"
 
+TYPEINFO_DEF(/obj/item/wallframe/painting)
+	default_materials = list(/datum/material/wood = 2000)
+
 /obj/item/wallframe/painting
 	name = "painting frame"
 	desc = "The perfect showcase for your favorite deathtrap memories."
 	icon = 'icons/obj/decals.dmi'
-	custom_materials = list(/datum/material/wood = 2000)
 	flags_1 = NONE
 	icon_state = "frame-empty"
 	result_path = /obj/structure/sign/painting
 	pixel_shift = 30
+
+TYPEINFO_DEF(/obj/structure/sign/painting)
+	default_materials = list(/datum/material/wood = 2000)
 
 /obj/structure/sign/painting
 	name = "Painting"
@@ -446,7 +451,6 @@
 	icon = 'icons/obj/decals.dmi'
 	icon_state = "frame-empty"
 	base_icon_state = "frame"
-	custom_materials = list(/datum/material/wood = 2000)
 	buildable_sign = FALSE
 	///Canvas we're currently displaying.
 	var/obj/item/canvas/current_canvas
@@ -619,10 +623,12 @@
 		for(var/y in 1 to height)
 			grid[x][y] = I.GetPixel(x,h-y)
 
+TYPEINFO_DEF(/obj/item/wallframe/painting/large)
+	default_materials = list(/datum/material/wood = 4000)
+
 /obj/item/wallframe/painting/large
 	name = "large painting frame"
 	desc = "The perfect showcase for your favorite deathtrap memories. Make sure you have enough space to mount this one to the wall."
-	custom_materials = list(/datum/material/wood = 4000)
 	icon_state = "frame-large-empty"
 	result_path = /obj/structure/sign/painting/large
 	pixel_shift = 0 //See [/obj/structure/sign/painting/large/proc/finalize_size]
@@ -634,7 +640,7 @@
 	var/our_dir = get_dir(user, on_wall)
 	var/check_dir = our_dir & (EAST|WEST) ? NORTH : EAST
 	var/turf/closed/wall/second_wall = get_step(on_wall, check_dir)
-	if(!istype(second_wall) || !user.CanReach(second_wall))
+	if(!istype(second_wall) || !second_wall.IsReachableBy(user))
 		to_chat(user, span_warning("You need a reachable wall to the [check_dir == EAST ? "right" : "left"] of this one to mount this frame!"))
 		return FALSE
 	if(check_wall_item(second_wall, our_dir, wall_external))
@@ -646,9 +652,11 @@
 	var/obj/structure/sign/painting/large/our_frame = object
 	our_frame.finalize_size()
 
+TYPEINFO_DEF(/obj/structure/sign/painting/large)
+	default_materials = list(/datum/material/wood = 4000)
+
 /obj/structure/sign/painting/large
 	icon = 'icons/obj/artstuff_64x64.dmi'
-	custom_materials = list(/datum/material/wood = 4000)
 	accepted_canvas_types = list(
 		/obj/item/canvas/thirtysix_twentyfour,
 		/obj/item/canvas/fortyfive_twentyseven,

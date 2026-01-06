@@ -47,7 +47,7 @@ SUBSYSTEM_DEF(job)
 		JOB_CAPTAIN = 1,
 		JOB_HEAD_OF_PERSONNEL = 2,
 		JOB_CHIEF_ENGINEER = 3,
-		JOB_MEDICAL_DIRECTOR = 4,
+		JOB_AUGUR = 4,
 		JOB_SECURITY_MARSHAL = 5,
 		JOB_QUARTERMASTER = 6,
 	)
@@ -438,6 +438,7 @@ SUBSYSTEM_DEF(job)
 
 	. = assign_captain()
 	if(!.)
+		SSticker.mode.setup_error += "Failed to assign captain. See JobDebug for more information."
 		return FALSE
 
 	//People who wants to be the overflow role, sure, go on.
@@ -528,6 +529,7 @@ SUBSYSTEM_DEF(job)
 			if(!AssignRole(player, GetJobType(overflow_role))) //If everything is already filled, make them an assistant
 				JobDebug("DO, Forced antagonist could not be assigned any random job or the overflow role. DivideOccupations failed.")
 				JobDebug("---------------------------------------------------")
+				SSticker.mode.setup_error += "An unassigned player could not be given a random or overflow role. See JobDebug for more information."
 				return FALSE //Living on the edge, the forced antagonist couldn't be assigned to overflow role (bans, client age) - just reroll
 
 	JobDebug("DO, Ending handle unrejectable unassigned")
@@ -543,6 +545,8 @@ SUBSYSTEM_DEF(job)
 					we_fucked = TRUE
 
 			if(we_fucked)
+				JobDebug("DO, could not fill all departments.")
+				SSticker.mode.setup_error += "Could not fill all required departments. See JobDebug for more information."
 				return FALSE
 
 			JobDebug("DO, all departments have atleast one player.")
@@ -622,7 +626,7 @@ SUBSYSTEM_DEF(job)
 		var/mob/living/carbon/human/wageslave = equipping
 		var/datum/bank_account/bank = SSeconomy.bank_accounts_by_id["[wageslave.account_id]"]
 
-		wageslave.mind.add_memory(MEMORY_ACCOUNT, list(DETAIL_ACCOUNT_ID = wageslave.account_id, DETAIL_ACCOUNT_PIN = bank.account_pin), story_value = STORY_VALUE_SHIT, memory_flags = MEMORY_FLAG_NOLOCATION)
+		wageslave.mind.set_note(NOTES_BANK_ACCOUNT, list("Account ID: [wageslave.account_id]<br>Account PIN: [bank.account_pin]"))
 		to_chat(player_client, span_obviousnotice("Your bank account pin is: <b>[bank.account_pin]</b>"))
 
 		setup_alt_job_items(wageslave, job, player_client) //PARIAH EDIT ADDITION
@@ -758,20 +762,23 @@ SUBSYSTEM_DEF(job)
 	if(buckle && isliving(joining_mob))
 		buckle_mob(joining_mob, FALSE, FALSE)
 
+/// Send an existing mob to their latejoin spawnpoint. Returns FALSE if it couldn't find a proper one, and resorted to the last resort.
 /datum/controller/subsystem/job/proc/SendToLateJoin(mob/M, buckle = TRUE)
 	var/atom/destination
-	if(M.mind && !is_unassigned_job(M.mind.assigned_role) && length(GLOB.jobspawn_overrides[M.mind.assigned_role.title])) //We're doing something special today.
-		destination = pick(GLOB.jobspawn_overrides[M.mind.assigned_role.title])
+
+	if(M.mind?.assigned_role && !is_unassigned_job(M.mind.assigned_role)) //We're doing something special today.
+		destination = M.mind.assigned_role.get_latejoin_spawn_point()
 		destination.JoinPlayerHere(M, FALSE)
 		return TRUE
 
-	if(latejoin_trackers.len)
+	if(length(latejoin_trackers))
 		destination = pick(latejoin_trackers)
 		destination.JoinPlayerHere(M, buckle)
 		return TRUE
 
 	destination = get_last_resort_spawn_points()
 	destination.JoinPlayerHere(M, buckle)
+	return FALSE
 
 
 /datum/controller/subsystem/job/proc/get_last_resort_spawn_points()
@@ -817,13 +824,13 @@ SUBSYSTEM_DEF(job)
 ///////////////////////////////////
 //Keeps track of all living heads//
 ///////////////////////////////////
-/datum/controller/subsystem/job/proc/get_living_heads(management_only)
+/datum/controller/subsystem/job/proc/get_living_heads(federation_only)
 	. = list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(player.stat == DEAD || !player.mind?.assigned_role)
 			continue
 
-		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT))
+		if(federation_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
 			. += player.mind
 
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
@@ -832,28 +839,28 @@ SUBSYSTEM_DEF(job)
 ////////////////////////////
 //Keeps track of all heads//
 ////////////////////////////
-/datum/controller/subsystem/job/proc/get_all_heads(management_only)
+/datum/controller/subsystem/job/proc/get_all_heads(federation_only)
 	. = list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(!player.mind?.assigned_role)
 			continue
 
-		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT))
+		if(federation_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
 			. += player.mind
 
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
 			. += player.mind
 
 /////////////////////////////////
-//Keeps track of all management//
+//Keeps track of all Federation members//
 /////////////////////////////////
-/datum/controller/subsystem/job/proc/get_all_management(management_only)
+/datum/controller/subsystem/job/proc/get_all_federation()
 	. += list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(!player.mind?.assigned_role)
 			continue
 
-		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT)
+		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION)
 			. += player.mind
 
 //////////////////////////////////////////////
@@ -892,7 +899,7 @@ SUBSYSTEM_DEF(job)
 
 /obj/item/paper/fluff/spare_id_safe_code/Initialize(mapload)
 	. = ..()
-	var/safe_code = SSid_access.spare_id_safe_code
+	var/safe_code = SSid_access.get_static_pincode(PINCODE_SPARE_ID_SAFE, 5)
 
 	info = "Captain's Spare ID safe code combination: [safe_code ? safe_code : "\[REDACTED\]"]<br><br>The spare ID can be found in its dedicated safe on the bridge.<br><br>If your job would not ordinarily have Head of Staff access, your ID card has been specially modified to possess it."
 	update_appearance()
@@ -903,16 +910,12 @@ SUBSYSTEM_DEF(job)
 
 /obj/item/paper/fluff/emergency_spare_id_safe_code/Initialize(mapload)
 	. = ..()
-	var/safe_code = SSid_access.spare_id_safe_code
+	var/safe_code = SSid_access.get_static_pincode(PINCODE_SPARE_ID_SAFE, 5)
 
 	info = "Captain's Spare ID safe code combination: [safe_code ? safe_code : "\[REDACTED\]"]<br><br>The spare ID can be found in its dedicated safe on the bridge."
 	update_appearance()
 
 /datum/controller/subsystem/job/proc/promote_to_captain(mob/living/carbon/human/new_captain, acting_captain = FALSE)
-	var/id_safe_code = SSid_access.spare_id_safe_code
-
-	if(!id_safe_code)
-		CRASH("Cannot promote [new_captain.real_name] to Captain, there is no id_safe_code.")
 
 	var/paper = new /obj/item/paper/fluff/spare_id_safe_code()
 	var/list/slots = list(
@@ -932,8 +935,8 @@ SUBSYSTEM_DEF(job)
 	var/obj/item/id_slot = new_captain.get_item_by_slot(ITEM_SLOT_ID)
 	if(id_slot)
 		var/obj/item/card/id/id_card = id_slot.GetID(TRUE) || locate() in id_slot
-		if(id_card && !(ACCESS_MANAGEMENT in id_card.access))
-			id_card.add_wildcards(list(ACCESS_MANAGEMENT), mode=FORCE_ADD_ALL)
+		if(id_card && !(ACCESS_FEDERATION in id_card.access))
+			id_card.add_access(ACCESS_FEDERATION)
 
 	assigned_captain = TRUE
 
@@ -953,9 +956,9 @@ SUBSYSTEM_DEF(job)
 
 	var/datum/job/head_job = SSjob.GetJobType(department.department_head)
 	var/datum/outfit/outfit_prototype = head_job.outfits["Default"][SPECIES_HUMAN]
-	var/datum/id_trim/trim = SSid_access.trim_singletons_by_path[initial(outfit_prototype.id_trim)]
+	var/datum/access_template/trim = SSid_access.template_singletons_by_path[initial(outfit_prototype.id_template)]
 
-	id_card.add_access(trim.access, mode=FORCE_ADD_ALL)
+	id_card.add_access(trim.access)
 
 	SSdatacore.OnReady(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(aas_pda_message_department), department.manifest_key, "Your boss called out of work today, and [new_head.real_name] [new_head.p_have()] been granted elevated access in their absence.", "Staff Notice"))
 	temporary_heads_by_dep[department.type] = new_head.real_name
@@ -1001,16 +1004,16 @@ SUBSYSTEM_DEF(job)
 	JobDebug("Assign Captain: Nobody signed up for captain. Pulling from users signed up for Command.")
 
 	// Okay nobody is signed up for captain, let's try something more drastic.
-	var/datum/job_department/management = get_department_type(/datum/job_department/command)
-	for(var/datum/job/management_job as anything in management.department_jobs)
+	var/datum/job_department/federation = get_department_type(/datum/job_department/command)
+	for(var/datum/job/federation_job as anything in federation.department_jobs)
 		for(var/level in level_order)
-			var/list/candidates = FindOccupationCandidates(management_job, level)
+			var/list/candidates = FindOccupationCandidates(federation_job, level)
 			if(!candidates.len)
 				continue
 
 			for(var/mob/dead/new_player/candidate as anything in candidates)
 				if(AssignRole(candidate, captain_job))
-					JobDebug("Assign Captain: Found captain from pool of management roles.")
+					JobDebug("Assign Captain: Found captain from pool of Federation roles.")
 					return TRUE
 
 	JobDebug("Assign Captain: Failed, no captain was found. DivideOccupations aborted.")
@@ -1073,12 +1076,12 @@ SUBSYSTEM_DEF(job)
 		for(var/rank in required_group)
 			var/datum/job/J = GetJob(rank)
 			if(!J)
-				SSticker.mode.setup_error = "Invalid job [rank] in gamemode required jobs."
+				SSticker.mode.setup_error += "Invalid job [rank] in gamemode required jobs."
 				return FALSE
 			if(J.current_positions < required_group[rank])
 				group_ok = FALSE
 				break
 		if(group_ok)
 			return TRUE
-	SSticker.mode.setup_error = "Required jobs not present."
+	SSticker.mode.setup_error += "Required jobs not present."
 	return FALSE

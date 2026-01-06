@@ -4,6 +4,8 @@
 	meat = /obj/item/food/meat/slab/human/mutant/ethereal
 	exotic_blood = /datum/reagent/consumable/liquidelectricity //Liquid Electricity. fuck you think of something better gamer
 
+	name_generator_type = /datum/name_generator/ethereal
+
 	siemens_coeff = 0.5 //They thrive on energy
 	brutemod = 1.25 //They're weak to punches
 
@@ -101,16 +103,6 @@
 	QDEL_NULL(ethereal_light)
 	return ..()
 
-
-/datum/species/ethereal/random_name(gender,unique,lastname)
-	if(unique)
-		return random_unique_ethereal_name()
-
-	var/randname = ethereal_name()
-
-	return randname
-
-
 /datum/species/ethereal/spec_updatehealth(mob/living/carbon/human/H)
 	. = ..()
 	if(!ethereal_light)
@@ -191,18 +183,6 @@
 		'sound/voice/ethereal/ethereal_scream_1.ogg',
 		'sound/voice/ethereal/ethereal_scream_2.ogg',
 		'sound/voice/ethereal/ethereal_scream_3.ogg',
-	)
-
-/datum/species/ethereal/get_species_description()
-	return "Coming from the planet of Sprout, the theocratic ethereals are \
-		separated socially by caste, and espouse a dogma of aiding the weak and \
-		downtrodden."
-
-/datum/species/ethereal/get_species_lore()
-	return list(
-		"Ethereals are a species native to the planet Sprout. \
-		When they were originally discovered, they were at a medieval level of technological progression, \
-		but due to their natural acclimation with electricity, they felt easy among the large Daedalus installations.",
 	)
 
 /datum/species/ethereal/create_pref_unique_perks()

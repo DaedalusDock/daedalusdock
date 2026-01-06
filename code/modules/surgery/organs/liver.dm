@@ -42,29 +42,6 @@
 	// Would that make the clown more or less likely to honk it
 	AddComponent(/datum/component/squeak, list('sound/items/bikehorn.ogg'=1), 50, falloff_exponent = 20)
 
-/obj/item/organ/liver/examine(mob/user)
-	. = ..()
-
-	if(HAS_TRAIT(user, TRAIT_ENTRAILS_READER) || (user.mind && HAS_TRAIT(user.mind, TRAIT_ENTRAILS_READER)) || isobserver(user))
-		if(HAS_TRAIT(src, TRAIT_LAW_ENFORCEMENT_METABOLISM))
-			. += "Fatty deposits and sprinkle residue, imply that this is the liver of someone in <em>security</em>."
-		if(HAS_TRAIT(src, TRAIT_CULINARY_METABOLISM))
-			. += "The high iron content and slight smell of garlic, implies that this is the liver of a <em>cook</em>."
-		if(HAS_TRAIT(src, TRAIT_COMEDY_METABOLISM))
-			. += "A smell of bananas, a slippery sheen and [span_clown("honking")] when depressed, implies that this is the liver of a <em>clown</em>."
-		if(HAS_TRAIT(src, TRAIT_MEDICAL_METABOLISM))
-			. += "Marks of stress and a faint whiff of medicinal alcohol, imply that this is the liver of a <em>medical worker</em>."
-		if(HAS_TRAIT(src, TRAIT_ENGINEER_METABOLISM))
-			. += "Signs of radiation exposure and space adaption, implies that this is the liver of an <em>engineer</em>."
-
-		// royal trumps pretender royal
-		if(HAS_TRAIT(src, TRAIT_ROYAL_METABOLISM))
-			. += "A rich diet of luxury food, suppleness from soft beds, implies that this is the liver of a <em>head of staff</em>."
-		else if(HAS_TRAIT(src, TRAIT_PRETENDER_ROYAL_METABOLISM))
-			. += "A diet of imitation caviar, and signs of insomnia, implies that this is the liver of <em>someone who wants to be a head of staff</em>."
-
-
-
 #define HAS_SILENT_TOXIN 0 //don't provide a feedback message if this is the only toxin present
 #define HAS_NO_TOXIN 1
 #define HAS_PAINFUL_TOXIN 2
@@ -75,7 +52,9 @@
 
 	if(!istype(liver_owner))
 		return
+
 	if(organ_flags & ORGAN_DEAD)
+		// Handled by handle_liver.
 		return
 
 	if (germ_level > INFECTION_LEVEL_ONE)
@@ -96,6 +75,7 @@
 		filter_effect -= 1
 	if(damage > (high_threshold * maxHealth))
 		filter_effect -= 2
+
 	// Robotic organs filter better but don't get benefits from dylovene for filtering.
 	if(organ_flags & ORGAN_SYNTHETIC)
 		filter_effect += 1
@@ -105,21 +85,25 @@
 	// If you're not filtering well, you're in trouble. Ammonia buildup to toxic levels and damage from alcohol
 	if(filter_effect < 2)
 		if(owner.chem_effects[CE_ALCOHOL])
-			owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]))
+			owner.adjustToxLoss(
+				0.5 * max(2 - filter_effect, 0) * (owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]),
+				cause_of_death = "Alcohol poisoning",
+			)
 
 	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
 		applyOrganDamage(owner.chem_effects[CE_ALCOHOL_TOXIC], updating_health = FALSE)
 		. = TRUE
+
 	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
 	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !HAS_TRAIT(owner, TRAIT_IRRADIATED) && damage > 0)
 		if(damage < low_threshold * maxHealth)
 			applyOrganDamage(-0.3, updating_health = FALSE)
-			. = TRUE
 		else if(damage < high_threshold * maxHealth)
 			applyOrganDamage(-0.2, updating_health = FALSE)
-			. = TRUE
 
-	if(damage > 10 && DT_PROB(damage/4, delta_time)) //the higher the damage the higher the probability
+		. = TRUE
+
+	if(damage > 10 && DT_PROB(damage/20, delta_time)) //the higher the damage the higher the probability
 		to_chat(liver_owner, span_warning("You feel a dull pain in your abdomen."))
 
 	if(owner.blood_volume < BLOOD_VOLUME_NORMAL)
@@ -131,28 +115,18 @@
 /obj/item/organ/liver/handle_regeneration()
 	return
 
-/obj/item/organ/liver/on_owner_examine(datum/source, mob/user, list/examine_list)
-	if(!ishuman(owner) || !(organ_flags & ORGAN_DEAD))
-		return
-
-	var/mob/living/carbon/human/humie_owner = owner
-	if(!humie_owner.getorganslot(ORGAN_SLOT_EYES) || humie_owner.is_eyes_covered())
-		return
-
-	if(damage > maxHealth * low_threshold)
-		examine_list += span_notice("[owner]'s eyes are slightly yellow.")
-	else if(damage > maxHealth * high_threshold)
-		examine_list += span_notice("[owner]'s eyes are completely yellow, and he is visibly suffering.")
+/obj/item/organ/liver/check_damage_thresholds(mob/organ_owner)
+	. = ..()
+	switch(.)
+		if(ORGAN_HIGH_THRESHOLD_PASSED, ORGAN_NOW_FAILING)
+			add_organ_trait(TRAIT_JAUNDICE_SKIN)
+		if(ORGAN_HIGH_THRESHOLD_CLEARED, ORGAN_NOW_FIXED)
+			remove_organ_trait(TRAIT_JAUNDICE_SKIN)
 
 #undef HAS_SILENT_TOXIN
 #undef HAS_NO_TOXIN
 #undef HAS_PAINFUL_TOXIN
 #undef LIVER_FAILURE_STAGE_SECONDS
-
-/obj/item/organ/liver/plasmaman
-	name = "reagent processing crystal"
-	icon_state = "liver-p"
-	desc = "A large crystal that is somehow capable of metabolizing chemicals, these are found in plasmamen."
 
 /obj/item/organ/liver/alien
 	name = "alien liver" // doesnt matter for actual aliens because they dont take toxin damage
@@ -160,20 +134,20 @@
 	desc = "A liver that used to belong to a killer alien, who knows what it used to eat."
 
 /obj/item/organ/liver/vox
-	name = "vox liver"
+	name = "voks liver"
 	icon_state = "vox-liver"
 
 /obj/item/organ/liver/cybernetic
 	name = "basic cybernetic liver"
 	icon_state = "liver-c"
-	desc = "A very basic device designed to mimic the functions of a human liver. Handles toxins slightly worse than an organic liver."
+	desc = "A very basic device designed to mimic the functions of a minervan liver. Handles toxins slightly worse than an organic liver."
 	organ_flags = ORGAN_SYNTHETIC
 	var/emp_vulnerability = 80 //Chance of permanent effects if emp-ed.
 
 /obj/item/organ/liver/cybernetic/tier2
 	name = "cybernetic liver"
 	icon_state = "liver-c-u"
-	desc = "An electronic device designed to mimic the functions of a human liver. Handles toxins slightly better than an organic liver."
+	desc = "An electronic device designed to mimic the functions of a minervan liver. Handles toxins slightly better than an organic liver."
 	maxHealth = 100
 	emp_vulnerability = 40
 
@@ -189,8 +163,9 @@
 	if(. & EMP_PROTECT_SELF)
 		return
 	if(!COOLDOWN_FINISHED(src, severe_cooldown)) //So we cant just spam emp to kill people.
-		owner.adjustToxLoss(10)
+		owner.adjustToxLoss(10, cause_of_death = "Faulty prosthetic liver")
 		COOLDOWN_START(src, severe_cooldown, 10 SECONDS)
+
 	if(prob(emp_vulnerability/severity)) //Chance of permanent effects
 		organ_flags |= ORGAN_SYNTHETIC_EMP //Starts organ faliure - gonna need replacing soon.
 

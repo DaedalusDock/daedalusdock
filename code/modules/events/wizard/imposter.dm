@@ -22,7 +22,7 @@
 		I.set_real_name(I.dna.real_name)
 		I.updateappearance(mutcolor_update=1)
 		I.domutcheck()
-		I.key = C.key
+		I.PossessByPlayer(C.key)
 		var/datum/antagonist/wizard/master = M.has_antag_datum(/datum/antagonist/wizard)
 		if(!master.wiz_team)
 			master.create_wiz_team()

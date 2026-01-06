@@ -1,4 +1,4 @@
-/mob/living/carbon/death(gibbed)
+/mob/living/carbon/death(gibbed, cause_of_death = "Unknown")
 	if(stat == DEAD)
 		return
 
@@ -10,8 +10,6 @@
 
 	reagents.end_metabolization(src)
 
-	add_memory_in_range(src, 7, MEMORY_DEATH, list(DETAIL_PROTAGONIST = src), story_value = STORY_VALUE_OKAY, memory_flags = MEMORY_CHECK_BLIND_AND_DEAF)
-
 	. = ..()
 
 	if(!gibbed)
@@ -21,6 +19,9 @@
 		var/datum/brain_trauma/BT = T
 		BT.on_death()
 
+	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
+	heart?.Stop()
+
 /mob/living/carbon/proc/inflate_gib() // Plays an animation that makes mobs appear to inflate before finally gibbing
 	addtimer(CALLBACK(src, PROC_REF(gib), null, null, TRUE, TRUE), 25)
 	var/matrix/M = matrix()
@@ -28,7 +29,6 @@
 	animate(src, time = 40, transform = M, easing = SINE_EASING)
 
 /mob/living/carbon/gib(no_brain, no_organs, no_bodyparts, safe_gib = FALSE)
-	add_memory_in_range(src, 7, MEMORY_GIBBED, list(DETAIL_PROTAGONIST = src), STORY_VALUE_AMAZING, memory_flags = MEMORY_CHECK_BLINDNESS)
 	if(safe_gib) // If you want to keep all the mob's items and not have them deleted
 		for(var/obj/item/W in get_equipped_items(TRUE) | held_items)
 			if(dropItemToGround(W))

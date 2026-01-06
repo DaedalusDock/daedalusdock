@@ -1,10 +1,12 @@
+TYPEINFO_DEF(/obj/structure/plasticflaps)
+	default_armor = list(BLUNT = 100, PUNCTURE = 80, SLASH = 100, LASER = 80, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 50, ACID = 50)
+
 /obj/structure/plasticflaps
 	name = "airtight plastic flaps"
 	desc = "Heavy duty, airtight, plastic flaps. Definitely can't get past those. No way."
 	gender = PLURAL
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "plasticflaps"
-	armor = list(BLUNT = 100, PUNCTURE = 80, SLASH = 100, LASER = 80, ENERGY = 100, BOMB = 50, BIO = 100, FIRE = 50, ACID = 50)
 	density = FALSE
 	anchored = TRUE
 	can_atmos_pass = CANPASS_NEVER
@@ -16,7 +18,9 @@
 /obj/structure/plasticflaps/Initialize(mapload)
 	. = ..()
 	alpha = 0
-	SSvis_overlays.add_vis_overlay(src, icon, icon_state, ABOVE_MOB_LAYER, plane, dir, add_appearance_flags = RESET_ALPHA) //you see mobs under it, but you hit them like they are above it
+	var/obj/effect/overlay/vis/visual = new(icon, icon_state, ABOVE_MOB_LAYER)
+	visual.appearance_flags |= RESET_ALPHA
+	add_viscontents(visual) //you see mobs under it, but you hit them like they are above it
 
 /obj/structure/plasticflaps/examine(mob/user)
 	. = ..()

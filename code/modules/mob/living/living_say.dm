@@ -8,7 +8,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 	// Department
 	MODE_KEY_DEPARTMENT = MODE_DEPARTMENT,
-	RADIO_KEY_COMMAND = RADIO_CHANNEL_COMMAND,
+	RADIO_KEY_FEDERATION = RADIO_CHANNEL_FEDERATION,
 	RADIO_KEY_SCIENCE = RADIO_CHANNEL_SCIENCE,
 	RADIO_KEY_MEDICAL = RADIO_CHANNEL_MEDICAL,
 	RADIO_KEY_ENGINEERING = RADIO_CHANNEL_ENGINEERING,
@@ -38,7 +38,7 @@ GLOBAL_LIST_INIT(department_radio_keys, list(
 
 	// Department
 	"р" = MODE_DEPARTMENT,
-	"с" = RADIO_CHANNEL_COMMAND,
+	"с" = RADIO_CHANNEL_FEDERATION,
 	"т" = RADIO_CHANNEL_SCIENCE,
 	"ь" = RADIO_CHANNEL_MEDICAL,
 	"у" = RADIO_CHANNEL_ENGINEERING,
@@ -278,6 +278,9 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		if(isnull(message))
 			return FALSE
 
+	if(stat == CONSCIOUS)
+		last_words = message
+
 	send_speech(message, range, src, bubble_type, spans, language, message_mods)//roughly 58% of living/say()'s total cost
 
 	///Play a sound to indicate we just spoke
@@ -360,11 +363,11 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 
 	var/list/the_dead = list()
 
-	if(client) //client is so that ghosts don't have to listen to mice
+	if(client || HAS_TRAIT(src, TRAIT_IMPORTANT_SPEAKER)) //client is so that ghosts don't have to listen to mice
 		for(var/mob/player_mob as anything in GLOB.player_list)
 			if(QDELETED(player_mob)) //Some times nulls and deleteds stay in this list. This is a workaround to prevent ic chat breaking for everyone when they do.
 				continue //Remove if underlying cause (likely byond issue) is fixed. See TG PR #49004.
-			if(player_mob.stat != DEAD) //not dead, not important
+			if(player_mob.stat != DEAD && !HAS_TRAIT(player_mob, TRAIT_HEAR_THROUGH_WALLS)) //not dead, not important
 				continue
 			if(!player_mob.z) //Observing ghosts are in nullspace, pretend they don't exist
 				continue

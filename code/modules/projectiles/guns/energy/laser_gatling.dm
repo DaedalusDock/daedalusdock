@@ -58,7 +58,7 @@
 	else
 		..()
 
-/obj/item/minigunpack/dropped(mob/user)
+/obj/item/minigunpack/unequipped(mob/user)
 	. = ..()
 	if(armed)
 		user.dropItemToGround(gun, TRUE)
@@ -97,6 +97,9 @@
 	update_slot_icon()
 
 
+TYPEINFO_DEF(/obj/item/gun/energy/minigun)
+	default_materials = null
+
 /obj/item/gun/energy/minigun
 	name = "laser gatling gun"
 	desc = "An advanced laser cannon with an incredible rate of fire. Requires a bulky backpack power source to use."
@@ -106,7 +109,6 @@
 	slowdown = 1
 	slot_flags = null
 	w_class = WEIGHT_CLASS_HUGE
-	custom_materials = null
 
 	unwielded_spread_bonus = 120
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/minigun)
@@ -132,7 +134,7 @@
 /obj/item/gun/energy/minigun/attack_self(mob/living/user)
 	return
 
-/obj/item/gun/energy/minigun/dropped(mob/user)
+/obj/item/gun/energy/minigun/unequipped(mob/user)
 	SHOULD_CALL_PARENT(FALSE)
 	if(ammo_pack)
 		ammo_pack.attach_gun(user)
@@ -151,9 +153,11 @@
 		ammo_pack.battery.use(transferred)
 
 
-/obj/item/gun/energy/minigun/afterattack(atom/target, mob/living/user, flag, params)
+/obj/item/gun/energy/minigun/try_fire_gun(atom/target, mob/living/user, proximity, params)
 	if(!ammo_pack || ammo_pack.loc != user)
 		to_chat(user, span_warning("You need the backpack power source to fire the gun!"))
+		return FALSE
+
 	. = ..()
 
 /obj/item/stock_parts/cell/minigun

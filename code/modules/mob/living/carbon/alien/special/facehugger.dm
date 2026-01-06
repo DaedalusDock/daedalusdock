@@ -60,10 +60,15 @@
 			return
 	. = ..()
 
-/obj/item/clothing/mask/facehugger/attack(mob/living/M, mob/user)
-	..()
-	if(user.transferItemToLoc(src, get_turf(M)))
-		Leap(M)
+/obj/item/clothing/mask/facehugger/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!ishuman(interacting_with))
+		return NONE
+
+	if(user.transferItemToLoc(src, get_turf(interacting_with)))
+		Leap(interacting_with)
+		return ITEM_INTERACT_SUCCESS
+
+	return ITEM_INTERACT_BLOCKING
 
 /obj/item/clothing/mask/facehugger/examine(mob/user)
 	. = ..()
@@ -252,7 +257,7 @@
 	if(M.getorgan(/obj/item/organ/alien/hivenode))
 		return FALSE
 	var/mob/living/carbon/C = M
-	if(ishuman(C) && !(ITEM_SLOT_MASK in C.dna.species.no_equip))
+	if(ishuman(C) && !(ITEM_SLOT_MASK & C.dna.species.no_equip_flags))
 		var/mob/living/carbon/human/H = C
 		if(!H.has_mouth() || H.is_mouth_covered(head_only = 1))
 			return FALSE

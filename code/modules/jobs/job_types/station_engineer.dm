@@ -21,7 +21,6 @@
 			SPECIES_HUMAN = /datum/outfit/job/engineer,
 			SPECIES_TESHARI = /datum/outfit/job/engineer,
 			SPECIES_VOX = /datum/outfit/job/engineer,
-			SPECIES_PLASMAMAN = /datum/outfit/job/engineer/plasmaman,
 		),
 		"Engine Technician" = list(
 			SPECIES_HUMAN = /datum/outfit/job/engineer/enginetech,
@@ -38,7 +37,7 @@
 		),
 	)
 
-	paycheck = PAYCHECK_MEDIUM
+	paycheck = PAYCHECK_ASSISTANT * 5
 	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
@@ -59,11 +58,15 @@
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
 
+/datum/job/station_engineer/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/engineer)
+
 /datum/outfit/job/engineer
 	name = "Station Engineer"
 	jobtype = /datum/job/station_engineer
 
-	id_trim = /datum/id_trim/job/station_engineer
+	id_template = /datum/access_template/job/station_engineer
 	uniform = /obj/item/clothing/under/rank/engineering/engineer
 	belt = /obj/item/storage/belt/utility/full/engi
 	ears = /obj/item/radio/headset/headset_eng
@@ -73,22 +76,11 @@
 	l_pocket = /obj/item/modular_computer/tablet/pda/engineering
 	r_pocket = /obj/item/t_scanner
 
-	backpack = /obj/item/storage/backpack/industrial
-	satchel = /obj/item/storage/backpack/satchel/eng
-	duffelbag = /obj/item/storage/backpack/duffelbag/engineering
+	back = /obj/item/storage/backpack/industrial
 
 	box = /obj/item/storage/box/survival/engineer
 	pda_slot = ITEM_SLOT_LPOCKET
 	skillchips = list(/obj/item/skillchip/job/engineer)
-
-/datum/outfit/job/engineer/plasmaman
-	name = "Station Engineer (Plasmaman)"
-
-	uniform = /obj/item/clothing/under/plasmaman/engineering
-	gloves = /obj/item/clothing/gloves/color/plasmaman/engineer
-	head = /obj/item/clothing/head/helmet/space/plasmaman/engineering
-	mask = /obj/item/clothing/mask/breath
-	r_hand = /obj/item/tank/internals/plasmaman/belt/full
 
 /datum/outfit/job/engineer/mod
 	name = "Station Engineer (MODsuit)"

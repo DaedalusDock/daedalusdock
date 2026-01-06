@@ -1,9 +1,12 @@
+TYPEINFO_DEF(/obj/item/storage/toolbox)
+	default_materials = list(/datum/material/iron = 500)
+
 /obj/item/storage/toolbox
 	name = "toolbox"
 	desc = "Danger. Very robust."
 	icon = 'icons/obj/storage.dmi'
-	icon_state = "toolbox_default"
-	inhand_icon_state = "toolbox_default"
+	icon_state = "blue"
+	inhand_icon_state = "toolbox_blue"
 	lefthand_file = 'icons/mob/inhands/equipment/toolbox_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/toolbox_righthand.dmi'
 	flags_1 = CONDUCT_1
@@ -20,7 +23,6 @@
 	block_chance = 10
 
 	w_class = WEIGHT_CLASS_BULKY
-	custom_materials = list(/datum/material/iron = 500)
 	attack_verb_continuous = list("robusts")
 	attack_verb_simple = list("robust")
 	hitsound = 'sound/weapons/smash.ogg'
@@ -30,22 +32,10 @@
 	material_flags = MATERIAL_EFFECTS | MATERIAL_COLOR
 
 	storage_type = /datum/storage/toolbox
-	var/latches = "single_latch"
-	var/has_latches = TRUE
 
 /obj/item/storage/toolbox/Initialize(mapload)
 	. = ..()
-	if(has_latches)
-		if(prob(10))
-			latches = "double_latch"
-			if(prob(1))
-				latches = "triple_latch"
 	update_appearance()
-
-/obj/item/storage/toolbox/update_overlays()
-	. = ..()
-	if(has_latches)
-		. += latches
 
 /obj/item/storage/toolbox/Initialize()
 	. = ..()
@@ -78,14 +68,12 @@
 	name = "rusty red toolbox"
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "toolbox_red_old"
-	has_latches = FALSE
 	material_flags = NONE
 
 /obj/item/storage/toolbox/mechanical
 	name = "mechanical toolbox"
 	icon_state = "blue"
 	inhand_icon_state = "toolbox_blue"
-	material_flags = NONE
 	/// If FALSE, someone with a ensouled soulstone can sacrifice a spirit to change the sprite of this toolbox.
 	var/has_soul = FALSE
 
@@ -101,7 +89,6 @@
 	name = "rusty blue toolbox"
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "toolbox_blue_old"
-	has_latches = FALSE
 	has_soul = TRUE
 
 /obj/item/storage/toolbox/mechanical/old/heirloom
@@ -122,7 +109,6 @@
 	desc = "An old, blue toolbox, it looks robust."
 	icon_state = "oldtoolboxclean"
 	inhand_icon_state = "toolbox_blue"
-	has_latches = FALSE
 	force = 19
 	throwforce = 22
 
@@ -231,6 +217,10 @@
 	new /obj/item/stack/cable_coil/cyan(src)
 	new /obj/item/stack/cable_coil/white(src)
 
+/obj/item/storage/toolbox/artistic/update_overlays()
+	. = ..()
+	. += "single_latch"
+
 /obj/item/storage/toolbox/ammo
 	name = "ammo box"
 	icon = 'icons/obj/storage.dmi'
@@ -239,7 +229,6 @@
 	inhand_icon_state = "ammobox"
 	lefthand_file = 'icons/mob/inhands/equipment/toolbox_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/toolbox_righthand.dmi'
-	has_latches = FALSE
 	drop_sound = 'sound/items/handling/ammobox_drop.ogg'
 	pickup_sound = 'sound/items/handling/ammobox_pickup.ogg'
 
@@ -258,7 +247,6 @@
 	desc = "It contains some gun maintenance supplies"
 	icon_state = "maint_kit"
 	inhand_icon_state = "ammobox"
-	has_latches = FALSE
 	drop_sound = 'sound/items/handling/ammobox_drop.ogg'
 	pickup_sound = 'sound/items/handling/ammobox_pickup.ogg'
 
@@ -278,7 +266,6 @@
 	force = 15
 	throwforce = 18
 	w_class = WEIGHT_CLASS_NORMAL
-	has_latches = FALSE
 
 /obj/item/storage/toolbox/infiltrator/Initialize()
 	. = ..()
@@ -344,9 +331,11 @@
 		return
 
 
+TYPEINFO_DEF(/obj/item/storage/toolbox/haunted)
+	default_materials = list(/datum/material/hauntium = 500)
+
 /obj/item/storage/toolbox/haunted
 	name = "old toolbox"
-	custom_materials = list(/datum/material/hauntium = 500)
 
 
 

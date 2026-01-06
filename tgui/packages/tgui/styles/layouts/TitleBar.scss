@@ -4,13 +4,20 @@
  */
 
 @use 'sass:color';
+@use 'sass:map';
 @use '../base.scss';
 @use '../colors.scss';
+@use '../atomic/color.scss' as atomic_color;
+@use '../functions.scss' as *;
 
 $text-color: rgba(255, 255, 255, 0.75) !default;
 $background-color: #363636 !default;
 $shadow-color-core: #161616 !default;
 $shadow-color: rgba(0, 0, 0, 0.1) !default;
+
+$eye-interactive: map.get(atomic_color.$fg-map, 'good') !default;
+$eye-update: map.get(atomic_color.$fg-map, 'average') !default;
+$eye-disabled: map.get(atomic_color.$fg-map, 'bad') !default;
 
 .TitleBar {
   background-color: $background-color;
@@ -55,7 +62,7 @@ $shadow-color: rgba(0, 0, 0, 0.1) !default;
 .TitleBar__buttons {
   pointer-events: initial;
   display: inline-block;
-  width: 100%;
+  width: vp(100vw);
   margin-left: 10px;
 }
 
@@ -78,6 +85,18 @@ $shadow-color: rgba(0, 0, 0, 0.1) !default;
   font-size: base.rem(20px);
   line-height: 32px !important;
   line-height: base.rem(32px) !important;
+}
+
+.TitleBar__statusIcon--interactive {
+  color: $eye-interactive;
+}
+
+.TitleBar__statusIcon--update {
+  color: $eye-update;
+}
+
+.TitleBar__statusIcon--disabled {
+  color: $eye-disabled;
 }
 
 .TitleBar__close {
@@ -105,7 +124,7 @@ $shadow-color: rgba(0, 0, 0, 0.1) !default;
   min-width: base.rem(20px);
   padding: 2px 4px;
   padding: base.rem(2px) base.rem(4px);
-  background-color: rgba(colors.$good, 0.75);
-  color: #fff;
+  background-color: colors.$good;
+  color: #000;
   text-align: center;
 }

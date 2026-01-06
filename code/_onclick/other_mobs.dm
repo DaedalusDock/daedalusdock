@@ -57,13 +57,6 @@
 	if(!right_click_attack_chain(attack_target, modifiers))
 		resolve_unarmed_attack(attack_target, modifiers)
 
-/mob/living/carbon/human/UnarmedAttack(atom/attack_target, proximity_flag, list/modifiers)
-	if(src == attack_target && !combat_mode && !HAS_TRAIT(src, TRAIT_HANDS_BLOCKED))
-		check_self_for_injuries()
-		return ATTACK_CHAIN_SUCCESS
-
-	return ..()
-
 /mob/living/carbon/resolve_unarmed_attack(atom/attack_target, list/modifiers)
 	return attack_target.attack_paw(src, modifiers)
 
@@ -170,6 +163,9 @@
 	Animals & All Unspecified
 */
 
+/**
+ * Called when a simple animal is unarmed attacking / clicking on this atom.
+ */
 /atom/proc/attack_animal(mob/user, list/modifiers)
 	SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_ANIMAL, user)
 

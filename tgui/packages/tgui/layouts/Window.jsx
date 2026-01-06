@@ -25,6 +25,7 @@ import { Layout } from './Layout';
 const logger = createLogger('Window');
 
 const DEFAULT_SIZE = [400, 600];
+const pixelRatio = window.devicePixelRatio ?? 1;
 
 export class Window extends Component {
   constructor(props) {
@@ -60,7 +61,14 @@ export class Window extends Component {
       ...config.window,
     };
     if (this.props.width && this.props.height) {
-      options.size = [this.props.width, this.props.height];
+      if (options.scale) {
+        options.size = [
+          this.props.width * pixelRatio,
+          this.props.height * pixelRatio,
+        ];
+      } else {
+        options.size = [this.props.width, this.props.height];
+      }
     }
     if (config.window?.key) {
       setWindowKey(config.window.key);
@@ -142,12 +150,12 @@ Window.Content = WindowContent;
 const statusToColor = (status) => {
   switch (status) {
     case UI_INTERACTIVE:
-      return 'good';
+      return 'TitleBar__statusIcon--interactive';
     case UI_UPDATE:
-      return 'average';
+      return 'TitleBar__statusIcon--update';
     case UI_DISABLED:
     default:
-      return 'bad';
+      return 'TitleBar__statusIcon--disabled';
   }
 };
 
@@ -169,8 +177,7 @@ const TitleBar = (props) => {
         <Icon className="TitleBar__statusIcon" name="tools" opacity={0.5} />
       )) || (
         <Icon
-          className="TitleBar__statusIcon"
-          color={statusToColor(status)}
+          className={classes(['TitleBar__statusIcon', statusToColor(status)])}
           name="eye"
         />
       )}

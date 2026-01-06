@@ -35,6 +35,7 @@
 	. = ..()
 	exposed_obj.extinguish()
 	exposed_obj.wash(CLEAN_TYPE_ACID)
+
 	// Monkey cube
 	if(istype(exposed_obj, /obj/item/food/monkeycube))
 		var/obj/item/food/monkeycube/cube = exposed_obj
@@ -81,13 +82,6 @@
 #undef WATER_TO_WET_STACKS_FACTOR_TOUCH
 #undef WATER_TO_WET_STACKS_FACTOR_VAPOR
 
-///For weird backwards situations where water manages to get added to trays nutrients, as opposed to being snowflaked away like usual.
-/datum/reagent/water/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_waterlevel(round(chems.get_reagent_amount(src.type) * 1))
-		//You don't belong in this world, monster!
-		chems.remove_reagent(/datum/reagent/water, chems.get_reagent_amount(src.type))
-
 /datum/reagent/water/holywater
 	name = "Holy Water"
 	description = "Water blessed by some deity."
@@ -101,13 +95,11 @@
 	ingest_met = INFINITY
 	metabolization_rate = 1
 
-	// Holy water. Mostly the same as water, it also heals the plant a little with the power of the spirits. Also ALSO increases instability.
-/datum/reagent/water/holywater/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_waterlevel(round(chems.get_reagent_amount(type) * 1))
-		mytray.adjust_plant_health(round(chems.get_reagent_amount(type) * 0.1))
-		if(myseed)
-			myseed.adjust_instability(round(chems.get_reagent_amount(type) * 0.15))
+// Holy water. Mostly the same as water, it also heals the plant a little with the power of the spirits. Also ALSO increases instability.
+/datum/reagent/water/holywater/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.plant_health_delta += 0.2
+		plant_tick.mutation_power += 0.1
 
 /datum/reagent/water/holywater/on_mob_metabolize(mob/living/carbon/C, class)
 	..()
@@ -203,23 +195,17 @@
 	shot_glass_icon_state = "shotglassred"
 	penetrates_skin = NONE
 
-	// FEED ME
-/datum/reagent/blood/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
-	. = ..()
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_pestlevel(rand(2,3))
-
-/datum/reagent/blood/expose_mob(mob/living/exposed_mob, exposed_temperature, reac_volume, methods, show_message, touch_protection)
+/datum/reagent/blood/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(data?["viruses"])
 		for(var/thing in data["viruses"])
-			var/datum/disease/strain = thing
+			var/datum/pathogen/strain = thing
 
-			if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+			if((strain.spread_flags & PATHOGEN_SPREAD_SPECIAL) || (strain.spread_flags & PATHOGEN_SPREAD_NON_CONTAGIOUS))
 				continue
 
-			if((methods & (TOUCH|VAPOR)) && (strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS))
-				exposed_mob.ContactContractDisease(strain)
+			if((methods & (TOUCH|VAPOR)) && (strain.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS))
+				exposed_mob.try_contact_contract_pathogen(strain)
 
 
 /datum/reagent/blood/affect_blood(mob/living/carbon/C, removed)
@@ -227,12 +213,12 @@
 		return
 
 	if(data["viruses"])
-		for(var/datum/disease/strain as anything in data["viruses"])
+		for(var/datum/pathogen/strain as anything in data["viruses"])
 
-			if((strain.spread_flags & (DISEASE_SPREAD_SPECIAL|DISEASE_SPREAD_NON_CONTAGIOUS)))
+			if((strain.spread_flags & (PATHOGEN_SPREAD_SPECIAL|PATHOGEN_SPREAD_NON_CONTAGIOUS)))
 				continue
 
-			C.ForceContractDisease(strain)
+			C.try_contract_pathogen(strain)
 
 	if(!(C.get_blood_id() == /datum/reagent/blood))
 		return
@@ -245,13 +231,13 @@
 		C.adjustBloodVolume(round(removed, 0.1))
 
 /datum/reagent/blood/affect_touch(mob/living/carbon/C, removed)
-	for(var/datum/disease/strain as anything in data?["viruses"])
+	for(var/datum/pathogen/strain as anything in data?["viruses"])
 
-		if((strain.spread_flags & DISEASE_SPREAD_SPECIAL) || (strain.spread_flags & DISEASE_SPREAD_NON_CONTAGIOUS))
+		if((strain.spread_flags & PATHOGEN_SPREAD_SPECIAL) || (strain.spread_flags & PATHOGEN_SPREAD_NON_CONTAGIOUS))
 			continue
 
-		if(strain.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
-			C.ContactContractDisease(strain)
+		if(strain.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
+			C.try_contact_contract_pathogen(strain)
 
 /datum/reagent/blood/on_new(list/data)
 	. = ..()
@@ -273,16 +259,16 @@
 			// Stop issues with the list changing during mixing.
 			var/list/to_mix = list()
 
-			for(var/datum/disease/advance/AD in mix1)
+			for(var/datum/pathogen/advance/AD in mix1)
 				to_mix += AD
-			for(var/datum/disease/advance/AD in mix2)
+			for(var/datum/pathogen/advance/AD in mix2)
 				to_mix += AD
 
-			var/datum/disease/advance/AD = Advance_Mix(to_mix)
+			var/datum/pathogen/advance/AD = Advance_Mix(to_mix)
 			if(AD)
 				var/list/preserve = list(AD)
 				for(var/D in data["viruses"])
-					if(!istype(D, /datum/disease/advance))
+					if(!istype(D, /datum/pathogen/advance))
 						preserve += D
 				data["viruses"] = preserve
 	return 1
@@ -291,7 +277,7 @@
 	. = list()
 	if(data && data["viruses"])
 		for(var/thing in data["viruses"])
-			var/datum/disease/D = thing
+			var/datum/pathogen/D = thing
 			. += D
 
 /datum/reagent/blood/expose_turf(turf/exposed_turf, reac_volume)//splash the blood all over the place
@@ -306,8 +292,8 @@
 		bloodsplatter = new(exposed_turf, data["viruses"])
 	else if(LAZYLEN(data["viruses"]))
 		var/list/viri_to_add = list()
-		for(var/datum/disease/virus in data["viruses"])
-			if(virus.spread_flags & DISEASE_SPREAD_CONTACT_FLUIDS)
+		for(var/datum/pathogen/virus in data["viruses"])
+			if(virus.spread_flags & PATHOGEN_SPREAD_CONTACT_FLUIDS)
 				viri_to_add += virus
 		if(LAZYLEN(viri_to_add))
 			bloodsplatter.AddComponent(/datum/component/infective, viri_to_add)
@@ -384,10 +370,10 @@
 	color = pick(potential_colors)
 
 /datum/reagent/hair_dye/affect_ingest(mob/living/carbon/C, removed) //What the fuck is wrong with you
-	C.adjustToxLoss(2 * removed, FALSE)
+	C.adjustToxLoss(2 * removed, FALSE, cause_of_death = "Ingesting hair dye")
 	return ..() || TRUE
 
-/datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=FALSE)
+/datum/reagent/hair_dye/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!(methods & (TOUCH|VAPOR)) || !ishuman(exposed_mob))
 		return
@@ -408,7 +394,7 @@
 
 /datum/reagent/plantnutriment/affect_blood(mob/living/carbon/C, removed)
 	if(prob(tox_prob *2))
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "Plant nutriment poisoning")
 		. = TRUE
 
 /datum/reagent/plantnutriment/eznutriment
@@ -418,12 +404,14 @@
 	tox_prob = 5
 
 
-/datum/reagent/plantnutriment/eznutriment/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
-	. = ..()
-	if(myseed && chems.has_reagent(src.type, 1))
-		myseed.adjust_instability(0.2)
-		myseed.adjust_potency(round(chems.get_reagent_amount(src.type) * 0.3))
-		myseed.adjust_yield(round(chems.get_reagent_amount(src.type) * 0.1))
+/datum/reagent/plantnutriment/eznutriment/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.potency_mod += 0.2
+		plant_tick.plant_growth_delta += 2.5
+		#ifndef UNIT_TESTS
+		plant_tick.mutation_power += 0.1
+		#endif
+		plant_tick.yield_mod += 0.2
 
 /datum/reagent/plantnutriment/left4zednutriment
 	name = "Left 4 Zed"
@@ -432,11 +420,10 @@
 	tox_prob = 13
 
 
-/datum/reagent/plantnutriment/left4zednutriment/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
-	. = ..()
-	if(myseed && chems.has_reagent(src.type, 1))
-		mytray.adjust_plant_health(round(chems.get_reagent_amount(src.type) * 0.1))
-		myseed.adjust_instability(round(chems.get_reagent_amount(src.type) * 0.2))
+/datum/reagent/plantnutriment/left4zednutriment/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.plant_health_delta += 1
+		plant_tick.mutation_power += 0.8
 
 /datum/reagent/plantnutriment/robustharvestnutriment
 	name = "Robust Harvest"
@@ -445,12 +432,11 @@
 	tox_prob = 8
 
 
-/datum/reagent/plantnutriment/robustharvestnutriment/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
-	. = ..()
-	if(myseed && chems.has_reagent(src.type, 1))
-		myseed.adjust_instability(-0.25)
-		myseed.adjust_potency(round(chems.get_reagent_amount(src.type) * 0.1))
-		myseed.adjust_yield(round(chems.get_reagent_amount(src.type) * 0.2))
+/datum/reagent/plantnutriment/robustharvestnutriment/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.mutation_power -= 0.25
+		plant_tick.potency_mod += 0.1
+		plant_tick.yield_mod += 0.1
 
 /datum/reagent/plantnutriment/endurogrow
 	name = "Enduro Grow"
@@ -459,12 +445,11 @@
 	tox_prob = 8
 
 
-/datum/reagent/plantnutriment/endurogrow/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
-	. = ..()
-	if(myseed && chems.has_reagent(src.type, 1))
-		myseed.adjust_potency(-round(chems.get_reagent_amount(src.type) * 0.1))
-		myseed.adjust_yield(-round(chems.get_reagent_amount(src.type) * 0.075))
-		myseed.adjust_endurance(round(chems.get_reagent_amount(src.type) * 0.35))
+/datum/reagent/plantnutriment/endurogrow/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.endurance_mod += 0.35
+		plant_tick.potency_mod -= 0.15
+		plant_tick.yield_mod -= 0.15
 
 /datum/reagent/plantnutriment/liquidearthquake
 	name = "Liquid Earthquake"
@@ -473,12 +458,9 @@
 	tox_prob = 13
 
 
-/datum/reagent/plantnutriment/liquidearthquake/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray)
-	. = ..()
-	if(myseed && chems.has_reagent(src.type, 1))
-		myseed.adjust_weed_rate(round(chems.get_reagent_amount(src.type) * 0.1))
-		myseed.adjust_weed_chance(round(chems.get_reagent_amount(src.type) * 0.3))
-		myseed.adjust_production(-round(chems.get_reagent_amount(src.type) * 0.075))
+/datum/reagent/plantnutriment/liquidearthquake/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.production_mod -= 0.2
 
 // Bee chemicals
 
@@ -574,7 +556,7 @@
 
 /datum/reagent/technetium/affect_blood(mob/living/carbon/C, removed)
 	if(!(current_cycle % 8))
-		C.adjustToxLoss(5 * removed, FALSE)
+		C.adjustToxLoss(5 * removed, FALSE, cause_of_death = "Technetium 99 poisoning")
 		. = TRUE
 
 /datum/reagent/helgrasp
@@ -655,7 +637,7 @@
 			drinker.blood_volume += 3 * removed
 	else
 		drinker.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
-		drinker.adjustToxLoss(2 * removed, FALSE)
+		drinker.adjustToxLoss(2 * removed, FALSE, cause_of_death = "The devil")
 		drinker.adjustFireLoss(2 * removed, FALSE)
 		drinker.adjustOxyLoss(2 * removed, FALSE)
 		drinker.adjustBruteLoss(2 * removed, FALSE)
@@ -677,14 +659,10 @@
 
 
 // This is more bad ass, and pests get hurt by the corrosive nature of it, not the plant. The new trade off is it culls stability.
-/datum/reagent/diethylamine/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+/datum/reagent/diethylamine/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
 	. = ..()
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_plant_health(round(chems.get_reagent_amount(src.type) * 1))
-		mytray.adjust_pestlevel(-rand(1,2))
-		if(myseed)
-			myseed.adjust_yield(round(chems.get_reagent_amount(src.type) * 1))
-			myseed.adjust_instability(-round(chems.get_reagent_amount(src.type) * 1))
+	if(volume >= 1)
+		plant_tick.plant_growth_delta += 1.2
 
 /datum/reagent/pax
 	name = "Pax 400"
@@ -740,7 +718,7 @@
 			C.blood_volume += 3 * removed
 	else  // Will deal about 90 damage when 50 units are thrown
 		C.adjustOrganLoss(ORGAN_SLOT_BRAIN, 3 * removed, 150, updating_health = FALSE)
-		C.adjustToxLoss(1 * removed, 0)
+		C.adjustToxLoss(1 * removed, 0, cause_of_death = "The devil")
 		C.adjustFireLoss(1 * removed, 0)
 		C.adjustOxyLoss(1 * removed, 0)
 		C.adjustBruteLoss(1 * removed, 0)
@@ -819,24 +797,24 @@
 	taste_description = "slime"
 	penetrates_skin = NONE
 
-/datum/reagent/vaccine/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume, show_message=TRUE, touch_protection=0)
+/datum/reagent/vaccine/expose_mob(mob/living/exposed_mob, reac_volume, exposed_temperature = T20C, datum/reagents/source, methods=TOUCH, show_message = TRUE, touch_protection = 0)
 	. = ..()
 	if(!islist(data) || !(methods & (INGEST|INJECT)))
 		return
 
 	for(var/thing in exposed_mob.diseases)
-		var/datum/disease/infection = thing
-		if(infection.GetDiseaseID() in data)
-			infection.cure()
+		var/datum/pathogen/infection = thing
+		if(infection.get_id() in data)
+			infection.force_cure()
 	LAZYOR(exposed_mob.disease_resistances, data)
 
 /datum/reagent/vaccine/affect_blood(mob/living/carbon/C, removed)
 	if(!islist(data))
 		return
 	for(var/thing in C.diseases)
-		var/datum/disease/infection = thing
-		if(infection.GetDiseaseID() in data)
-			infection.cure()
+		var/datum/pathogen/infection = thing
+		if(infection.get_id() in data)
+			infection.force_cure()
 	LAZYOR(C.disease_resistances, data)
 
 
@@ -855,7 +833,7 @@
 		cached_data = list()
 	else
 		cached_data = data
-	cached_data |= "[/datum/disease/tuberculosis]"
+	cached_data |= "[/datum/pathogen/tuberculosis]"
 	src.data = cached_data
 
 /datum/reagent/barbers_aid
@@ -900,16 +878,15 @@
 		if(200 to INFINITY)
 			newsize = 3.5*RESIZE_DEFAULT_SIZE
 
-	C.resize = newsize/current_size
+	C.update_transform(newsize/current_size)
 	current_size = newsize
-	C.update_transform()
 
 /datum/reagent/growthserum/on_mob_end_metabolize(mob/living/carbon/C, class)
 	if(class != CHEM_BLOOD)
 		return
-	C.resize = RESIZE_DEFAULT_SIZE/current_size
+
+	C.update_transform(RESIZE_DEFAULT_SIZE/current_size)
 	current_size = RESIZE_DEFAULT_SIZE
-	C.update_transform()
 
 /datum/reagent/impedrezene // Impairs mental function correctly, takes an overwhelming dose to kill.
 	name = "Impedrezene"
@@ -961,14 +938,10 @@
 	C.adjustFireLoss((ispodperson(C) ? -1 : 1) * removed, FALSE)
 	return TRUE
 
-/datum/reagent/brimdust/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(src.type, 1))
-		mytray.adjust_weedlevel(-1)
-		mytray.adjust_pestlevel(-1)
-		mytray.adjust_plant_health(round(chems.get_reagent_amount(src.type) * 1))
-		if(myseed)
-			myseed.adjust_potency(round(chems.get_reagent_amount(src.type) * 0.5))
+/datum/reagent/brimdust/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.potency_mod += 0.5
+		plant_tick.plant_health_delta += 0.5
 
 /datum/reagent/spider_extract
 	name = "Spider Extract"
@@ -991,14 +964,18 @@
 
 
 // Saltpetre is used for gardening IRL, to simplify highly, it speeds up growth and strengthens plants
-/datum/reagent/saltpetre/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
+/datum/reagent/saltpetre/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.plant_growth_delta += 2.5
+		plant_tick.potency_mod += 0.5
+
+		if(mytray.growing.gene_holder.harvest_yield > 1)
+			plant_tick.yield_mod -= 0.25
+
+/datum/reagent/saltpetre/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
 	. = ..()
-	if(chems.has_reagent(src.type, 1))
-		var/salt = chems.get_reagent_amount(src.type)
-		mytray.adjust_plant_health(round(salt * 0.18))
-		if(myseed)
-			myseed.adjust_production(-round(salt/10)-prob(salt%10))
-			myseed.adjust_potency(round(salt*1))
+	plant_dna.potency += rand(2, 8)
+	plant_dna.harvest_yield += rand(0, 2)
 
 /datum/reagent/cordiolis_hepatico
 	name = "Cordiolis Hepatico"
@@ -1044,15 +1021,15 @@
 	metabolization_rate = INFINITY
 
 /datum/reagent/fungalspores/affect_ingest(mob/living/carbon/C, removed)
-	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 	return ..()
 
 /datum/reagent/fungalspores/affect_blood(mob/living/carbon/C, removed)
-	C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+	C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 
 /datum/reagent/fungalspores/affect_touch(mob/living/carbon/C, removed)
 	if(prob(min(volume,100)*(1 - C.get_permeability_protection())))
-		C.ForceContractDisease(new /datum/disease/tuberculosis(), FALSE, TRUE)
+		C.try_contract_pathogen(new /datum/pathogen/tuberculosis(), FALSE, TRUE)
 
 
 #define CRYO_SPEED_PREFACTOR 0.4
@@ -1114,7 +1091,7 @@
 		C.remove_status_effect(/datum/status_effect/jitter)
 
 /datum/reagent/medicine/changelingadrenaline/overdose_process(mob/living/carbon/C)
-	C.adjustToxLoss(0.2, 0)
+	C.adjustToxLoss(0.2, 0, cause_of_death = "Changeling adrenaline overdose")
 	return TRUE
 
 /datum/reagent/medicine/changelinghaste
@@ -1133,7 +1110,7 @@
 		C.remove_movespeed_modifier(/datum/movespeed_modifier/reagent/changelinghaste)
 
 /datum/reagent/medicine/changelinghaste/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(0.2, 0)
+	C.adjustToxLoss(0.2, 0, cause_of_death = "Changeling haste")
 	return TRUE
 
 /datum/reagent/gold
@@ -1187,3 +1164,17 @@
 		return
 	if(reac_volume >= 1)
 		exposed_turf.MakeSlippery(TURF_WET_WATER, 15 SECONDS, min(reac_volume * 1 SECONDS, 40 SECONDS))
+
+/datum/reagent/luminol
+	name = "Luminol"
+	description = "A compound that illuminates blood when oxidized."
+	taste_description = "metal"
+	reagent_state = LIQUID
+	color = "#f2f3f4"
+	value = 1.4
+	taste_description = "pungent acid"
+
+/datum/reagent/luminol/expose_obj(obj/exposed_obj, reac_volume, exposed_temperature)
+	. = ..()
+	exposed_obj.uv_illuminate("luminol", 2 SECONDS, 255)
+

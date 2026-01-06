@@ -32,11 +32,6 @@
 //
 // The explosion cannot insta-kill anyone with 30% or more health.
 
-#define LIGHT_OK 0
-#define LIGHT_EMPTY 1
-#define LIGHT_BROKEN 2
-#define LIGHT_BURNED 3
-
 
 /obj/item/lightreplacer
 
@@ -237,29 +232,25 @@
 	else
 		return 0
 
-/obj/item/lightreplacer/afterattack(atom/T, mob/U, proximity)
-	. = ..()
-	if(!proximity)
-		return
+/obj/item/lightreplacer/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/T = interacting_with // Yes i am supremely lazy
+
 	if(!isturf(T))
-		return
+		return NONE
 
 	var/used = FALSE
 	for(var/atom/A in T)
-		if(!CanUse(U))
+		if(!CanUse(user))
 			break
 		used = TRUE
 		if(istype(A, /obj/machinery/light))
-			ReplaceLight(A, U)
+			ReplaceLight(A, user)
 
 	if(!used)
-		to_chat(U, span_warning("\The [src]'s refill light blinks red."))
+		to_chat(user, span_warning("\The [src]'s refill light blinks red."))
+		return ITEM_INTERACT_BLOCKING
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/lightreplacer/cyborg/Initialize(mapload)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CYBORG_ITEM_TRAIT)
-
-#undef LIGHT_OK
-#undef LIGHT_EMPTY
-#undef LIGHT_BROKEN
-#undef LIGHT_BURNED

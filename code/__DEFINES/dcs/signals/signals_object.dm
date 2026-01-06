@@ -107,16 +107,16 @@
 	#define COMPONENT_ITEM_BLOCK_UNEQUIP (1<<0)
 ///called on [/obj/item] AFTER unequip from base of [mob/proc/tryUnequipItem]: (force, atom/newloc, no_move, invdrop, silent)
 #define COMSIG_ITEM_POST_UNEQUIP "item_post_unequip"
-///from base of obj/item/on_grind(): ())
-#define COMSIG_ITEM_ON_GRIND "on_grind"
-///from base of obj/item/on_juice(): ()
-#define COMSIG_ITEM_ON_JUICE "on_juice"
+///from base of obj/item/grind(): ())
+#define COMSIG_ITEM_PRE_GRIND "pre_grind"
+///from base of obj/item/juice(): ()
+#define COMSIG_ITEM_PRE_JUICE "pre_juice"
 ///from /obj/machinery/hydroponics/attackby(obj/item/O, mob/user, params) when an object is used as compost: (mob/user)
 #define COMSIG_ITEM_ON_COMPOSTED "on_composted"
 ///Called when an item is dried by a drying rack:
 #define COMSIG_ITEM_DRIED "item_dried"
-///from base of obj/item/dropped(): (mob/user)
-#define COMSIG_ITEM_DROPPED "item_drop"
+///from base of obj/item/unequipped(): (mob/user)
+#define COMSIG_ITEM_UNEQUIPPED "item_drop"
 ///from base of obj/item/pickup(): (/mob/taker)
 #define COMSIG_ITEM_PICKUP "item_pickup"
 
@@ -175,6 +175,11 @@
 	#define COMPONENT_OFFER_TAKE_INTERRUPT (1<<0)
 /// sent from obj/effect/attackby(): (/obj/effect/hit_effect, /mob/living/attacker, params)
 #define COMSIG_ITEM_ATTACK_EFFECT "item_effect_attacked"
+
+/// Sent from /obj/item/set_weight_class(). (old_w_class, new_w_class)
+#define COMSIG_ITEM_WEIGHT_CLASS_CHANGED "item_weight_class_changed"
+/// Sent from /obj/item/set_weight_class(), to its loc. (obj/item/changed_item, old_w_class, new_w_class)
+#define COMSIG_ATOM_CONTENTS_WEIGHT_CLASS_CHANGED "atom_contents_weight_class_changed"
 
 ///from base of [/obj/item/proc/tool_check_callback]: (mob/living/user)
 #define COMSIG_TOOL_IN_USE "tool_in_use"
@@ -401,12 +406,8 @@
 	#define COMPONENT_SECONDARY_CALL_NORMAL_ATTACK_CHAIN (1<<2)
 /// From base of [/obj/item/proc/attack_secondary()]: (atom/target, mob/user, params)
 #define COMSIG_ITEM_ATTACK_SECONDARY "item_pre_attack_secondary"
-///from base of obj/item/afterattack(): (atom/target, mob/user, proximity_flag, click_parameters)
+///from base of [obj/item/attack()]: (atom/target, mob/user, proximity_flag, list/modifiers)
 #define COMSIG_ITEM_AFTERATTACK "item_afterattack"
-///from base of obj/item/afterattack_secondary(): (atom/target, mob/user, proximity_flag, click_parameters)
-#define COMSIG_ITEM_AFTERATTACK_SECONDARY "item_afterattack_secondary"
-///from base of obj/item/attack_qdeleted(): (atom/target, mob/user, params)
-#define COMSIG_ITEM_ATTACK_QDELETED "item_attack_qdeleted"
 
 ///from /obj/item/assembly/proc/pulsed()
 #define COMSIG_ASSEMBLY_PULSED "assembly_pulsed"

@@ -57,11 +57,11 @@
 			for(var/datum/data/crime/c in current.fields[DATACORE_CITATIONS])
 				var/owed = c.fine - c.paid
 				dat += {"<tr><td>[c.crimeName]</td>
-				<td>[c.fine] cr</td>
+				<td>[c.fine] FM</td>
 				<td>[c.author]</td>
 				<td>[c.time]</td>"}
 				if(owed > 0)
-					dat += {"<td>[owed] cr</td>
+					dat += {"<td>[owed] FM</td>
 					<td><A href='?src=[REF(src)];choice=Pay;field=citation_pay;cdataid=[c.dataId]'>\[Pay\]</A></td>"}
 				else
 					dat += "<td colspan='2'>All Paid Off</td>"
@@ -132,7 +132,7 @@
 
 								var/overflow = pay - diff
 								if(overflow)
-									SSeconomy.spawn_cash_for_amount(overflow, drop_location())
+									SSeconomy.spawn_ones_for_amount(overflow, drop_location())
 							SSblackbox.ReportCitation(text2num(href_list["cdataid"]),"","","","", 0, pay)
 							qdel(C)
 							playsound(src, SFX_TERMINAL_TYPE, 25, FALSE)

@@ -2,6 +2,9 @@
 #define HALFWAYCRITDEATH ((HEALTH_THRESHOLD_CRIT + HEALTH_THRESHOLD_DEAD) * 0.5)
 #define DEFIB_CAN_HURT(source) (source.combat || (source.req_defib && !source.defib.safety))
 
+TYPEINFO_DEF(/obj/item/defibrillator)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/item/defibrillator
 	name = "defibrillator"
 	desc = "A device that delivers powerful shocks to detachable paddles that resuscitate incapacitated patients. \
@@ -16,7 +19,6 @@
 	throwforce = 6
 	w_class = WEIGHT_CLASS_BULKY
 	actions_types = list(/datum/action/item_action/toggle_paddles)
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 
 	var/obj/item/shockpaddles/paddle_type = /obj/item/shockpaddles
 	var/on = FALSE //if the paddles are equipped (1) or on the defib (0)
@@ -102,35 +104,14 @@
 	cell = locate(/obj/item/stock_parts/cell) in contents
 	update_power()
 
-/obj/item/defibrillator/ui_action_click()
-	INVOKE_ASYNC(src, PROC_REF(toggle_paddles))
+/obj/item/defibrillator/ui_action_click(mob/user, actiontype)
+	INVOKE_ASYNC(src, PROC_REF(toggle_paddles), user)
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 /obj/item/defibrillator/attack_hand(mob/user, list/modifiers)
-	if(loc == user)
-		if(slot_flags == ITEM_SLOT_BACK)
-			if(user.get_item_by_slot(ITEM_SLOT_BACK) == src)
-				ui_action_click()
-			else
-				to_chat(user, span_warning("Put the defibrillator on your back first!"))
-
-		else if(slot_flags == ITEM_SLOT_BELT)
-			if(user.get_item_by_slot(ITEM_SLOT_BELT) == src)
-				ui_action_click()
-			else
-				to_chat(user, span_warning("Strap the defibrillator's belt on first!"))
-		return
-	else if(istype(loc, /obj/machinery/defibrillator_mount))
-		ui_action_click() //checks for this are handled in defibrillator.mount.dm
+	if(equipped_to == user || istype(loc, /obj/machinery/defibrillator_mount))
+		toggle_paddles(user)
 	return ..()
-
-/obj/item/defibrillator/MouseDrop(obj/over_object)
-	. = ..()
-	if(ismob(loc))
-		var/mob/M = loc
-		if(!M.incapacitated() && istype(over_object, /atom/movable/screen/inventory/hand))
-			var/atom/movable/screen/inventory/hand/H = over_object
-			M.putItemFromInventoryInHandIfPossible(src, H.held_index)
 
 /obj/item/defibrillator/screwdriver_act(mob/living/user, obj/item/tool)
 	if(cell)
@@ -143,7 +124,8 @@
 
 /obj/item/defibrillator/attackby(obj/item/W, mob/user, params)
 	if(W == paddles)
-		toggle_paddles()
+		toggle_paddles(user)
+
 	else if(istype(W, /obj/item/stock_parts/cell))
 		var/obj/item/stock_parts/cell/C = W
 		if(cell)
@@ -159,6 +141,13 @@
 			update_power()
 	else
 		return ..()
+
+/obj/item/defibrillator/AltClick(mob/user)
+	. = ..()
+	if(on || !user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
+		return
+
+	toggle_paddles(user)
 
 /obj/item/defibrillator/emag_act(mob/user)
 	if(safety)
@@ -188,47 +177,52 @@
 		playsound(src, 'sound/machines/defib_saftyOn.ogg', 50, FALSE)
 	update_power()
 
-/obj/item/defibrillator/proc/toggle_paddles()
+/obj/item/defibrillator/verb/toggle_paddles_verb()
 	set name = "Toggle Paddles"
 	set category = "Object"
+	set src in view(1)
+
+	var/mob/living/user = usr
+	if(!istype(user) || !user.canUseTopic(src, USE_CLOSE|USE_NEED_HANDS))
+		return
+
+	toggle_paddles(user)
+
+/// Equips or unequips paddles. Overloaded AF.
+/obj/item/defibrillator/proc/toggle_paddles(mob/living/user)
 	on = !on
 
-	var/mob/living/carbon/user = usr
 	if(on)
 		//Detach the paddles into the user's hands
-		if(!usr.put_in_hands(paddles))
+		if(!user.put_in_hands(paddles))
 			on = FALSE
 			to_chat(user, span_warning("You need a free hand to hold the paddles!"))
 			update_power()
-			return
+			return FALSE
 	else
 		//Remove from their hands and back onto the defib unit
-		remove_paddles(user)
+		remove_paddles()
 
 	update_power()
 	update_action_buttons()
-
+	return TRUE
 
 /obj/item/defibrillator/equipped(mob/user, slot)
 	..()
 	if((slot_flags == ITEM_SLOT_BACK && slot != ITEM_SLOT_BACK) || (slot_flags == ITEM_SLOT_BELT && slot != ITEM_SLOT_BELT))
-		remove_paddles(user)
+		remove_paddles()
 		update_power()
 
 /obj/item/defibrillator/item_action_slot_check(slot, mob/user)
 	if(slot == user.getBackSlot())
 		return 1
 
-/obj/item/defibrillator/proc/remove_paddles(mob/user) //this fox the bug with the paddles when other player stole you the defib when you have the paddles equiped
-	if(ismob(paddles.loc))
-		var/mob/M = paddles.loc
-		M.dropItemToGround(paddles, TRUE)
-	return
+/obj/item/defibrillator/proc/remove_paddles() //this fox the bug with the paddles when other player stole you the defib when you have the paddles equiped
+	paddles.equipped_to?.dropItemToGround(paddles, TRUE)
 
 /obj/item/defibrillator/Destroy()
 	if(on)
-		var/M = get(paddles, /mob)
-		remove_paddles(M)
+		remove_paddles()
 	QDEL_NULL(paddles)
 	QDEL_NULL(cell)
 	return ..()
@@ -326,6 +320,8 @@
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 
+	has_combat_mode_interaction = TRUE
+
 	force = 0
 	force_wielded = 8
 	throwforce = 6
@@ -344,7 +340,17 @@
 
 /obj/item/shockpaddles/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_NO_STORAGE_INSERT, TRAIT_GENERIC) //stops shockpaddles from being inserted in BoH
 	AddElement(/datum/element/update_icon_updates_onmob, ITEM_SLOT_HANDS|ITEM_SLOT_BACK)
+	if(!req_defib)
+		return
+
+	if (!loc || !istype(loc, /obj/item/defibrillator)) //To avoid weird issues from admin spawns
+		return INITIALIZE_HINT_QDEL
+
+	defib = loc
+	busy = FALSE
+	update_appearance()
 
 /obj/item/shockpaddles/Destroy()
 	defib = null
@@ -355,6 +361,17 @@
 	if(!req_defib)
 		return
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
+
+/obj/item/shockpaddles/attack_self(mob/user, modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(wielded)
+		unwield(user)
+	else
+		wield(user)
+	return TRUE
 
 /obj/item/shockpaddles/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
@@ -390,17 +407,6 @@
 	cooldown = FALSE
 	update_appearance()
 
-/obj/item/shockpaddles/Initialize(mapload)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_NO_STORAGE_INSERT, TRAIT_GENERIC) //stops shockpaddles from being inserted in BoH
-	if(!req_defib)
-		return //If it doesn't need a defib, just say it exists
-	if (!loc || !istype(loc, /obj/item/defibrillator)) //To avoid weird issues from admin spawns
-		return INITIALIZE_HINT_QDEL
-	defib = loc
-	busy = FALSE
-	update_appearance()
-
 /obj/item/shockpaddles/suicide_act(mob/user)
 	user.visible_message(span_danger("[user] is putting the live paddles on [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	if(req_defib)
@@ -415,7 +421,7 @@
 		icon_state = "[base_icon_state][wielded]_cooldown"
 	return ..()
 
-/obj/item/shockpaddles/dropped(mob/user)
+/obj/item/shockpaddles/unequipped(mob/user)
 	. = ..()
 	if(user)
 		UnregisterSignal(user, COMSIG_MOVABLE_MOVED)
@@ -431,53 +437,59 @@
 	forceMove(defib)
 	defib.update_power()
 
-/obj/item/shockpaddles/attack(mob/M, mob/living/user, params)
+/obj/item/shockpaddles/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(!isliving(interacting_with))
+		return NONE
+
 	if(busy)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	defib?.update_power()
 	if(req_defib && !defib.powered)
-		user.visible_message(span_warning("[defib] beeps: Not enough charge!"))
+		user.visible_message(span_warning("[defib] beeps: Not enough charge."))
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, FALSE)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(!wielded)
 		if(iscyborg(user))
 			to_chat(user, span_warning("You must activate the paddles in your active module before you can use them on someone!"))
 		else
 			to_chat(user, span_warning("You need to wield the paddles in both hands before you can use them on someone!"))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(cooldown)
 		if(req_defib)
 			to_chat(user, span_warning("[defib] is recharging!"))
 		else
 			to_chat(user, span_warning("[src] are recharging!"))
-		return
+		return ITEM_INTERACT_BLOCKING
 
-	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, RIGHT_CLICK))
-		do_disarm(M, user)
-		return
+		do_disarm(interacting_with, user)
+		return ITEM_INTERACT_SUCCESS
 
-	if(!iscarbon(M))
+	if(!iscarbon(interacting_with))
 		if(req_defib)
 			to_chat(user, span_warning("The instructions on [defib] don't mention how to revive that..."))
 		else
 			to_chat(user, span_warning("You aren't sure how to revive that..."))
-		return
-	var/mob/living/carbon/H = M
+		return ITEM_INTERACT_BLOCKING
 
+	var/mob/living/carbon/carbon_target = interacting_with
 	if(user.zone_selected != BODY_ZONE_CHEST)
-		to_chat(user, span_warning("You need to target your patient's chest with [src]!"))
-		return
+		to_chat(user, span_warning("You need to target your patient's chest with [src]."))
+		return ITEM_INTERACT_BLOCKING
 
 	if(user.combat_mode)
-		do_harm(H, user)
-		return
+		do_harm(carbon_target, user)
+		return ITEM_INTERACT_SUCCESS
 
-	if(H.stat != DEAD)
-		H.notify_ghost_revival("Your heart is being defibrillated!")
-		H.grab_ghost() // Shove them back in their body.
+	if(carbon_target.stat != DEAD)
+		carbon_target.notify_ghost_revival("Your heart is being defibrillated.")
+		carbon_target.grab_ghost() // Shove them back in their body.
 
-	do_help(H, user)
+	do_help(carbon_target, user)
+	return ITEM_INTERACT_SUCCESS
 
 /// Called whenever the paddles successfuly shock something
 /obj/item/shockpaddles/proc/do_success()
@@ -501,7 +513,7 @@
 
 /obj/item/shockpaddles/proc/shock_pulling(dmg, mob/H)
 	for(var/mob/living/M in H.recursively_get_all_grabbers())
-		if(M.electrocute_act(dmg, H))
+		if(M.electrocute_act(dmg))
 			M.visible_message(span_danger("[M] is electrocuted by [M.p_their()] contact with [H]!"))
 			M.emote("scream")
 
@@ -517,7 +529,7 @@
 	M.apply_status_effect(/datum/status_effect/convulsing)
 	playsound(src,  'sound/machines/defib_zap.ogg', 50, TRUE, -1)
 	if(HAS_TRAIT(M,MOB_ORGANIC))
-		M.emote("gasp")
+		M.emote(/datum/emote/living/carbon/gasp_air)
 	log_combat(user, M, "zapped", src)
 	do_success()
 
@@ -576,6 +588,12 @@
 	user.visible_message(span_notice("[user] places [src] on [H]'s chest."), span_warning("You place [src] on [H]'s chest."))
 	playsound(src, 'sound/machines/defib_charge.ogg', 75, FALSE)
 
+	// Cinematic effect.
+	if((H.stat == UNCONSCIOUS) && H.client)
+		var/sound/patient_sound = sound('sound/machines/defib_charge.ogg', volume = 50)
+		patient_sound.environment = SOUND_ENVIRONMENT_UNDERWATER
+		SEND_SOUND(H, patient_sound)
+
 	// Check to see if the patient's chest is covered or we don't care.
 	if((!combat && !req_defib) || (req_defib && !defib.combat))
 		for(var/obj/item/clothing/C in H.get_equipped_items())
@@ -612,6 +630,16 @@
 	do_success() //Deduct charge
 	H.Knockdown(15 SECONDS)
 
+	// Cinematic effect.
+	if(H.stat == UNCONSCIOUS && H.client)
+		var/sound/patient_sound = sound('sound/machines/defib_zap.ogg', volume = 50)
+		patient_sound.environment = SOUND_ENVIRONMENT_UNDERWATER
+		SEND_SOUND(H, patient_sound)
+
+		if(H.client?.prefs?.read_preference(/datum/preference/toggle/darkened_flash) == FALSE)
+			H.overlay_fullscreen("defib_flash", /atom/movable/screen/fullscreen/flash/over_blind)
+			addtimer(CALLBACK(H, TYPE_PROC_REF(/mob, clear_fullscreen), "defib_flash", 1.5 SECONDS), 1 SECOND)
+
 	// Braindead
 	if(H.stat == DEAD)
 		shock_pulling(30, H)
@@ -633,7 +661,7 @@
 	inhand_icon_state = "defibpaddles0"
 	req_defib = FALSE
 
-/obj/item/shockpaddles/cyborg/attack(mob/M, mob/user)
+/obj/item/shockpaddles/cyborg/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(iscyborg(user))
 		var/mob/living/silicon/robot/R = user
 		if(R.emagged)
@@ -650,14 +678,14 @@
 	combat = TRUE
 	icon = 'icons/obj/defib.dmi'
 	icon_state = "syndiepaddles0"
-	inhand_icon_state = "syndiepaddles0"
+	inhand_icon_state = "defibpaddles0"
 	base_icon_state = "syndiepaddles"
 
 /obj/item/shockpaddles/syndicate/nanotrasen
 	name = "advanced defibrillator paddles"
 	desc = "A pair of paddles used to revive deceased ERT members. They possess both the ability to penetrate armor and to deliver powerful or disabling shocks offensively."
 	icon_state = "ntpaddles0"
-	inhand_icon_state = "ntpaddles0"
+	inhand_icon_state = "defibpaddles0"
 	base_icon_state = "ntpaddles"
 
 /obj/item/shockpaddles/syndicate/cyborg

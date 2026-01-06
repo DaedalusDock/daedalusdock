@@ -12,6 +12,8 @@ $background-color: rgba(0, 0, 0, 0) !default;
 $border-radius: base.$border-radius !default;
 $bg-map: colors.$bg-map !default;
 
+$text-color: base.$color-fg !default;
+
 .ProgressBar {
   display: inline-block;
   position: relative;
@@ -42,6 +44,7 @@ $bg-map: colors.$bg-map !default;
   line-height: base.em(17px);
   width: 100%;
   text-align: right;
+  color: $text-color;
 }
 
 .ProgressBar--color--default {

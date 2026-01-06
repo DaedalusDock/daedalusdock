@@ -17,9 +17,9 @@
 		return
 
 	if(G.affecting != G.assailant)
-		G.assailant.visible_message(span_warning("[G.assailant] has grabbed [G.affecting]'s [BP.plaintext_zone]!"))
+		G.assailant.visible_message(span_warning("<b>[G.assailant]</b> grabs <b>[G.affecting]</b> by [G.affecting.p_their()] [BP.plaintext_zone]."))
 	else
-		G.assailant.visible_message(span_notice("[G.assailant] has grabbed [G.assailant.p_their()] [BP.plaintext_zone]!"))
+		G.assailant.visible_message(span_notice("<b>[G.assailant]</b> grabs [G.assailant.p_their()] [BP.plaintext_zone]."))
 
 /datum/grab/normal/on_hit_help(obj/item/hand_item/grab/G, atom/A)
 
@@ -60,14 +60,19 @@
 
 	var/obj/item/bodypart/BP = G.get_targeted_bodypart()
 	if(!BP)
-		to_chat(assailant, span_warning("\The [affecting] is missing that body part!"))
+		to_chat(assailant, span_warning("\The [affecting] is missing that body part,"))
+		return FALSE
+
+	if(!BP.can_be_dislocated())
+		to_chat(assailant, span_warning("[affecting] can not be placed into a joint lock."))
 		return FALSE
 
 	assailant.visible_message(span_danger("\The [assailant] begins to [pick("bend", "twist")] \the [affecting]'s [BP.plaintext_zone] into a jointlock!"))
+
 	if(do_after(assailant, affecting, action_cooldown - 1, DO_PUBLIC, display = image('icons/hud/do_after.dmi', "harm")))
 		G.action_used()
 		BP.jointlock(assailant)
-		assailant.visible_message(span_danger("\The [affecting]'s [BP.plaintext_zone] is twisted!"))
+		assailant.visible_message(span_danger("\The [affecting]'s [BP.plaintext_zone] is twisted,"))
 		playsound(assailant.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		return TRUE
 
@@ -94,7 +99,7 @@
 			G.action_used()
 			BP.set_dislocated(FALSE)
 			assailant.visible_message(span_warning("\The [affecting]'s [BP.joint_name] pops back into place!"))
-			affecting.pain_message("AAAHHHHAAGGHHHH", 50, TRUE)
+			affecting.pain_message("AAAHHHHAAGGHHHH", PAIN_AMT_MEDIUM, TRUE)
 		return TRUE
 
 	if(BP.can_be_dislocated())
@@ -236,6 +241,9 @@
 	return TRUE
 
 /datum/grab/normal/resolve_item_attack(obj/item/hand_item/grab/G, mob/living/carbon/human/user, obj/item/I)
+	if(damage_stage < GRAB_AGGRESSIVE)
+		return
+
 	switch(G.target_zone)
 		if(BODY_ZONE_HEAD)
 			return attack_throat(G, I, user)
@@ -279,10 +287,10 @@
 		total_damage += damage
 
 	if(total_damage)
-		user.visible_message("<span class='danger'>\The [user] slit [affecting]'s throat open with \the [W]!</span>")
+		user.visible_message("<span class='danger'>\The [user] slices [affecting]'s throat open with \the [W].</span>")
 		affecting.apply_status_effect(/datum/status_effect/neck_slice)
 		if(W.hitsound)
-			playsound(affecting.loc, W.hitsound, 50, 1, -1)
+			W.play_combat_sound(MOB_ATTACKEDBY_SUCCESS)
 
 	COOLDOWN_START(G, action_cd, action_cooldown)
 

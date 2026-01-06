@@ -19,6 +19,7 @@ img {
 img.icon {
   height: 1em;
   min-height: 16px;
+  min-width: 16px;
   width: auto;
   vertical-align: bottom;
 }
@@ -105,7 +106,7 @@ a.popt {
 .popup input[type='submit']:focus,
 .popup input[type='submit']:active {
   background: #aaa;
-  cursor: pointer;
+  cursor: url('shared_assets/link_select.cur'), auto;
 }
 
 .changeFont {
@@ -224,9 +225,6 @@ a.popt {
 .bold,
 .name,
 .prefix,
-.ooc,
-.looc,
-.adminooc,
 .admin,
 .medal,
 .yell {
@@ -266,24 +264,37 @@ em {
   font-weight: bold;
 }
 
+// Applied to messages that don't come from the game.
+.system {
+  color: #23db55;
+  font-family: 'Lucida Console', monospace;
+}
+
+.systemfont {
+  font-family: 'Lucida Console', monospace;
+}
+
 .ooc {
   color: #cca300;
+  font-family: 'Lucida Console', monospace;
+}
+
+.oocplain {
   font-weight: bold;
-  text-shadow: 0 0 0.15em #db7900;
+  font-family: 'Lucida Console', monospace;
 }
 
 .looc {
-  color: #6699cc;
+  color: #0099cc;
+  font-family: 'Lucida Console', monospace;
 }
 
 .adminobserverooc {
   color: #0099cc;
-  font-weight: bold;
 }
 
 .adminooc {
   color: #3d5bc3;
-  font-weight: bold;
 }
 
 .adminsay {
@@ -471,7 +482,11 @@ em {
 }
 
 .obviousnotice {
-  color: #8a72c5;
+  color: #44e4e4;
+  text-shadow: 0 0 0.1em #f5aa42;
+}
+.obviousnotice a {
+  text-shadow: none;
 }
 
 .tinynotice {
@@ -1005,4 +1020,29 @@ em {
   color: #fc4b32;
   text-shadow: 0 0 0.1em #8a8888;
   font-style: italic;
+}
+
+.flocksay {
+  color: #6fbbac;
+}
+
+.flocksay a {
+  color: #6dc0af;
+}
+
+.flocksay a:visited {
+  color: #6ec2b1;
+}
+
+.flocksay.sentient {
+  color: #111;
+  background-color: #82dbc8;
+}
+
+.flocksay.sentient.flockmind {
+  font-size: 120%;
+}
+
+.flocknpc {
+  color: #afc9c3;
 }

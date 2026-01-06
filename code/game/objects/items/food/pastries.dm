@@ -12,6 +12,8 @@
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/muffin/berry
 	name = "berry muffin"
 	icon_state = "berrymuffin"
@@ -60,6 +62,8 @@
 	tastes = list("waffles" = 1)
 	foodtypes = GRAIN | SUGAR | BREAKFAST
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/soylentgreen
 	name = "\improper Soylent Green"
@@ -149,6 +153,8 @@
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/plumphelmetbiscuit
 	name = "plump helmet biscuit"
 	desc = "This is a finely-prepared plump helmet biscuit. The ingredients are exceptionally minced plump helmet, and well-minced dwarven wheat flour."
@@ -188,6 +194,8 @@
 	tastes = list("bread" = 1, "egg" = 1, "cheese" = 1)
 	foodtypes = GRAIN | MEAT | DAIRY
 	w_class = WEIGHT_CLASS_SMALL
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/cookie/sugar
 	name = "sugar cookie"
@@ -239,6 +247,8 @@
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/cherrycupcake/blue
 	name = "blue cherry cupcake"
 	desc = "Blue cherries inside a delicious cupcake."
@@ -255,6 +265,8 @@
 	foodtypes = GRAIN | SUGAR
 	w_class = WEIGHT_CLASS_SMALL
 
+	food_buffs = list(/datum/status_effect/food/energized)
+
 /obj/item/food/cannoli
 	name = "cannoli"
 	desc = "A sicilian treat that makes you into a wise guy."
@@ -264,6 +276,8 @@
 	foodtypes = GRAIN | DAIRY | SUGAR
 	w_class = WEIGHT_CLASS_TINY
 	venue_value = FOOD_PRICE_CHEAP // Pastry base, 3u of sugar and a single. fucking. unit. of. milk. really?
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/icecream
 	name = "waffle cone"

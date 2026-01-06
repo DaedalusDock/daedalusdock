@@ -148,39 +148,38 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		playsound(src.loc, SFX_PUNCH, 25, TRUE, -1)
 	return TRUE
 
-/obj/item/storage/book/bible/attack(mob/living/M, mob/living/carbon/human/user, heal_mode = TRUE)
-
+/obj/item/storage/book/bible/proc/beat_over_head(mob/living/M, mob/living/user, list/modifiers)
 	if (!ISADVANCEDTOOLUSER(user))
-		to_chat(user, span_warning("You don't have the dexterity to do this!"))
-		return
+		to_chat(user, span_warning("You don't have the dexterity to do this."))
+		return ITEM_INTERACT_BLOCKING
 
 	if (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))
 		to_chat(user, span_danger("[src] slips out of your hand and hits your head."))
 		user.take_bodypart_damage(10)
 		user.Unconscious(40 SECONDS)
-		return
+		return ITEM_INTERACT_BLOCKING
 
 	if (!user.mind || !user.mind.holy_role)
 		to_chat(user, span_danger("The book sizzles in your hands."))
 		user.take_bodypart_damage(0, 10)
-		return
+		return ITEM_INTERACT_BLOCKING
 
-	if (!heal_mode)
-		return ..()
+	if(user == M)
+		to_chat(user, span_warning("You can't heal yourself."))
+		return ITEM_INTERACT_BLOCKING
 
 	if (M.stat == DEAD)
 		M.visible_message(span_danger("[user] smacks [M]'s lifeless corpse with [src]."))
-		playsound(src.loc, SFX_PUNCH, 25, TRUE, -1)
-		return
+		user.do_attack_animation(M, used_item = src)
+		play_combat_sound(MOB_ATTACKEDBY_SUCCESS)
+		return ITEM_INTERACT_BLOCKING
 
-	if(user == M)
-		to_chat(user, span_warning("You can't heal yourself!"))
-		return
 
 	var/smack = TRUE
 
 	if(prob(60) && bless(M, user))
 		smack = FALSE
+
 	else if(iscarbon(M))
 		var/mob/living/carbon/C = M
 		if(!istype(C.head, /obj/item/clothing/head/helmet))
@@ -188,26 +187,32 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 			to_chat(C, span_danger("You feel dumber."))
 
 	if(smack)
-		M.visible_message(span_danger("[user] beats [M] over the head with [src]!"), \
-				span_userdanger("[user] beats [M] over the head with [src]!"))
-		playsound(src.loc, SFX_PUNCH, 25, TRUE, -1)
+		M.visible_message(span_danger("<b>[user]</b> beats <b>[M]</b> over the head with [src]."))
+		user.do_attack_animation(M, used_item = src)
+		play_combat_sound(MOB_ATTACKEDBY_SUCCESS)
 		log_combat(user, M, "attacked", src)
 
-/obj/item/storage/book/bible/afterattack(atom/bible_smacked, mob/user, proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(SEND_SIGNAL(bible_smacked, COMSIG_BIBLE_SMACKED, user, proximity) & COMSIG_END_BIBLE_CHAIN)
-		return
+	return ITEM_INTERACT_SUCCESS
+
+/obj/item/storage/book/bible/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+
+	var/atom/bible_smacked = interacting_with // Yes i am supremely lazy
+
+	if(SEND_SIGNAL(bible_smacked, COMSIG_BIBLE_SMACKED, user) & COMSIG_END_BIBLE_CHAIN)
+		return ITEM_INTERACT_SUCCESS
+
 	if(isfloorturf(bible_smacked))
 		if(user.mind && (user.mind.holy_role))
 			var/area/current_area = get_area(bible_smacked)
 			if(!GLOB.chaplain_altars.len && istype(current_area, /area/station/service/chapel))
 				make_new_altar(bible_smacked, user)
-				return
+				return ITEM_INTERACT_SUCCESS
+
 			for(var/obj/effect/rune/nearby_runes in orange(2,user))
 				nearby_runes.invisibility = 0
+
 		to_chat(user, span_notice("You hit the floor with the bible."))
+		return ITEM_INTERACT_SUCCESS
 
 	if(user?.mind?.holy_role)
 		if(bible_smacked.reagents && bible_smacked.reagents.has_reagent(/datum/reagent/water)) // blesses all the water in the holder
@@ -226,6 +231,7 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 			B.name = name
 			B.icon_state = icon_state
 			B.inhand_icon_state = inhand_icon_state
+		return ITEM_INTERACT_SUCCESS
 
 	if(istype(bible_smacked, /obj/item/cult_bastard) && !IS_CULTIST(user))
 		var/obj/item/cult_bastard/sword = bible_smacked
@@ -248,12 +254,17 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 			new /obj/item/nullrod/claymore(get_turf(sword))
 			user.visible_message(span_notice("[user] purifies [sword]!"))
 			qdel(sword)
+			return ITEM_INTERACT_SUCCESS
+		return ITEM_INTERACT_BLOCKING
+
+	if(isliving(interacting_with))
+		return beat_over_head(interacting_with, user, modifiers)
 
 /obj/item/storage/book/bible/booze
 	desc = "To be applied to the head repeatedly."
 
 /obj/item/storage/book/bible/booze/PopulateContents()
-	new /obj/item/reagent_containers/food/drinks/bottle/whiskey(src)
+	new /obj/item/reagent_containers/cup/glass/bottle/whiskey(src)
 
 /obj/item/storage/book/bible/syndicate
 	icon_state ="ebook"
@@ -278,12 +289,6 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 		to_chat(H, span_notice("Your name appears on the inside cover, in blood."))
 		var/ownername = H.real_name
 		desc += span_warning("The name [ownername] is written in blood inside the cover.")
-
-/obj/item/storage/book/bible/syndicate/attack(mob/living/M, mob/living/carbon/human/user, heal_mode = TRUE)
-	if (!user.combat_mode)
-		return ..()
-	else
-		return ..(M,user,heal_mode = FALSE)
 
 /obj/item/storage/book/bible/syndicate/add_blood_DNA(list/blood_dna)
 	return FALSE

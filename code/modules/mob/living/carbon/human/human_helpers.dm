@@ -70,7 +70,7 @@
 	var/obj/item/modular_computer/tablet/pda/pda = wear_id
 	var/obj/item/card/id/id = wear_id
 	if(istype(wallet))
-		id = wallet.front_id
+		id = wallet.GetID()
 	if(istype(id))
 		. = id.registered_name
 	else if(istype(pda))
@@ -124,7 +124,7 @@
 
 /// Fully randomizes everything according to the given flags.
 /mob/living/carbon/human/proc/randomize_human_appearance(flags = ALL)
-	var/datum/preferences/preferences = new
+	var/datum/preferences/preferences = new(new /datum/client_interface)
 
 	for (var/datum/preference/preference as anything in get_preferences_in_priority_order())
 		if(istype(preference, /datum/preference/name/real_name) && !(flags & RANDOMIZE_NAME))

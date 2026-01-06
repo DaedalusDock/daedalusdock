@@ -33,6 +33,9 @@ Possible to do for anyone motivated enough:
 #define HOLOPAD_PASSIVE_POWER_USAGE 1
 #define HOLOGRAM_POWER_USAGE 2
 
+TYPEINFO_DEF(/obj/machinery/holopad)
+	default_armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
+
 /obj/machinery/holopad
 	name = "holopad"
 	desc = "It's a floor-mounted device for projecting holographic images."
@@ -42,7 +45,6 @@ Possible to do for anyone motivated enough:
 	plane = FLOOR_PLANE
 	req_access = list(ACCESS_KEYCARD_AUTH) //Used to allow for forced connecting to other (not secure) holopads. Anyone can make a call, though.
 	max_integrity = 300
-	armor = list(BLUNT = 50, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 20, BOMB = 0, BIO = 0, FIRE = 50, ACID = 0)
 	circuit = /obj/item/circuitboard/machine/holopad
 	/// associative lazylist of the form: list(mob calling us = hologram representing that mob).
 	/// this is only populated for holopads answering calls from another holopad
@@ -216,7 +218,7 @@ Possible to do for anyone motivated enough:
 /obj/machinery/holopad/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/holopad/attackby(obj/item/P, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "holopad_open", "holopad0", P))
@@ -690,7 +692,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	Hologram.add_atom_colour("#77abff", FIXED_COLOUR_PRIORITY)
 	Hologram.dir = SOUTH //for now
 	var/datum/language_holder/holder = Hologram.get_language_holder()
-	holder.selected_language = record.language
+	holder.set_selected_language(GET_LANGUAGE_DATUM(record.language))
 	Hologram.mouse_opacity = MOUSE_OPACITY_TRANSPARENT//So you can't click on it.
 	Hologram.layer = FLY_LAYER//Above all the other objects/mobs. Or the vast majority of them.
 	Hologram.set_anchored(TRUE)//So space wind cannot drag it.
@@ -774,7 +776,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 			return
 		if(HOLORECORD_LANGUAGE)
 			var/datum/language_holder/holder = replay_holo.get_language_holder()
-			holder.selected_language = entry[2]
+			holder.set_selected_language(GET_LANGUAGE_DATUM(entry[2]))
 		if(HOLORECORD_PRESET)
 			var/preset_type = entry[2]
 			var/datum/preset_holoimage/H = new preset_type

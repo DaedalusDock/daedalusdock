@@ -1,4 +1,8 @@
 //spears
+TYPEINFO_DEF(/obj/item/spear)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
+	default_materials = list(/datum/material/iron=1150, /datum/material/glass=2075)
+
 /obj/item/spear
 	icon_state = "spearglass0"
 	lefthand_file = 'icons/mob/inhands/weapons/polearms_lefthand.dmi'
@@ -14,16 +18,16 @@
 	throwforce = 15
 	throw_speed = 1.5
 
+	special_attack_type = /datum/special_attack/ranged_stab
+
 	embedding = list("impact_pain_mult" = 2, "remove_pain_mult" = 4, "jostle_chance" = 2.5)
 	armor_penetration = 10
 
-	custom_materials = list(/datum/material/iron=1150, /datum/material/glass=2075)
-	hitsound = 'sound/weapons/bladeslice.ogg'
+	hitsound = 'sound/weapons/attack/flesh_stab.ogg'
 	attack_verb_continuous = list("attacks", "pokes", "jabs", "tears", "lacerates", "gores")
 	attack_verb_simple = list("attack", "poke", "jab", "tear", "lacerate", "gore")
 	sharpness = SHARP_EDGED // i know the whole point of spears is that they're pointy, but edged is more devastating at the moment so
 	max_integrity = 200
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 
 	var/war_cry = "AAAAARGH!!!"
 	var/icon_prefix = "spearglass"
@@ -133,20 +137,23 @@
 			if(input)
 				src.war_cry = input
 
-/obj/item/spear/explosive/afterattack(atom/movable/AM, mob/user, proximity)
+/obj/item/spear/explosive/afterattack(atom/target, mob/user, list/modifiers)
 	. = ..()
-	if(!proximity || !wielded || !istype(AM))
+	if(!wielded || !ismovable(target))
 		return
-	if(AM.resistance_flags & INDESTRUCTIBLE) //due to the lich incident of 2021, embedding grenades inside of indestructible structures is forbidden
+	if(target.resistance_flags & INDESTRUCTIBLE) //due to the lich incident of 2021, embedding grenades inside of indestructible structures is forbidden
 		return
-	if(ismob(AM))
-		var/mob/mob_target = AM
+
+	if(ismob(target))
+		var/mob/mob_target = target
 		if(mob_target.status_flags & GODMODE) //no embedding grenade phylacteries inside of ghost poly either
 			return
-	if(iseffect(AM)) //and no accidentally wasting your moment of glory on graffiti
+
+	if(iseffect(target)) //and no accidentally wasting your moment of glory on graffiti
 		return
+
 	user.say("[war_cry]", forced="spear warcry")
-	explosive.forceMove(AM)
+	explosive.forceMove(target)
 	explosive.detonate(lanced_by=user)
 	qdel(src)
 
@@ -160,20 +167,23 @@
 	force = 15
 	force_wielded = 25
 
-/obj/item/spear/grey_tide/afterattack(atom/movable/AM, mob/living/user, proximity)
+/obj/item/spear/grey_tide/afterattack(atom/target, mob/living/user, list/modifiers)
 	. = ..()
-	if(!proximity)
-		return
+
 	user.faction |= "greytide([REF(user)])"
-	if(isliving(AM))
-		var/mob/living/L = AM
-		if(istype (L, /mob/living/simple_animal/hostile/illusion))
-			return
-		if(!L.stat && prob(50))
-			var/mob/living/simple_animal/hostile/illusion/M = new(user.loc)
-			M.faction = user.faction.Copy()
-			M.Copy_Parent(user, 100, user.health/2.5, 12, 30)
-			M.GiveTarget(L)
+
+	if(!isliving(target))
+		return
+
+	var/mob/living/L = target
+	if(istype (L, /mob/living/simple_animal/hostile/illusion))
+		return
+
+	if(!L.stat && prob(50))
+		var/mob/living/simple_animal/hostile/illusion/M = new(user.loc)
+		M.faction = user.faction.Copy()
+		M.Copy_Parent(user, 100, user.health/2.5, 12, 30)
+		M.GiveTarget(L)
 
 /*
  * Bone Spear

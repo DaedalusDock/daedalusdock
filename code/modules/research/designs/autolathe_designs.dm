@@ -7,7 +7,7 @@
 	id = "bucket"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 200)
-	build_path = /obj/item/reagent_containers/glass/bucket
+	build_path = /obj/item/reagent_containers/cup/bucket
 	category = list(DCAT_JANITORIAL, DCAT_MISC_TOOL)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -246,14 +246,6 @@
 	build_path = /obj/item/tank/internals/emergency_oxygen/empty
 	category = list(DCAT_ATMOS)
 
-/datum/design/plasmaman_tank_belt
-	name = "Plasmaman Belt Tank"
-	id = "plasmaman_tank_belt"
-	build_type = AUTOLATHE | FABRICATOR
-	materials = list(/datum/material/iron = 800)
-	build_path = /obj/item/tank/internals/plasmaman/belt/empty
-	category = list(DCAT_ATMOS)
-
 /datum/design/generic_gas_tank
 	name = "Generic Gas Tank"
 	id = "generic_tank"
@@ -394,7 +386,7 @@
 	id = "bowl"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 500)
-	build_path = /obj/item/reagent_containers/glass/bowl
+	build_path = /obj/item/reagent_containers/cup/bowl
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -403,7 +395,7 @@
 	id = "drinking_glass"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 500)
-	build_path = /obj/item/reagent_containers/food/drinks/drinkingglass
+	build_path = /obj/item/reagent_containers/cup/glass/drinkingglass
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -412,7 +404,7 @@
 	id = "shot_glass"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 100)
-	build_path = /obj/item/reagent_containers/food/drinks/drinkingglass/shotglass
+	build_path = /obj/item/reagent_containers/cup/glass/drinkingglass/shotglass
 	category = list(DCAT_DINNERWARE)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
@@ -421,17 +413,8 @@
 	id = "shaker"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/iron = 1500)
-	build_path = /obj/item/reagent_containers/food/drinks/shaker
+	build_path = /obj/item/reagent_containers/cup/glass/shaker
 	category = list(DCAT_DINNERWARE)
-	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
-
-/datum/design/cultivator
-	name = "Cultivator"
-	id = "cultivator"
-	build_type = AUTOLATHE | FABRICATOR
-	materials = list(/datum/material/iron=50)
-	build_path = /obj/item/cultivator
-	category = list(DCAT_BOTANICAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/plant_analyzer
@@ -468,15 +451,6 @@
 	materials = list(/datum/material/iron = 15000)
 	build_path = /obj/item/hatchet
 	category = list(DCAT_MISC_TOOL, DCAT_BOTANICAL)
-	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
-
-/datum/design/secateurs
-	name = "Secateurs"
-	id = "secateurs"
-	build_type = AUTOLATHE | FABRICATOR
-	materials = list(/datum/material/iron = 4000)
-	build_path = /obj/item/secateurs
-	category = list(DCAT_BOTANICAL)
 	mapload_design_flags = DESIGN_FAB_SERVICE | DESIGN_FAB_OMNI
 
 /datum/design/blood_filter
@@ -565,7 +539,7 @@
 	id = "beaker"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 500)
-	build_path = /obj/item/reagent_containers/glass/beaker
+	build_path = /obj/item/reagent_containers/cup/beaker
 	category = list(DCAT_REAGENTS)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_SERVICE
 
@@ -574,7 +548,7 @@
 	id = "large_beaker"
 	build_type = AUTOLATHE | FABRICATOR
 	materials = list(/datum/material/glass = 2500)
-	build_path = /obj/item/reagent_containers/glass/beaker/large
+	build_path = /obj/item/reagent_containers/cup/beaker/large
 	category = list(DCAT_REAGENTS)
 	mapload_design_flags = DESIGN_FAB_MEDICAL | DESIGN_FAB_SERVICE
 

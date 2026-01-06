@@ -103,7 +103,7 @@
 	var/new_appearance = show_radial_menu(user, src, possible_appearances, custom_check = CALLBACK(src, PROC_REF(check_menu), user, crayon), radius = 36, require_near = TRUE)
 	if(!new_appearance)
 		return FALSE
-	if(!do_after(user, src, 1 SECONDS, timed_action_flags = IGNORE_HELD_ITEM))
+	if(!do_after(user, src, 1 SECONDS, timed_action_flags = DO_IGNORE_HELD_ITEM))
 		return FALSE
 	if(!check_menu(user, crayon))
 		return FALSE
@@ -166,7 +166,8 @@
 			desc = "A cardboard cutout of a xenomorph maid."
 			icon_state = "cutout_lusty"
 		if("Ash Walker")
-			name = lizard_name(pick(MALE, FEMALE))
+			var/datum/name_generator/lizard/name_gen = new
+			name = name_gen.Generate()
 			desc = "A cardboard cutout of an ash walker."
 			icon_state = "cutout_free_antag"
 		if("Deathsquad Officer")

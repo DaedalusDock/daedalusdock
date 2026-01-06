@@ -58,7 +58,7 @@
 
 	initial_render_target_value = fool.render_target
 	fool.render_target = "*transparent_bigmob[personal_uid]"
-	fool.vis_contents.Add(render_source_atom)
+	fool.add_viscontents(render_source_atom)
 
 	trickery_image = new(render_source_atom)
 	trickery_image.loc = render_source_atom
@@ -89,7 +89,7 @@
 ///Remove the image and the trick atom
 /datum/component/seethrough_mob/proc/clear_image(image/removee, client/remove_from)
 	var/atom/movable/atom_parent = parent
-	atom_parent.vis_contents -= render_source_atom
+	atom_parent.remove_viscontents(render_source_atom)
 	atom_parent.render_target = initial_render_target_value
 	remove_from?.images -= removee
 

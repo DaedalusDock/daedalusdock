@@ -22,7 +22,7 @@
 	var/expected_damage = loaded_bullet.damage
 	loaded_bullet.aimed_def_zone = BODY_ZONE_CHEST
 	loaded_bullet.can_miss_zone = FALSE
-	var/did_we_shoot = test_gun.afterattack(victim, gunner)
+	var/did_we_shoot = test_gun.try_fire_gun(victim, gunner)
 	TEST_ASSERT(did_we_shoot, "Gun does not appeared to have successfully fired.")
 	TEST_ASSERT_EQUAL(victim.getBruteLoss(), expected_damage, "Victim took incorrect amount of damage, expected [expected_damage], got [victim.getBruteLoss()].")
 

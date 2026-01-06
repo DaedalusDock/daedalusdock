@@ -132,11 +132,11 @@
 		return
 	if(prob(TOXICITY_MUTATION_PROB) && istype(crosser) && !isvineimmune(crosser))
 		to_chat(crosser, span_alert("You accidentally touch the vine and feel a strange sensation."))
-		crosser.adjustToxLoss(20)
+		crosser.adjustToxLoss(20, cause_of_death = "Spacevine toxin")
 
 /datum/spacevine_mutation/toxicity/on_eat(obj/structure/spacevine/holder, mob/living/eater)
 	if(!isvineimmune(eater))
-		eater.adjustToxLoss(20)
+		eater.adjustToxLoss(20, cause_of_death = "Spacevine toxin")
 
 /datum/spacevine_mutation/explosive  // JC IT'S A BOMB
 	name = "Explosive"
@@ -559,17 +559,6 @@
 	vines -= vine
 	growth_queue -= vine
 	queue_end -= vine
-	if(length(vines))
-		return
-	var/obj/item/seeds/kudzu/seed = new(vine.loc)
-	seed.mutations |= vine.mutations
-	seed.set_potency(mutativeness / MUTATIVENESS_SCALE_FACTOR)
-	// Mathematical notes:
-	// The formula for spread_multiplier is SPREAD_MULTIPLIER_MAX / (MAX_POSSIBLE_PRODUCTIVITY_VALUE + 1 - production)
-	// So (MAX_POSSIBLE_PRODUCTIVITY_VALUE + 1 - production) = SPREAD_MULTIPLIER_MAX / spread_multiplier
-	// ie. production = MAX_POSSIBLE_PRODUCTIVITY_VALUE + 1 - SPREAD_MULTIPLIER_MAX / spread_multiplier
-	seed.set_production(MAX_POSSIBLE_PRODUCTIVITY_VALUE + 1 - (SPREAD_MULTIPLIER_MAX / spread_multiplier)) //Reverts spread_multiplier formula so resulting seed gets original production stat or equivalent back.
-	qdel(src)
 
 /// Life cycle of a space vine
 /datum/spacevine_controller/process(delta_time)

@@ -31,8 +31,8 @@
 		stop_sound_channel(CHANNEL_HEARTBEAT)
 
 	if(stat != DEAD && !(IS_IN_STASIS(src)))
-		handle_shock()
-		handle_pain()
+		handle_shock(delta_time)
+		handle_pain(delta_time)
 		if(shock_stage >= SHOCK_TIER_1)
 			add_movespeed_modifier(/datum/movespeed_modifier/shock, TRUE)
 		else
@@ -93,9 +93,14 @@
 	// Recover from breath loss
 	if(losebreath >= 1)
 		losebreath--
-		if(!forced && !asystole && prob(10))
+		if(!forced && prob(10) && COOLDOWN_FINISHED(src, mob_cooldowns["losebreath_gasp_cd"]))
 			spawn(-1)
-				emote("gasp")
+				if(asystole)
+					emote(/datum/emote/living/carbon/gasp_air/allow_unconscious)
+					COOLDOWN_START(src, mob_cooldowns["losebreath_gasp_cd"], 30 SECONDS)
+				else
+					emote(/datum/emote/living/carbon/gasp_air)
+					COOLDOWN_START(src, mob_cooldowns["losebreath_gasp_cd"], 15 SECONDS)
 
 		if(istype(loc, /obj))
 			var/obj/loc_as_obj = loc
@@ -141,13 +146,13 @@
 	. = check_breath(breath, forced)
 
 	if(breath?.total_moles)
-		AIR_UPDATE_VALUES(breath)
+		breath.garbageCollect()
 		loc.assume_air(breath)
 
 	var/static/sound/breathing = sound('sound/voice/breathing.ogg', volume = 50, channel = CHANNEL_BREATHING)
-	if((!forced && . && COOLDOWN_FINISHED(src, breath_sound_cd) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE))
+	if((!forced && . && COOLDOWN_FINISHED(src, mob_cooldowns["breath_sound_cd"]) && environment?.returnPressure() < SOUND_MINIMUM_PRESSURE))
 		src << breathing
-		COOLDOWN_START(src, breath_sound_cd, 3.5 SECONDS)
+		COOLDOWN_START(src, mob_cooldowns["breath_sound_cd"], 3.5 SECONDS)
 
 /mob/living/carbon/proc/has_smoke_protection()
 	if(HAS_TRAIT(src, TRAIT_NOBREATH))
@@ -169,7 +174,7 @@
 
 
 	if(!forced)
-		if(!breath || (breath.total_moles == 0) || !lungs || nervous_system_failure())
+		if(!breath || (breath.total_moles == 0) || !lungs || undergoing_nervous_system_failure())
 			if(!HAS_TRAIT(src, TRAIT_NOCRITDAMAGE))
 				adjustOxyLoss(HUMAN_FAILBREATH_OXYLOSS)
 
@@ -208,8 +213,6 @@
 
 	else //Enough oxygen
 		failed_last_breath = FALSE
-		if(health >= crit_threshold)
-			adjustOxyLoss(-5)
 		oxygen_used = breath_gases[GAS_OXYGEN]
 		clear_alert(ALERT_NOT_ENOUGH_OXYGEN)
 
@@ -234,7 +237,7 @@
 	//PLASMA
 	if(Plasma_partialpressure > safe_plas_max)
 		var/ratio = breath.gas[GAS_PLASMA]/safe_plas_max * 10
-		adjustToxLoss(clamp(ratio, MIN_TOXIC_GAS_DAMAGE, MAX_TOXIC_GAS_DAMAGE))
+		adjustToxLoss(clamp(ratio, MIN_TOXIC_GAS_DAMAGE, MAX_TOXIC_GAS_DAMAGE), cause_of_death ="Plasma poisoning")
 		throw_alert(ALERT_TOO_MUCH_PLASMA, /atom/movable/screen/alert/too_much_plas)
 	else
 		clear_alert(ALERT_TOO_MUCH_PLASMA)
@@ -304,13 +307,12 @@
 		updatehealth()
 
 /mob/living/carbon/handle_diseases(delta_time, times_fired)
-	for(var/thing in diseases)
-		var/datum/disease/D = thing
+	for(var/datum/pathogen/D as anything in diseases)
 		if(DT_PROB(D.infectivity, delta_time))
-			D.spread()
+			D.airborne_spread()
 
 		if(stat != DEAD || D.process_dead)
-			D.stage_act(delta_time, times_fired)
+			D.on_process(delta_time, times_fired)
 
 /mob/living/carbon/handle_mutations(time_since_irradiated, delta_time, times_fired)
 	if(!dna?.temporary_mutations.len)
@@ -350,6 +352,7 @@
 
 /mob/living/carbon/handle_chemicals()
 	chem_effects.Cut()
+	SEND_SIGNAL(src, COMSIG_CARBON_CHEM_EFFECT_REFRESH)
 
 	if(status_flags & GODMODE)
 		return
@@ -401,7 +404,7 @@ All effects don't start immediately, but rather get worse over time; the rate is
 			var/zzzchance = min(5, 5*drowsyness/30)
 			if((prob(zzzchance) || drowsyness >= 60) || ( drowsyness >= 20 && IsSleeping()))
 				if(stat == CONSCIOUS)
-					to_chat(src, span_notice("You are about to fall asleep..."))
+					to_chat(src, span_obviousnotice("You feel so tired..."))
 				Sleeping(5 SECONDS)
 
 	if(silent)
@@ -583,27 +586,41 @@ All effects don't start immediately, but rather get worse over time; the rate is
 //LIVER//
 /////////
 
-///Check to see if we have the liver, if not automatically gives you last-stage effects of lacking a liver.
-
+/// Handles having a missing or dead liver.
 /mob/living/carbon/proc/handle_liver(delta_time, times_fired)
 	if(!dna)
 		return
 
 	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
-	if(liver)
+	if(liver && !(liver.organ_flags & ORGAN_DEAD))
+		remove_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
+		REMOVE_TRAIT(src, TRAIT_JAUNDICE_SKIN, INNATE_TRAIT)
 		return
 
 	if(HAS_TRAIT(src, TRAIT_STABLELIVER) || !needs_organ(ORGAN_SLOT_LIVER))
+		remove_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
+		REMOVE_TRAIT(src, TRAIT_JAUNDICE_SKIN, INNATE_TRAIT)
 		return
 
-	adjustToxLoss(0.6 * delta_time, TRUE,  TRUE)
+	ADD_TRAIT(src, TRAIT_JAUNDICE_SKIN, INNATE_TRAIT)
+
+	adjustToxLoss(0.6 * delta_time, TRUE, TRUE, cause_of_death = "Lack of a liver")
+
+	// Hepatic Encephalopathy
+	set_slurring_if_lower(10 SECONDS)
+	if(DT_PROB(2, delta_time))
+		set_confusion_if_lower(10 SECONDS)
+
+	if(DT_PROB(5, delta_time))
+		adjust_drowsyness(6, 12)
+
 	if(DT_PROB(2, delta_time))
 		vomit(50, TRUE, FALSE, 1, TRUE, harm = FALSE, purge_ratio = 1)
 
-/mob/living/carbon/proc/undergoing_liver_failure()
-	var/obj/item/organ/liver/liver = getorganslot(ORGAN_SLOT_LIVER)
-	if(liver?.organ_flags & ORGAN_DEAD)
-		return TRUE
+	// stoopid micro optimization, don't instantiate a new status effect every life tick for no raisin.
+	var/datum/status_effect/grouped/concussion/existing = has_status_effect(/datum/status_effect/grouped/concussion)
+	if(isnull(existing) || !(DEAD_LIVER_EFFECT in existing.sources))
+		apply_status_effect(/datum/status_effect/grouped/concussion, DEAD_LIVER_EFFECT)
 
 /////////////
 //CREMATION//
@@ -678,26 +695,6 @@ All effects don't start immediately, but rather get worse over time; the rate is
 		return FALSE
 	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
 	if(!heart || (heart.organ_flags & ORGAN_DEAD))
-		return FALSE
-	return TRUE
-
-/*
- * The mob is having a heart attack
- *
- * NOTE: this is true if the mob has no heart and needs one, which can be suprising,
- * you are meant to use it in combination with can_heartattack for heart attack
- * related situations (i.e not just cardiac arrest)
- */
-/mob/living/carbon/proc/undergoing_cardiac_arrest()
-	if(isipc(src))
-		var/obj/item/organ/cell/C = getorganslot(ORGAN_SLOT_CELL)
-		if(C && ((C.organ_flags & ORGAN_DEAD) || !C.get_percent()))
-			return TRUE
-
-	var/obj/item/organ/heart/heart = getorganslot(ORGAN_SLOT_HEART)
-	if(istype(heart) && heart.is_working())
-		return FALSE
-	else if(!needs_organ(ORGAN_SLOT_HEART))
 		return FALSE
 	return TRUE
 

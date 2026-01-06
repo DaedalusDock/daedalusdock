@@ -9,9 +9,6 @@
 	var/mob_name
 	///the type of the mob, you best inherit this
 	var/mob_type = /mob/living/basic/cockroach
-	///Lazy string list of factions that the spawned mob will be in upon spawn
-	var/list/faction
-
 	////Human specific stuff. Don't set these if you aren't using a human, the unit tests will put a stop to your sinful hand.
 
 	///sets the human as a species, use a typepath (example: /datum/species/skeleton)
@@ -169,7 +166,7 @@
 /obj/effect/mob_spawn/ghost_role/special(mob/living/spawned_mob, mob/mob_possessor)
 	. = ..()
 	if(mob_possessor)
-		spawned_mob.ckey = mob_possessor.ckey
+		spawned_mob.PossessByPlayer(mob_possessor.ckey)
 	if(show_flavor)
 		var/output_message = "<span class='infoplain'><span class='big bold'>[you_are_text]</span></span>"
 		if(flavour_text != "")

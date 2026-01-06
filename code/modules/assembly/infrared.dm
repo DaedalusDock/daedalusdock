@@ -1,8 +1,10 @@
+TYPEINFO_DEF(/obj/item/assembly/infra)
+	default_materials = list(/datum/material/iron=1000, /datum/material/glass=500)
+
 /obj/item/assembly/infra
 	name = "infrared emitter"
 	desc = "Emits a visible or invisible beam and is triggered when the beam is interrupted."
 	icon_state = "infrared"
-	custom_materials = list(/datum/material/iron=1000, /datum/material/glass=500)
 	is_position_sensitive = TRUE
 	drop_sound = 'sound/items/handling/component_drop.ogg'
 	pickup_sound = 'sound/items/handling/component_pickup.ogg'
@@ -70,7 +72,7 @@
 		. += "infrared_visible"
 		attached_overlays += "infrared_visible"
 
-/obj/item/assembly/infra/dropped()
+/obj/item/assembly/infra/unequipped()
 	. = ..()
 	if(holder)
 		holder_movement() //sync the dir of the device as well if it's contained in a TTV or an assembly holder

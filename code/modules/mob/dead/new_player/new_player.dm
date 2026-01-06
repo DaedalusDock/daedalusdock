@@ -60,7 +60,7 @@
 	if(QDELETED(src) || !src.client || (!skip_check && (this_is_like_playing_right != "Yes")))
 		ready = PLAYER_NOT_READY
 		src << browse(null, "window=playersetup") //closes the player setup window
-		npp.open()
+		npp?.open()
 		return FALSE
 
 	var/mob/dead/observer/observer = new(null, TRUE)
@@ -74,13 +74,15 @@
 	else
 		to_chat(src, span_notice("Teleporting failed. Ahelp an admin please"))
 		stack_trace("There's no freaking observer landmark available on this map or you're making observers before the map is initialised")
-	observer.key = key
+	observer.PossessByPlayer(key)
 	observer.client = client
-	observer.restore_ghost_appearance()
+
 	if(observer.client && observer.client.prefs)
 		observer.set_real_name(observer.client.prefs.read_preference(/datum/preference/name/real_name))
 		observer.client.init_verbs()
-	observer.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+
+	observer.client?.stoptitlemusic()
+
 	deadchat_broadcast(" has observed.", "<b>[observer.real_name]</b>", follow_target = observer, turf_target = get_turf(observer), message_type = DEADCHAT_DEATHRATTLE)
 	QDEL_NULL(mind)
 	qdel(src)
@@ -223,9 +225,9 @@
 		SSquirks.AssignQuirks(humanc, humanc.client)
 
 	log_manifest(character.mind.key,character.mind,character,latejoin = TRUE)
+	character.client?.give_award(/datum/award/achievement/enter_the_pool, character)
 
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_CREWMEMBER_JOINED, character, rank)
-
 
 /mob/dead/new_player/proc/AddEmploymentContract(mob/living/carbon/human/employee)
 	//TODO:  figure out a way to exclude wizards/nukeops/demons from this.
@@ -254,21 +256,19 @@
 
 
 /mob/dead/new_player/proc/transfer_character()
-	. = new_character
-	if(!.)
-		return
-	new_character.key = key //Manually transfer the key to log them in,
-	new_character.stop_sound_channel(CHANNEL_LOBBYMUSIC)
+	new_character.PossessByPlayer(key)
+	new_character.client?.stoptitlemusic()
 	new_character.client?.show_location_blurb()
+
 	var/area/joined_area = get_area(new_character.loc)
 	if(joined_area)
 		joined_area.on_joining_game(new_character)
+
 	new_character = null
 	qdel(src)
 
 /mob/dead/new_player/Move()
 	return 0
-
 
 /mob/dead/new_player/proc/close_spawn_windows()
 	src << browse(null, "window=playersetup")
@@ -290,7 +290,7 @@
 	var/write_pref = FALSE
 	for(var/job_name in job_priority)
 		var/datum/job/J = SSjob.GetJob(job_name)
-		if(!(employer_path in J.employers))
+		if(isnull(J) || !(employer_path in J.employers))
 			job_priority -= job_name
 			write_pref = TRUE
 

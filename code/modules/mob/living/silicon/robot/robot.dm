@@ -145,7 +145,6 @@
 			radio.keyslot = null
 	QDEL_NULL(wires)
 	QDEL_NULL(model)
-	QDEL_NULL(eye_lights)
 	QDEL_NULL(inv1)
 	QDEL_NULL(inv2)
 	QDEL_NULL(inv3)
@@ -153,6 +152,7 @@
 	QDEL_NULL(spark_system)
 	QDEL_NULL(alert_control)
 	QDEL_LIST(upgrades)
+	eye_lights = null
 	cell = null
 	return ..()
 
@@ -344,7 +344,6 @@
 
 /mob/living/silicon/robot/update_icons()
 	cut_overlays()
-	SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 	icon_state = model.cyborg_base_icon
 	if(stat != DEAD && !(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || IsStun() || IsParalyzed() || low_power_mode)) //Not dead, not stunned.
 		if(!eye_lights)
@@ -372,12 +371,12 @@
 		add_overlay(head_overlay)
 	update_fire()
 
-/mob/living/silicon/robot/proc/self_destruct(mob/usr)
+/mob/living/silicon/robot/proc/self_destruct(mob/user)
 	var/turf/groundzero = get_turf(src)
-	message_admins(span_notice("[ADMIN_LOOKUPFLW(usr)] detonated [key_name_admin(src, client)] at [ADMIN_VERBOSEJMP(groundzero)]!"))
-	log_game("[key_name(usr)] detonated [key_name(src)]!")
-	log_combat(usr, src, "detonated cyborg")
-	log_silicon("CYBORG: [key_name(src)] has been detonated by [key_name(usr)].")
+	message_admins(span_notice("[ADMIN_LOOKUPFLW(user)] detonated [key_name_admin(src, client)] at [ADMIN_VERBOSEJMP(groundzero)]!"))
+	log_game("[key_name(user)] detonated [key_name(src)]!")
+	log_combat(user, src, "detonated cyborg")
+	log_silicon("CYBORG: [key_name(src)] has been detonated by [key_name(user)].")
 	if(connected_ai)
 		to_chat(connected_ai, "<br><br>[span_alert("ALERT - Cyborg detonation detected: [name]")]<br>")
 
@@ -572,7 +571,7 @@
 		return FALSE
 	return ..()
 
-/mob/living/silicon/robot/updatehealth()
+/mob/living/silicon/robot/updatehealth(cause_of_death)
 	..()
 	if(!model.breakable_modules)
 		return
@@ -654,12 +653,12 @@
 
 	sync_lighting_plane_alpha()
 
-/mob/living/silicon/robot/update_stat()
+/mob/living/silicon/robot/update_stat(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 	if(stat != DEAD)
 		if(health <= -maxHealth) //die only once
-			death()
+			death(cause_of_death = cause_of_death)
 			toggle_headlamp(1)
 			return
 		if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT) || IsStun() || IsKnockdown() || IsParalyzed())
@@ -707,9 +706,8 @@
 		hud_used.update_robot_modules_display()
 
 	if (hasExpanded)
-		resize = 0.5
 		hasExpanded = FALSE
-		update_transform()
+		update_transform(0.5)
 	logevent("Chassis model has been reset.")
 	log_silicon("CYBORG: [key_name(src)] has reset their cyborg model.")
 	model.transform_to(/obj/item/robot_model)

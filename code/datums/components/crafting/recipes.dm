@@ -120,7 +120,7 @@
 /datum/crafting_recipe/cleanbot
 	name = "Cleanbot"
 	result = /mob/living/simple_animal/bot/cleanbot
-	reqs = list(/obj/item/reagent_containers/glass/bucket = 1,
+	reqs = list(/obj/item/reagent_containers/cup/bucket = 1,
 				/obj/item/assembly/prox_sensor = 1,
 				/obj/item/bodypart/arm/right/robot = 1)
 	time = 40
@@ -537,18 +537,11 @@
 	result = /obj/structure/bonfire
 	category = CAT_PRIMAL
 
-/datum/crafting_recipe/rake //Category resorting incoming - but you never resorted, did you?
-	name = "Rake"
-	time = 30
-	reqs = list(/obj/item/stack/sheet/mineral/wood = 5)
-	result = /obj/item/cultivator/rake
-	category = CAT_PRIMAL
-
 /datum/crafting_recipe/woodbucket
 	name = "Wooden Bucket"
 	time = 30
 	reqs = list(/obj/item/stack/sheet/mineral/wood = 3)
-	result = /obj/item/reagent_containers/glass/bucket/wooden
+	result = /obj/item/reagent_containers/cup/bucket/wooden
 	category = CAT_PRIMAL
 */
 

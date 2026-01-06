@@ -25,7 +25,7 @@
 /obj/machinery/reagentgrinder/Initialize(mapload)
 	. = ..()
 	holdingitems = list()
-	beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
+	beaker = new /obj/item/reagent_containers/cup/beaker/large(src)
 	warn_of_dust()
 
 /// Add a description to the current beaker warning of blended dust, if it doesn't already have that warning.
@@ -144,7 +144,7 @@
 /obj/machinery/reagentgrinder/wrench_act(mob/living/user, obj/item/tool)
 	. = ..()
 	default_unfasten_wrench(user, tool)
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/reagentgrinder/attackby(obj/item/I, mob/living/user, params)
 	//You can only screw open empty grinder
@@ -245,7 +245,7 @@
 		if("mix")
 			mix(user)
 		if("examine")
-			examine(user)
+			user.run_examinate(src)
 
 /obj/machinery/reagentgrinder/proc/eject(mob/user)
 	drop_all_items()
@@ -293,10 +293,10 @@
 			juice_item(I)
 
 /obj/machinery/reagentgrinder/proc/juice_item(obj/item/I) //Juicing results can be found in respective object definitions
-	if(I.on_juice(src) == -1)
+	if(!I.juice(beaker.reagents))
 		to_chat(usr, span_danger("[src] shorts out as it tries to juice up [I], and transfers it back to storage."))
 		return
-	beaker.reagents.add_reagent_list(I.juice_results)
+
 	remove_object(I)
 
 /obj/machinery/reagentgrinder/proc/grind(mob/user)
@@ -313,12 +313,10 @@
 			grind_item(i, user)
 
 /obj/machinery/reagentgrinder/proc/grind_item(obj/item/I, mob/user) //Grind results can be found in respective object definitions
-	if(I.on_grind(src) == -1) //Call on_grind() to change amount as needed, and stop grinding the item if it returns -1
+	if(!I.grind(beaker.reagents)) //Call on_grind() to change amount as needed, and stop grinding the item if it returns -1
 		to_chat(usr, span_danger("[src] shorts out as it tries to grind up [I], and transfers it back to storage."))
 		return
-	beaker.reagents.add_reagent_list(I.grind_results)
-	if(I.reagents)
-		I.reagents.trans_to(beaker, I.reagents.total_volume, transfered_by = user)
+
 	remove_object(I)
 
 /obj/machinery/reagentgrinder/proc/mix(mob/user)

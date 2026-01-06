@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/window)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 20, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
+
 /obj/structure/window
 	name = "window"
 	desc = "A window."
@@ -10,7 +13,6 @@
 	max_integrity = 25
 	can_be_unanchored = TRUE
 	resistance_flags = ACID_PROOF
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 20, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
 	can_atmos_pass = CANPASS_PROC
 	rad_insulation = RAD_VERY_LIGHT_INSULATION
 	pass_flags_self = PASSGLASS
@@ -37,23 +39,6 @@
 	var/damage_per_fire_tick = 1
 	///The amount of heat needed to start damaging the window
 	var/melting_point = T0C + 3000 //See, because some dipass decided to make the station 50% glass, NT opted to infuse all the windows with plasma.
-
-/obj/structure/window/examine(mob/user)
-	. = ..()
-	if(reinf)
-		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
-			. += span_notice("The window is <b>bolted</b> to the frame.")
-		else if(anchored && state == WINDOW_IN_FRAME)
-			. += span_notice("The window is <i>unbolted</i> but still <b>pried</b> into the frame.")
-		else if(anchored && state == WINDOW_OUT_OF_FRAME)
-			. += span_notice("The window is out of the frame, but could be <i>pried</i> in. It is <b>screwed</b> to the floor.")
-		else if(!anchored)
-			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
-	else
-		if(anchored)
-			. += span_notice("The window is <b>screwed</b> to the floor.")
-		else
-			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
 
 /obj/structure/window/Initialize(mapload, direct)
 	. = ..()
@@ -83,6 +68,55 @@
 
 	if (flags_1 & ON_BORDER_1)
 		AddElement(/datum/element/connect_loc, loc_connections)
+
+	register_context()
+
+/obj/structure/window/add_context(atom/source, list/context, obj/item/held_item, mob/user)
+	if(!isliving(user))
+		return
+
+	if(held_item || astype(user, /mob/living).combat_mode)
+		return
+
+	context[SCREENTIP_CONTEXT_LMB] = "Knock"
+	return CONTEXTUAL_SCREENTIP_SET
+
+
+/obj/structure/window/examine(mob/user)
+	. = ..()
+	if(reinf)
+		if(anchored && state == WINDOW_SCREWED_TO_FRAME)
+			. += span_notice("The window is <b>bolted</b> to the frame.")
+		else if(anchored && state == WINDOW_IN_FRAME)
+			. += span_notice("The window is <i>unbolted</i> but still <b>pried</b> into the frame.")
+		else if(anchored && state == WINDOW_OUT_OF_FRAME)
+			. += span_notice("The window is out of the frame, but could be <i>pried</i> in. It is <b>screwed</b> to the floor.")
+		else if(!anchored)
+			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
+	else
+		if(anchored)
+			. += span_notice("The window is <b>screwed</b> to the floor.")
+		else
+			. += span_notice("The window is <i>unscrewed</i> from the floor, and could be deconstructed by <b>wrenching</b>.")
+
+/obj/structure/window/disco_flavor(mob/living/carbon/human/user, nearby = FALSE, is_station_level = FALSE)
+	. = ..()
+	if(!nearby || !is_station_level)
+		return
+
+	if(isspaceturf(get_turf(user)))
+		return
+
+	if(!(locate(/turf/open/space) in get_adjacent_open_turfs(src)))
+		return
+
+	var/datum/roll_result/result = user.get_examine_result("window_flavor", 13, only_once = TRUE)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		to_chat(
+			user,
+			result.create_tooltip("The glass is cold to the touch. Cold eternity beckons you to the other side."),
+		)
 
 /obj/structure/window/rcd_vals(mob/user, obj/item/construction/rcd/the_rcd)
 	switch(the_rcd.mode)
@@ -198,7 +232,7 @@
 /obj/structure/window/welder_act(mob/living/user, obj/item/tool)
 	if(atom_integrity >= max_integrity)
 		to_chat(user, span_warning("[src] is already in good condition!"))
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	if(!tool.tool_start_check(user, amount = 0))
 		return FALSE
 	to_chat(user, span_notice("You begin repairing [src]..."))
@@ -206,7 +240,7 @@
 		atom_integrity = max_integrity
 		update_nearby_icons()
 		to_chat(user, span_notice("You repair [src]."))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/screwdriver_act(mob/living/user, obj/item/tool)
 	if((flags_1 & NODECONSTRUCT_1) || (reinf && state >= WINDOW_IN_FRAME))
@@ -215,7 +249,7 @@
 	if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
 		set_anchored(!anchored)
 		to_chat(user, span_notice("You [anchored ? "fasten [src] to":"unfasten [src] from"] the floor."))
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/wrench_act(mob/living/user, obj/item/tool)
 	if(flags_1 & NODECONSTRUCT_1)
@@ -227,24 +261,24 @@
 				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
 					state = WINDOW_SCREWED_TO_FRAME
 					to_chat(user, span_notice("You secure the bolts of [src]."))
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return ITEM_INTERACT_SUCCESS
 			if(WINDOW_SCREWED_TO_FRAME)
 				to_chat(user, span_notice("You begin loosen the bolts of [src]."))
 				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_anchored), anchored)))
 					state = WINDOW_IN_FRAME
 					to_chat(user, span_notice("You loosen the bolts of [src]."))
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return ITEM_INTERACT_SUCCESS
 	if(!anchored)
 		to_chat(user, span_notice("You begin to disassemble [src]..."))
 		if(!tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
-			return TOOL_ACT_TOOLTYPE_SUCCESS
+			return ITEM_INTERACT_SUCCESS
 		var/obj/item/stack/sheet/G = new glass_type(user.loc, glass_amount)
 		if (!QDELETED(G))
 			G.add_fingerprint(user)
 		playsound(src, 'sound/items/deconstruct.ogg', 50, TRUE)
 		to_chat(user, span_notice("You successfully disassemble [src]."))
 		qdel(src)
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/crowbar_act(mob/living/user, obj/item/tool)
 	if(!anchored || !reinf)
@@ -258,13 +292,13 @@
 				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
 					state = WINDOW_IN_FRAME
 					to_chat(user, span_notice("You pry [src] into the frame."))
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return ITEM_INTERACT_SUCCESS
 			if(WINDOW_IN_FRAME)
 				to_chat(user, span_notice("You begin to lever [src] out of the frame..."))
 				if(tool.use_tool(src, user, decon_speed, volume = 75, extra_checks = CALLBACK(src, PROC_REF(check_state_and_anchored), state, anchored)))
 					state = WINDOW_OUT_OF_FRAME
 					to_chat(user, span_notice("You pry [src] out of the frame."))
-				return TOOL_ACT_TOOLTYPE_SUCCESS
+				return ITEM_INTERACT_SUCCESS
 
 /obj/structure/window/attackby(obj/item/I, mob/living/user, params)
 	if(!can_be_reached(user))
@@ -488,7 +522,7 @@
 		qdel(grab)
 
 	var/obj/effect/decal/cleanable/blood/splatter/over_window/splatter = new(src, null, affecting_mob.get_blood_dna_list())
-	vis_contents += splatter
+	add_viscontents(splatter)
 	bloodied = TRUE
 	return TRUE
 
@@ -504,13 +538,15 @@
 /obj/structure/window/unanchored
 	anchored = FALSE
 
+TYPEINFO_DEF(/obj/structure/window/reinforced)
+	default_armor = list(BLUNT = 30, PUNCTURE = 0, SLASH = 40, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
+
 /obj/structure/window/reinforced
 	name = "reinforced window"
 	desc = "A window that is reinforced with metal rods."
 	icon_state = "rwindow"
 	reinf = TRUE
 	heat_resistance = 1600
-	armor = list(BLUNT = 30, PUNCTURE = 0, SLASH = 40, LASER = 0, ENERGY = 0, BOMB = 25, BIO = 100, FIRE = 80, ACID = 100)
 	max_integrity = 75
 	explosion_block = 1
 	damage_deflection = 11
@@ -533,13 +569,15 @@
 	anchored = FALSE
 	state = WINDOW_OUT_OF_FRAME
 
+TYPEINFO_DEF(/obj/structure/window/plasma)
+	default_armor = list(BLUNT = 60, PUNCTURE = 5, SLASH = 40, LASER = 0, ENERGY = 0, BOMB = 45, BIO = 100, FIRE = 99, ACID = 100)
+
 /obj/structure/window/plasma
 	name = "plasma window"
 	desc = "A window made out of a plasma-silicate alloy. It looks insanely tough to break and burn through."
 	icon_state = "plasmawindow"
 	reinf = FALSE
 	heat_resistance = 25000
-	armor = list(BLUNT = 60, PUNCTURE = 5, SLASH = 40, LASER = 0, ENERGY = 0, BOMB = 45, BIO = 100, FIRE = 99, ACID = 100)
 	max_integrity = 200
 	explosion_block = 1
 	glass_type = /obj/item/stack/sheet/plasmaglass
@@ -570,13 +608,15 @@
 /obj/structure/window/plasma/unanchored
 	anchored = FALSE
 
+TYPEINFO_DEF(/obj/structure/window/reinforced/plasma)
+	default_armor = list(BLUNT = 80, PUNCTURE = 20, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 60, BIO = 100, FIRE = 99, ACID = 100)
+
 /obj/structure/window/reinforced/plasma
 	name = "reinforced plasma window"
 	desc = "A window made out of a plasma-silicate alloy and a rod matrix. It looks hopelessly tough to break and is most likely nigh fireproof."
 	icon_state = "plasmarwindow"
 	reinf = TRUE
 	heat_resistance = 50000
-	armor = list(BLUNT = 80, PUNCTURE = 20, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 60, BIO = 100, FIRE = 99, ACID = 100)
 	max_integrity = 500
 	damage_deflection = 18
 	explosion_block = 2
@@ -703,6 +743,9 @@
 	damage_per_fire_tick = 15
 
 //there is a sub shuttle window in survival_pod.dm for mining pods
+TYPEINFO_DEF(/obj/structure/window/reinforced/shuttle)
+	default_armor = list(BLUNT = 75, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 100, FIRE = 80, ACID = 100)
+
 /obj/structure/window/reinforced/shuttle //this is called reinforced because it is reinforced w/titanium
 	name = "shuttle window"
 	desc = "A reinforced, air-locked pod window."
@@ -717,7 +760,6 @@
 	flags_1 = PREVENT_CLICK_UNDER_1
 	reinf = TRUE
 	heat_resistance = 1600
-	armor = list(BLUNT = 75, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 100, FIRE = 80, ACID = 100)
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE
 	canSmoothWith = SMOOTH_GROUP_SHUTTLE_PARTS + SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE_SHUTTLE + SMOOTH_GROUP_WALLS
@@ -747,6 +789,9 @@
 /obj/structure/window/reinforced/shuttle/unanchored
 	anchored = FALSE
 
+TYPEINFO_DEF(/obj/structure/window/reinforced/plasma/plastitanium)
+	default_armor = list(BLUNT = 95, PUNCTURE = 0, SLASH = 100, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 100, FIRE = 80, ACID = 100)
+
 /obj/structure/window/reinforced/plasma/plastitanium
 	name = "plastitanium window"
 	desc = "A durable looking window made of an alloy of of plasma and titanium."
@@ -760,7 +805,6 @@
 	fulltile = TRUE
 	flags_1 = PREVENT_CLICK_UNDER_1
 	heat_resistance = 1600
-	armor = list(BLUNT = 95, PUNCTURE = 0, SLASH = 100, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 100, FIRE = 80, ACID = 100)
 	smoothing_flags = SMOOTH_BITMASK
 	smoothing_groups = SMOOTH_GROUP_WINDOW_FULLTILE
 	canSmoothWith = SMOOTH_GROUP_SHUTTERS_BLASTDOORS + SMOOTH_GROUP_AIRLOCK + SMOOTH_GROUP_WINDOW_FULLTILE + SMOOTH_GROUP_WALLS
@@ -784,6 +828,9 @@
 	anchored = FALSE
 	state = WINDOW_OUT_OF_FRAME
 
+TYPEINFO_DEF(/obj/structure/window/paperframe)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
+
 /obj/structure/window/paperframe
 	name = "paper frame"
 	desc = "A fragile separator made of thin wood and paper."
@@ -803,7 +850,6 @@
 	decon_speed = 10
 	can_atmos_pass = CANPASS_ALWAYS
 	resistance_flags = FLAMMABLE
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	knock_sound = SFX_PAGE_TURN
 	bash_sound = 'sound/weapons/slashmiss.ogg'
 	break_sound = 'sound/items/poster_ripped.ogg'

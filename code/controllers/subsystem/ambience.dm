@@ -21,20 +21,27 @@ SUBSYSTEM_DEF(ambience)
 		cached_clients.len--
 
 		//Check to see if the client exists and isn't held by a new player
-		var/mob/client_mob = client_iterator?.mob.hear_location()
-		if(isnull(client_iterator) || isnewplayer(client_mob))
+		var/mob/client_mob = client_iterator?.mob
+		if(isnull(client_iterator))
 			ambience_listening_clients -= client_iterator
 			client_old_areas -= client_iterator
 			continue
 
-		if(!client_mob.can_hear())
+		if(isnewplayer(client_mob))
+			client_old_areas -= client_iterator
 			continue
+
+		var/atom/movable/hearer = client_mob.hear_location()
+		if(ismob(hearer))
+			var/mob/hearer_mob = hearer
+			if(!hearer_mob.can_hear())
+				continue
 
 		//Check to see if the client-mob is in a valid area
 		var/area/current_area = get_area(client_mob)
 		if(!current_area) //Something's gone horribly wrong
 			stack_trace("[key_name(client_mob)] has somehow ended up in nullspace. WTF did you do")
-			ambience_listening_clients -= client_iterator
+			remove_ambience_client(client_iterator)
 			continue
 
 		if(ambience_listening_clients[client_iterator] > world.time)
@@ -64,7 +71,8 @@ SUBSYSTEM_DEF(ambience)
 		channel = CHANNEL_AMBIENCE
 	)
 
-	return rand(min_ambience_cooldown, max_ambience_cooldown)
+	var/sound_length = ceil(SSsound_cache.get_sound_length(new_sound.file))
+	return rand(min_ambience_cooldown + sound_length, max_ambience_cooldown + sound_length)
 
 /datum/controller/subsystem/ambience/proc/remove_ambience_client(client/to_remove)
 	ambience_listening_clients -= to_remove

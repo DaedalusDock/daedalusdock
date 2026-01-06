@@ -15,12 +15,12 @@ body {
 
 html {
   overflow: hidden;
-  cursor: default; // Reset the cursor.
+  cursor: base.$cursor-default; // Reset the cursor.
 }
 
 body {
   overflow: auto;
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: base.$font-family;
 }
 
 *,
@@ -65,4 +65,8 @@ td,
 th {
   vertical-align: baseline;
   text-align: left;
+}
+
+a {
+  cursor: base.$cursor-pointer;
 }

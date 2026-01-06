@@ -20,7 +20,7 @@
 	progression_maximum = 30 MINUTES
 
 	var/list/applicable_heads = list(
-		JOB_MEDICAL_DIRECTOR = /area/station/command/heads_quarters/cmo,
+		JOB_AUGUR = /area/station/command/heads_quarters/cmo,
 		JOB_CHIEF_ENGINEER = /area/station/command/heads_quarters/ce,
 		JOB_HEAD_OF_PERSONNEL = /area/station/command/heads_quarters/hop,
 		JOB_CAPTAIN = /area/station/command/heads_quarters/captain, // For head roles so that they can still get this objective.
@@ -149,45 +149,48 @@
 	SEND_SIGNAL(src, COMSIG_TRAITOR_BUG_PLANTED_GROUND, location)
 	qdel(src)
 
-/obj/item/traitor_bug/afterattack(atom/movable/target, mob/user, proximity_flag, click_parameters)
-	. = ..()
+/obj/item/traitor_bug/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
 	if(!target_object_type)
-		return
-	if(!user.Adjacent(target))
-		return
+		return NONE
+
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	var/result = SEND_SIGNAL(src, COMSIG_TRAITOR_BUG_PRE_PLANTED_OBJECT, target)
 	if(!(result & COMPONENT_FORCE_PLACEMENT))
 		if(result & COMPONENT_FORCE_FAIL_PLACEMENT || !istype(target, target_object_type))
-			balloon_alert(user, "you can't attach this onto here!")
-			return
+			to_chat(user, span_warning("You are unable to plant that there."))
+			return ITEM_INTERACT_BLOCKING
+
 	if(!do_after(user, deploy_time, src))
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	if(planted_on)
-		return
+		return ITEM_INTERACT_BLOCKING
+
 	forceMove(target)
-	target.vis_contents += src
+	target.add_viscontents(src)
+
 	planted_on = target
+
 	RegisterSignal(planted_on, COMSIG_PARENT_QDELETING, PROC_REF(handle_planted_on_deletion))
 	SEND_SIGNAL(src, COMSIG_TRAITOR_BUG_PLANTED_OBJECT, target)
+	return ITEM_INTERACT_SUCCESS
 
 /obj/item/traitor_bug/proc/handle_planted_on_deletion()
 	planted_on = null
 
 /obj/item/traitor_bug/Destroy()
 	if(planted_on)
-		planted_on.vis_contents -= src
+		planted_on.remove_viscontents(src)
 	return ..()
 
 /obj/item/traitor_bug/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
 	if(planted_on)
-		planted_on.vis_contents -= src
+		planted_on.remove_viscontents(src)
 		anchored = FALSE
 		UnregisterSignal(planted_on, COMSIG_PARENT_QDELETING)
 		planted_on = null
-
-/obj/item/traitor_bug/attackby_storage_insert(datum/storage, atom/storage_holder, mob/user)
-	return !istype(storage_holder, target_object_type)
 
 /obj/structure/traitor_bug
 	name = "suspicious device"

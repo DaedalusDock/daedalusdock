@@ -42,18 +42,14 @@
 #define JOB_SECURITY_MARSHAL "Security Marshal"
 #define JOB_WARDEN "Brig Lieutenant"
 #define JOB_DETECTIVE "Private Investigator"
-#define JOB_SECURITY_OFFICER "Security Officer"
-#define JOB_SECURITY_OFFICER_MEDICAL "Security Officer (Medical)"
-#define JOB_SECURITY_OFFICER_ENGINEERING "Security Officer (Engineering)"
-#define JOB_SECURITY_OFFICER_SCIENCE "Security Officer (Science)"
-#define JOB_SECURITY_OFFICER_SUPPLY "Security Officer (Cargo)"
+#define JOB_SECURITY_OFFICER "Peacekeeper"
 //Engineering
 #define JOB_CHIEF_ENGINEER "Chief Engineer"
 #define JOB_STATION_ENGINEER "Station Engineer"
 #define JOB_ATMOSPHERIC_TECHNICIAN "Atmospheric Technician"
 //Medical
-#define JOB_MEDICAL_DIRECTOR "Medical Director"
-#define JOB_MEDICAL_DOCTOR "General Practitioner"
+#define JOB_AUGUR "Augur"
+#define JOB_ACOLYTE "Acolyte"
 #define JOB_PARAMEDIC "Paramedic"
 #define JOB_CHEMIST "Chemist"
 #define JOB_VIROLOGIST "Virologist"
@@ -98,8 +94,8 @@
 
 #define DEPARTMENT_BITFLAG_SECURITY (1<<0)
 #define DEPARTMENT_SECURITY "Mars Private Security"
-#define DEPARTMENT_BITFLAG_MANAGEMENT (1<<1)
-#define DEPARTMENT_MANAGEMENT "Management"
+#define DEPARTMENT_BITFLAG_FEDERATION (1<<1)
+#define DEPARTMENT_FEDERATION "The Federation"
 #define DEPARTMENT_BITFLAG_SERVICE (1<<2)
 #define DEPARTMENT_SERVICE "Independant"
 #define DEPARTMENT_BITFLAG_CARGO (1<<3)
@@ -109,7 +105,7 @@
 #define DEPARTMENT_BITFLAG_SCIENCE (1<<5)
 #define DEPARTMENT_SCIENCE "Science"
 #define DEPARTMENT_BITFLAG_MEDICAL (1<<6)
-#define DEPARTMENT_MEDICAL "Aether Pharmaceuticals"
+#define DEPARTMENT_MEDICAL "Aether Association"
 #define DEPARTMENT_BITFLAG_SILICON (1<<7)
 #define DEPARTMENT_SILICON "Silicon"
 #define DEPARTMENT_BITFLAG_ASSISTANT (1<<8)
@@ -139,3 +135,10 @@
 
 #define FACTION_NONE "None"
 #define FACTION_STATION "Station"
+
+/// Spawn point is always fixed.
+#define JOBSPAWN_FORCE_FIXED 0
+/// Spawn point prefers a fixed spawnpoint, but can be a latejoin one.
+#define JOBSPAWN_ALLOW_RANDOM 1
+/// Spawn point is always a random spawnpoint.
+#define JOBSPAWN_FORCE_RANDOM 2

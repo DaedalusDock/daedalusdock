@@ -6,14 +6,19 @@
 	register_init_signals()
 	if(unique_name)
 		give_unique_name()
+
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_atom_to_hud(src)
+
 	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
 		diag_hud.add_atom_to_hud(src)
+
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
 	voice_type = pick(voice_type2sound)
+	mob_mood = new(src)
+
 	AddElement(/datum/element/movetype_handler)
 	gravity_setup()
 
@@ -28,6 +33,7 @@
 	QDEL_NULL(z_eye)
 	QDEL_NULL(stamina)
 	QDEL_NULL(stats)
+	QDEL_NULL(mob_mood)
 
 	for(var/datum/status_effect/effect as anything in status_effects)
 		// The status effect calls on_remove when its mob is deleted
@@ -44,6 +50,12 @@
 	remove_from_all_data_huds()
 	GLOB.mob_living_list -= src
 	QDEL_LAZYLIST(diseases)
+	return ..()
+
+/mob/living/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if (user.can_perform_surgery_on(src) && tool.attempt_surgery(src, user))
+		return ITEM_INTERACT_SUCCESS
+
 	return ..()
 
 /mob/living/onZImpact(turf/T, levels, message = TRUE)
@@ -70,11 +82,14 @@
 	if(SEND_SIGNAL(src, COMSIG_LIVING_Z_IMPACT, levels, T) & NO_Z_IMPACT_DAMAGE)
 		return
 
-	visible_message(span_danger("<b>[src]</b> slams into [T]!"), blind_message = span_hear("You hear something slam into the deck."))
-	TakeFallDamage(levels)
+	visible_message(
+		span_danger("<b>[src]</b> falls onto [T]."),
+		blind_message = span_hear("You hear something slam into the deck.")
+	)
+	TakeFallDamage(T, levels)
 	return TRUE
 
-/mob/living/proc/TakeFallDamage(levels)
+/mob/living/proc/TakeFallDamage(turf/T, levels)
 	adjustBruteLoss((levels * 5) ** 1.5)
 	Knockdown(levels * 5 SECONDS)
 	Stun(levels * 2 SECONDS)
@@ -121,14 +136,14 @@
 		var/mob/living/L = M
 		//Also spread diseases
 		for(var/thing in diseases)
-			var/datum/disease/D = thing
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				L.ContactContractDisease(D)
+			var/datum/pathogen/D = thing
+			if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+				L.try_contact_contract_pathogen(D)
 
 		for(var/thing in L.diseases)
-			var/datum/disease/D = thing
-			if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
-				ContactContractDisease(D)
+			var/datum/pathogen/D = thing
+			if(D.spread_flags & PATHOGEN_SPREAD_CONTACT_SKIN)
+				try_contact_contract_pathogen(D)
 
 		//Should stop you pushing a restrained person out of the way
 		if(LAZYLEN(L.grabbed_by) && !is_grabbing(L) && HAS_TRAIT(L, TRAIT_ARMS_RESTRAINED))
@@ -152,7 +167,7 @@
 	if(!M.buckled && !M.has_buckled_mobs())
 		if(can_mobswap_with(M))
 			//switch our position with M
-			if(loc && !loc.MultiZAdjacent(M.loc))
+			if(!loc?.MultiZAdjacent(M.loc, M, src))
 				return TRUE
 
 			now_pushing = TRUE
@@ -161,6 +176,7 @@
 			var/oldMloc = M.loc
 			forceMove(oldMloc)
 			M.forceMove(oldloc)
+			M.update_offsets()
 
 			now_pushing = FALSE
 			return TRUE
@@ -347,18 +363,6 @@
 	log_message("points at [pointing_at]", LOG_EMOTE)
 	visible_message("<span class='infoplain'>[span_name("[src]")] points at [pointing_at].</span>", span_notice("You point at [pointing_at]."))
 
-/mob/living/verb/succumb(whispered as null)
-	set hidden = TRUE
-	if (stat == CONSCIOUS)
-		to_chat(src, text="You are unable to succumb to death! This life continues.", type=MESSAGE_TYPE_INFO)
-		return
-	log_message("Has [whispered ? "whispered his final words" : "succumbed to death"] with [round(health, 0.1)] points of health!", LOG_ATTACK)
-	adjustOxyLoss(health - HEALTH_THRESHOLD_DEAD)
-	updatehealth()
-	if(!whispered)
-		to_chat(src, span_notice("You have given up life and succumbed to death."))
-	death()
-
 /**
  * Checks if a mob is incapacitated
  *
@@ -399,18 +403,6 @@
 //affects them once clothing is factored in. ~Errorage
 /mob/living/proc/calculate_affecting_pressure(pressure)
 	return pressure
-
-/mob/living/proc/getMaxHealth()
-	return maxHealth
-
-/mob/living/proc/setMaxHealth(newMaxHealth)
-	maxHealth = newMaxHealth
-
-/// Returns the health of the mob while ignoring damage of non-organic (prosthetic) limbs
-/// Used by cryo cells to not permanently imprison those with damage from prosthetics,
-/// as they cannot be healed through chemicals.
-/mob/living/proc/get_organic_health()
-	return health
 
 // MOB PROCS //END
 
@@ -512,13 +504,13 @@
 
 /mob/living/proc/get_up(instant = FALSE)
 	set waitfor = FALSE
-	if(!instant && !do_after(src, src, 1 SECONDS, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_TARGET_LOC_CHANGE|IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP))
+	if(!instant && !do_after(src, src, 1 SECONDS, timed_action_flags = (DO_IGNORE_USER_LOC_CHANGE|DO_IGNORE_TARGET_LOC_CHANGE|DO_IGNORE_HELD_ITEM), extra_checks = CALLBACK(src, TYPE_PROC_REF(/mob/living, rest_checks_callback)), interaction_key = DOAFTER_SOURCE_GETTING_UP))
 		return
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
 		return
-	set_lying_angle(0)
-	set_body_position(STANDING_UP)
 
+	set_body_position(STANDING_UP)
+	set_lying_angle(0)
 
 /mob/living/proc/rest_checks_callback()
 	if(resting || body_position == STANDING_UP || HAS_TRAIT(src, TRAIT_FLOORED))
@@ -534,25 +526,38 @@
 /mob/living/proc/on_lying_down(new_lying_angle)
 	if(layer == initial(layer)) //to avoid things like hiding larvas.
 		layer = LYING_MOB_LAYER //so mob lying always appear behind standing mobs
+
 	ADD_TRAIT(src, TRAIT_UI_BLOCKED, LYING_DOWN_TRAIT)
 	ADD_TRAIT(src, TRAIT_PULL_BLOCKED, LYING_DOWN_TRAIT)
+
 	set_density(FALSE) // We lose density and stop bumping passable dense things.
+
 	if(HAS_TRAIT(src, TRAIT_FLOORED) && !(dir & (NORTH|SOUTH)))
 		setDir(pick(NORTH, SOUTH)) // We are and look helpless.
-	body_position_pixel_y_offset = PIXEL_Y_OFFSET_LYING
-	playsound(loc, 'goon/sounds/body_thud.ogg', ishuman(src) ? 40 : 15, 1, 0.3)
 
+	if(rotate_on_lying)
+		body_position_pixel_y_offset = PIXEL_Y_OFFSET_LYING
+
+	playsound(loc, 'goon/sounds/body_thud.ogg', ishuman(src) ? 40 : 15, 1, 0.3)
+	throw_alert("lying_down", /atom/movable/screen/alert/lying_down)
 
 /// Proc to append behavior related to lying down.
 /mob/living/proc/on_standing_up()
 	if(layer == LYING_MOB_LAYER)
 		layer = initial(layer)
+
 	set_density(initial(density)) // We were prone before, so we become dense and things can bump into us again.
+
 	REMOVE_TRAIT(src, TRAIT_UI_BLOCKED, LYING_DOWN_TRAIT)
 	REMOVE_TRAIT(src, TRAIT_PULL_BLOCKED, LYING_DOWN_TRAIT)
-	body_position_pixel_y_offset = 0
 
+	body_position_pixel_y_offset = get_pixel_y_offset_standing(current_size)
 
+	clear_alert("lying_down")
+
+/// Returns what the body_position_pixel_y_offset should be if the current size were `value`
+/mob/living/proc/get_pixel_y_offset_standing(size)
+	return (size-1) * get_icon_height() * 0.5
 
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
@@ -601,14 +606,14 @@
 	health = new_value
 
 
-/mob/living/proc/updatehealth()
+/mob/living/proc/updatehealth(cause_of_death)
 	if(status_flags & GODMODE)
 		return
 
 	set_health(maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss())
 	med_hud_set_health()
 	update_health_hud()
-	update_stat()
+	update_stat(cause_of_death)
 
 /mob/living/update_health_hud()
 	var/severity = 0
@@ -683,7 +688,7 @@
 		. = TRUE
 
 		if(excess_healing)
-			INVOKE_ASYNC(src, PROC_REF(emote), "gasp")
+			INVOKE_ASYNC(src, PROC_REF(emote), /datum/emote/living/carbon/gasp_air)
 			log_combat(src, src, "revived")
 
 	else if(admin_revive)
@@ -692,6 +697,7 @@
 
 	if(.)
 		qdel(GetComponent(/datum/component/spook_factor))
+		mob_mood?.add_mood_event("revival", /datum/mood_event/revival)
 
 	// The signal is called after everything else so components can properly check the updated values
 	SEND_SIGNAL(src, COMSIG_LIVING_REVIVE, full_heal, admin_revive)
@@ -809,8 +815,10 @@
 
 	. = ..()
 
-	if(active_storage && !((active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE]) || CanReach(active_storage.parent,view_only = TRUE)))
-		active_storage.hide_contents(src)
+	if(active_storage)
+		var/storage_in_self = (active_storage.parent in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE])
+		if(!storage_in_self && !active_storage.can_be_reached_by(src))
+			active_storage.hide_contents(src)
 
 	if(!ISDIAGONALDIR(direct) && newloc != T && body_position == LYING_DOWN && !buckled && has_gravity())
 		if(length(grabbed_by))
@@ -822,9 +830,18 @@
 ///Called by mob Move() when the lying_angle is different than zero, to better visually simulate crawling.
 /mob/living/proc/lying_angle_on_movement(direct)
 	if(direct & EAST)
-		set_lying_angle(90)
+		set_lying_angle(LYING_ANGLE_EAST)
 	else if(direct & WEST)
-		set_lying_angle(270)
+		set_lying_angle(LYING_ANGLE_WEST)
+
+/mob/living/setDir(ndir)
+	. = ..()
+	if(isnull(.))
+		return
+
+	for(var/atom/movable/AM as anything in important_recursive_contents?[RECURSIVE_CONTENTS_ACTIVE_STORAGE])
+		if(UNLINT(length(AM.atom_storage.is_using)))
+			AM.atom_storage.update_viewability()
 
 /mob/living/carbon/alien/humanoid/lying_angle_on_movement(direct)
 	return
@@ -952,17 +969,36 @@
 /mob/living/proc/resist_restraints()
 	return
 
-/mob/living/proc/update_gravity(gravity)
+/// Called when the mob's gravity state is updated via refresh_gravity()
+/mob/living/proc/update_gravity(new_gravity_state, old_gravity_state)
+	PRIVATE_PROC(TRUE)
+
 	// Handle movespeed stuff
-	var/speed_change = max(0, gravity - STANDARD_GRAVITY)
+	var/speed_change = max(0, new_gravity_state - STANDARD_GRAVITY)
 	if(speed_change)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/gravity, slowdown=speed_change)
 	else
 		remove_movespeed_modifier(/datum/movespeed_modifier/gravity)
 
+	update_gravity_alert(new_gravity_state, old_gravity_state)
+
+	// This breaks unit tests
+	#ifndef UNIT_TESTS
+	if(old_gravity_state != null && old_gravity_state != STANDARD_GRAVITY && new_gravity_state == STANDARD_GRAVITY && isturf(loc) && !CanZFall(loc, DOWN))
+		var/datum/roll_result/result = stat_roll(13, /datum/rpg_skill/electric_body)
+		if(result.outcome <= FAILURE)
+			result.do_skill_sound(src)
+			to_chat(src, result.create_tooltip("The sudden change in gravity sends you to the floor."))
+			Knockdown(3 SECONDS)
+	#endif
+
+/// Called by update_gravity().
+/mob/living/proc/update_gravity_alert(new_gravity_state, old_gravity_state)
+	PRIVATE_PROC(TRUE)
+
 	// Time to add/remove gravity alerts. sorry for the mess it's gotta be fast
 	var/atom/movable/screen/alert/gravity_alert = alerts[ALERT_GRAVITY]
-	switch(gravity)
+	switch(new_gravity_state)
 		if(-INFINITY to NEGATIVE_GRAVITY)
 			if(!istype(gravity_alert, /atom/movable/screen/alert/negative))
 				throw_alert(ALERT_GRAVITY, /atom/movable/screen/alert/negative)
@@ -986,9 +1022,11 @@
 	// If we had no gravity alert, or the same alert as before, go home
 	if(!gravity_alert || alerts[ALERT_GRAVITY] == gravity_alert)
 		return
+
 	// By this point we know that we do not have the same alert as we used to
 	if(istype(gravity_alert, /atom/movable/screen/alert/weightless))
 		REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, NO_GRAVITY_TRAIT)
+
 	if(istype(gravity_alert, /atom/movable/screen/alert/negative))
 		var/matrix/flipped_matrix = transform
 		flipped_matrix.b = -flipped_matrix.b
@@ -1071,7 +1109,7 @@
 		to_chat(src, span_warning("You are not physically capable of doing that."))
 		return FALSE
 
-	if((flags & USE_CLOSE) && !CanReach(target) && (recursive_loc_check(src, target)))
+	if((flags & USE_CLOSE) && !target.IsReachableBy(src) && (recursive_loc_check(src, target)))
 		if(issilicon(src) && !ispAI(src))
 			if(!(flags & USE_SILICON_REACH)) // silicons can ignore range checks (except pAIs)
 				to_chat(src, span_warning("You are too far away."))
@@ -1279,7 +1317,7 @@
 	if(mind)
 		mind.transfer_to(new_mob)
 	else
-		new_mob.key = key
+		new_mob.PossessByPlayer(key)
 
 	for(var/para in hasparasites())
 		var/mob/living/simple_animal/hostile/guardian/G = para
@@ -1585,8 +1623,8 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/proc/get_static_viruses() //used when creating blood and other infective objects
 	if(!LAZYLEN(diseases))
 		return
-	var/list/datum/disease/result = list()
-	for(var/datum/disease/D in diseases)
+	var/list/datum/pathogen/result = list()
+	for(var/datum/pathogen/D in diseases)
 		var/static_virus = D.Copy()
 		result += static_virus
 	return result
@@ -1637,6 +1675,11 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(NAMEOF(src, body_position))
 			set_body_position(var_value)
 			. = TRUE
+		if(NAMEOF(src, current_size))
+			if(var_value == 0) //prevents divisions of and by zero.
+				return FALSE
+			update_transform(var_value/current_size)
+			. = TRUE
 
 	if(!isnull(.))
 		datum_flags |= DF_VAR_EDITED
@@ -1647,8 +1690,6 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	switch(var_name)
 		if(NAMEOF(src, maxHealth))
 			updatehealth()
-		if(NAMEOF(src, resize))
-			update_transform()
 		if(NAMEOF(src, lighting_alpha))
 			sync_lighting_plane_alpha()
 
@@ -1782,9 +1823,12 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
+				mob_mood?.update_mood_icon()
+
 		if(UNCONSCIOUS)
 			cure_blind(UNCONSCIOUS_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
+
 		if(DEAD)
 			remove_from_dead_mob_list()
 			add_to_alive_mob_list()
@@ -1794,13 +1838,18 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		if(CONSCIOUS)
 			if(. >= UNCONSCIOUS)
 				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
+				mob_mood?.update_mood(quiet = TRUE)
+				blur_eyes(4)
+
 			REMOVE_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
 			REMOVE_TRAIT(src, TRAIT_NO_SPRINT, STAT_TRAIT)
+
 		if(UNCONSCIOUS)
 			become_blind(UNCONSCIOUS_TRAIT)
 			ADD_TRAIT(src, TRAIT_DEAF, STAT_TRAIT)
+
 		if(DEAD)
 			remove_from_alive_mob_list()
 			add_to_dead_mob_list()
@@ -1822,9 +1871,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	. = ..()
 	switch(blindness_level)
 		if(BLIND_SLEEPING, BLIND_PHYSICAL)
-			stats?.set_skill_modifier(-4, /datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+			stats?.set_skill_modifier(-4, /datum/rpg_skill/bloodsport, SKILL_SOURCE_BLINDNESS)
 		else
-			stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_BLINDNESS)
+			stats?.remove_skill_modifier(/datum/rpg_skill/bloodsport, SKILL_SOURCE_BLINDNESS)
 
 ///Reports the event of the change in value of the buckled variable.
 /mob/living/proc/set_buckled(new_buckled)
@@ -1929,7 +1978,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /// Sets the mob's hunger levels to a safe overall level. Useful for TRAIT_NOHUNGER species changes.
 /mob/living/proc/set_safe_hunger_level()
 	// Nutrition reset and alert clearing.
-	nutrition = NUTRITION_LEVEL_FED
+	set_nutrition(NUTRITION_LEVEL_FED)
 	clear_alert(ALERT_NUTRITION)
 	satiety = 0
 
@@ -1967,16 +2016,16 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /// Proc to append behavior to the condition of being floored. Called when the condition starts.
 /mob/living/proc/on_floored_start()
 	if(body_position == STANDING_UP) //force them on the ground
-		set_lying_angle(pick(90, 270))
+		set_lying_angle(pick(LYING_ANGLE_EAST, LYING_ANGLE_WEST))
 		set_body_position(LYING_DOWN)
 		on_fall()
-		stats?.set_skill_modifier(-2, /datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
+		stats?.set_skill_modifier(-2, /datum/rpg_skill/bloodsport, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being floored. Called when the condition ends.
 /mob/living/proc/on_floored_end()
 	if(!resting)
 		get_up()
-		stats?.remove_skill_modifier(/datum/rpg_skill/skirmish, SKILL_SOURCE_FLOORED)
+		stats?.remove_skill_modifier(/datum/rpg_skill/bloodsport, SKILL_SOURCE_FLOORED)
 
 /// Proc to append behavior to the condition of being handsblocked. Called when the condition starts.
 /mob/living/proc/on_handsblocked_start()
@@ -2216,12 +2265,25 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 			return MOUSE_ICON_HOVERING_INTERACTABLE
 		return
 
-	if(A.is_mouseover_interactable && (mobility_flags & MOBILITY_USE) && can_interact_with(A))
-		if(isitem(A))
-			if(!isturf(loc) || (mobility_flags & MOBILITY_PICKUP))
+
+	if(A.is_mouseover_interactable && (mobility_flags & MOBILITY_USE))
+		var/can_interact = FALSE
+		if(istype(A, /atom/movable/screen))
+			if(astype(A, /atom/movable/screen).hud?.mymob == src)
+				can_interact = TRUE
+
+			if(istype(A, /atom/movable/screen/alert))
+				can_interact = astype(A, /atom/movable/screen/alert).owner == src
+
+		else if(can_interact_with(A))
+			can_interact = TRUE
+
+		if(can_interact)
+			if(isitem(A))
+				if(!isturf(loc) || (mobility_flags & MOBILITY_PICKUP))
+					return MOUSE_ICON_HOVERING_INTERACTABLE
+			else
 				return MOUSE_ICON_HOVERING_INTERACTABLE
-		else
-			return MOUSE_ICON_HOVERING_INTERACTABLE
 
 
 /mob/living/do_hurt_animation()
@@ -2234,8 +2296,42 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	var/offset_y = pixel_y + pick(-3, -2, -1, 1, 2, 3)
 
 	for(var/atom/movable/AM as anything in get_associated_mimics() + src)
-		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4))
+		animate(AM, pixel_x = offset_x, pixel_y = offset_y, time = rand(2, 4), flags = ANIMATION_PARALLEL)
 		animate(pixel_x = pixel_x, pixel_y = pixel_y, time = 2)
 
 /mob/living/proc/get_blood_print()
 	return BLOOD_PRINT_PAWS
+
+/mob/living/zap_act(power, zap_flags)
+	..()
+	var/shock_damage = (zap_flags & ZAP_MOB_DAMAGE) ? TESLA_POWER_TO_MOB_DAMAGE(power) : 0
+	electrocute_act(shock_damage, 1, SHOCK_USE_AVG_SIEMENS | ((zap_flags & ZAP_MOB_STUN) ? NONE : SHOCK_NOSTUN))
+	return power * 0.66
+
+/// Proc for giving a mob a new 'friend', generally used for AI control and targeting. Returns false if already friends.
+/mob/living/proc/befriend(mob/living/new_friend)
+	SHOULD_CALL_PARENT(TRUE)
+	var/friend_ref = REF(new_friend)
+	if (faction.Find(friend_ref))
+		return FALSE
+	faction |= friend_ref
+	ai_controller?.insert_blackboard_key_lazylist(BB_FRIENDS_LIST, new_friend)
+
+	SEND_SIGNAL(src, COMSIG_LIVING_BEFRIENDED, new_friend)
+	return TRUE
+
+/// Proc for removing a friend you added with the proc 'befriend'. Returns true if you removed a friend.
+/mob/living/proc/unfriend(mob/living/old_friend)
+	SHOULD_CALL_PARENT(TRUE)
+	var/friend_ref = REF(old_friend)
+	if (!faction.Find(friend_ref))
+		return FALSE
+	faction -= friend_ref
+	ai_controller?.remove_thing_from_blackboard_key(BB_FRIENDS_LIST, old_friend)
+
+	SEND_SIGNAL(src, COMSIG_LIVING_UNFRIENDED, old_friend)
+	return TRUE
+
+/mob/living/set_nutrition(change)
+	. = ..()
+	mob_mood?.update_nutrition_moodlets()

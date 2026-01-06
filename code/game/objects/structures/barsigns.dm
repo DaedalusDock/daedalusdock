@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/structure/sign/barsign)
+	default_armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
+
 /obj/structure/sign/barsign // All Signs are 64 by 32 pixels, they take two tiles
 	name = "bar sign"
 	desc = "A bar sign which has not been initialized, somehow. Complain at a coder!"
@@ -6,7 +9,6 @@
 	req_access = list(ACCESS_BAR)
 	max_integrity = 500
 	integrity_failure = 0.5
-	armor = list(BLUNT = 20, PUNCTURE = 20, SLASH = 90, LASER = 20, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	buildable_sign = FALSE
 
 	var/panel_open = FALSE
@@ -80,7 +82,7 @@
 		to_chat(user, span_notice("You open the maintenance panel."))
 		set_sign(new /datum/barsign/hiddensigns/signoff)
 		panel_open = TRUE
-		return TOOL_ACT_TOOLTYPE_SUCCESS
+		return ITEM_INTERACT_SUCCESS
 	to_chat(user, span_notice("You close the maintenance panel."))
 
 	if(broken)
@@ -90,7 +92,7 @@
 	else
 		set_sign(chosen_sign)
 	panel_open = FALSE
-	return TOOL_ACT_TOOLTYPE_SUCCESS
+	return ITEM_INTERACT_SUCCESS
 
 /obj/structure/sign/barsign/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/stack/cable_coil) && panel_open)

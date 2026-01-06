@@ -95,6 +95,14 @@
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/holdup
 
+/datum/status_effect/holdup/on_apply()
+	. = ..()
+	owner.add_movespeed_modifier(/datum/movespeed_modifier/status_effect/holdup)
+
+/datum/status_effect/holdup/on_remove()
+	. = ..()
+	owner.remove_movespeed_modifier(/datum/movespeed_modifier/status_effect/holdup)
+
 /atom/movable/screen/alert/status_effect/holdup
 	name = "Holding Up"
 	desc = "You're currently pointing a gun at someone."
@@ -127,11 +135,11 @@
 	if(give_alert_override)
 		give_alert_type = give_alert_override
 
-	if(offered && owner.CanReach(offered) && !IS_DEAD_OR_INCAP(offered) && offered.can_hold_items())
+	if(offered && offered.IsReachableBy(owner) && !IS_DEAD_OR_INCAP(offered) && offered.can_hold_items())
 		register_candidate(offered)
 	else
 		for(var/mob/living/carbon/possible_taker in orange(1, owner))
-			if(!owner.CanReach(possible_taker) || IS_DEAD_OR_INCAP(possible_taker) || !possible_taker.can_hold_items())
+			if(!possible_taker.IsReachableBy(owner) || IS_DEAD_OR_INCAP(possible_taker) || !possible_taker.can_hold_items())
 				continue
 			register_candidate(possible_taker)
 
@@ -140,7 +148,7 @@
 		return
 
 	RegisterSignal(owner, COMSIG_MOVABLE_MOVED, PROC_REF(check_owner_in_range))
-	RegisterSignal(offered_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_DROPPED), PROC_REF(dropped_item))
+	RegisterSignal(offered_item, list(COMSIG_PARENT_QDELETING, COMSIG_ITEM_UNEQUIPPED), PROC_REF(dropped_item))
 	//RegisterSignal(owner, COMSIG_PARENT_EXAMINE_MORE, PROC_REF(check_fake_out))
 
 /datum/status_effect/offering/Destroy()
@@ -170,7 +178,7 @@
 /// One of our possible takers moved, see if they left us hanging
 /datum/status_effect/offering/proc/check_taker_in_range(mob/living/carbon/taker)
 	SIGNAL_HANDLER
-	if(owner.CanReach(taker) && !IS_DEAD_OR_INCAP(taker))
+	if(taker.IsReachableBy(owner) && !IS_DEAD_OR_INCAP(taker))
 		return
 
 	to_chat(taker, span_warning("You moved out of range of [owner]!"))
@@ -182,7 +190,7 @@
 
 	for(var/i in possible_takers)
 		var/mob/living/carbon/checking_taker = i
-		if(!istype(checking_taker) || !owner.CanReach(checking_taker) || IS_DEAD_OR_INCAP(checking_taker))
+		if(!istype(checking_taker) || !checking_taker.IsReachableBy(owner) || IS_DEAD_OR_INCAP(checking_taker))
 			remove_candidate(checking_taker)
 
 /// We lost the item, give it up

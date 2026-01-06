@@ -985,7 +985,7 @@
 		if(linked.saved_mind)
 			linked.saved_mind.transfer_to(familiar)
 			familiar.update_atom_languages()
-			familiar.ckey = linked.saved_mind.key
+			familiar.PossessByPlayer(linked.saved_mind.key)
 	else
 		if(familiar.mind)
 			linked.saved_mind = familiar.mind
@@ -1004,7 +1004,7 @@
 		var/obj/item/slimecross/stabilized/rainbow/X = linked_extract
 		if(istype(X))
 			if(X.regencore)
-				X.regencore.afterattack(owner,owner,TRUE)
+				X.regencore.interact_with_atom(owner, owner)
 				X.regencore = null
 				owner.visible_message(span_warning("[owner] flashes a rainbow of colors, and [owner.p_their()] skin is coated in a milky regenerative goo!"))
 				qdel(src)

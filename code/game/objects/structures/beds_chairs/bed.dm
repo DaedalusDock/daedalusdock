@@ -48,6 +48,14 @@
 	deconstruct(disassembled = TRUE)
 	return TRUE
 
+/obj/structure/bed/post_buckle_mob(mob/living/M)
+	. = ..()
+	M.apply_status_effect(/datum/status_effect/buckled_to_bed)
+
+/obj/structure/bed/post_unbuckle_mob(mob/living/M)
+	. = ..()
+	M.remove_status_effect(/datum/status_effect/buckled_to_bed)
+
 /*
  * Roller beds
  */
@@ -101,6 +109,7 @@
 		qdel(src)
 
 /obj/structure/bed/roller/post_buckle_mob(mob/living/M)
+	. = ..()
 	set_density(TRUE)
 	icon_state = "up"
 	//Push them up from the normal lying position
@@ -111,8 +120,8 @@
 	if(has_gravity())
 		playsound(src, 'sound/effects/roll.ogg', 100, TRUE)
 
-
 /obj/structure/bed/roller/post_unbuckle_mob(mob/living/M)
+	. = ..()
 	set_density(FALSE)
 	icon_state = "down"
 	//Set them back down to the normal lying position
@@ -142,12 +151,10 @@
 /obj/item/roller/attack_self(mob/user)
 	deploy_roller(user, user.loc)
 
-/obj/item/roller/afterattack(obj/target, mob/user , proximity)
-	. = ..()
-	if(!proximity)
-		return
-	if(isopenturf(target))
-		deploy_roller(user, target)
+/obj/item/roller/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	if(isopenturf(interacting_with))
+		deploy_roller(user, interacting_with)
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/roller/proc/deploy_roller(mob/user, atom/location)
 	var/obj/structure/bed/roller/R = new /obj/structure/bed/roller(location)
@@ -244,11 +251,13 @@
 	var/mob/living/goldilocks
 
 /obj/structure/bed/double/post_buckle_mob(mob/living/target)
+	. = ..()
 	if(buckled_mobs.len > 1 && !goldilocks) //Push the second buckled mob a bit higher from the normal lying position
 		target.pixel_y = target.base_pixel_y + 6
 		goldilocks = target
 
 /obj/structure/bed/double/post_unbuckle_mob(mob/living/target)
+	. = ..()
 	target.pixel_y = target.base_pixel_y + target.body_position_pixel_y_offset
 	if(target == goldilocks)
 		goldilocks = null

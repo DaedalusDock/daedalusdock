@@ -4,12 +4,14 @@
  * It's a teenie minature mecha... for critters!
  * For the critters that cannot be understood, there is a sound creator in the mecha. It also has headlights.
  */
+TYPEINFO_DEF(/obj/vehicle/sealed/car/vim)
+	default_armor = list(BLUNT = 70, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 80)
+
 /obj/vehicle/sealed/car/vim
 	name = "\improper Vim"
 	desc = "An minature exosuit from Nanotrasen, developed to let the irreplacable station pets live a little longer."
 	icon_state = "vim"
 	max_integrity = 50
-	armor = list(BLUNT = 70, PUNCTURE = 40, SLASH = 0, LASER = 40, ENERGY = 0, BOMB = 30, BIO = 0, FIRE = 80, ACID = 80)
 	enter_delay = 20
 	movedelay = 0.6
 	engine_sound_length = 0.3 SECONDS

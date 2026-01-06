@@ -2,7 +2,7 @@
 	if(ninja!=affecting)//Safety, in case you try doing this without wearing the suit/being the person with the suit.
 		return ..()
 
-	if(istype(I, /obj/item/reagent_containers/glass) && I.reagents.has_reagent(/datum/reagent/uranium/radium, a_transfer) && a_boost != TRUE)//If it's a glass beaker, and what we're transferring is radium.
+	if(istype(I, /obj/item/reagent_containers/cup) && I.reagents.has_reagent(/datum/reagent/uranium/radium, a_transfer) && a_boost != TRUE)//If it's a glass beaker, and what we're transferring is radium.
 		I.reagents.remove_reagent(/datum/reagent/uranium/radium, a_transfer)
 		a_boost = TRUE;
 		to_chat(ninja, span_notice("The suit's adrenaline boost is now reloaded."))
@@ -28,17 +28,5 @@
 				to_chat(ninja, span_danger("Procedure interrupted. Protocol terminated."))
 		return
 
-	else if(istype(I, /obj/item/disk/data))//If it's a data disk, we want to copy the research on to the suit.
-		var/obj/item/disk/data/disky = I
-		if(disky.read(DATA_IDX_DESIGNS) ~= stored_designs)//If it has something on it.
-			to_chat(ninja, span_notice("Research information detected, processing..."))
-			if(do_after(ninja, src, s_delay))
-				stored_designs |= disky.read(DATA_IDX_DESIGNS)
-				disky.clear(DATA_IDX_DESIGNS)
-				to_chat(ninja, span_notice("Data analyzed and updated. Disk erased."))
-			else
-				to_chat(ninja, "[span_userdanger("ERROR")]: Procedure interrupted. Process terminated.")
-		else
-			to_chat(ninja, span_notice("No new research information detected."))
-		return
+	// design disks used to live here, cry about it.
 	return ..()

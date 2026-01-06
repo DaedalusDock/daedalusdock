@@ -64,7 +64,7 @@
 	SIGNAL_HANDLER
 	set waitfor = FALSE //Do not remove without removing the UNLINT below
 
-	. = COMPONENT_BLOCK_TOOL_ATTACK
+	. = ITEM_INTERACT_BLOCKING
 	to_chat(user, span_notice("You begin to remove the engraving on [parent]."))
 	if(UNLINT(do_after(user, parent, 4 SECONDS, DO_PUBLIC, display = tool)))
 		to_chat(user, span_notice("You remove the engraving on [parent]."))

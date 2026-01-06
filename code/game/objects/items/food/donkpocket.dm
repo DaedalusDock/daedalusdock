@@ -23,6 +23,8 @@
 	tastes = list("meat" = 2, "dough" = 2, "laziness" = 1)
 	foodtypes = GRAIN
 
+	food_buffs = list(/datum/status_effect/food/warm)
+
 ///Override for fast-burning food
 /obj/item/food/donkpocket/warm/MakeBakeable()
 	AddComponent(/datum/component/bakeable, /obj/item/food/badrecipe, rand(10 SECONDS, 15 SECONDS), FALSE)
@@ -43,6 +45,8 @@
 	microwaved_type = /obj/item/food/donkpocket/warm/spicy
 	tastes = list("meat" = 2, "dough" = 2, "spice" = 1)
 	foodtypes = GRAIN
+
+	food_buffs = list(/datum/status_effect/food/warm)
 
 /obj/item/food/donkpocket/warm/spicy
 	name = "warm Spicy-pocket"

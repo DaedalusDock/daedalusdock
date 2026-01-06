@@ -196,7 +196,7 @@
 	if(!key)
 		notify_ghosts("\A [src] has been created in \the [get_area(src)].", source = src, action = NOTIFY_ORBIT, flashwindow = FALSE, header = "Blob Zombie Created")
 
-/mob/living/simple_animal/hostile/blob/blobspore/death(gibbed)
+/mob/living/simple_animal/hostile/blob/blobspore/death(gibbed, cause_of_death = "Unknown")
 	// On death, create a small smoke of harmful gas (s-Acid)
 	var/datum/effect_system/fluid_spread/smoke/chem/S = new
 	var/turf/location = get_turf(src)
@@ -277,10 +277,13 @@
 	verb_ask = "demands"
 	verb_exclaim = "roars"
 	verb_yell = "bellows"
-	force_threshold = 10
 	//pressure_resistance = 50
 	mob_size = MOB_SIZE_LARGE
 	hud_type = /datum/hud/living/blobbernaut
+
+/mob/living/simple_animal/hostile/blob/blobbernaut/Initialize(mapload)
+	. = ..()
+	AddElement(/datum/element/damage_threshold, 10)
 
 /mob/living/simple_animal/hostile/blob/blobbernaut/Life(delta_time = SSMOBS_DT, times_fired)
 	if(!..())
@@ -334,8 +337,8 @@
 		melee_damage_upper = initial(melee_damage_upper)
 		attack_verb_continuous = initial(attack_verb_continuous)
 
-/mob/living/simple_animal/hostile/blob/blobbernaut/death(gibbed)
-	..(gibbed)
+/mob/living/simple_animal/hostile/blob/blobbernaut/death(gibbed, cause_of_death = "Unknown")
+	..()
 	if(factory)
 		factory.naut = null //remove this naut from its factory
 		factory.max_integrity = initial(factory.max_integrity)

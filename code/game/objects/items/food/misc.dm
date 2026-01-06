@@ -513,21 +513,8 @@
 	if(iscarbon(loc))
 		hallucinate(loc)
 
-/obj/item/food/bubblegum/bubblegum/MakeEdible()
-	AddComponent(/datum/component/edible,\
-				initial_reagents = food_reagents,\
-				food_flags = food_flags,\
-				foodtypes = foodtypes,\
-				volume = max_volume,\
-				eat_time = eat_time,\
-				tastes = tastes,\
-				eatverbs = eatverbs,\
-				bite_consumption = bite_consumption,\
-				microwaved_type = microwaved_type,\
-				junkiness = junkiness,\
-				on_consume = CALLBACK(src, PROC_REF(OnConsume)))
-
-/obj/item/food/bubblegum/bubblegum/proc/OnConsume(mob/living/eater, mob/living/feeder)
+/obj/item/food/bubblegum/bubblegum/on_consume(mob/living/eater, mob/living/feeder)
+	. = ..()
 	if(iscarbon(eater))
 		hallucinate(eater)
 
@@ -663,12 +650,6 @@
 		icon_state = "[icon_state]_open"
 	return ..()
 
-/obj/item/food/canned/attack(mob/living/target, mob/user, def_zone)
-	if (!is_drainable())
-		to_chat(user, span_warning("[src]'s lid hasn't been opened!"))
-		return FALSE
-	return ..()
-
 /obj/item/food/canned/beans
 	name = "tin of beans"
 	desc = "Musical fruit in a slightly less musical container."
@@ -735,22 +716,7 @@
 	foodtypes = null //Don't ask what went into them. You're better off not knowing.
 	food_reagents = list(/datum/reagent/consumable/nutriment/stabilized = 10, /datum/reagent/consumable/nutriment = 2) //Won't make you fat. Will make you question your sanity.
 
-///Override for checkliked callback
-/obj/item/food/rationpack/MakeEdible()
-	AddComponent(/datum/component/edible,\
-				initial_reagents = food_reagents,\
-				food_flags = food_flags,\
-				foodtypes = foodtypes,\
-				volume = max_volume,\
-				eat_time = eat_time,\
-				tastes = tastes,\
-				eatverbs = eatverbs,\
-				bite_consumption = bite_consumption,\
-				microwaved_type = microwaved_type,\
-				junkiness = junkiness,\
-				check_liked = CALLBACK(src, PROC_REF(check_liked)))
-
-/obj/item/food/rationpack/proc/check_liked(fraction, mob/mob) //Nobody likes rationpacks. Nobody.
+/obj/item/food/rationpack/check_liked(fraction, mob/mob) //Nobody likes rationpacks. Nobody.
 	return FOOD_DISLIKED
 
 /obj/item/food/ant_candy
@@ -777,15 +743,16 @@
 		return ..()
 	apply_buff(user)
 
-/obj/item/food/canned/envirochow/afterattack(atom/target, mob/user, proximity_flag)
-	. = ..()
-	if(!proximity_flag)
-		return
+/obj/item/food/canned/envirochow/interact_with_atom(atom/interacting_with, mob/living/user, list/modifiers)
+	var/atom/target = interacting_with // Yes i am supremely lazy
+
 	if(!isanimal(target))
-		return
+		return NONE
 	if(!check_buffability(target))
-		return
+		return NONE
+
 	apply_buff(target, user)
+	return ITEM_INTERACT_SUCCESS
 
 ///This proc checks if the mob is able to recieve the buff.
 /obj/item/food/canned/envirochow/proc/check_buffability(mob/living/simple_animal/hungry_pet)

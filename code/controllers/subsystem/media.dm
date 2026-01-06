@@ -5,7 +5,8 @@ SUBSYSTEM_DEF(media)
 	flags = SS_NO_FIRE
 
 	/// Media definitions grouped by their `media_tags`, All tracks share the implicit tag `all`
-	VAR_PRIVATE/list/datum/media/tracks_by_tag
+	VAR_PRIVATE/list/datum/media/tracks_by_tag = list()
+	VAR_PRIVATE/list/datum/media/all_tracks = list()
 
 	/// Only notify admins once per init about invalid jsons
 	VAR_PRIVATE/invalid_jsons_exist
@@ -30,27 +31,47 @@ SUBSYSTEM_DEF(media)
 		"mp3" = TRUE, //MPeg Layer 3 Container (And usually, Codec.)
 	)
 
+	/// File types we can sniff the duration from using rustg.
+	var/list/safe_extensions = list("ogg", "mp3")
+
 #define MEDIA_LOAD_FAILED -1
 
 /datum/controller/subsystem/media/Initialize(start_timeofday)
-	//Reset warnings to clear any past runs.
+	SSlobby.set_game_status_text(sub_text = "Setting up track list")
+	to_chat(world, systemtext("Media: Setting up track list..."))
+	setup_tracks()
+
+	SSlobby.set_game_status_text(sub_text = "Caching sound durations")
+	to_chat(world, systemtext("Media: Caching sound durations..."))
+	cache_tracks()
+	return ..()
+
+/// Returns all of the non-directory files in a directory, including sub directories.
+/datum/controller/subsystem/media/proc/walk_directory(directory)
+	. = list()
+	for(var/file in flist(directory))
+		if(copytext_char(file, -1) == "/")
+			. += .("[directory][file]")
+			continue
+
+		. += "[directory][file]"
+
+/datum/controller/subsystem/media/proc/setup_tracks()
+//Reset warnings to clear any past runs.
 	invalid_jsons_exist = FALSE
 	errored_files = null
 
-	//I'm not even going to bother supporting the existing jukebox shit. Jsons are easier.
-	tracks_by_tag = list()
-	var/basedir = "[global.config.directory]/media/jsons/"
 	//Fetch
-	for(var/json_record in flist(basedir))
+	for(var/file_path in walk_directory("[global.config.directory]/media/jsons/"))
 		//Decode
-		var/list/json_data = decode_or_null(basedir,json_record)
+		var/list/json_data = try_decode(file_path)
 
 		if(json_data == MEDIA_LOAD_FAILED)
 			continue //We returned successfully, with a bad record that is already logged
 
 		if(!json_data)
 			//We did NOT return successfully, Log a very general error ourselves.
-			log_load_fail(json_record,list("ERR_FATAL","JSON Record failed to load, Unknown error! Check the runtime log!"))
+			log_load_fail(file_path,list("ERR_FATAL","JSON Record failed to load, Unknown error! Check the runtime log!"))
 			continue
 
 		//Skip the example file.
@@ -58,7 +79,7 @@ SUBSYSTEM_DEF(media)
 			continue
 
 		//Pre-Validation Fixups
-		var/jd_tag_cache = json_data["media_tags"]+MEDIA_TAG_ALLMEDIA //cache for sanic speed, We add the allmedia check here for universal validations.
+		var/list/jd_tag_cache = json_data["media_tags"]+MEDIA_TAG_ALLMEDIA //cache for sanic speed, We add the allmedia check here for universal validations.
 		var/jd_full_filepath = "[global.config.directory]/media/[json_data["file"]]"
 
 		//Validation
@@ -67,8 +88,10 @@ SUBSYSTEM_DEF(media)
 
 		//Failed Validation?
 		if(tag_error)
-			log_load_fail(json_record,tag_error)
+			log_load_fail(file_path, tag_error)
 			continue //Skip the track.
+
+		var/file_extension = get_file_extension(json_data["file"])
 
 		//JSON is fully validated. Wrap it in the datum and add it to the lists.
 		var/datum/media/media_datum = new(
@@ -79,23 +102,35 @@ SUBSYSTEM_DEF(media)
 			json_data["map"],
 			json_data["rare"],
 			json_data["duration"],
-			json_record
-			)
+			file_path,
+			file_extension,
+		)
+
+		all_tracks += media_datum
 		for(var/jd_tag in jd_tag_cache)
 			LAZYADD(tracks_by_tag[jd_tag], media_datum)
 
-	return ..()
+/datum/controller/subsystem/media/proc/cache_tracks()
+	var/list/path_to_track = list()
+	for(var/datum/media/track as anything in all_tracks)
+		if(track.file_extension in safe_extensions)
+			path_to_track[track.path] = track
+
+	var/list/cached_filepaths = SSsound_cache.cache_sounds(path_to_track)
+	for(var/filepath in path_to_track)
+		var/datum/media/track = path_to_track[filepath]
+		track.duration = cached_filepaths[filepath]
 
 /// Quarantine proc for json decoding, Has handling code for most reasonable issues with file structure, and can safely die.
 /// Returns -1/MEDIA_LOAD_FAILED on error, a list on success, and null on suicide.
-/datum/controller/subsystem/media/proc/decode_or_null(basedir,json_record)
+/datum/controller/subsystem/media/proc/try_decode(file_path)
 	PRIVATE_PROC(TRUE)
-	var/file_contents = rustg_file_read("[basedir][json_record]")
+	var/file_contents = rustg_file_read(file_path)
 	if(!length(file_contents))
-		log_load_fail(json_record,list("ERR_FATAL","File is empty."))
+		log_load_fail(file_path,list("ERR_FATAL","File is empty."))
 		return MEDIA_LOAD_FAILED
 	if(!rustg_json_is_valid(file_contents))
-		log_load_fail(json_record,list("ERR_FATAL","JSON content is invalid!"))
+		log_load_fail(file_path,list("ERR_FATAL","JSON content is invalid!"))
 		return MEDIA_LOAD_FAILED
 	return json_decode(file_contents)
 
@@ -118,6 +153,7 @@ SUBSYSTEM_DEF(media)
 	if(!json_data || !jd_full_filepath || !jd_tag_cache)
 		stack_trace("BAD CALLING ARGUMENTS TO VALIDATE_MEDIA")
 		return list("ERR_FATAL", "Record validation was called with bad arguments: [json_data || "#FALSY_DATA"], [jd_full_filepath || "#FALSY_DATA"], [english_list(jd_tag_cache, nothing_text = "#FALSY_DATA")]")
+
 	for(var/jd_tag in jd_tag_cache)
 		switch(jd_tag)
 
@@ -133,13 +169,11 @@ SUBSYSTEM_DEF(media)
 				if(!rustg_file_exists(jd_full_filepath))
 					return list(MEDIA_TAG_ALLMEDIA, "File [jd_full_filepath] does not exist.")
 
+				var/file_ext = get_file_extension(json_data["file"])
 				//Verify that the file extension is allowed, because BYOND is sure happy to not say a fucking word.
-				var/list/directory_split = splittext(json_data["file"], "/")
-				var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
-				if(extension_split.len >= 2)
-					var/ext = lowertext(extension_split[length(extension_split)]) //pick the real extension, no 'honk.ogg.exe' nonsense here
-					if(!byond_sound_formats[ext])
-						return list(MEDIA_TAG_ALLMEDIA, "[ext] is an illegal file extension (and probably a bad format too.)")
+				if(file_ext)
+					if(!byond_sound_formats[file_ext])
+						return list(MEDIA_TAG_ALLMEDIA, "[file_ext] is an illegal file extension (and probably a bad format too.)")
 				else
 					return list(MEDIA_TAG_ALLMEDIA, "Media is missing a file extension.")
 
@@ -153,14 +187,23 @@ SUBSYSTEM_DEF(media)
 				if(MEDIA_TAG_ROUNDEND_RARE in jd_tag_cache)
 					return list(MEDIA_TAG_ROUNDEND_COMMON, "Track tagged as BOTH COMMON and RARE endround music.")
 
-			// Jukebox tracks MUST have a duration.
+			// Jukebox tracks MUST have a duration if they aren't MP3 or OGG.
 			if(MEDIA_TAG_JUKEBOX)
-				if(!json_data["duration"])
+				if(!json_data["duration"] && !(get_file_extension(json_data["file"]) in safe_extensions))
 					return list(MEDIA_TAG_JUKEBOX, "Jukebox tracks MUST have a valid duration.")
 
-/datum/controller/subsystem/media/proc/get_track_pool(media_tag)
+/datum/controller/subsystem/media/proc/get_track_pool(media_tag) as /list
 	var/list/pool = tracks_by_tag[media_tag]
 	return LAZYCOPY(pool)
+
+/// Returns the file extension of a given filepath.
+/datum/controller/subsystem/media/proc/get_file_extension(filepath)
+	var/list/directory_split = splittext(filepath, "/")
+	var/list/extension_split = splittext(directory_split[length(directory_split)], ".")
+	var/ext = lowertext(extension_split[length(extension_split)])
+	if(length(ext) < 3)
+		return null
+	return ext
 
 /datum/media
 	/// Name of the track. Should be "friendly".
@@ -180,8 +223,10 @@ SUBSYSTEM_DEF(media)
 	var/duration = 0
 	/// Back-reference name of the originating JSON file, so that you can track it down
 	var/definition_file
+	/// The file extension
+	var/file_extension
 
-/datum/media/New(name, author, path, tags, map, rare, length, src_file)
+/datum/media/New(name, author, path, tags, map, rare, length, src_file, file_ext)
 	src.name = name
 	src.author = author
 	src.path = path
@@ -190,5 +235,6 @@ SUBSYSTEM_DEF(media)
 	media_tags = tags
 	duration = length
 	definition_file = src_file
+	file_extension = file_ext
 
 #undef MEDIA_LOAD_FAILED

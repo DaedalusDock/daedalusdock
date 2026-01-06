@@ -1,3 +1,6 @@
+TYPEINFO_DEF(/obj/item/stamp)
+	default_materials = list(/datum/material/iron=60)
+
 /obj/item/stamp
 	name = "\improper GRANTED rubber stamp"
 	desc = "A rubber stamp for stamping important documents."
@@ -8,7 +11,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 0.6
 	throw_range = 7
-	custom_materials = list(/datum/material/iron=60)
 	//pressure_resistance = 2
 	attack_verb_continuous = list("stamps")
 	attack_verb_simple = list("stamp")

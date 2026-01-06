@@ -1,4 +1,7 @@
 //Glasses
+TYPEINFO_DEF(/obj/item/clothing/glasses)
+	default_materials = list(/datum/material/glass = 250)
+
 /obj/item/clothing/glasses
 	name = "glasses"
 	icon = 'icons/obj/clothing/glasses.dmi'
@@ -10,7 +13,6 @@
 	strip_delay = 20
 	equip_delay_other = 25
 	resistance_flags = NONE
-	custom_materials = list(/datum/material/glass = 250)
 	gender = PLURAL
 	supports_variations_flags = CLOTHING_VOX_VARIATION
 	var/vision_flags = 0
@@ -128,6 +130,9 @@
 	sharpness = SHARP_EDGED
 	supports_variations_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/glasses/science)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
+
 /obj/item/clothing/glasses/science
 	name = "science goggles"
 	desc = "A pair of snazzy goggles used to protect against chemical spills. Fitted with an analyzer for scanning items and reagents."
@@ -135,7 +140,6 @@
 	inhand_icon_state = "glasses"
 	glass_colour_type = /datum/client_colour/glass_colour/purple
 	resistance_flags = ACID_PROOF
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 80, ACID = 100)
 	clothing_traits = list(TRAIT_REAGENT_SCANNER, TRAIT_RESEARCH_SCANNER)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
@@ -356,6 +360,9 @@
 	glass_colour_type = /datum/client_colour/glass_colour/red
 	supports_variations_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/glasses/welding)
+	default_materials = list(/datum/material/iron = 250)
+
 /obj/item/clothing/glasses/welding
 	name = "welding goggles"
 	desc = "Protects the eyes from bright flashes; approved by the mad scientist association."
@@ -363,7 +370,6 @@
 	inhand_icon_state = "welding-g"
 	actions_types = list(/datum/action/item_action/toggle)
 	flash_protect = FLASH_PROTECTION_WELDER
-	custom_materials = list(/datum/material/iron = 250)
 	tint = 2
 	visor_vars_to_toggle = VISOR_FLASHPROTECT | VISOR_TINT
 	flags_cover = GLASSESCOVERSEYES
@@ -390,7 +396,7 @@
 	if(slot == ITEM_SLOT_EYES)
 		user.become_blind(BLINDFOLD_TRAIT)
 
-/obj/item/clothing/glasses/blindfold/dropped(mob/living/carbon/human/user)
+/obj/item/clothing/glasses/blindfold/unequipped(mob/living/carbon/human/user)
 	..()
 	user.cure_blind(BLINDFOLD_TRAIT)
 
@@ -411,8 +417,7 @@
 /obj/item/clothing/glasses/blindfold/white/visual_equipped(mob/living/carbon/human/user, slot)
 	if(ishuman(user) && slot == ITEM_SLOT_EYES)
 		update_icon(ALL, user)
-		user.update_worn_glasses() //Color might have been changed by update_icon.
-	..()
+	return ..()
 
 /obj/item/clothing/glasses/blindfold/white/update_icon(updates=ALL, mob/living/carbon/human/user)
 	. = ..()
@@ -464,7 +469,7 @@
 		return
 	ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
 
-/obj/item/clothing/glasses/thermal/xray/dropped(mob/living/carbon/human/user)
+/obj/item/clothing/glasses/thermal/xray/unequipped(mob/living/carbon/human/user)
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
 
@@ -576,7 +581,7 @@
 		if(xray)
 			ADD_TRAIT(user, TRAIT_XRAY_VISION, GLASSES_TRAIT)
 
-/obj/item/clothing/glasses/debug/dropped(mob/user)
+/obj/item/clothing/glasses/debug/unequipped(mob/user)
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_MEDICAL_HUD, GLASSES_TRAIT)
 	REMOVE_TRAIT(user, TRAIT_SECURITY_HUD, GLASSES_TRAIT)

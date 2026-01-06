@@ -459,7 +459,7 @@
 	summoned.move_resist = initial(summoned.move_resist)
 
 	summoned.ghostize(FALSE)
-	summoned.key = picked_candidate.key
+	summoned.PossessByPlayer(picked_candidate.key)
 
 	log_game("[key_name(user)] created a [summoned.name], controlled by [key_name(picked_candidate)].")
 	message_admins("[ADMIN_LOOKUPFLW(user)] created a [summoned.name], [ADMIN_LOOKUPFLW(summoned)].")

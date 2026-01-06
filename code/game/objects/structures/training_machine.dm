@@ -132,7 +132,7 @@
 	attached_item = target
 	attached_item.forceMove(src)
 	attached_item.vis_flags |= VIS_INHERIT_ID
-	vis_contents += attached_item
+	add_viscontents(attached_item)
 	RegisterSignal(attached_item, COMSIG_PARENT_QDELETING, PROC_REF(on_attached_delete))
 	handle_density()
 
@@ -144,7 +144,7 @@
 /obj/structure/training_machine/proc/on_attached_delete()
 	SIGNAL_HANDLER
 	UnregisterSignal(attached_item, COMSIG_PARENT_QDELETING)
-	vis_contents -= attached_item
+	remove_viscontents(attached_item)
 	attached_item = null
 	handle_density()
 
@@ -362,10 +362,7 @@
 	///Number of hits made since the Lap button (alt-click) was last pushed
 	var/lap_hits = 0
 
-/obj/item/training_toolbox/afterattack(atom/target, mob/living/user, proximity)
-	. = ..()
-	if (!proximity || target == user || !user.combat_mode)
-		return
+/obj/item/training_toolbox/afterattack(atom/target, mob/user, list/modifiers)
 	if (check_hit(target))
 		user.changeNext_move(CLICK_CD_MELEE)
 

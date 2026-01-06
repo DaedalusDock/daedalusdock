@@ -1,4 +1,7 @@
 DEFINE_INTERACTABLE(/obj/machinery/computer)
+TYPEINFO_DEF(/obj/machinery/computer)
+	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
+
 /obj/machinery/computer
 	name = "computer"
 	icon = 'icons/obj/computer.dmi'
@@ -6,7 +9,6 @@ DEFINE_INTERACTABLE(/obj/machinery/computer)
 	density = TRUE
 	max_integrity = 200
 	integrity_failure = 0.5
-	armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 90, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 40, ACID = 20)
 	zmm_flags = ZMM_MANGLE_PLANES
 
 	light_inner_range = 0.1
@@ -23,13 +25,17 @@ DEFINE_INTERACTABLE(/obj/machinery/computer)
 
 	power_change()
 
-/obj/machinery/computer/Destroy()
-	. = ..()
-
 /obj/machinery/computer/process()
 	if(machine_stat & (NOPOWER|BROKEN))
 		return FALSE
 	return TRUE
+
+/obj/machinery/computer/examine(mob/user)
+	. = ..()
+	var/datum/roll_result/result = user.get_examine_result("computer", 10)
+	if(result?.outcome >= SUCCESS)
+		result.do_skill_sound(user)
+		. += result.create_tooltip("An older model from ThinkTronic's <i>Laika</i> series of computers. The chassis is large and difficult to move, yet remains popular due to it's reliability.", body_only = TRUE)
 
 /obj/machinery/computer/update_overlays()
 	. = ..()
@@ -48,7 +54,7 @@ DEFINE_INTERACTABLE(/obj/machinery/computer)
 		return
 
 	. += mutable_appearance(icon, icon_screen)
-	. += emissive_appearance(icon, icon_screen)
+	. += emissive_appearance(icon, icon_screen, alpha = 90)
 
 /obj/machinery/computer/power_change()
 	. = ..()

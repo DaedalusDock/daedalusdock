@@ -53,7 +53,7 @@
 /// Links the passed target to our action, registering any relevant signals
 /datum/action/proc/link_to(Target)
 	target = Target
-	RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(clear_ref), override = TRUE)
+	RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(on_owner_or_target_delete), override = TRUE)
 
 	if(isatom(target))
 		RegisterSignal(target, COMSIG_ATOM_UPDATED_ICON, PROC_REF(on_target_icon_update))
@@ -70,8 +70,9 @@
 
 /// Signal proc that clears any references based on the owner or target deleting
 /// If the owner's deleted, we will simply remove from them, but if the target's deleted, we will self-delete
-/datum/action/proc/clear_ref(datum/ref)
+/datum/action/proc/on_owner_or_target_delete(datum/ref)
 	SIGNAL_HANDLER
+
 	if(ref == owner)
 		Remove(owner)
 	if(ref == target)
@@ -89,7 +90,7 @@
 	SEND_SIGNAL(src, COMSIG_ACTION_GRANTED, grant_to)
 	SEND_SIGNAL(grant_to, COMSIG_MOB_GRANTED_ACTION, src)
 	owner = grant_to
-	RegisterSignal(owner, COMSIG_PARENT_QDELETING, PROC_REF(clear_ref), override = TRUE)
+	RegisterSignal(owner, COMSIG_PARENT_QDELETING, PROC_REF(on_owner_or_target_delete), override = TRUE)
 
 	// Register some signals based on our check_flags
 	// so that our button icon updates when relevant
@@ -130,7 +131,7 @@
 		))
 
 		if(target == owner)
-			RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(clear_ref))
+			RegisterSignal(target, COMSIG_PARENT_QDELETING, PROC_REF(on_owner_or_target_delete))
 		owner = null
 
 /// Actually triggers the effects of the action.
@@ -151,21 +152,21 @@
 		return FALSE
 	if((check_flags & AB_CHECK_HANDS_BLOCKED) && HAS_TRAIT(owner, TRAIT_HANDS_BLOCKED))
 		if (feedback)
-			to_chat(owner, span_warning("You cannot use [name] without hands!"))
+			to_chat(owner, span_warning("You cannot use [name] without hands."))
 		return FALSE
 	if((check_flags & AB_CHECK_IMMOBILE) && HAS_TRAIT(owner, TRAIT_IMMOBILIZED))
 		if (feedback)
-			to_chat(owner, span_warning("You cannot use [name] while immobilized!"))
+			to_chat(owner, span_warning("You cannot use [name] while immobilized."))
 		return FALSE
 	if((check_flags & AB_CHECK_LYING) && isliving(owner))
 		var/mob/living/action_owner = owner
 		if(action_owner.body_position == LYING_DOWN)
 			if (feedback)
-				to_chat(owner, span_warning("You cannot use [name] while lying down!"))
+				to_chat(owner, span_warning("You cannot use [name] while lying down."))
 			return FALSE
 	if((check_flags & AB_CHECK_CONSCIOUS) && owner.stat != CONSCIOUS)
 		if (feedback)
-			to_chat(owner, span_warning("You cannot use [name] while unconscious!"))
+			to_chat(owner, span_warning("You cannot use [name] while unconscious."))
 		return FALSE
 	return TRUE
 

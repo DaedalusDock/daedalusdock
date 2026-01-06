@@ -2,12 +2,14 @@
 // can be tube or bulb subtypes
 // will fit into empty /obj/machinery/light of the corresponding type
 
+TYPEINFO_DEF(/obj/item/light)
+	default_materials = list(/datum/material/glass=100)
+
 /obj/item/light
 	icon = 'icons/obj/lighting.dmi'
 	force = 2
 	throwforce = 5
 	w_class = WEIGHT_CLASS_TINY
-	custom_materials = list(/datum/material/glass=100)
 	grind_results = list(/datum/reagent/silicon = 5, /datum/reagent/nitrogen = 10) //Nitrogen is used as a cheaper alternative to argon in incandescent lighbulbs
 	///True if rigged to explode
 	var/rigged = FALSE
@@ -38,7 +40,7 @@
 	inhand_icon_state = "c_tube"
 	bulb_outer_range = 6
 	bulb_inner_range = 2
-	custom_price = PAYCHECK_EASY * 0.5
+	custom_price = PAYCHECK_ASSISTANT * 0.4
 
 /obj/item/light/tube/broken
 	status = LIGHT_BROKEN
@@ -53,7 +55,7 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	bulb_outer_range = 5
 	bulb_inner_range = 1
-	custom_price = PAYCHECK_EASY * 0.4
+	custom_price = PAYCHECK_ASSISTANT * 0.2
 
 /obj/item/light/bulb/broken
 	status = LIGHT_BROKEN
@@ -79,7 +81,7 @@
 /obj/item/light/Initialize(mapload)
 	. = ..()
 	create_reagents(LIGHT_REAGENT_CAPACITY, INJECTABLE | DRAINABLE)
-	AddComponent(/datum/component/caltrop, min_damage = force)
+	AddComponent(/datum/component/caltrop, min_damage = force, flags = CALTROP_IGNORE_WALKERS)
 	update()
 	var/static/list/loc_connections = list(
 		COMSIG_ATOM_ENTERED = PROC_REF(on_entered),
@@ -126,7 +128,10 @@
 	return NONE
 
 /obj/item/light/attack(mob/living/M, mob/living/user, def_zone)
-	..()
+	. = ..()
+	if(.)
+		return
+
 	shatter()
 
 /obj/item/light/attack_obj(obj/O, mob/living/user, params)

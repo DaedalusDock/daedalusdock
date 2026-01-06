@@ -8,6 +8,9 @@
 	foodtypes = GRAIN | DAIRY | VEGETABLES
 	venue_value = FOOD_PRICE_CHEAP
 	burns_in_oven = TRUE
+
+	food_buffs = list(/datum/status_effect/food/energized)
+
 	/// type is spawned 6 at a time and replaces this pizza when processed by cutting tool
 	var/obj/item/food/pizzaslice/slice_type
 	///What label pizza boxes use if this pizza spawns in them.
@@ -34,6 +37,8 @@
 	foodtypes = GRAIN | DAIRY | VEGETABLES
 	w_class = WEIGHT_CLASS_SMALL
 	decomp_type = /obj/item/food/pizzaslice/moldy
+
+	food_buffs = list(/datum/status_effect/food/energized)
 
 /obj/item/food/pizzaslice/MakeProcessable()
 	AddElement(/datum/element/processable, TOOL_ROLLINGPIN, /obj/item/stack/sheet/pizza, 1, 10, table_required = TRUE)
@@ -326,6 +331,9 @@
 
 /obj/item/food/pizza/arnold/attack(mob/living/target, mob/living/user)
 	. = ..()
+	if(.)
+		return
+
 	try_break_off(target, user)
 
 /obj/item/food/pizza/arnold/attackby(obj/item/item, mob/user)
@@ -340,7 +348,10 @@
 	foodtypes = GRAIN | VEGETABLES | DAIRY | MEAT
 
 /obj/item/food/pizzaslice/arnold/attack(mob/living/target, mob/living/user)
-	. =..()
+	. = ..()
+	if(.)
+		return
+
 	try_break_off(target, user)
 
 /obj/item/food/pizzaslice/arnold/attackby(obj/item/item, mob/user)

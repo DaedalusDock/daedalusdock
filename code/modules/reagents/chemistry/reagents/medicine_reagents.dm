@@ -20,22 +20,10 @@
 	metabolization_rate = 1
 
 // The best stuff there is. For testing/debugging.
-/datum/reagent/medicine/adminordrazine/on_hydroponics_apply(obj/item/seeds/myseed, datum/reagents/chems, obj/machinery/hydroponics/mytray, mob/user)
-	. = ..()
-	if(chems.has_reagent(type, 1))
-		mytray.adjust_waterlevel(round(chems.get_reagent_amount(type) * 1))
-		mytray.adjust_plant_health(round(chems.get_reagent_amount(type) * 1))
-		mytray.adjust_pestlevel(-rand(1,5))
-		mytray.adjust_weedlevel(-rand(1,5))
-	if(chems.has_reagent(type, 3))
-		switch(rand(100))
-			if(51 to 100)
-				mytray.mutatespecie()
-			if(1 to 50)
-				mytray.mutateweed()
-			else
-				if(prob(20))
-					mytray.visible_message(span_warning("Nothing happens..."))
+/datum/reagent/medicine/adminordrazine/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	if(volume >= 1)
+		plant_tick.plant_health_delta += 2
+		plant_tick.plant_growth_delta += 2
 
 /datum/reagent/medicine/adminordrazine/affect_blood(mob/living/carbon/C, removed)
 	C.heal_bodypart_damage(2 * removed, 2 * removed, FALSE)
@@ -56,7 +44,8 @@
 	C.silent = FALSE
 	C.remove_status_effect(/datum/status_effect/dizziness)
 	C.disgust = 0
-	C.drowsyness = 0
+	C.set_drowsyness(0)
+
 	// Remove all speech related status effects
 	for(var/effect in typesof(/datum/status_effect/speech))
 		C.remove_status_effect(effect)
@@ -71,10 +60,10 @@
 	for(var/obj/item/organ/organ as anything in C.processing_organs)
 		organ.setOrganDamage(0)
 	for(var/thing in C.diseases)
-		var/datum/disease/D = thing
-		if(D.severity == DISEASE_SEVERITY_POSITIVE)
+		var/datum/pathogen/D = thing
+		if(D.severity == PATHOGEN_SEVERITY_POSITIVE)
 			continue
-		D.cure()
+		D.force_cure()
 	. = TRUE
 
 /datum/reagent/medicine/adminordrazine/quantum_heal
@@ -150,7 +139,7 @@
 	description = "Meralyne is a concentrated form of bicaridine and can be used to treat extensive physical trauma."
 	color = "#FD5964"
 	taste_mult = 12
-	metabolization_rate = 0.2
+	metabolization_rate = 0.4
 	overdose_threshold = 20
 
 /datum/reagent/medicine/meralyne/affect_blood(mob/living/carbon/C, removed)
@@ -186,6 +175,7 @@
 	taste_mult = 1.5
 	reagent_state = LIQUID
 	color = "#ff8000"
+	metabolization_rate = 0.4
 	overdose_threshold = 20
 	value = 3.9
 
@@ -218,9 +208,9 @@
 	value = 6
 
 /datum/reagent/medicine/tricordrazine/affect_blood(mob/living/carbon/C, removed)
-	var/heal = 1 + ((clamp(round(current_cycle % 10), 0, 3))) * removed
+	var/heal = (1 + clamp(floor(current_cycle / 25), 0, 5)) * removed
 	C.heal_overall_damage(heal, heal, updating_health = FALSE)
-	C.adjustToxLoss(-heal * removed, FALSE)
+	C.adjustToxLoss(-heal, FALSE)
 	return TRUE
 
 /datum/reagent/medicine/tricordrazine/godblood
@@ -438,7 +428,7 @@
 
 	holder.remove_reagent(/datum/reagent/toxin/mindbreaker, 5)
 
-	C.adjustToxLoss(3 * removed, updating_health = FALSE) // It used to be incredibly deadly due to an oversight. Not anymore!
+	C.adjustToxLoss(3 * removed, updating_health = FALSE, cause_of_death = "Synaptizine") // It used to be incredibly deadly due to an oversight. Not anymore!
 	APPLY_CHEM_EFFECT(C, CE_PAINKILLER, 70)
 	APPLY_CHEM_EFFECT(C, CE_STIMULANT, 10)
 	return TRUE
@@ -681,6 +671,26 @@
 	if(C.has_dna())
 		C.dna.remove_all_mutations(list(MUT_NORMAL, MUT_EXTRA), TRUE)
 
+/datum/reagent/medicine/infuse_plant(datum/plant/plant_datum, datum/plant_gene_holder/plant_dna, list/damage_ref)
+	. = ..()
+	if(plant_dna.endurance < 0)
+		plant_dna.endurance += 1
+
+	if(plant_dna.potency < 0)
+		plant_dna.potency += 1
+
+	if(plant_dna.harvest_amt < 0)
+		plant_dna.harvest_amt += 1
+
+	if(plant_dna.harvest_yield < 0)
+		plant_dna.harvest_yield += 1
+
+	if(plant_dna.maturation < 0)
+		plant_dna.maturation += 1
+
+	if(plant_dna.production < 0)
+		plant_dna.production += 1
+
 /datum/reagent/medicine/spaceacillin
 	name = "Spaceacillin"
 	description = "Spaceacillin will prevent a patient from conventionally spreading any diseases they are currently infected with. Also reduces infection in serious burns."
@@ -818,7 +828,7 @@
 		C.visible_message("<span class='nicegreen'>A rubbery liquid coats [C]'s burns.") //we're avoiding using the phrases "burnt flesh" and "burnt skin" here because carbies could be a skeleton or a golem or something
 
 /datum/reagent/medicine/synthflesh/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(1 * removed)
+	C.adjustToxLoss(1 * removed, cause_of_death = "Synthflesh poisoning")
 	return TRUE
 
 /datum/reagent/medicine/atropine
@@ -957,7 +967,7 @@
 	return ..()
 
 /datum/reagent/medicine/ipecac/affect_blood(mob/living/carbon/C, removed)
-	C.adjustToxLoss(5 * removed, 0)
+	C.adjustToxLoss(5 * removed, 0, cause_of_death = "Ipecac")
 	. = TRUE
 
 /datum/reagent/medicine/activated_charcoal
@@ -975,3 +985,103 @@
 
 	if(prob(3))
 		C.vomit(50, FALSE, FALSE, 1, purge_ratio = 0.2)
+
+/datum/reagent/medicine/activated_charcoal/on_hydroponics_apply(datum/plant_tick/plant_tick, datum/reagents/chems, volume, obj/machinery/hydroponics/mytray, mob/user)
+	for(var/datum/reagent/R in mytray.reagents.reagent_list)
+		if(R.type == type || !istype(R, /datum/reagent/water))
+			continue
+
+		mytray.reagents.remove_reagent(R.type, 2)
+
+/datum/reagent/medicine/adenosine
+	name = "Adenosine"
+	description = "A pharmaceutical used to lower a patient's heartrate. Can be used to restart hearts when dosed correctly."
+	reagent_state = LIQUID
+	color = "#7F10C0"
+	metabolization_rate = 0.5
+
+	overdose_threshold = 10.1
+
+/datum/reagent/medicine/adenosine/affect_blood(mob/living/carbon/C, removed)
+	if(overdosed)
+		return
+
+	if(current_cycle < SECONDS_TO_REAGENT_CYCLES(10)) // Seconds 1-8 do nothing. (0.5 to 2u)
+		return
+
+	if(current_cycle in SECONDS_TO_REAGENT_CYCLES(10) to SECONDS_TO_REAGENT_CYCLES(14)) // Seconds 10-14 stop ya heart. (2.5 to 3.5)
+		if(C.set_heartattack(TRUE))
+			log_health(C, "Heart stopped due to adenosine misdose.")
+			C.Unconscious(10 SECONDS)
+		return
+
+	if(current_cycle == SECONDS_TO_REAGENT_CYCLES(16)) // Restart heart after 16 seconds (exactly 4u)
+		if(C.set_heartattack(FALSE))
+			log_health(C, "Heart restarted due to adenosine.")
+		return
+
+	if(current_cycle in SECONDS_TO_REAGENT_CYCLES(18) to SECONDS_TO_REAGENT_CYCLES(28)) // 4.5u to 7u is a safe buffer.
+		return
+
+	if(!prob(25)) // Only runs after 7 units have been processed.
+		return
+
+	switch(rand(1,10))
+		if(1 to 7)
+			C.losebreath += 4
+		if(8 to 9)
+			C.adjustOxyLoss(rand(3, 4), FALSE)
+			. = TRUE
+		if(10)
+			if(C.set_heartattack(TRUE))
+				log_health(C, "Heart stopped due to improper adenosine dose.")
+
+/datum/reagent/medicine/adenosine/overdose_process(mob/living/carbon/C)
+	if(C.set_heartattack(TRUE))
+		log_health(C, "Heart stopped due to adenosine overdose.")
+
+	if(prob(25))
+		C.losebreath += 4
+		C.adjustOxyLoss(rand(5,25), 0)
+	return TRUE
+
+/datum/reagent/medicine/zedaphen
+	name = "Zedaphen"
+	description = "A potent pharmaceutical that promotes body restoration during sleep."
+	reagent_state = LIQUID
+	color = "#dd77a2"
+
+	metabolization_rate = 0.14 // Roughly 5 minutes to metabolize 20 units. I felt that was a good amount.
+
+	overdose_threshold = 20
+
+/datum/reagent/medicine/zedaphen/affect_blood(mob/living/carbon/C, removed)
+	. = ..()
+	if(C.stat != UNCONSCIOUS)
+		return
+
+	if(C.needs_organ(ORGAN_SLOT_HEART) && astype(C.getorganslot(ORGAN_SLOT_HEART), /obj/item/organ/heart)?.is_working())
+		C.adjustBloodVolumeUpTo(round(removed * 5, 0.01)) // Will restore 100 units of blood over 5 minutes at the max dose.
+
+	C.heal_overall_damage(removed * 15, removed * 15, BODYTYPE_ORGANIC, FALSE) // Will restore 300 brute + burn over 5 minutes at max dose.
+	C.adjustToxLoss(removed * 7, FALSE) // Will restore 140 organ health after 5 minutes at max dose.
+	return TRUE
+
+/datum/reagent/medicine/overdose_start(mob/living/carbon/C)
+	if(C.stat != CONSCIOUS)
+		return
+
+	var/datum/roll_result/result = C.stat_roll(13, /datum/rpg_skill/fourteen_eyes)
+	switch(result.outcome)
+		if(SUCCESS, CRIT_SUCCESS)
+			to_chat(C, result.create_tooltip("You feel a deep sense of impending doom."))
+
+/datum/reagent/medicine/zedaphen/overdose_process(mob/living/carbon/C)
+	if(C.stat != UNCONSCIOUS)
+		return
+
+	if(prob(5))
+		C.set_heartattack(TRUE)
+
+	C.adjustToxLoss(1, cause_of_death = "Zedaphen overdose") // Counter-acted by the normal metabolization, resulting in minor organ damage.
+	C.Unconscious(10 SECONDS) // You're in for it now.

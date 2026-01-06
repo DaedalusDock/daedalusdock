@@ -580,6 +580,12 @@
 "ek" = (
 /turf/open/floor/wood,
 /area/station/command/meeting_room/council)
+"el" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/smart_cable/color/yellow,
+/turf/open/floor/iron/white,
+/area/station/maintenance/department/science)
 "em" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
@@ -685,7 +691,7 @@
 /turf/open/floor/iron,
 /area/station/security/brig)
 "fi" = (
-/obj/effect/spawner/structure/window,
+/obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "fm" = (
@@ -1224,10 +1230,6 @@
 	},
 /turf/open/floor/wood,
 /area/station/command/meeting_room/council)
-"jH" = (
-/obj/effect/spawner/structure/window/reinforced/grille,
-/turf/open/floor/plating,
-/area/station/cargo/storage)
 "jI" = (
 /obj/machinery/atmospherics/pipe/heat_exchanging/simple{
 	dir = 5
@@ -4327,6 +4329,12 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/wood,
 /area/station/service/bar)
+"Fw" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/department/science)
 "Fz" = (
 /turf/closed/wall,
 /area/station/service/chapel/office)
@@ -6021,8 +6029,8 @@
 /turf/open/floor/iron,
 /area/station/security/office)
 "Sq" = (
-/obj/effect/spawner/structure/window/reinforced/grille,
 /obj/structure/cable/smart_cable/color/yellow,
+/obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/station/cargo/storage)
 "Ss" = (
@@ -6317,6 +6325,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage)
+"UN" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/department/science)
 "UO" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/visible,
 /turf/open/floor/iron,
@@ -32616,12 +32630,12 @@ Jk
 Jk
 Jk
 gI
+Lc
 fW
 Lc
 xn
 fW
 fW
-Ii
 Ii
 Ii
 Ii
@@ -32873,12 +32887,12 @@ wq
 wq
 wq
 wq
+Lc
 fW
 Lc
 wF
 DI
 fW
-Ii
 Ii
 Ii
 Ii
@@ -33130,12 +33144,12 @@ eQ
 eQ
 eQ
 wq
+Lc
 vC
 Lc
 bz
 Bt
 fW
-Ii
 Ii
 Ii
 Ii
@@ -33387,12 +33401,12 @@ Tq
 sj
 eQ
 WY
+Lc
 cW
 cW
 cW
 cW
 cW
-Ii
 Ii
 Ii
 Ii
@@ -33644,6 +33658,7 @@ Tq
 tV
 eQ
 wq
+Lc
 cW
 Ay
 Ay
@@ -33651,7 +33666,6 @@ oe
 cW
 cW
 cW
-Ii
 Ii
 Ii
 Ii
@@ -33901,6 +33915,7 @@ TA
 yk
 eQ
 wq
+Lc
 cW
 Ad
 Ad
@@ -33908,7 +33923,6 @@ eO
 Kd
 Kd
 cW
-Ii
 Ii
 Ii
 Ii
@@ -34158,6 +34172,7 @@ dl
 eD
 eQ
 wq
+Lc
 cW
 XE
 On
@@ -34165,7 +34180,6 @@ bK
 en
 oK
 cW
-Ii
 Ii
 Ii
 Ii
@@ -34415,6 +34429,7 @@ ip
 Oi
 eQ
 wq
+Lc
 cW
 xf
 On
@@ -34422,7 +34437,6 @@ Ou
 HX
 Jm
 cW
-Ii
 Ii
 Ii
 Ii
@@ -34672,6 +34686,7 @@ kE
 wD
 eQ
 iT
+Lc
 cW
 Ad
 On
@@ -34679,7 +34694,6 @@ cW
 cW
 cW
 cW
-Ii
 Ii
 Ii
 Ii
@@ -34929,6 +34943,7 @@ Ja
 rA
 eQ
 wq
+Lc
 cW
 Vs
 On
@@ -34936,7 +34951,6 @@ Ag
 fE
 tO
 RG
-Ii
 Ii
 Ii
 Ii
@@ -35186,6 +35200,7 @@ HE
 zz
 hF
 LF
+UN
 Gq
 Kg
 On
@@ -35193,7 +35208,6 @@ WU
 NJ
 tO
 RG
-Ii
 Ii
 Ii
 Ii
@@ -35406,14 +35420,14 @@ Ks
 Sj
 HR
 vt
-fi
+RK
 hq
 HR
 gP
 gP
 Jw
 Od
-jH
+Gk
 Yd
 Yd
 lJ
@@ -35443,6 +35457,7 @@ sT
 IB
 Yb
 gp
+el
 xG
 xg
 Vh
@@ -35450,7 +35465,6 @@ ha
 xe
 LG
 RG
-Ii
 Ii
 Ii
 Ii
@@ -35663,7 +35677,7 @@ Hz
 hc
 HR
 Ko
-fi
+Gk
 hq
 HR
 gP
@@ -35700,6 +35714,7 @@ Li
 ry
 hF
 pS
+Fw
 Ke
 xo
 Hm
@@ -35707,7 +35722,6 @@ at
 wg
 tO
 RG
-Ii
 Ii
 Ii
 Ii
@@ -35920,14 +35934,14 @@ tG
 HR
 HR
 Ko
-fi
+RK
 kN
 AG
 JO
 zi
 De
 Od
-jH
+Gk
 Yd
 nI
 IR
@@ -35957,6 +35971,7 @@ PK
 qQ
 YM
 iT
+Lc
 cW
 CA
 zt
@@ -35964,7 +35979,6 @@ Rl
 LS
 tO
 RG
-Ii
 Ii
 Ii
 Ii
@@ -36177,14 +36191,14 @@ BE
 HR
 qr
 DX
-fi
+RK
 gG
 Jw
 Od
 CF
 CF
 Od
-jH
+Gk
 Yd
 ez
 IR
@@ -36214,6 +36228,7 @@ mH
 gk
 YM
 wq
+Lc
 cW
 uM
 ij
@@ -36221,7 +36236,6 @@ Kb
 xu
 Kb
 Kb
-Ii
 Ii
 Ii
 Ii
@@ -36434,7 +36448,7 @@ Lu
 HR
 HR
 JB
-fi
+RK
 nU
 Jw
 ze
@@ -36471,6 +36485,7 @@ QD
 Mw
 Mw
 wq
+Lc
 cW
 YS
 qR
@@ -36479,7 +36494,6 @@ JX
 zm
 qf
 RG
-Ii
 Ii
 Ii
 Ii
@@ -36691,7 +36705,7 @@ oG
 XJ
 HR
 Ss
-fi
+Gk
 qI
 WV
 HD
@@ -36728,6 +36742,7 @@ Sy
 Xh
 Mw
 wq
+Lc
 cW
 lS
 TT
@@ -36736,7 +36751,6 @@ rM
 WC
 qf
 RG
-Ii
 Ii
 Ii
 Ii
@@ -36948,7 +36962,7 @@ Ks
 Eu
 HR
 Ss
-fi
+RK
 nU
 HR
 HR
@@ -36985,6 +36999,7 @@ xt
 yy
 Mw
 wq
+Lc
 cW
 pN
 ov
@@ -36993,7 +37008,6 @@ zm
 zm
 qf
 RG
-Ii
 Ii
 Ii
 Ii
@@ -37242,6 +37256,7 @@ Ek
 KS
 Mw
 dt
+fW
 cW
 ED
 cW
@@ -37250,7 +37265,6 @@ Kb
 Kb
 Kb
 qn
-Ii
 Ii
 Ii
 Ii
@@ -37461,8 +37475,8 @@ rI
 ka
 ka
 ci
-qO
-qO
+Gk
+Gk
 ka
 DA
 DA

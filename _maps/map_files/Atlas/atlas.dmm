@@ -277,6 +277,13 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/engineering/supermatter/room)
+"cc" = (
+/obj/structure/cable/smart_cable/color/yellow,
+/obj/machinery/door/airlock/maintenance{
+	req_access_txt = "12"
+	},
+/turf/open/floor/plating,
+/area/station/service/kitchen)
 "cd" = (
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 8
@@ -6617,6 +6624,9 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/department/science)
+"Wu" = (
+/turf/open/space/basic,
+/area/station/maintenance/port/central)
 "Wx" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/highsecurity{
@@ -39813,11 +39823,11 @@ Ii
 Ii
 Ii
 Ii
+RG
+RG
+RG
 Ii
 Ii
-RG
-RG
-RG
 Ii
 RG
 Ii
@@ -40069,12 +40079,12 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 Vr
 Cl
 Cl
 Cl
+ed
+Wu
 ed
 zf
 ed
@@ -40325,14 +40335,14 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 Cl
 Py
 bc
 YA
 st
+ed
+ed
 AZ
 st
 Ua
@@ -40582,14 +40592,14 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 Cl
 ew
 NN
 Fm
 st
+AZ
+ed
 TE
 st
 Ua
@@ -40840,13 +40850,13 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 Vr
 YA
 td
 Zy
 em
+ae
+ae
 ae
 st
 Ua
@@ -41096,14 +41106,14 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 Cl
 YA
 YA
 Zy
 st
+AZ
+AZ
 ae
 st
 sY
@@ -41353,14 +41363,14 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 RG
 Cl
 YA
 YA
 Zy
 st
+AZ
+AZ
 ae
 st
 qa
@@ -41611,13 +41621,13 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 Vr
 uD
 pJ
 FG
 st
+AZ
+AZ
 ae
 st
 qa
@@ -41868,13 +41878,13 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 Vr
 Vr
 gV
 gV
 st
+AZ
+AZ
 ae
 ae
 qa
@@ -42127,11 +42137,11 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 ed
 AZ
 st
+AZ
+AZ
 AZ
 st
 qa
@@ -42383,10 +42393,10 @@ Ii
 Ii
 Ii
 Ii
-Ii
-Ii
 ed
 ed
+st
+st
 st
 st
 AZ
@@ -42645,10 +42655,10 @@ RG
 JK
 AZ
 AZ
+AZ
+AZ
 st
-AZ
-AZ
-Fh
+cc
 dB
 gs
 gs
@@ -43419,7 +43429,7 @@ JK
 ed
 AZ
 AZ
-Wj
+ae
 ed
 Uo
 Kv

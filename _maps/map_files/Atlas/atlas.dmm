@@ -48,12 +48,6 @@
 	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/bridge)
-"ar" = (
-/obj/machinery/atmospherics/pipe/layer_manifold/scrubbers/hidden{
-	dir = 4
-	},
-/turf/closed/wall/r_wall,
-/area/station/science/mixing/chamber)
 "at" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
 	dir = 1
@@ -459,14 +453,10 @@
 /obj/structure/sign/warning/radiation,
 /turf/closed/wall/r_wall,
 /area/station/maintenance/department/engine/atmos)
-"dt" = (
+"du" = (
 /obj/structure/cable/smart_cable/color/yellow,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/door/airlock/engineering{
-	name = "Starboard Solar Access";
-	req_access_txt = "10"
-	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/station/maintenance/department/science)
 "dv" = (
@@ -612,7 +602,7 @@
 /area/station/maintenance/department/engine/atmos)
 "ev" = (
 /turf/closed/wall/r_wall,
-/area/station/maintenance/starboard/central)
+/area/station/maintenance/starboard/greater)
 "ew" = (
 /obj/structure/chair/comfy/brown,
 /turf/open/floor/iron/grimy,
@@ -1172,6 +1162,10 @@
 /obj/effect/mapping_helpers/burnt_floor,
 /turf/open/floor/plating,
 /area/station/maintenance/department/science)
+"iV" = (
+/obj/structure/lattice,
+/turf/closed/wall/r_wall,
+/area/station/maintenance/starboard/greater)
 "iZ" = (
 /obj/machinery/lapvend,
 /turf/open/floor/iron/dark/side{
@@ -1366,7 +1360,7 @@
 "kz" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/space/basic,
-/area/station/maintenance/starboard/central)
+/area/station/maintenance/starboard/greater)
 "kD" = (
 /turf/open/floor/iron/chapel,
 /area/station/service/chapel)
@@ -1659,7 +1653,7 @@
 "my" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
-/area/station/maintenance/starboard/central)
+/area/station/maintenance/starboard/greater)
 "mz" = (
 /obj/machinery/door/airlock/command{
 	name = "Research Division Server Room";
@@ -2550,7 +2544,7 @@
 "rZ" = (
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
-/area/station/maintenance/starboard/central)
+/area/station/maintenance/starboard/greater)
 "sa" = (
 /obj/effect/turf_decal/tile/red/half/contrasted,
 /obj/structure/cable/smart_cable/color/yellow,
@@ -3884,6 +3878,10 @@
 /obj/effect/mapping_helpers/airlock/cyclelink_helper,
 /turf/open/floor/iron,
 /area/station/cargo/miningoffice)
+"Cc" = (
+/obj/structure/lattice/catwalk,
+/turf/closed/wall/r_wall,
+/area/station/maintenance/starboard/greater)
 "Cg" = (
 /turf/open/floor/carpet/royalblue,
 /area/station/command/heads_quarters/captain)
@@ -3935,12 +3933,6 @@
 /obj/machinery/power/apc/auto_name/directional/north,
 /turf/open/floor/iron/white,
 /area/station/science/mixing)
-"CE" = (
-/obj/machinery/door/airlock/external{
-	dir = 4
-	},
-/turf/open/floor/plating,
-/area/station/maintenance/starboard/central)
 "CF" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /obj/structure/table,
@@ -4238,15 +4230,9 @@
 "EB" = (
 /turf/closed/wall/r_wall,
 /area/station/maintenance/department/engine/atmos)
-"ED" = (
-/obj/machinery/atmospherics/pipe/layer_manifold/supply/hidden{
-	dir = 4
-	},
-/turf/closed/wall/r_wall,
-/area/station/science/mixing)
 "EF" = (
 /turf/open/floor/plating,
-/area/station/maintenance/starboard/central)
+/area/station/maintenance/starboard/greater)
 "EI" = (
 /obj/machinery/atmospherics/components/binary/pump/on{
 	name = "Mix to Distro"
@@ -4523,7 +4509,7 @@
 	req_access_txt = "12"
 	},
 /turf/open/floor/plating,
-/area/station/maintenance/starboard/central)
+/area/station/maintenance/starboard/greater)
 "GG" = (
 /obj/effect/spawner/structure/window/reinforced/plasma,
 /obj/machinery/door/poddoor/shutters/preopen{
@@ -4781,12 +4767,6 @@
 /obj/effect/turf_decal/trimline/purple/line,
 /turf/open/floor/iron/white,
 /area/station/science/xenobiology)
-"Iy" = (
-/obj/machinery/door/airlock/maintenance/external{
-	req_access_txt = "12"
-	},
-/turf/open/floor/plating,
-/area/station/maintenance/starboard/central)
 "Iz" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/east,
@@ -5705,6 +5685,13 @@
 /obj/machinery/computer/security/wooden_tv,
 /turf/open/floor/iron/grimy,
 /area/station/security/detectives_office)
+"PB" = (
+/obj/machinery/door/airlock/engineering{
+	name = "Starboard Solar Access";
+	req_access_txt = "10"
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/department/science)
 "PD" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 8
@@ -5737,13 +5724,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/white,
 /area/station/science/lower)
-"PN" = (
-/obj/structure/cable/smart_cable/color/yellow,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/power/apc/auto_name/directional/north,
-/turf/open/floor/plating,
-/area/station/maintenance/department/science)
 "PQ" = (
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 8
@@ -5929,7 +5909,7 @@
 /area/station/hallway/primary/central/aft)
 "Rt" = (
 /turf/closed/wall,
-/area/station/maintenance/starboard/central)
+/area/station/maintenance/starboard/greater)
 "Rv" = (
 /turf/open/floor/plating,
 /area/station/engineering/atmos)
@@ -6165,6 +6145,13 @@
 	},
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"SP" = (
+/obj/structure/cable/smart_cable/color/yellow,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/power/apc/auto_name/directional/west,
+/turf/open/floor/plating,
+/area/station/maintenance/department/science)
 "SV" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
@@ -6395,6 +6382,12 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/storage/eva/upper)
+"UV" = (
+/obj/machinery/door/airlock/maintenance/external{
+	req_access_txt = "12"
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/starboard/greater)
 "UZ" = (
 /obj/machinery/atmospherics/components/trinary/filter/flipped/critical,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -37298,17 +37291,17 @@ Je
 Ek
 KS
 Mw
-dt
+wq
 fW
 cW
-ED
 cW
-ar
+cW
 Kb
 Kb
 Kb
+Kb
+fW
 qn
-Ii
 Ii
 Ii
 Ii
@@ -37555,19 +37548,19 @@ Rq
 Oy
 ix
 Mw
-PN
+du
+du
+du
+PB
+SP
 DQ
 mD
 Wt
 bu
 fW
-Ii
 qn
 qn
-Ii
-Ii
-Ii
-Ii
+qn
 Ii
 Ii
 Ii
@@ -37812,6 +37805,10 @@ gL
 iZ
 LN
 Mw
+Lc
+Lc
+Lc
+fW
 SV
 cQ
 jR
@@ -37821,10 +37818,6 @@ fW
 Ii
 Ii
 qn
-Ii
-Ii
-Ii
-Ii
 Ii
 Ii
 Ii
@@ -38070,6 +38063,10 @@ PX
 PX
 PX
 fW
+Lc
+Lc
+fW
+fW
 xx
 xx
 fW
@@ -38078,10 +38075,6 @@ fW
 Ii
 Ii
 qn
-Ii
-Ii
-Ii
-Ii
 Ii
 Ii
 Ii
@@ -38326,10 +38319,10 @@ bv
 RG
 qn
 Ii
-Ii
-qn
-qn
-Ii
+ev
+EF
+ev
+ev
 Xr
 Ii
 Ii
@@ -38583,10 +38576,10 @@ bv
 qn
 qn
 qn
-qn
-qn
-qn
-Ii
+iV
+EF
+EF
+my
 Xr
 Ii
 Ii
@@ -38840,10 +38833,10 @@ bv
 RG
 Ii
 Ii
-Ii
-Ii
-qn
-Ii
+ev
+EF
+EF
+my
 Xr
 Ii
 Ii
@@ -39097,10 +39090,10 @@ zj
 Ee
 Ee
 Ee
-Ee
-Ee
-Ee
-Ee
+Cc
+EF
+EF
+my
 Xr
 Xr
 Xr
@@ -39354,10 +39347,10 @@ bv
 RG
 Ii
 qn
-qn
-Ii
-Ee
-Ii
+iV
+EF
+EF
+my
 Ii
 qn
 Ii
@@ -39611,10 +39604,10 @@ bv
 RG
 Ii
 qn
-qn
-Ii
-Ee
-Ii
+iV
+EF
+EF
+my
 Ii
 qn
 Ii
@@ -39868,10 +39861,10 @@ bv
 RG
 Ii
 qn
-Ii
-Ii
-Ee
-Ii
+ev
+EF
+ev
+ev
 RG
 qn
 RG
@@ -40126,8 +40119,8 @@ ev
 ev
 ev
 ev
-ev
-CE
+EF
+EF
 ev
 qj
 vJ
@@ -40381,11 +40374,11 @@ EF
 EF
 EF
 EF
+UV
 EF
 EF
-ev
 EF
-ev
+Rt
 Hq
 Hq
 Hq
@@ -40639,10 +40632,10 @@ Rt
 Rt
 Rt
 Rt
-Iy
-ev
-CE
-ev
+EF
+EF
+EF
+Rt
 Hq
 Hq
 Hq
@@ -43208,7 +43201,7 @@ IH
 WK
 WK
 Rt
-Iy
+UV
 ev
 ev
 kz

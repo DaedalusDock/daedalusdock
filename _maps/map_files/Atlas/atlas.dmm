@@ -5260,6 +5260,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/science/mixing)
+"LX" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/space/basic,
+/area/station/maintenance/disposal)
 "LY" = (
 /obj/effect/turf_decal/tile/purple/half/contrasted{
 	dir = 4
@@ -43443,7 +43447,7 @@ EF
 ev
 RG
 RG
-RG
+Ii
 Ii
 Ii
 Ii
@@ -45496,12 +45500,12 @@ Rt
 Rt
 GF
 ev
+ev
 RF
 RF
 RF
 RG
 RG
-Ii
 Ii
 Ii
 Ii
@@ -45755,11 +45759,11 @@ ne
 ne
 ne
 ne
+ne
 uS
 RF
 RF
 uS
-Ii
 Ii
 Ii
 Ii
@@ -46012,11 +46016,11 @@ ne
 ne
 ne
 ne
+ne
 Nt
 RY
 RY
 Nt
-Ii
 Ii
 Ii
 Ii
@@ -46269,11 +46273,11 @@ ne
 ne
 ne
 ne
+ne
 FF
 RY
 RY
 Nt
-Ii
 Ii
 Ii
 Ii
@@ -46526,11 +46530,11 @@ ne
 ne
 ne
 ne
+ne
 uS
 RF
 RF
 uS
-Ii
 Ii
 Ii
 Ii
@@ -46781,12 +46785,12 @@ Oz
 Ju
 nN
 Zr
+Zr
 RF
 RF
 RF
 RG
 RG
-Ii
 Ii
 Ii
 Ii
@@ -47037,8 +47041,8 @@ LR
 LR
 Ju
 tn
+tn
 Zr
-RG
 RG
 RG
 Ii
@@ -47294,8 +47298,8 @@ LR
 Ju
 Ju
 tn
+tn
 Zr
-Ii
 Ii
 Ii
 Ii
@@ -47551,9 +47555,9 @@ Ju
 Ju
 tn
 tn
+tn
 Dl
 RG
-Ii
 Ii
 Ii
 Ii
@@ -47808,9 +47812,9 @@ tn
 tn
 tn
 tn
+tn
 Dl
 RG
-Ii
 Ii
 Ii
 Ii
@@ -48065,9 +48069,9 @@ tn
 tn
 tn
 tn
+tn
 Dl
 RG
-Ii
 Ii
 Ii
 Ii
@@ -48322,9 +48326,9 @@ tn
 tn
 tn
 Dl
+LX
 Dl
 RG
-Ii
 Ii
 Ii
 Ii
@@ -48580,7 +48584,7 @@ tn
 tn
 Dl
 RG
-Ii
+RG
 Ii
 Ii
 Ii

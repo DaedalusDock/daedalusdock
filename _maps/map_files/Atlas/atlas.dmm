@@ -204,9 +204,9 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
 "bv" = (
-/obj/effect/spawner/structure/window/reinforced,
+/obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
-/area/station/science/robotics)
+/area/station/command/heads_quarters/cmo)
 "by" = (
 /obj/effect/turf_decal/bot,
 /obj/effect/turf_decal/tile/neutral/opposingcorners,
@@ -1183,6 +1183,9 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/general/hidden,
 /turf/open/floor/iron/dark/telecomms,
 /area/station/science/server)
+"jh" = (
+/turf/closed/wall,
+/area/station/maintenance/department/engine)
 "ji" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /obj/machinery/light/directional/south,
@@ -1197,6 +1200,10 @@
 "jo" = (
 /turf/open/floor/iron/white,
 /area/station/medical/paramedic)
+"jq" = (
+/obj/effect/spawner/structure/window/reinforced/grille,
+/turf/closed/wall,
+/area/station/science/xenobiology)
 "js" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/floor/plating,
@@ -1935,10 +1942,6 @@
 /obj/item/stack/cable_coil,
 /turf/open/space/basic,
 /area/space/nearstation)
-"op" = (
-/obj/effect/spawner/structure/window,
-/turf/open/floor/plating,
-/area/station/science/robotics)
 "oq" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/power/apc/auto_name/directional/east,
@@ -2561,10 +2564,6 @@
 /obj/machinery/door/window/brigdoor/right/directional/west,
 /turf/open/floor/carpet/royalblue,
 /area/station/hallway/secondary/command)
-"sx" = (
-/obj/effect/spawner/structure/window/reinforced/grille,
-/turf/open/floor/plating,
-/area/station/science/xenobiology)
 "sz" = (
 /obj/effect/turf_decal/tile/blue/half{
 	icon_state = "tile_half";
@@ -2893,9 +2892,6 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/dark,
 /area/station/engineering/supermatter/room)
-"vd" = (
-/turf/closed/wall,
-/area/station/science/robotics)
 "vf" = (
 /obj/machinery/meter,
 /obj/machinery/power/energy_accumulator/tesla_coil/anchored,
@@ -3420,6 +3416,10 @@
 /obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/hallway/primary/starboard)
+"yV" = (
+/obj/effect/spawner/structure/window/reinforced,
+/turf/open/floor/plating,
+/area/station/cargo/qm)
 "za" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 4
@@ -3465,9 +3465,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/cargo/storage)
-"zj" = (
-/turf/closed/wall/r_wall,
-/area/station/science/robotics)
 "zl" = (
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible,
 /turf/closed/wall/r_wall,
@@ -3604,6 +3601,9 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/science/lab)
+"zY" = (
+/turf/open/floor/plating,
+/area/station/maintenance/department/engine)
 "Ad" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
 	dir = 8
@@ -3675,6 +3675,9 @@
 /obj/effect/turf_decal/tile/yellow,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
+"AH" = (
+/turf/closed/wall/r_wall,
+/area/station/command/heads_quarters/cmo)
 "AK" = (
 /turf/open/floor/plating,
 /area/station/commons/toilet/restrooms)
@@ -3837,10 +3840,6 @@
 /obj/machinery/portable_atmospherics/pump,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
-"Cc" = (
-/obj/structure/lattice/catwalk,
-/turf/closed/wall/r_wall,
-/area/station/maintenance/starboard/greater)
 "Cg" = (
 /turf/open/floor/carpet/royalblue,
 /area/station/command/heads_quarters/captain)
@@ -4215,13 +4214,6 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/station/hallway/primary/port)
-"ET" = (
-/obj/machinery/door/airlock/research{
-	name = "Robotics Lab";
-	req_access_txt = "29"
-	},
-/turf/open/floor/plating,
-/area/station/science/robotics)
 "EX" = (
 /obj/effect/turf_decal/tile/red/fourcorners,
 /obj/structure/bed{
@@ -6569,14 +6561,6 @@
 "Wu" = (
 /turf/open/space/basic,
 /area/station/maintenance/port/central)
-"Wx" = (
-/obj/structure/cable/smart_cable/color/yellow,
-/obj/machinery/door/airlock/highsecurity{
-	name = "AI Core";
-	req_access_txt = "16"
-	},
-/turf/open/floor/plating,
-/area/station/ai_monitored/turret_protected/ai/atlas/maint)
 "Wy" = (
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 8
@@ -6642,6 +6626,9 @@
 	},
 /turf/open/floor/iron,
 /area/station/cargo/storage)
+"WX" = (
+/turf/closed/wall,
+/area/station/command/heads_quarters/cmo)
 "WY" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/spawner/random/trash/garbage,
@@ -6739,8 +6726,8 @@
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "XO" = (
-/turf/open/floor/iron,
-/area/station/science/robotics)
+/turf/open/floor/wood,
+/area/station/command/heads_quarters/cmo)
 "XQ" = (
 /turf/open/floor/plating,
 /area/station/command/meeting_room/council)
@@ -6904,6 +6891,12 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/station/science/lower)
+"YR" = (
+/obj/machinery/door/airlock/maintenance{
+	req_access_txt = "12"
+	},
+/turf/open/floor/plating,
+/area/station/command/heads_quarters/cmo)
 "YS" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible,
 /turf/open/floor/iron/white,
@@ -28496,7 +28489,7 @@ ME
 ME
 ME
 ME
-Ii
+ME
 Ii
 Ii
 Ii
@@ -28751,6 +28744,7 @@ VU
 Ue
 Ue
 Ue
+zY
 qU
 yo
 yo
@@ -28759,7 +28753,6 @@ yo
 yo
 yo
 yo
-Ii
 Ii
 Ii
 Ii
@@ -29008,6 +29001,7 @@ ME
 ME
 ME
 Ue
+zY
 qU
 yo
 Dj
@@ -29017,7 +29011,6 @@ vB
 Vp
 yo
 yo
-Ii
 Ii
 Ii
 Ii
@@ -29265,6 +29258,7 @@ Uz
 vV
 nJ
 Kc
+zY
 qU
 yo
 GY
@@ -29274,7 +29268,6 @@ Du
 qF
 nb
 yo
-Ii
 Ii
 Ii
 Ii
@@ -29522,6 +29515,7 @@ sZ
 sZ
 Si
 zd
+zY
 Bx
 yo
 wW
@@ -29531,7 +29525,6 @@ za
 jK
 tp
 yo
-Ii
 Ii
 Ii
 Ii
@@ -29779,6 +29772,7 @@ uE
 UJ
 Si
 zd
+zY
 rk
 yo
 OM
@@ -29788,7 +29782,6 @@ co
 Jj
 OM
 yo
-Ii
 Ii
 Ii
 Ii
@@ -30036,6 +30029,7 @@ sZ
 fY
 Si
 zd
+zY
 ld
 yo
 yf
@@ -30045,7 +30039,6 @@ Ff
 Lk
 tp
 yo
-Ii
 Ii
 Ii
 Ii
@@ -30293,6 +30286,7 @@ qq
 IY
 nJ
 zd
+zY
 dv
 yo
 El
@@ -30302,7 +30296,6 @@ Ff
 Jj
 dG
 yo
-Ii
 Ii
 Ii
 Ii
@@ -30550,6 +30543,7 @@ sZ
 mL
 nJ
 zd
+zY
 Jk
 yo
 jd
@@ -30560,7 +30554,6 @@ jd
 yo
 yo
 yo
-Ii
 Ii
 Ii
 Ii
@@ -30775,7 +30768,7 @@ Ii
 Ii
 Ii
 Ii
-Ii
+RG
 GX
 Rv
 ei
@@ -30807,6 +30800,7 @@ Gj
 NR
 nJ
 zd
+zY
 Jk
 MB
 JC
@@ -30818,7 +30812,6 @@ Jk
 av
 yo
 qn
-Ii
 Ii
 Ii
 Ii
@@ -31064,6 +31057,7 @@ Gg
 nJ
 nJ
 zd
+zY
 Jk
 kW
 Nl
@@ -31075,7 +31069,6 @@ lu
 Qp
 qy
 rx
-Ii
 Ii
 Ii
 Ii
@@ -31289,7 +31282,7 @@ Ii
 Ii
 Ii
 Ii
-Ii
+RG
 IU
 YZ
 Bw
@@ -31321,6 +31314,7 @@ tz
 oO
 ig
 In
+zY
 Jk
 Qq
 Ix
@@ -31332,7 +31326,6 @@ Jk
 NP
 yo
 qn
-Ii
 Ii
 Ii
 Ii
@@ -31546,7 +31539,7 @@ Ii
 Ii
 Ii
 Ii
-Ii
+RG
 IU
 vH
 iS
@@ -31578,6 +31571,7 @@ tj
 JD
 ig
 Tv
+jh
 Jk
 nP
 zu
@@ -31589,7 +31583,6 @@ Jk
 Jk
 yo
 fW
-Ii
 Ii
 Ii
 Ii
@@ -31835,10 +31828,11 @@ bS
 oD
 ig
 Cs
-sx
-sx
+Qt
+Jk
+jq
 xd
-sx
+Jk
 Jk
 Jk
 Jk
@@ -31846,7 +31840,6 @@ Jk
 gI
 Lc
 fW
-Ii
 Ii
 Ii
 Ii
@@ -32574,7 +32567,7 @@ Ii
 Ii
 Ii
 Ii
-Ii
+RG
 ZE
 oN
 ZE
@@ -33101,7 +33094,7 @@ ku
 Qt
 Iu
 Qt
-Qt
+Iu
 Iu
 Iu
 Qt
@@ -33358,7 +33351,7 @@ ku
 Qt
 Iu
 Qt
-Qt
+Iu
 sL
 xU
 Ly
@@ -34114,7 +34107,7 @@ Ii
 Ii
 Ii
 Ii
-dA
+yV
 pv
 pv
 pv
@@ -34371,7 +34364,7 @@ Ii
 Ii
 Ii
 Ii
-dA
+yV
 pv
 pv
 pv
@@ -37474,7 +37467,7 @@ nI
 TM
 Uf
 Oa
-Wx
+Oa
 Oa
 Oa
 mK
@@ -37482,7 +37475,7 @@ Oa
 Oa
 Oa
 Oa
-Wx
+Oa
 Oa
 Uf
 TM
@@ -37745,9 +37738,9 @@ Oa
 tH
 Vu
 aA
-vd
-ET
-Mw
+WX
+WX
+WX
 Mw
 mZ
 gL
@@ -38002,7 +37995,7 @@ sA
 TM
 le
 zc
-vd
+WX
 XO
 XO
 Mw
@@ -38259,7 +38252,7 @@ xl
 pO
 kf
 qu
-op
+WX
 XO
 XO
 XO
@@ -38269,7 +38262,7 @@ RG
 qn
 Ii
 ev
-EF
+GF
 ev
 ev
 qn
@@ -38516,15 +38509,15 @@ qu
 qu
 kf
 qu
-op
+WX
 XO
 XO
 XO
 XO
-bv
-qn
-qn
-qn
+AH
+iV
+iV
+iV
 iV
 EF
 EF
@@ -38773,16 +38766,16 @@ qu
 qu
 kf
 aR
-vd
+WX
 XO
 XO
 XO
 XO
-bv
-RG
-Ii
-Ii
-ev
+YR
+EF
+EF
+EF
+EF
 EF
 EF
 my
@@ -39030,16 +39023,16 @@ qu
 qu
 kf
 qu
-ET
+WX
 XO
 XO
 XO
 XO
-zj
-Ee
-Ee
-Ee
-Cc
+AH
+EF
+EF
+EF
+EF
 EF
 EF
 my
@@ -39287,16 +39280,16 @@ qu
 qu
 kf
 qu
-vd
+WX
 XO
 XO
 XO
 XO
-bv
-RG
-Ii
-qn
+AH
+ev
+ev
 iV
+ev
 EF
 EF
 my
@@ -39544,7 +39537,7 @@ kf
 kf
 kf
 qu
-op
+WX
 XO
 XO
 XO
@@ -39801,7 +39794,7 @@ Di
 qu
 qu
 qu
-op
+WX
 XO
 XO
 XO
@@ -40058,14 +40051,14 @@ Zs
 TP
 TP
 TP
-vd
+WX
 XO
 XO
-Rt
-EF
-ev
-ev
-ev
+XO
+XO
+AH
+Ii
+Ii
 ev
 ev
 EF
@@ -40315,15 +40308,15 @@ Re
 CM
 CM
 CM
-vd
-ET
-vd
+Mt
+CM
+TP
+zO
+zO
+zO
+zO
+zO
 Rt
-EF
-EF
-EF
-EF
-UV
 EF
 EF
 EF
@@ -40575,11 +40568,11 @@ CM
 CM
 CM
 CM
-Rt
-Rt
-Rt
-Rt
-Rt
+zO
+cR
+cR
+cR
+cf
 Rt
 EF
 EF

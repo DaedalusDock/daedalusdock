@@ -760,10 +760,6 @@
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/iron/smooth,
 /area/station/ai_monitored/turret_protected/ai/atlas)
-"fU" = (
-/obj/effect/spawner/structure/window,
-/turf/open/floor/plating,
-/area/station/medical/psychology)
 "fV" = (
 /obj/effect/turf_decal/tile/yellow/anticorner/contrasted{
 	dir = 4
@@ -1351,9 +1347,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/station/maintenance/department/engine/atmos)
-"ky" = (
-/turf/closed/wall,
-/area/station/medical/psychology)
 "kD" = (
 /turf/open/floor/iron/chapel,
 /area/station/service/chapel)
@@ -2386,7 +2379,7 @@
 /area/station/security/prison)
 "rh" = (
 /turf/open/floor/iron/stairs/right,
-/area/station/medical/psychology)
+/area/station/medical/medbay/atlas)
 "rj" = (
 /turf/open/floor/iron,
 /area/station/command/meeting_room/council)
@@ -2916,9 +2909,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
 /turf/open/floor/iron/dark,
 /area/station/engineering/supermatter/room)
-"vh" = (
-/turf/open/floor/iron/white,
-/area/station/medical/psychology)
 "vn" = (
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/space/basic,
@@ -4432,13 +4422,6 @@
 /area/station/cargo/storage)
 "Gl" = (
 /obj/structure/table/glass,
-/obj/item/biopsy_tool{
-	pixel_x = 8;
-	pixel_y = 2
-	},
-/obj/structure/microscope{
-	pixel_x = -5
-	},
 /obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/turf_decal/siding/purple,
@@ -4989,10 +4972,6 @@
 /area/station/engineering/supermatter)
 "Kn" = (
 /obj/structure/table/glass,
-/obj/item/storage/box/petridish{
-	pixel_x = 5;
-	pixel_y = 1
-	},
 /obj/item/wrench{
 	pixel_y = 4;
 	pixel_x = -10
@@ -5645,7 +5624,7 @@
 /area/station/command/heads_quarters/captain)
 "Pp" = (
 /turf/open/floor/iron/stairs/left,
-/area/station/medical/psychology)
+/area/station/medical/medbay/atlas)
 "Ps" = (
 /obj/machinery/power/emitter,
 /turf/open/floor/iron/dark,
@@ -6772,7 +6751,7 @@
 /area/station/security/prison/toilet)
 "XT" = (
 /turf/open/floor/iron/stairs/medium,
-/area/station/medical/psychology)
+/area/station/medical/medbay/atlas)
 "XV" = (
 /obj/machinery/conveyor{
 	dir = 1;
@@ -43417,11 +43396,11 @@ uP
 mJ
 pw
 mJ
-ky
-ky
-fU
-fU
-fU
+Mt
+Mt
+TP
+TP
+TP
 wp
 kX
 kX
@@ -43674,11 +43653,11 @@ uP
 CG
 CG
 CG
-fU
-vh
-vh
-vh
-vh
+TP
+CM
+CM
+CM
+CM
 WK
 kX
 kX
@@ -43932,10 +43911,10 @@ CG
 CG
 CG
 Pp
-vh
-vh
-vh
-vh
+CM
+CM
+CM
+CM
 WK
 kX
 kX
@@ -44189,10 +44168,10 @@ CG
 CG
 CG
 XT
-vh
-vh
-vh
-vh
+CM
+CM
+CM
+CM
 WK
 kX
 kX
@@ -44446,10 +44425,10 @@ CG
 CG
 CG
 rh
-vh
-vh
-vh
-vh
+CM
+CM
+CM
+CM
 WK
 kX
 kX
@@ -44702,11 +44681,11 @@ uP
 CG
 CG
 CG
-fU
-vh
-vh
-vh
-vh
+TP
+CM
+CM
+CM
+CM
 wp
 kX
 kX

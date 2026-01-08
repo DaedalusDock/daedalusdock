@@ -1146,6 +1146,12 @@
 "ka" = (
 /turf/closed/wall/r_wall,
 /area/station/cargo/storage)
+"kc" = (
+/obj/structure/sign/warning/chemdiamond{
+	pixel_x = 32
+	},
+/turf/open/floor/iron/white,
+/area/station/medical/pharmacy)
 "kd" = (
 /obj/machinery/door/airlock/external{
 	dir = 4
@@ -5797,6 +5803,10 @@
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/space/basic,
 /area/space/nearstation)
+"Xu" = (
+/obj/structure/rack/shelf,
+/turf/open/floor/iron/white,
+/area/station/medical/pharmacy)
 "Xv" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
@@ -44803,7 +44813,7 @@ wu
 AJ
 sQ
 sQ
-sQ
+kc
 sQ
 wd
 Zo
@@ -45056,12 +45066,12 @@ BM
 Gy
 UC
 Gy
-Rt
-Wv
-Wv
-EF
-Wv
-Wv
+wu
+wu
+wu
+sQ
+wu
+wu
 Wv
 Wv
 Wv
@@ -45313,11 +45323,11 @@ ot
 Og
 Og
 Og
-Rt
-EF
-EF
-EF
-EF
+wu
+Xu
+sQ
+sQ
+wu
 EF
 EF
 EF
@@ -45570,11 +45580,11 @@ ot
 Og
 Og
 Og
-Rt
-EF
-EF
-EF
-EF
+wu
+Xu
+Xu
+Xu
+wu
 EF
 EF
 EF
@@ -45827,12 +45837,12 @@ Og
 Og
 Og
 Og
-Rt
+wu
+wu
+wu
+wu
+wu
 GF
-Rt
-Rt
-Rt
-Rt
 Rt
 Rt
 Rt

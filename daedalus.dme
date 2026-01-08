@@ -2991,7 +2991,7 @@
 #include "code\modules\computer4\computer4.dm"
 #include "code\modules\computer4\computer4_types.dm"
 #include "code\modules\computer4\data\metadata.dm"
-#include "code\modules\computer4\data\shell_stdin.dm"
+#include "code\modules\computer4\data\parsed_cmdline.dm"
 #include "code\modules\computer4\data\c4_file\_c4_file.dm"
 #include "code\modules\computer4\data\c4_file\fab_design_bundle.dm"
 #include "code\modules\computer4\data\c4_file\folder.dm"

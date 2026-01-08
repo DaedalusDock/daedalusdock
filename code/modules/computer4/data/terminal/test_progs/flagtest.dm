@@ -4,10 +4,10 @@
 	size = 1
 
 /datum/c4_file/terminal_program/cmdline_test/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system, cmdline)
-	var/datum/shell_stdin/lines = cmdline
+	var/datum/parsed_cmdline/lines = cmdline
 	//Assure that we have a parsed cmdline
 	if(!istype(lines))
-		lines = new /datum/shell_stdin(cmdline)
+		lines = new /datum/parsed_cmdline(cmdline)
 
 	//Print our cmdline data
 	system.println(json_encode(list(

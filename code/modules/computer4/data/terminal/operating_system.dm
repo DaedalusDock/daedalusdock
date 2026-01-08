@@ -145,7 +145,7 @@
 	get_computer()?.text_buffer = ""
 	get_computer()?.operating_system = null
 
-/// Run a program. cmdline can be either a string or a fully parsed datum/shell_stdin
+/// Run a program. cmdline can be either a string or a fully parsed datum/parsed_cmdline
 /datum/c4_file/terminal_program/operating_system/proc/execute_program(datum/c4_file/terminal_program/program, cmdline)
 	if(!program)
 		return FALSE

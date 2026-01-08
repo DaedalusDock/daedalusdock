@@ -36,7 +36,7 @@
 
 	get_os().println(text)
 
-	var/datum/shell_stdin/parsed_input = parse_std_in(text)
+	var/datum/parsed_cmdline/parsed_input = parse_cmdline(text)
 
 	var/datum/c4_file/terminal_program/operating_system/os = get_os()
 

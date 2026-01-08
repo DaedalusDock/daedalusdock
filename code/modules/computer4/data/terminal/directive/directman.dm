@@ -31,23 +31,23 @@
 
 /datum/c4_file/terminal_program/directman/std_in(text)
 	. = ..()
-	var/datum/shell_stdin/parsed_stdin = parse_std_in(text)
+	var/datum/parsed_cmdline/parsed_cmdline = parse_cmdline(text)
 
 	var/datum/c4_file/terminal_program/operating_system/system = get_os()
 	system.println(html_encode(text))
 
-	if(home_command.try_exec(parsed_stdin.command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+	if(home_command.try_exec(parsed_cmdline.command, system, src, parsed_cmdline.arguments, parsed_cmdline.options))
 		return TRUE
 
 	switch(current_menu)
 		if(DIRECTMAN_MENU_HOME)
 			for(var/datum/shell_command/potential_command as anything in main_commands)
-				if(potential_command.try_exec(parsed_stdin.command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+				if(potential_command.try_exec(parsed_cmdline.command, system, src, parsed_cmdline.arguments, parsed_cmdline.options))
 					return TRUE
 
 		if(DIRECTMAN_MENU_CURRENT)
-			var/number = text2num(parsed_stdin.raw)
-			if(lowertext(parsed_stdin.raw) == "b")
+			var/number = text2num(parsed_cmdline.raw)
+			if(lowertext(parsed_cmdline.raw) == "b")
 				system.clear_screen(TRUE)
 				view_home()
 				return TRUE
@@ -59,13 +59,13 @@
 			return TRUE
 
 		if(DIRECTMAN_MENU_ACTIVE_DIRECTIVE)
-			if(lowertext(parsed_stdin.raw) == "b")
+			if(lowertext(parsed_cmdline.raw) == "b")
 				system.clear_screen(TRUE)
 				view_current()
 				return TRUE
 
 		if(DIRECTMAN_MENU_NEW_DIRECTIVES)
-			var/number = text2num(parsed_stdin.raw)
+			var/number = text2num(parsed_cmdline.raw)
 			if(!(number in 1 to length(SSdirectives.get_directives_for_selection())))
 				return
 
@@ -77,7 +77,7 @@
 			return TRUE
 
 		if(DIRECTMAN_MENU_NEW_DIRECTIVE)
-			if(lowertext(parsed_stdin.raw) == "b")
+			if(lowertext(parsed_cmdline.raw) == "b")
 				system.clear_screen(TRUE)
 				if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
 					view_home()
@@ -87,7 +87,7 @@
 				return TRUE
 
 
-			if(lowertext(parsed_stdin.raw) == "s")
+			if(lowertext(parsed_cmdline.raw) == "s")
 				if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
 					view_home()
 					system.println("<b>Error:</b> Unable to locate wireless adapter.")

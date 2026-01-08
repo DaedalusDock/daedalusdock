@@ -19,7 +19,7 @@
 	var/datum/c4_file/terminal_program/medtrak/medtrak = program
 	medtrak.await_input("Enter a new comment", CALLBACK(src, PROC_REF(fulfill_new_comment)))
 
-/datum/shell_command/medtrak/comment/new_comment/proc/fulfill_new_comment(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/shell_command/medtrak/comment/new_comment/proc/fulfill_new_comment(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/datum/c4_file/terminal_program/operating_system/thinkdos/system = medtrak.get_os()
 	if(!length(stdin.raw))
 		medtrak.view_comments()

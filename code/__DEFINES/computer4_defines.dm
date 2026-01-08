@@ -28,6 +28,8 @@
 #define WIRELESS_FILTER_MODEMAX 2 //! Max of WIRELESS_FILTER_* Defines.
 
 // ThinkDOS //
+// Well-Known Directories
+#define THINKDOS_BIN_DIRECTORY "/bin"
 // Constants
 #define THINKDOS_MAX_COMMANDS 3 //! The maximum amount of commands
 // Symbols

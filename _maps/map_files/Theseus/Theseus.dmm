@@ -11875,10 +11875,6 @@
 /obj/machinery/c4_embedded_controller/slave/directional/north,
 /turf/open/floor/carpet,
 /area/station/service/psychology)
-"ejr" = (
-/obj/machinery/light/cold/directional/east,
-/turf/open/floor/carpet/blue,
-/area/station/medical/medbay/aft)
 "ejs" = (
 /obj/machinery/door/airlock/external{
 	name = "Atmospherics External Access";
@@ -15710,7 +15706,6 @@
 	friendly_name = "Robotics";
 	placard_name = "Medical PBX"
 	},
-/obj/machinery/light/cold/directional/south,
 /turf/open/floor/iron/dark,
 /area/station/science/robotics/lab)
 "fBp" = (
@@ -22893,6 +22888,7 @@
 /obj/structure/sign/warning/chemdiamond{
 	pixel_y = -32
 	},
+/obj/machinery/light/cold/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "ijV" = (
@@ -28277,7 +28273,6 @@
 /obj/effect/turf_decal/trimline/blue/arrow_cw{
 	dir = 4
 	},
-/obj/machinery/light/cold/directional/east,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -31623,7 +31618,6 @@
 /turf/open/floor/iron,
 /area/station/commons/toilet/auxiliary)
 "lni" = (
-/obj/machinery/light/cold/directional/south,
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/aft)
@@ -41383,7 +41377,6 @@
 /turf/open/floor/circuit,
 /area/station/ai_monitored/turret_protected/ai)
 "oFG" = (
-/obj/machinery/light/cold/directional/south,
 /obj/machinery/firealarm/directional/south,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
@@ -42441,20 +42434,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos)
-"oZa" = (
-/obj/effect/turf_decal/trimline/yellow/line,
-/obj/machinery/light/cold/directional/south,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/hidden,
-/obj/structure/cable/yellow{
-	icon_state = "12"
-	},
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/turf/open/floor/iron/white,
-/area/station/medical/treatment_center)
 "oZr" = (
 /obj/structure/window/reinforced/spawner/north,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -47071,7 +47050,6 @@
 /obj/effect/turf_decal/tile/blue/anticorner/contrasted{
 	dir = 4
 	},
-/obj/machinery/light/cold/directional/north,
 /obj/structure/sign/poster/official/cleanliness{
 	pixel_x = 32
 	},
@@ -47418,7 +47396,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/secondary/exit/departure_lounge)
 "qPl" = (
-/obj/machinery/light/warm/directional/east,
 /obj/machinery/disposal/bin,
 /obj/structure/disposalpipe/trunk,
 /obj/effect/turf_decal/siding/wood/corner{
@@ -47479,7 +47456,6 @@
 /area/station/hallway/secondary/entry)
 "qQg" = (
 /obj/effect/turf_decal/siding/blue,
-/obj/machinery/light/cold/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/disposalpipe/segment,
@@ -56692,7 +56668,6 @@
 	dir = 1;
 	pixel_y = -24
 	},
-/obj/machinery/light/cold/directional/south,
 /turf/open/floor/carpet/blue,
 /area/station/command/heads_quarters/cmo)
 "ubB" = (
@@ -59801,7 +59776,6 @@
 /turf/open/floor/iron,
 /area/station/hallway/primary/aft)
 "vfF" = (
-/obj/machinery/light/cold/directional/south,
 /obj/effect/spawner/random/vending/snackvend,
 /obj/item/radio/intercom/directional/south,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -61006,6 +60980,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/machinery/light/cold/directional/west,
 /turf/open/floor/iron/white,
 /area/station/medical/medbay/central)
 "vBH" = (
@@ -61871,10 +61846,6 @@
 /obj/machinery/door/airlock/public/glass/incinerator/atmos_interior,
 /turf/open/floor/engine,
 /area/station/maintenance/disposal/incinerator)
-"vRS" = (
-/obj/machinery/light/cold/directional/east,
-/turf/open/floor/carpet,
-/area/station/medical/medbay/aft)
 "vRV" = (
 /obj/structure/disposalpipe/segment,
 /obj/effect/decal/cleanable/dirt,
@@ -90631,7 +90602,7 @@ ljV
 xvS
 rAP
 iWy
-oZa
+kKl
 hks
 iXn
 iXn
@@ -91673,7 +91644,7 @@ vyS
 pKA
 cqi
 srg
-hzX
+iHk
 wCc
 iHk
 swm
@@ -92704,7 +92675,7 @@ xbi
 qDh
 cqi
 dbx
-vRS
+rmU
 jiA
 spd
 guK
@@ -92968,7 +92939,7 @@ moM
 moM
 fFN
 fFN
-ejr
+fFN
 cfw
 uHP
 moM

@@ -750,6 +750,10 @@
 /obj/structure/closet/secure_closet/engineering_electrical,
 /turf/open/floor/iron/dark,
 /area/station/engineering/storage)
+"fZ" = (
+/obj/machinery/light/directional/north,
+/turf/open/floor/iron,
+/area/station/medical/chemistry)
 "ge" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/visible,
 /obj/machinery/firealarm/directional/north,
@@ -1224,6 +1228,10 @@
 /obj/effect/spawner/structure/window/reinforced,
 /turf/open/space/basic,
 /area/station/maintenance/starboard/greater)
+"kB" = (
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron,
+/area/station/medical/chemistry)
 "kD" = (
 /turf/open/floor/iron/chapel,
 /area/station/service/chapel)
@@ -1772,6 +1780,10 @@
 /obj/effect/spawner/structure/window,
 /turf/open/floor/plating,
 /area/station/hallway/primary/fore)
+"ou" = (
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron/white,
+/area/station/medical/medbay)
 "ov" = (
 /obj/machinery/airlock_sensor/incinerator_ordmix{
 	pixel_x = 29
@@ -2236,6 +2248,10 @@
 /obj/machinery/camera/directional/north,
 /turf/open/floor/iron,
 /area/station/security/prison)
+"sq" = (
+/obj/machinery/light/directional/south,
+/turf/open/floor/iron/white,
+/area/station/medical/medbay)
 "st" = (
 /turf/closed/wall,
 /area/station/maintenance/port/central)
@@ -5196,6 +5212,10 @@
 	dir = 1
 	},
 /area/station/hallway/primary/starboard)
+"Sy" = (
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/iron/freezer,
+/area/station/medical/coldroom)
 "Sz" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
@@ -39414,7 +39434,7 @@ Re
 Re
 Re
 ub
-CM
+ou
 CM
 CM
 CM
@@ -39932,7 +39952,7 @@ CM
 CM
 CM
 CM
-CM
+sq
 WW
 ap
 ra
@@ -40693,8 +40713,8 @@ pM
 kf
 qu
 qu
-WK
-kX
+lz
+fZ
 kX
 kX
 kX
@@ -40950,7 +40970,7 @@ NY
 kf
 qu
 qu
-WK
+lz
 kX
 kX
 kX
@@ -41210,7 +41230,7 @@ qu
 lz
 kX
 kX
-kX
+kB
 kX
 Es
 CM
@@ -41474,7 +41494,7 @@ MI
 CM
 CM
 CM
-CM
+sq
 QS
 cR
 cR
@@ -44816,7 +44836,7 @@ sQ
 kc
 sQ
 wd
-Zo
+Sy
 Zo
 Zo
 Zo

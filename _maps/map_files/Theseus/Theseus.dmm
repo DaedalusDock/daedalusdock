@@ -89,16 +89,6 @@
 /obj/machinery/light/small/red/directional/west,
 /turf/open/floor/plating/airless,
 /area/station/engineering/atmos)
-"abv" = (
-/obj/structure/cable/yellow{
-	icon_state = "3"
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/disposalpipe/segment,
-/obj/machinery/light/directional/east,
-/turf/open/floor/iron/dark,
-/area/station/security/brig/upper)
 "abF" = (
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 8
@@ -4727,7 +4717,6 @@
 /turf/open/floor/iron/dark,
 /area/station/security/office/hall)
 "bEC" = (
-/obj/machinery/light/directional/north,
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 1
 	},
@@ -41387,6 +41376,7 @@
 "oHI" = (
 /obj/structure/closet/emcloset,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/hallway/primary/starboard)
 "oHT" = (
@@ -54125,7 +54115,6 @@
 /obj/machinery/firealarm/directional/north,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/directional/north,
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
@@ -62057,16 +62046,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/security/prison/workout)
-"vXm" = (
-/obj/machinery/light/floor/has_bulb,
-/obj/structure/cable/yellow{
-	icon_state = "12"
-	},
-/obj/structure/cable/yellow{
-	icon_state = "5"
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/starboard)
 "vXs" = (
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 8
@@ -94760,7 +94739,7 @@ jab
 lfk
 gLB
 oiG
-abv
+lfk
 xVx
 lHv
 xVx
@@ -103790,7 +103769,7 @@ jWT
 eza
 tHM
 tAu
-vXm
+blz
 lqU
 gBn
 tgl

@@ -18578,7 +18578,6 @@
 /obj/effect/turf_decal/trimline/brown/warning{
 	dir = 5
 	},
-/obj/machinery/light/directional/south,
 /obj/structure/sign/poster/random/directional/east,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron/white,
@@ -21928,7 +21927,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/chair/stool/directional/north,
-/obj/machinery/light/small/directional/west,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "hSw" = (
@@ -28561,7 +28559,6 @@
 /area/station/engineering/main)
 "klx" = (
 /obj/structure/chair/stool/directional/south,
-/obj/machinery/light/small/directional/west,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "klE" = (
@@ -33090,12 +33087,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/commons/locker)
-"lMo" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/small/directional/east,
-/turf/open/floor/wood,
-/area/station/commons/lounge)
 "lMq" = (
 /turf/open/misc/asteroid/basalt/airless,
 /area/space/nearstation)
@@ -36043,13 +36034,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron,
 /area/station/security/office)
-"mOf" = (
-/obj/machinery/light/floor/has_bulb,
-/obj/structure/cable/yellow{
-	icon_state = "3"
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/central/starboard)
 "mOt" = (
 /obj/structure/railing{
 	dir = 8
@@ -36800,7 +36784,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/machinery/light/floor/has_bulb,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -41734,7 +41717,6 @@
 "oNH" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/chair/stool/directional/north,
-/obj/machinery/light/floor/has_bulb,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "oNK" = (
@@ -100781,7 +100763,7 @@ nWP
 mvx
 lFl
 bmh
-mOf
+qXp
 vFT
 gul
 hup
@@ -102572,9 +102554,9 @@ nVM
 oSx
 wuh
 fAJ
-qpS
 fAJ
-lMo
+qpS
+taP
 taP
 boT
 pnY

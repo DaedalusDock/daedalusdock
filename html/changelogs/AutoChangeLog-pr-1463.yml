@@ -1,5 +1,0 @@
-author: francinum
-delete-after: true
-changes:
-  - qol: Computer4 programs can now be ran without the run prefix, and can accept
-      command-line arguments.

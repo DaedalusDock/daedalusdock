@@ -3,3 +3,7 @@
   - tweak: Adjusted in-game names and descriptions.
   francinum:
   - admin: The player panel has been significantly condensed and improved.
+2026-01-09:
+  francinum:
+  - qol: Computer4 programs can now be ran without the run prefix, and can accept
+      command-line arguments.

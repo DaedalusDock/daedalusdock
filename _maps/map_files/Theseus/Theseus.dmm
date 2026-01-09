@@ -12756,12 +12756,12 @@
 /turf/open/floor/iron,
 /area/station/commons/dorms)
 "exL" = (
-/obj/machinery/light/directional/north,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/directional/north,
 /turf/open/floor/carpet,
 /area/station/service/library)
 "exM" = (
@@ -31323,11 +31323,6 @@
 	},
 /turf/open/floor/iron/ported/techfloor,
 /area/station/engineering/supermatter/room)
-"lhP" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/directional/south,
-/turf/open/floor/wood,
-/area/station/service/library)
 "lic" = (
 /obj/effect/turf_decal/tile/green{
 	dir = 4
@@ -48220,18 +48215,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/station/commons/locker)
-"rgO" = (
-/obj/machinery/light/directional/north,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/cable/yellow{
-	icon_state = "12"
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/turf/open/floor/carpet,
-/area/station/service/library)
 "rgU" = (
 /obj/machinery/light/small/directional/east,
 /obj/effect/turf_decal/tile/blue{
@@ -58169,11 +58152,6 @@
 /obj/effect/turf_decal/delivery,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
-"uCq" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/light/directional/south,
-/turf/open/floor/wood,
-/area/station/service/library)
 "uCr" = (
 /obj/structure/overfloor_catwalk/iron_dark,
 /turf/open/floor/plating,
@@ -101602,7 +101580,7 @@ sbV
 sbV
 sbV
 sbV
-rgO
+bQr
 gMe
 sys
 hHP
@@ -102886,7 +102864,7 @@ jQX
 oMN
 trt
 eVe
-uCq
+eVe
 sbV
 exL
 guM
@@ -104171,7 +104149,7 @@ hTe
 vBW
 sYF
 vNJ
-lhP
+spq
 sbV
 exL
 arh
@@ -105457,7 +105435,7 @@ sbV
 sbV
 sbV
 sbV
-exL
+mDF
 vvo
 jgH
 gub

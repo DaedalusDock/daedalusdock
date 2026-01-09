@@ -4603,7 +4603,6 @@
 /obj/structure/disposalpipe/segment{
 	dir = 4
 	},
-/obj/machinery/light/floor/has_bulb,
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
@@ -6104,19 +6103,6 @@
 	},
 /turf/open/floor/wood,
 /area/station/commons/lounge)
-"cee" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 8
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/directional/west,
-/obj/effect/turf_decal/tile/yellow/opposingcorners,
-/obj/structure/cable/yellow{
-	icon_state = "3"
-	},
-/turf/open/floor/iron/white,
-/area/station/hallway/secondary/entry)
 "cem" = (
 /turf/closed/wall/mineral/wood,
 /area/station/commons/storage/art)
@@ -7518,7 +7504,6 @@
 	codes_txt = "patrol;next_patrol=7-Command-Starboard"
 	},
 /obj/structure/disposalpipe/segment,
-/obj/machinery/light/floor/has_bulb,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -14784,6 +14769,7 @@
 /obj/structure/disposalpipe/segment{
 	dir = 9
 	},
+/obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
 "fhu" = (
@@ -14794,16 +14780,6 @@
 /obj/machinery/door/window/left/directional/east,
 /turf/open/floor/glass,
 /area/station/service/library)
-"fhz" = (
-/obj/machinery/light/directional/south,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/port)
 "fhA" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/yellow{
@@ -34806,14 +34782,6 @@
 /obj/item/stack/sheet/cloth/five,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
-"mrw" = (
-/obj/effect/turf_decal/stripes/corner{
-	dir = 8
-	},
-/obj/machinery/light/floor/has_bulb,
-/obj/effect/turf_decal/tile/yellow/opposingcorners,
-/turf/open/floor/iron/white,
-/area/station/hallway/secondary/entry)
 "mrD" = (
 /obj/machinery/vending/wardrobe/law_wardrobe,
 /obj/machinery/light/directional/south,
@@ -47758,14 +47726,6 @@
 	},
 /turf/open/floor/iron/freezer,
 /area/station/medical/coldroom/port)
-"qVL" = (
-/obj/effect/turf_decal/stripes/line{
-	dir = 1
-	},
-/obj/machinery/light/floor/has_bulb,
-/obj/effect/turf_decal/tile/yellow/opposingcorners,
-/turf/open/floor/iron/white,
-/area/station/hallway/secondary/entry)
 "qVN" = (
 /obj/machinery/door/airlock{
 	name = "Unit 2";
@@ -56173,16 +56133,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/fore)
-"tRa" = (
-/obj/structure/disposalpipe/segment{
-	dir = 4
-	},
-/obj/machinery/light/floor/has_bulb,
-/obj/structure/cable/yellow{
-	icon_state = "12"
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/port)
 "tRe" = (
 /obj/machinery/camera/directional/north{
 	c_tag = "Departures Hallway - Aft"
@@ -78304,7 +78254,7 @@ lMJ
 lMJ
 gbI
 aVu
-jSF
+aWU
 uwS
 lMJ
 aaa
@@ -79846,7 +79796,7 @@ aaa
 aaa
 gbI
 rkZ
-mrw
+wdq
 aWT
 bEZ
 oWO
@@ -80116,7 +80066,7 @@ aaa
 lAu
 oWO
 tHx
-qVL
+aVu
 bvF
 mQt
 oWO
@@ -82163,7 +82113,7 @@ bVK
 evw
 izn
 gWY
-cee
+gWY
 gWY
 gWY
 rqz
@@ -86025,7 +85975,7 @@ omA
 jIl
 lDf
 qxd
-tRa
+xJe
 lCP
 wNU
 bFu
@@ -89110,7 +89060,7 @@ oEY
 uHx
 rOj
 reb
-fhz
+lCP
 vhG
 bOy
 bOy

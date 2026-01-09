@@ -6856,7 +6856,6 @@
 /area/station/commons/fitness)
 "ctp" = (
 /obj/effect/spawner/random/engineering/tracking_beacon,
-/obj/machinery/light/floor/has_bulb,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -54362,10 +54361,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
-"tiM" = (
-/obj/machinery/light/small/directional/south,
-/turf/open/floor/wood,
-/area/station/command/heads_quarters/captain/private)
 "tiR" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
@@ -56013,7 +56008,6 @@
 "tQz" = (
 /obj/structure/table/wood,
 /obj/item/book/manual/wiki/security_space_law,
-/obj/machinery/light/small/directional/west,
 /obj/item/paper/fluff/gateway,
 /obj/item/coin/plasma,
 /obj/item/melee/chainofcommand,
@@ -99466,7 +99460,7 @@ dAL
 gWx
 nlK
 knZ
-tiM
+hIU
 tvz
 etd
 oSS

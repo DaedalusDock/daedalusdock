@@ -89,6 +89,16 @@
 /obj/machinery/light/small/red/directional/west,
 /turf/open/floor/plating/airless,
 /area/station/engineering/atmos)
+"abv" = (
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/disposalpipe/segment,
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron/dark,
+/area/station/security/brig/upper)
 "abF" = (
 /obj/effect/turf_decal/tile/blue/half/contrasted{
 	dir = 8
@@ -325,13 +335,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/security/detectives_office/private_investigators_office)
-"afY" = (
-/obj/machinery/light/floor/has_bulb,
-/obj/structure/cable/yellow{
-	icon_state = "12"
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/fore)
 "agf" = (
 /obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
 /obj/machinery/door/firedoor,
@@ -7163,7 +7166,6 @@
 "czt" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/directional/east,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/dark,
 /area/station/security/office/hall)
@@ -35635,7 +35637,6 @@
 /area/station/hallway/secondary/entry)
 "mIe" = (
 /obj/structure/extinguisher_cabinet/directional/east,
-/obj/machinery/light/directional/east,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
@@ -40052,7 +40053,6 @@
 /turf/open/floor/iron/solarpanel/airless,
 /area/station/solars/starboard/aft)
 "ojM" = (
-/obj/machinery/light/directional/east,
 /obj/machinery/recharge_station,
 /obj/effect/turf_decal/trimline/red/corner{
 	dir = 8
@@ -40278,6 +40278,12 @@
 /obj/effect/spawner/random/structure/grille,
 /turf/open/floor/plating,
 /area/station/maintenance/port)
+"onI" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/light/directional/east,
+/turf/open/floor/iron,
+/area/station/hallway/primary/fore)
 "onR" = (
 /obj/item/kirbyplants/random,
 /turf/open/floor/wood,
@@ -60436,6 +60442,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment,
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/security/brig/upper)
 "vsP" = (
@@ -65793,7 +65800,6 @@
 "xmk" = (
 /obj/structure/table,
 /obj/machinery/power/apc/auto_name/directional/south,
-/obj/machinery/light/directional/south,
 /obj/structure/cable/yellow{
 	icon_state = "4"
 	},
@@ -66856,7 +66862,6 @@
 /turf/open/space/basic,
 /area/space/nearstation)
 "xFd" = (
-/obj/machinery/light/directional/south,
 /obj/structure/cable/yellow{
 	icon_state = "24"
 	},
@@ -94768,7 +94773,7 @@ jab
 lfk
 gLB
 oiG
-lfk
+abv
 xVx
 lHv
 xVx
@@ -95553,7 +95558,7 @@ wxD
 aDC
 aDC
 aDC
-afY
+pZW
 hNu
 dgy
 kzL
@@ -97095,7 +97100,7 @@ eTi
 hYM
 lEi
 egG
-egG
+onI
 wCX
 aQg
 oUc
@@ -98126,7 +98131,7 @@ swa
 ufp
 ufp
 vxI
-oUc
+aIR
 vIA
 jJP
 sqa

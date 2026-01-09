@@ -719,7 +719,6 @@
 	},
 /obj/structure/closet/crate,
 /obj/effect/spawner/random/maintenance/four,
-/obj/machinery/light/directional/east,
 /obj/machinery/camera/directional/east{
 	c_tag = "Dormitories - Recreation Area 2#"
 	},
@@ -748,7 +747,6 @@
 /obj/effect/turf_decal/siding/thinplating_new/dark/corner{
 	dir = 1
 	},
-/obj/machinery/light/small/directional/west,
 /turf/open/floor/iron,
 /area/station/commons/dorms)
 "alh" = (
@@ -24708,6 +24706,12 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
+"iQy" = (
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/station/commons/locker)
 "iQL" = (
 /obj/item/storage/secure/safe/directional/north,
 /obj/machinery/camera/directional/north{
@@ -34719,7 +34723,6 @@
 /area/station/maintenance/port/aft)
 "mrD" = (
 /obj/machinery/vending/wardrobe/law_wardrobe,
-/obj/machinery/light/directional/south,
 /turf/open/floor/wood,
 /area/station/service/lawoffice)
 "mrN" = (
@@ -67627,7 +67630,6 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 4
 	},
-/obj/machinery/light/small/directional/east,
 /obj/machinery/camera/directional/east{
 	c_tag = "Dormitories - Crew Quarters Hallway"
 	},
@@ -100452,7 +100454,7 @@ psj
 psj
 ief
 osb
-xlH
+iQy
 qcu
 rtx
 xKo
@@ -102758,7 +102760,7 @@ onW
 tbx
 jGv
 jRy
-tbx
+onW
 nwq
 asv
 gEF

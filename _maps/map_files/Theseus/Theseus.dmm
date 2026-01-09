@@ -6753,7 +6753,6 @@
 	pixel_x = -4;
 	pixel_y = 6
 	},
-/obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "crV" = (
@@ -9317,13 +9316,6 @@
 "dmB" = (
 /turf/closed/wall/prepainted/daedalus,
 /area/station/service/chapel)
-"dmI" = (
-/obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible{
-	dir = 4
-	},
-/obj/machinery/light/floor/has_bulb,
-/turf/open/floor/iron,
-/area/station/engineering/atmos)
 "dmL" = (
 /obj/structure/table,
 /obj/effect/spawner/random/entertainment/deck,
@@ -12385,7 +12377,6 @@
 /turf/open/floor/iron/white,
 /area/station/medical/patients_rooms/room_d)
 "eqL" = (
-/obj/machinery/light/small/directional/north,
 /obj/machinery/power/apc/auto_name/directional/north,
 /obj/effect/turf_decal/tile/yellow/half/contrasted{
 	dir = 1
@@ -13051,7 +13042,6 @@
 /area/station/service/hydroponics)
 "eDW" = (
 /obj/effect/turf_decal/bot,
-/obj/machinery/light/small/directional/east,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 4
 	},
@@ -14528,7 +14518,6 @@
 /turf/closed/wall/prepainted/daedalus,
 /area/station/maintenance/space_hut)
 "fcX" = (
-/obj/machinery/light/directional/west,
 /obj/effect/turf_decal/tile/yellow{
 	dir = 8
 	},
@@ -21031,6 +21020,7 @@
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
 	},
+/obj/machinery/light/small/directional/west,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "hAn" = (
@@ -32763,10 +32753,6 @@
 "lGC" = (
 /turf/closed/wall/r_wall/prepainted/mars,
 /area/station/security/brig)
-"lGN" = (
-/obj/machinery/light/floor/has_bulb,
-/turf/open/floor/iron,
-/area/station/engineering/main)
 "lHv" = (
 /obj/structure/cable/yellow{
 	icon_state = "3"
@@ -41352,7 +41338,6 @@
 /turf/open/floor/plating/airless,
 /area/station/solars/port/aft)
 "oHi" = (
-/obj/machinery/light/floor/has_bulb,
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
@@ -53885,7 +53870,6 @@
 /area/station/commons/locker)
 "tby" = (
 /obj/machinery/airalarm/directional/north,
-/obj/machinery/light/directional/north,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/disposalpipe/segment{
@@ -54456,6 +54440,7 @@
 /obj/effect/turf_decal/bot{
 	dir = 1
 	},
+/obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/engineering/main)
 "tkE" = (
@@ -104318,7 +104303,7 @@ aaa
 aaa
 aaa
 sYJ
-tDL
+pZj
 wbk
 lqU
 nkJ
@@ -105346,7 +105331,7 @@ jSI
 tzy
 jSI
 jSI
-tDL
+pZj
 eHH
 nNh
 qbl
@@ -109184,7 +109169,7 @@ bIp
 muT
 muT
 muT
-lGN
+muT
 bCR
 jqS
 muT
@@ -111030,7 +111015,7 @@ caT
 uzC
 bqH
 gvq
-jIO
+ckH
 aaf
 kZg
 sOz
@@ -112046,13 +112031,13 @@ dIg
 azB
 cQn
 lye
-gKE
 lye
 lye
 lye
 lye
 lye
-dmI
+lye
+elN
 fJd
 mzG
 uzC
@@ -114628,7 +114613,7 @@ lye
 kHI
 mZv
 dnb
-jIO
+ckH
 lMJ
 kZg
 iNH

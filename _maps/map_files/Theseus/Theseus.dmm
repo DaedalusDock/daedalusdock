@@ -68062,10 +68062,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/commons/fitness/recreation)
-"ydo" = (
-/obj/machinery/light/floor/has_bulb,
-/turf/open/floor/iron,
-/area/station/service/hydroponics)
 "ydF" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
@@ -102617,7 +102613,7 @@ jfC
 qyx
 wPR
 yaL
-ydo
+iKa
 iKa
 iKa
 lJn
@@ -103647,7 +103643,7 @@ mol
 waA
 sYq
 iKa
-ydo
+iKa
 jHk
 rtK
 jMi

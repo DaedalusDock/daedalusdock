@@ -10262,13 +10262,6 @@
 /obj/effect/mapping_helpers/access/all/medical/general/airlock,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
-"dDT" = (
-/obj/machinery/light/floor/has_bulb,
-/obj/structure/cable/yellow{
-	icon_state = "12"
-	},
-/turf/open/floor/iron,
-/area/station/hallway/primary/central/fore)
 "dEa" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
@@ -23738,7 +23731,6 @@
 "izo" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/floor/has_bulb,
 /obj/structure/cable/yellow{
 	icon_state = "10"
 	},
@@ -27107,10 +27099,6 @@
 /obj/structure/lattice/catwalk,
 /turf/open/space/basic,
 /area/space/nearstation)
-"jLD" = (
-/obj/machinery/light/directional/west,
-/turf/open/floor/iron,
-/area/station/cargo/sorting)
 "jLG" = (
 /obj/effect/turf_decal/siding/fancy/wood{
 	dir = 1
@@ -33034,7 +33022,6 @@
 /obj/machinery/computer/security/qm{
 	dir = 4
 	},
-/obj/machinery/light/directional/west,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/wood,
 /area/station/cargo/qm)
@@ -44814,15 +44801,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/cargo/storage)
-"pXp" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/light/floor/has_bulb,
-/obj/structure/cable/yellow{
-	icon_state = "3"
-	},
-/turf/open/floor/iron,
-/area/station/cargo/storage)
 "pXt" = (
 /obj/structure/cable/yellow{
 	icon_state = "3"
@@ -46002,6 +45980,7 @@
 /area/station/engineering/main)
 "qrg" = (
 /obj/machinery/light_switch/directional/north,
+/obj/machinery/light/directional/north,
 /turf/open/floor/circuit/green{
 	luminosity = 2
 	},
@@ -47806,6 +47785,7 @@
 /obj/effect/turf_decal/tile/brown/anticorner/contrasted{
 	dir = 4
 	},
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
 "qZf" = (
@@ -54743,7 +54723,6 @@
 /area/station/security/courtroom)
 "trx" = (
 /obj/machinery/airalarm/directional/north,
-/obj/machinery/light/directional/north,
 /turf/open/floor/circuit/green{
 	luminosity = 2
 	},
@@ -56665,7 +56644,6 @@
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
 "ucI" = (
-/obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/neutral,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/nuke_storage)
@@ -62363,13 +62341,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/secondary/command)
-"wcO" = (
-/obj/machinery/light/floor/has_bulb,
-/obj/structure/cable/yellow{
-	icon_state = "3"
-	},
-/turf/open/floor/iron,
-/area/station/construction/storage_wing)
 "wdf" = (
 /obj/effect/landmark/event_spawn,
 /obj/structure/cable/yellow{
@@ -62957,7 +62928,6 @@
 /obj/effect/turf_decal/tile/brown/half/contrasted{
 	dir = 8
 	},
-/obj/machinery/light/small/directional/south,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "wnA" = (
@@ -86340,7 +86310,7 @@ izo
 ahY
 mhd
 ahY
-pXp
+ikg
 inQ
 ikg
 ahY
@@ -88404,7 +88374,7 @@ xTV
 baW
 uHx
 wHP
-jLD
+eGZ
 hLF
 nHy
 mLC
@@ -90198,7 +90168,7 @@ kFc
 jly
 lpg
 fIC
-wcO
+fIC
 mlD
 gFr
 hkU
@@ -95086,7 +95056,7 @@ kUK
 iiW
 bpS
 jdV
-oyT
+vus
 aaf
 wSU
 yly
@@ -96628,7 +96598,7 @@ oKl
 kUC
 sIW
 lxC
-oyT
+vus
 aaf
 lDh
 xEj
@@ -97654,7 +97624,7 @@ mGU
 xmk
 aQg
 xKo
-dDT
+uZX
 kAC
 oyT
 aaf
@@ -99710,7 +99680,7 @@ rkg
 cGk
 qsW
 xKo
-dDT
+uZX
 ckm
 jjM
 vkk

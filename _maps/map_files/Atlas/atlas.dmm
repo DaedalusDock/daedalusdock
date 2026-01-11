@@ -106,10 +106,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/station/engineering/main)
-"aR" = (
-/obj/machinery/light/directional/south,
-/turf/open/floor/iron,
-/area/station/hallway/primary/central/fore)
 "aS" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
@@ -879,6 +875,7 @@
 "gG" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/maintenance,
+/obj/machinery/light/directional/north,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "gH" = (
@@ -1198,11 +1195,6 @@
 /obj/machinery/airalarm/directional/east,
 /turf/open/floor/iron/dark,
 /area/station/engineering/atmos/storage)
-"ji" = (
-/obj/effect/turf_decal/tile/yellow/fourcorners,
-/obj/machinery/light/directional/south,
-/turf/open/floor/iron,
-/area/station/cargo/storage)
 "jo" = (
 /obj/structure/table/glass,
 /turf/open/floor/iron/white,
@@ -2016,9 +2008,6 @@
 /turf/open/floor/plating,
 /area/station/hallway/primary/fore)
 "ov" = (
-/obj/machinery/airlock_sensor/incinerator_ordmix{
-	pixel_x = 29
-	},
 /obj/structure/closet/secure_closet/freezer/kitchen,
 /obj/effect/turf_decal/tile/bar/opposingcorners,
 /turf/open/floor/iron/white,
@@ -2733,10 +2722,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/ai_monitored/turret_protected/ai/atlas/maint)
-"tI" = (
-/obj/machinery/light/directional/north,
-/turf/open/floor/iron,
-/area/station/hallway/primary/port)
 "tM" = (
 /obj/structure/sign/warning/electricshock,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/orange/visible,
@@ -3452,7 +3437,6 @@
 "ze" = (
 /obj/effect/turf_decal/tile/yellow/fourcorners,
 /obj/machinery/autolathe,
-/obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "zf" = (
@@ -4120,6 +4104,7 @@
 "DX" = (
 /obj/structure/rack,
 /obj/effect/spawner/random/trash/janitor_supplies,
+/obj/machinery/light/directional/south,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "DY" = (
@@ -5457,7 +5442,6 @@
 /obj/effect/turf_decal/tile/yellow/anticorner/contrasted{
 	dir = 1
 	},
-/obj/machinery/light/directional/west,
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
 "NT" = (
@@ -5954,6 +5938,7 @@
 /obj/machinery/computer/cargo{
 	dir = 8
 	},
+/obj/machinery/light/directional/east,
 /turf/open/floor/iron,
 /area/station/cargo/storage)
 "RV" = (
@@ -34511,7 +34496,7 @@ rw
 Lv
 th
 hJ
-tI
+Yd
 Yd
 nI
 lJ
@@ -35795,7 +35780,7 @@ HR
 gP
 gP
 Jw
-ji
+Od
 RK
 Yd
 nI
@@ -38382,7 +38367,7 @@ hC
 RN
 iJ
 Qo
-qu
+xl
 pO
 kf
 qu
@@ -38899,7 +38884,7 @@ Qo
 qu
 qu
 kf
-aR
+qu
 PX
 oe
 XG

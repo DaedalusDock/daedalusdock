@@ -2,5 +2,10 @@
 	"version": 1,
 	"map_name": "Atlas",
 	"map_path": "map_files/Atlas",
-	"map_file": "atlas.dmm"
+	"map_file": "atlas.dmm",
+	"traits": [
+		{
+			"Gravity": 1
+		}
+	]
 }

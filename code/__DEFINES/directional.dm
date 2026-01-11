@@ -51,3 +51,21 @@
 	dir = WEST; \
 	pixel_x = w_offset; \
 }
+
+/// Like the above, but the atom's DIR value will be the opposite of it's offset. i.e the /north type will have dir = SOUTH.
+#define MAPPING_DIRECTIONAL_HELPERS_ROBUST_INVERSE_DIR(path, n_offset, s_offset, e_offset, w_offset) ##path/directional/north {\
+	dir = SOUTH; \
+	pixel_y = n_offset; \
+} \
+##path/directional/south {\
+	dir = NORTH; \
+	pixel_y = s_offset; \
+} \
+##path/directional/east {\
+	dir = WEST; \
+	pixel_x = e_offset; \
+} \
+##path/directional/west {\
+	dir = EAST; \
+	pixel_x = w_offset; \
+}

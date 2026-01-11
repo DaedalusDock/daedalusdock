@@ -1,6 +1,7 @@
 TYPEINFO_DEF(/obj/machinery/button)
 	default_armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 90, ACID = 70)
 
+DEFINE_INTERACTABLE(/obj/machinery/button)
 /obj/machinery/button
 	name = "button"
 	desc = "A remote control switch."

@@ -1,11 +1,11 @@
 /// Struct for the parsed stdin
-/datum/shell_stdin
+/datum/parsed_cmdline
 	var/raw = ""
 	var/command = ""
 	var/list/arguments = list()
 	var/list/options = list()
 
-/datum/shell_stdin/New(text)
+/datum/parsed_cmdline/New(text)
 	arguments = splittext(text, " ")
 
 	raw = text
@@ -13,8 +13,8 @@
 	options = list()
 	arguments.Cut(1, 2) // Pop out the command itself
 
-	if(length(arguments) == 1)
-		return
+	if(!length(arguments))
+		return //Bare command, no use going further.
 
 	// Parse out options
 	for(var/str in arguments)

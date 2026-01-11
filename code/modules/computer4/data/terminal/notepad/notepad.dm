@@ -31,15 +31,16 @@
 		@"<pre style='margin: 0px'>  /    /   /   ) /   ' /    /   /   ) /   ' /(    </pre>",
 		@"<pre style='margin: 0px'>_/____/___(___/_(___ _/____/___(___/_(___ _/___\__</pre>",
 	).Join("")
+	system.clear_screen(TRUE)
 	system.println(title_text)
 	system.println("Welcome to DocDock, type !help to get started.")
 
-/datum/c4_file/terminal_program/notepad/parse_std_in(text)
+/datum/c4_file/terminal_program/notepad/parse_cmdline(text)
 	return splittext(text, " ")
 
 /datum/c4_file/terminal_program/notepad/std_in(text)
 	. = ..()
-	var/list/arguments = parse_std_in(text)
+	var/list/arguments = parse_cmdline(text)
 	var/command = arguments[1]
 	arguments.Cut(1,2)
 

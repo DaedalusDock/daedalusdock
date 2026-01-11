@@ -22,6 +22,7 @@
 	if(.)
 		return
 
+	system.clear_screen(TRUE)
 	var/title_text = list(
 		@"<pre style='margin: 0px'>      ___ ___  __        __   ___</pre>",
 		@"<pre style='margin: 0px'>|\ | |__   |  |__)  /\  / _` |__ </pre>",
@@ -34,13 +35,13 @@
 
 /datum/c4_file/terminal_program/netpage/std_in(text)
 	. = ..()
-	var/datum/shell_stdin/parsed_stdin = parse_std_in(text)
+	var/datum/parsed_cmdline/parsed_cmdline = parse_cmdline(text)
 
 	var/datum/c4_file/terminal_program/operating_system/system = get_os()
 	system.println(html_encode(text))
 
 	for(var/datum/shell_command/potential_command as anything in commands)
-		if(potential_command.try_exec(parsed_stdin.command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+		if(potential_command.try_exec(parsed_cmdline.command, system, src, parsed_cmdline.arguments, parsed_cmdline.options))
 			return TRUE
 
 /datum/c4_file/terminal_program/netpage/proc/check_for_errors()

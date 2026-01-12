@@ -7,3 +7,6 @@
   francinum:
   - qol: Computer4 programs can now be ran without the run prefix, and can accept
       command-line arguments.
+2026-01-12:
+  Kapu1178:
+  - bugfix: Buttons are flagged as interactable.

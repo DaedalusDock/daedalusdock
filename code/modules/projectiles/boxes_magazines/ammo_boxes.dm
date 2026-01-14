@@ -26,6 +26,7 @@ TYPEINFO_DEF(/obj/item/ammo_box/c38)
 /obj/item/ammo_box/c38/prostrator
 	name = "speed loader (.38 Prostrator)"
 	desc = parent_type::desc + " Contains a stun cartridge to incapacitate targets with minimal bodily harm. Minimal."
+	icon_state = "38prostrator"
 	ammo_type = /obj/item/ammo_casing/c38/prostrator
 
 /obj/item/ammo_box/c38/trac

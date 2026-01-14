@@ -54,6 +54,9 @@ TYPEINFO_DEF(/obj/item/gun)
 	/// True if a gun dosen't need a pin, mostly used for abstract guns like tentacles and meathooks
 	var/pinless = FALSE
 
+	/// If TRUE, the gun will automatically call update_chamber() upon successfully firing.
+	var/auto_chamber = TRUE
+
 	/* Sounds */
 	var/fire_sound = 'sound/weapons/gun/pistol/shot.ogg'
 	var/fire_sound_volume = 50
@@ -182,20 +185,17 @@ TYPEINFO_DEF(/obj/item/gun)
 
 /obj/item/gun/examine(mob/user)
 	. = ..()
-	if(!pinless)
-		if(pin)
-			. += "It has \a [pin] installed."
-			. += span_info("[pin] looks like it could be removed with some <b>tools</b>.")
-		else
-			. += "It doesn't have a <b>firing pin</b> installed, and won't fire."
+	if(user == get(loc, /mob))
+		if(!pinless && !pin)
+			. += span_alert("It lacks a firing pin.")
 
 	if(bayonet)
-		. += "It has \a [bayonet] [can_bayonet ? "" : "permanently "]affixed to it."
+		. += span_info("It has \a [bayonet] [can_bayonet ? "" : "permanently "]affixed to it.")
 		if(can_bayonet) //if it has a bayonet and this is false, the bayonet is permanent.
 			. += span_info("[bayonet] looks like it can be <b>unscrewed</b> from [src].")
 
 	if(can_bayonet)
-		. += "It has a <b>bayonet</b> lug on it."
+		. += span_info("It has a <b>bayonet</b> lug on it.")
 
 /// check if there's enough ammo/energy/whatever to shoot one time
 /// i.e if clicking would make it shoot

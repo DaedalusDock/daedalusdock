@@ -75,12 +75,12 @@ TYPEINFO_DEF(/obj/item/ammo_box)
 /obj/item/ammo_box/proc/get_round(keep = FALSE)
 	if (!stored_ammo.len)
 		return null
-	else
-		var/b = stored_ammo[stored_ammo.len]
-		stored_ammo -= b
-		if (keep)
-			stored_ammo.Insert(1,b)
-		return b
+
+	var/b = stored_ammo[stored_ammo.len]
+	stored_ammo -= b
+	if (keep)
+		stored_ammo.Insert(1,b)
+	return b
 
 ///puts a round into the magazine
 /obj/item/ammo_box/proc/give_round(obj/item/ammo_casing/R, replace_spent = 0)

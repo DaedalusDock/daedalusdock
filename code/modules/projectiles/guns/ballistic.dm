@@ -168,9 +168,17 @@
 		context[SCREENTIP_CONTEXT_ALT_LMB] = "Empty rounds"
 
 	else if(!internal_magazine)
-		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove magazine"
+		context[SCREENTIP_CONTEXT_ALT_LMB] = "Remove [magazine_wording]"
 
 	return CONTEXTUAL_SCREENTIP_SET
+
+/obj/item/gun/ballistic/get_controls_info()
+	. = ..()
+	if(istype(bolt,  /datum/gun_bolt/no_bolt))
+		. += "Control Click - Empty rounds."
+
+	else if(!internal_magazine)
+		. += "Alt Click - Remove [magazine_wording]."
 
 /obj/item/gun/ballistic/vv_edit_var(vname, vval)
 	. = ..()
@@ -178,7 +186,8 @@
 		update_appearance()
 
 /obj/item/gun/ballistic/update_icon_state()
-	icon_state = "[base_icon_state || initial(icon_state)][sawn_off ? "_sawn" : ""]"
+	if(can_be_sawn_off)
+		icon_state = "[base_icon_state || initial(icon_state)][sawn_off ? "_sawn" : ""]"
 	return ..()
 
 /obj/item/gun/ballistic/update_overlays()
@@ -494,22 +503,20 @@
 	. = ..()
 
 	if(show_caliber_on_examine)
-		. += "It is chambered in [initial_caliber]."
-
-	if(chambered && !hidden_chambered)
-		. += "It has a round in the chamber."
-
-	if (bolt.is_locked)
-		. += "The [bolt_wording] is locked."
+		. += span_info("It is chambered in [initial_caliber].")
 
 	if (suppressed)
-		. += "It has a suppressor attached."
+		. += span_info("It has a suppressor attached.")
 
-	if(magazine && internal_magazine)
-		. += span_notice(magazine.get_ammo_desc())
+	if(user == get(loc, /mob))
+		if(chambered && !hidden_chambered)
+			. += span_info("It has a round in the chamber.")
 
-	if(can_misfire)
-		. += span_danger("You get the feeling this might explode if you fire it....")
+		if (bolt.is_locked)
+			. += span_info("The [bolt_wording] is locked.")
+
+		if(magazine && internal_magazine)
+			. += span_info((magazine.get_ammo_desc()))
 
 ///Gets the number of bullets in the gun
 /obj/item/gun/ballistic/proc/get_ammo(countchambered = TRUE)

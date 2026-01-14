@@ -8,12 +8,11 @@
 	eject_sound = 'sound/weapons/gun/revolver/empty.ogg'
 	fire_sound_volume = 90
 	dry_fire_sound = 'sound/weapons/gun/revolver/dry_fire.ogg'
+	rack_sound = 'sound/weapons/gun/revolver/hammer_cock.ogg'
+	rack_sound_volume = 30
 	casing_ejector = FALSE
 	internal_magazine = TRUE
 	bolt = /datum/gun_bolt/no_bolt
-
-	/// If TRUE, will rotate the cylinder after each shot.
-	var/auto_chamber = TRUE
 
 	var/spin_delay = 10
 	var/recent_spin = 0
@@ -23,6 +22,10 @@
 	. = ..()
 	context[SCREENTIP_CONTEXT_RMB] = "Spin barrel"
 	return CONTEXTUAL_SCREENTIP_SET
+
+/obj/item/gun/ballistic/revolver/get_controls_info()
+	. = ..()
+	. += "Right Click - Spin barrel."
 
 /obj/item/gun/ballistic/revolver/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
 	. = ..()
@@ -57,19 +60,6 @@
 
 	spin()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
-
-/obj/item/gun/ballistic/revolver/play_fire_sound()
-	var/frequency_to_use = sin((90/magazine?.max_ammo) * get_ammo(TRUE, FALSE)) // fucking REVOLVERS
-	var/click_frequency_to_use = 1 - frequency_to_use * 0.75
-	var/play_click = sqrt(magazine?.max_ammo) > get_ammo(TRUE, FALSE)
-	if(suppressed)
-		playsound(src, suppressed_sound, suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0)
-		if(play_click)
-			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', suppressed_volume, vary_fire_sound, ignore_walls = FALSE, extrarange = SILENCED_SOUND_EXTRARANGE, falloff_distance = 0, frequency = click_frequency_to_use)
-	else
-		playsound(src, fire_sound, fire_sound_volume, vary_fire_sound)
-		if(play_click)
-			playsound(src, 'sound/weapons/gun/general/ballistic_click.ogg', fire_sound_volume, vary_fire_sound, frequency = click_frequency_to_use)
 
 /obj/item/gun/ballistic/revolver/verb/spin()
 	set name = "Spin Chamber"
@@ -111,10 +101,8 @@
 /obj/item/gun/ballistic/revolver/examine(mob/user)
 	. = ..()
 	var/live_ammo = get_ammo(FALSE, FALSE)
-	if(get_ammo(FALSE, TRUE))
-		. += span_notice("[live_ammo ? live_ammo : "None"] of them are live rounds.")
-	if (current_skin)
-		. += "It can be spun with <b>alt+click</b>"
+	if(user == get(loc, /mob) && get_ammo(FALSE, TRUE))
+		. += span_info("[live_ammo ? live_ammo : "None"] of them are live rounds.")
 
 /obj/item/gun/ballistic/revolver/ignition_effect(atom/A, mob/user)
 	if(last_fire && last_fire + 15 SECONDS > world.time)
@@ -300,27 +288,50 @@
 	name = "single action revolver"
 
 	one_hand_rack = TRUE
-	auto_chamber = FALSE
+	auto_chamber = FALSE // SAAs rotate the cylinder when the hammer is cocked.
 
 	var/hammer_cocked = FALSE
+
+/obj/item/gun/ballistic/revolver/single_action/get_controls_info()
+	. = ..()
+	. += "Activate - Cock hammer."
+
+/obj/item/gun/ballistic/revolver/single_action/update_icon_state()
+	icon_state = hammer_cocked ? "[base_icon_state]_cocked" : base_icon_state
+	return ..()
+
+/obj/item/gun/ballistic/revolver/single_action/examine(mob/user)
+	. = ..()
+	if((user in viewers(4, loc)))
+		. += span_info("The hammer is [hammer_cocked ? "cocked" : "at rest."]")
+	else
+		. += span_alert("You can not see if the hammer is cocked.")
 
 /obj/item/gun/ballistic/revolver/single_action/proc/toggle_hammer(mob/user)
 	PRIVATE_PROC(TRUE)
 
 	if(hammer_cocked)
-		user?.visible_message(span_alert("[user] decocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
+		user?.visible_message(span_subtle("[user] decocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
 		hammer_cocked = FALSE
 		update_appearance()
 		return
 
-	user?.visible_message(span_alert("[user] cocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
+	user?.visible_message(span_subtle("[user] cocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	hammer_cocked = TRUE
 	update_chamber(!chambered, TRUE, TRUE)
 	bolt.post_rack()
 	update_appearance()
 
 /obj/item/gun/ballistic/revolver/single_action/rack(mob/living/user)
+	var/datum/roll_result/result = user.stat_roll(3, /datum/rpg_skill/fine_motor) // You can only fail this if you have fine-motor debuffs or just eat shit on the crit roll.
+	switch(result.outcome)
+		if(CRIT_FAILURE, FAILURE)
+			result.do_skill_sound(user)
+			to_chat(user, result.create_tooltip("Your finger slips off the hammer."))
+			return FALSE
+
 	toggle_hammer(user)
+	user.changeNext_move(CLICK_CD_RAPID)
 	return TRUE
 
 /obj/item/gun/ballistic/revolver/single_action/can_fire()
@@ -340,16 +351,17 @@
 
 /obj/item/gun/ballistic/revolver/single_action/dry_fire_feedback(mob/user)
 	if(!hammer_cocked)
-		to_chat(user, span_warning("[src]'s trigger won't budge."))
+		to_chat(user, span_warning("The trigger pulls back with no resistance."))
 		return
 	return ..()
 
 //SEC REVOLVER
 /obj/item/gun/ballistic/revolver/single_action/juno
-	name = "\improper 'Juno' single action revolver"
-	desc = "A single-action revolver."
+	name = "single action revolver 'Juno'"
+	desc = "A mass-produced single-action revolver."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
 	icon_state = "juno"
+	base_icon_state = "juno"
 	initial_caliber = CALIBER_38
 	alternative_caliber = CALIBER_357
 	alternative_ammo_misfires = FALSE

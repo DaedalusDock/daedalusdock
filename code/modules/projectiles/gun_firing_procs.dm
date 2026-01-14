@@ -286,7 +286,8 @@
 
 		// Post-fire things
 		after_firing(user, get_dist(user, target) <= 1, target, message)
-		update_chamber()
+		if(auto_chamber)
+			update_chamber()
 
 		// Make it so we can't fire as fast as the mob can click
 		fire_lockout = TRUE

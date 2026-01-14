@@ -23,6 +23,11 @@ TYPEINFO_DEF(/obj/item/ammo_box/c38)
 	max_ammo = 6
 	multiple_sprites = AMMO_BOX_PER_BULLET
 
+/obj/item/ammo_box/c38/prostrator
+	name = "speed loader (.38 Prostrator)"
+	desc = parent_type::desc + " Contains a stun cartridge to incapacitate targets with minimal bodily harm. Minimal."
+	ammo_type = /obj/item/ammo_casing/c38/prostrator
+
 /obj/item/ammo_box/c38/trac
 	name = "speed loader (.38 TRAC)"
 	desc = "Designed to quickly reload revolvers. TRAC bullets embed a tracking implant within the target's body."

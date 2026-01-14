@@ -363,7 +363,7 @@
 	new /obj/item/restraints/handcuffs(src)
 	new /obj/item/assembly/flash/handheld(src)
 	new /obj/item/ammo_box/c38(src)
-	new /obj/item/ammo_box/c38(src)
+	new /obj/item/ammo_box/c38/prostrator(src)
 	update_appearance()
 
 /obj/item/storage/belt/security/webbing

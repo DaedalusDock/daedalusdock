@@ -14,7 +14,7 @@
 
 /obj/projectile/bullet/c38
 	name = ".38 bullet"
-	damage = 25
+	damage = 35
 	ricochets_max = 2
 	ricochet_chance = 50
 	ricochet_auto_aim_angle = 10
@@ -96,6 +96,17 @@
 	if(isliving(target))
 		var/mob/living/M = target
 		M.adjust_bodytemperature(((100-blocked)/100)*(temperature - M.bodytemperature))
+
+/obj/projectile/bullet/c38/prostrator
+	name = ".38 Prostrator bullet"
+	damage = 10
+	weak_against_armor = 5
+
+	shrapnel_type = null
+
+	disorient_length = 4 SECONDS
+	disorient_damage = 90
+	disorient_status_length = 6 SECONDS
 
 // .357 (Revolver)
 

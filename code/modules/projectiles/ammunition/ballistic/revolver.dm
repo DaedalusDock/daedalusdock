@@ -27,6 +27,12 @@
 	caliber = CALIBER_38
 	projectile_type = /obj/projectile/bullet/c38
 
+/obj/item/ammo_casing/c38/prostrator
+	name = ".38 Prostrator bullet casing"
+	desc = "A .38 \"Prostrator\" bullet casing."
+	caliber = CALIBER_38
+	projectile_type = /obj/projectile/bullet/c38/prostrator
+
 /obj/item/ammo_casing/c38/trac
 	name = ".38 TRAC bullet casing"
 	desc = "A .38 \"TRAC\" bullet casing."

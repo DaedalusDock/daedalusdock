@@ -32,21 +32,21 @@
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/execute()
 	if(!initialize_logs())
-		println("<font color=red>Log system failure.</font>")
+		println("[ANSI_FG_RED]Log system failure.[ANSI_FG_RESET]")
 
 	if(!needs_login)
 		println("Account system disabled.")
 
 	else if(!initialize_accounts())
-		println("<font color=red>Unable to start account system.</font>")
+		println("[ANSI_FG_RED]Unable to start account system.[ANSI_FG_RESET]")
 
 	change_dir(containing_folder)
 
 	var/title_text = list(
-		@"<pre style='margin: 0px'> ___  _    _       _    ___  ___  ___</pre>",
-		@"<pre style='margin: 0px'>|_ _|| |_ &lt;_&gt;._ _ | |__| . \| . |/ __&gt;</pre>",
-		@"<pre style='margin: 0px'> | | | . || || &#39; || / /| | || | |\__ \</pre>",
-		@"<pre style='margin: 0px'> |_| |_|_||_||_|_||_\_\|___/`___&#39;&lt;___/</pre>",
+		"[ANSI_FG_RED]",   @" ___  _    _       _    ___  ___  ___ ", "\n",
+		"[ANSI_FG_GREEN]", @"|_ _|| |_ <_>._ _ | |__| . \| . |/ __>", "\n",
+		"[ANSI_FG_YELLOW]",@" | | | . || || ' || / /| | || | |\__ \", "\n",
+		"[ANSI_FG_BLUE]",  @" |_| |_|_||_||_|_||_\_\|___/`___'<___/", "[ANSI_FG_RESET]"
 	).Join("")
 	println(title_text)
 
@@ -172,16 +172,16 @@
 	login_user.access = text2access(account_access)
 	set_current_user(login_user)
 
-	write_log("<b>LOGIN</b>: [html_encode(account_name)] | [html_encode(account_occupation)]")
-	println("Welcome [html_encode(account_name)]!<br><b>Current Directory: [current_directory.path_to_string()]</b>")
+	write_log("[ANSI_WRAP_BOLD("LOGIN")]: [account_name] | [account_occupation]")
+	println("Welcome [html_encode(account_name)]!\n[ANSI_WRAP_BOLD("Current Directory: [current_directory.path_to_string()]")]")
 	return TRUE
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/logout()
 	if(!current_user)
-		print_error("<b>Error:</b> Account system inactive.")
+		print_error("[ANSI_WRAP_BOLD("Error")]: Account system inactive.")
 		return FALSE
 
-	write_log("<b>LOGOUT:</b> [html_encode(current_user.registered_name)]")
+	write_log("[ANSI_WRAP_BOLD("LOGOUT")]: [current_user.registered_name]")
 	set_current_user(null)
 	return TRUE
 
@@ -189,7 +189,7 @@
 	var/datum/c4_file/folder/account_dir = parse_directory("users")
 	if(!istype(account_dir))
 		if(account_dir && !account_dir.containing_folder.try_delete_file(account_dir))
-			print_error("<b>Error:</b> Unable to write account folder.")
+			print_error("[ANSI_WRAP_BOLD("Error")]: Unable to write account folder.")
 			return FALSE
 
 		account_dir = new
@@ -197,7 +197,7 @@
 
 		if(!containing_folder.try_add_file(account_dir))
 			qdel(account_dir)
-			print_error("<b>Error:</b> Unable to write account folder.")
+			print_error("[ANSI_WRAP_BOLD("Error")]: Unable to write account folder.")
 			return FALSE
 
 		RegisterSignal(account_dir, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_COMPUTER4_FILE_REMOVED), PROC_REF(user_folder_gone))
@@ -205,7 +205,7 @@
 	var/datum/c4_file/user/user_data = account_dir.get_file("admin", FALSE)
 	if(!istype(user_data))
 		if(user_data && !user_data.containing_folder.try_delete_file(user_data))
-			print_error("<b>Error:</b> Unable to write account folder.")
+			print_error("[ANSI_WRAP_BOLD("Error")]: Unable to write account folder.")
 			return FALSE
 
 		user_data = new
@@ -213,7 +213,7 @@
 
 		if(!account_dir.try_add_file(user_data))
 			qdel(user_data)
-			print_error("<b>Error:</b> Unable to write account file.")
+			print_error("[ANSI_WRAP_BOLD("Error")]: Unable to write account file.")
 			return FALSE
 
 		//set_current_user(user_data)
@@ -255,7 +255,7 @@
 	command_log = log_file
 	RegisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_PARENT_QDELETING), PROC_REF(log_file_gone))
 
-	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
+	log_file.data += "\n[ANSI_WRAP_BOLD("STARTUP")]: [stationtime2text()], [stationdate2text()]"
 	return TRUE
 
 

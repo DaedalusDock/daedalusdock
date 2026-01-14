@@ -346,8 +346,8 @@
 
 //SEC REVOLVER
 /obj/item/gun/ballistic/revolver/single_action/juno
-	name = "\improper 'Juno' Single-Action Revolver"
-	desc = "An incredibly durable .38 caliber single action revolver. First manufactured by Europan Arms for use onboard submarines, it's seen common use to this day due to being easy to manufacture and maintain."
+	name = "\improper 'Juno' single action revolver"
+	desc = "A single-action revolver."
 	mag_type = /obj/item/ammo_box/magazine/internal/cylinder/rev38
 	icon_state = "juno"
 	initial_caliber = CALIBER_38

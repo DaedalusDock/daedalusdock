@@ -71,7 +71,7 @@
 	id_template = /datum/access_template/job/security_officer
 	uniform = /obj/item/clothing/under/rank/security/officer
 	suit = /obj/item/clothing/suit/armor/vest/sec
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/ballistic/revolver/single_action/juno
 	backpack_contents = list(
 		/obj/item/storage/evidencebag = 1,
 		)
@@ -90,7 +90,7 @@
 		/obj/item/clothing/glasses/hud/security/sunglasses,
 		/obj/item/clothing/head/helmet,
 		/obj/item/gun/energy/disabler,
-		)
+	)
 		//The helmet is necessary because /obj/item/clothing/head/helmet/sec is overwritten in the chameleon list by the standard helmet, which has the same name and icon state
 	implants = list(/obj/item/implant/mindshield)
 

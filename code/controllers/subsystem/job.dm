@@ -413,11 +413,11 @@ SUBSYSTEM_DEF(job)
 
 	JobDebug("DO, Len: [unassigned.len]")
 
-	if(unassigned.len == 0)
-		return validate_required_jobs(required_jobs)
-
 	//Scale number of open security officer slots to population
 	setup_officer_positions()
+
+	if(unassigned.len == 0)
+		return validate_required_jobs(required_jobs)
 
 	//Jobs will have fewer access permissions if the number of players exceeds the threshold defined in game_options.txt
 	var/mat = CONFIG_GET(number/minimal_access_threshold)
@@ -662,7 +662,8 @@ SUBSYSTEM_DEF(job)
 	var/ssc = CONFIG_GET(number/security_scaling_coeff)
 	if(ssc > 0)
 		if(J.spawn_positions > 0)
-			var/officer_positions = min(12, max(J.spawn_positions, round(unassigned.len / ssc))) //Scale between configured minimum and 12 officers
+			//Scale between configured minimum and 12 officers
+			var/officer_positions = clamp(round(unassigned.len / ssc), J.spawn_positions, 12)
 			JobDebug("Setting open security officer positions to [officer_positions]")
 			J.total_positions = officer_positions
 			J.spawn_positions = officer_positions

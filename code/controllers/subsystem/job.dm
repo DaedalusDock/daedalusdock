@@ -673,9 +673,10 @@ SUBSYSTEM_DEF(job)
 	if(equip_needed < 0) // -1: infinite available slots
 		equip_needed = 12
 
-	for(var/i=equip_needed-5, i>0, i--)
+	for(var/i in equip_needed to 1 step -1)
 		if(!GLOB.secequipment.len)
 			break //We ran out of spare locker spawns!
+
 		var/turf/spawnloc = pick_n_take(GLOB.secequipment)
 		new /obj/structure/closet/secure_closet/security/sec(spawnloc)
 

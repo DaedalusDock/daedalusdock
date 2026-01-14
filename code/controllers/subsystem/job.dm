@@ -673,12 +673,10 @@ SUBSYSTEM_DEF(job)
 		equip_needed = 12
 
 	for(var/i=equip_needed-5, i>0, i--)
-		if(GLOB.secequipment.len)
-			var/spawnloc = GLOB.secequipment[1]
-			new /obj/structure/closet/secure_closet/security/sec(spawnloc)
-			GLOB.secequipment -= spawnloc
-		else //We ran out of spare locker spawns!
-			break
+		if(!GLOB.secequipment.len)
+			break //We ran out of spare locker spawns!
+		var/turf/spawnloc = pick_n_take(GLOB.secequipment)
+		new /obj/structure/closet/secure_closet/security/sec(spawnloc)
 
 /datum/controller/subsystem/job/proc/HandleFeedbackGathering()
 	for(var/datum/job/job as anything in joinable_occupations)

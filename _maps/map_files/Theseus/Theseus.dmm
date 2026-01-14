@@ -9958,6 +9958,7 @@
 /area/station/maintenance/starboard/fore)
 "dzn" = (
 /obj/machinery/airalarm/directional/east,
+/obj/effect/landmark/secequipment,
 /turf/open/floor/iron,
 /area/station/security/lockers)
 "dzo" = (
@@ -28247,6 +28248,7 @@
 /area/station/commons/vacant_room/commissary)
 "kgp" = (
 /obj/item/radio/intercom/directional/north,
+/obj/effect/landmark/secequipment,
 /turf/open/floor/iron,
 /area/station/security/lockers)
 "kgt" = (
@@ -28662,6 +28664,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/station/medical/chemistry)
+"koo" = (
+/obj/effect/landmark/secequipment,
+/turf/open/floor/iron,
+/area/station/security/lockers)
 "kop" = (
 /obj/structure/reagent_dispensers/watertank,
 /obj/machinery/firealarm/directional/west,
@@ -31088,10 +31094,10 @@
 /turf/open/floor/plating,
 /area/station/maintenance/port)
 "leQ" = (
-/obj/structure/closet/secure_closet/security/sec,
 /obj/effect/turf_decal/trimline/red/corner{
 	dir = 1
 	},
+/obj/effect/landmark/secequipment,
 /turf/open/floor/iron,
 /area/station/security/lockers)
 "lfh" = (
@@ -34494,8 +34500,8 @@
 /turf/open/floor/iron,
 /area/station/security/office)
 "mna" = (
-/obj/structure/closet/secure_closet/security/sec,
 /obj/effect/turf_decal/trimline/red/corner,
+/obj/effect/landmark/secequipment,
 /turf/open/floor/iron,
 /area/station/security/lockers)
 "mnq" = (
@@ -37809,6 +37815,7 @@
 "nuU" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
+/obj/structure/closet/secure_closet/security/sec,
 /turf/open/floor/iron/dark,
 /area/station/security/office/hall)
 "nvd" = (
@@ -59150,10 +59157,6 @@
 	},
 /turf/open/floor/iron,
 /area/station/hallway/primary/central/fore)
-"uXJ" = (
-/obj/structure/closet/secure_closet/security/sec,
-/turf/open/floor/iron,
-/area/station/security/lockers)
 "uXR" = (
 /obj/machinery/airalarm/directional/east,
 /obj/machinery/disposal/bin,
@@ -59806,8 +59809,8 @@
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/nuke_storage)
 "vit" = (
-/obj/structure/closet/secure_closet/security/sec,
 /obj/machinery/light/directional/west,
+/obj/effect/landmark/secequipment,
 /turf/open/floor/iron,
 /area/station/security/lockers)
 "vix" = (
@@ -60284,11 +60287,11 @@
 /turf/open/floor/iron,
 /area/station/security/checkpoint/engineering)
 "vpY" = (
-/obj/structure/closet/secure_closet/security/sec,
 /obj/machinery/camera/autoname/directional/south,
 /obj/effect/turf_decal/trimline/red/corner{
 	dir = 4
 	},
+/obj/effect/landmark/secequipment,
 /turf/open/floor/iron,
 /area/station/security/lockers)
 "vqf" = (
@@ -97819,7 +97822,7 @@ wZf
 wZf
 wZf
 mna
-uXJ
+koo
 rsY
 vit
 vpY
@@ -98079,7 +98082,7 @@ kgp
 nfi
 tuM
 pdK
-prr
+koo
 rUK
 mix
 pNg
@@ -98850,7 +98853,7 @@ olv
 prr
 prr
 prr
-uXJ
+koo
 rUK
 mft
 tjG

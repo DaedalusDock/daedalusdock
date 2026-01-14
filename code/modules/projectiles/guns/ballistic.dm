@@ -89,7 +89,7 @@
 	///Phrasing of the magazine in examine and notification messages; ex: magazine, box, etx
 	var/magazine_wording = "magazine"
 	///Phrasing of the cartridge in examine and notification messages; ex: bullet, shell, dart, etc.
-	var/cartridge_wording = "bullet"
+	var/cartridge_wording = "cartridge"
 	/// If TRUE, will show the caliber name on examine. Set to false for things with fake calibers like bows and the tentacle "gun".
 	var/show_caliber_on_examine = TRUE
 

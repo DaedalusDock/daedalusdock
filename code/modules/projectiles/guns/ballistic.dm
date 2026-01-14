@@ -531,11 +531,12 @@
 /obj/item/gun/ballistic/proc/get_ammo_list(countchambered = TRUE, drop_all = FALSE)
 	var/list/rounds = list()
 	if(chambered && countchambered)
-		rounds.Add(chambered)
+		rounds += chambered
 		if(drop_all)
 			chambered = null
+
 	if(magazine)
-		rounds.Add(magazine.ammo_list(drop_all))
+		rounds += magazine.ammo_list(drop_all)
 	return rounds
 
 #define BRAINS_BLOWN_THROW_RANGE 3

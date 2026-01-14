@@ -9,7 +9,7 @@
 	fire_sound_volume = 90
 	dry_fire_sound = 'sound/weapons/gun/revolver/dry_fire.ogg'
 	rack_sound = 'sound/weapons/gun/revolver/hammer_cock.ogg'
-	rack_sound_volume = 30
+	rack_sound_volume = 15
 	casing_ejector = FALSE
 	internal_magazine = TRUE
 	bolt = /datum/gun_bolt/no_bolt
@@ -89,6 +89,42 @@
 	if(.)
 		C.spin()
 		chamber_round(spin_cylinder = FALSE)
+
+/obj/item/gun/ballistic/revolver/verb/inspect_cylinder()
+	set name = "Inspect Cylinder"
+	set category = "Object"
+	set desc = "Inspect the contents of the cylinder."
+	set waitfor = FALSE
+
+	if(!isliving(usr) || !usr.canUseTopic(src, USE_IGNORE_TK|USE_CLOSE|USE_NEED_HANDS))
+		return
+
+	var/mob/living/user = usr
+	var/inspected_chamber = 1
+	user.visible_message(span_notice("[user] begins inspecting [src]'s cylinder."))
+
+	while(inspected_chamber <= length(magazine.stored_ammo) && user.canUseTopic(src, USE_IGNORE_TK|USE_CLOSE|USE_NEED_HANDS))
+
+		//0.2 seconds at 18 fine motor, 2 seconds at 3
+		var/inspect_delay = 1 SECONDS * user.stats.get_skill_as_scalar(/datum/rpg_skill/fine_motor, 5, inverse = TRUE)
+
+		if(!do_after(user, src, inspect_delay, DO_IGNORE_USER_LOC_CHANGE|DO_RESTRICT_CLICKING|DO_PUBLIC, display = src))
+			return
+
+		playsound(src, 'sound/weapons/gun/revolver/load_bullet.ogg', 50, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
+
+		var/obj/item/ammo_casing/casing = magazine.stored_ammo[inspected_chamber]
+		if(!casing)
+			to_chat(user, span_obviousnotice("The [thtotext(inspected_chamber)] chamber is empty."))
+		else
+			var/casing_str
+			if(!casing.loaded_projectile)
+				casing_str = "empty [casing.name]"
+			else
+				casing_str = "loaded [casing.name]"
+			to_chat(user, span_obviousnotice("The [thtotext(inspected_chamber)] chamber has \a [casing_str]."))
+
+		inspected_chamber++
 
 /obj/item/gun/ballistic/revolver/get_ammo(countchambered = FALSE, countempties = TRUE)
 	var/boolets = 0 //mature var names for mature people

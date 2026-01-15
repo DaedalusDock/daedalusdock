@@ -150,7 +150,8 @@
 						to_chat(user, result.create_tooltip("Your thumb slips, and the hammer strikes the cartridge. Consider not disarming a firearm with one hand."))
 						do_fire_gun(shot_target, user, bonus_spread = 30)
 						log_combat(user, shot_target, "caused a misfire due to one-handed decocking towards", src)
-						user.dropItemToGround(src)
+						if(user.dropItemToGround(src))
+							safe_throw_at(get_edge_target_turf(src, REVERSE_DIR(user.dir)), rand(1, 3), 3)
 						return
 
 		user?.visible_message(span_subtle("[user] decocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)

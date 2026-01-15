@@ -28,7 +28,6 @@
 	context[SCREENTIP_CONTEXT_RMB] = "Spin barrel"
 	return CONTEXTUAL_SCREENTIP_SET
 
-
 /obj/item/gun/ballistic/revolver/get_controls_info()
 	. = ..()
 	. += "Right Click - Spin barrel."
@@ -46,7 +45,7 @@
 	if(double_action && !hammer_cocked)
 		toggle_hammer() // Don't pass user, we don't care about the visible_message
 
-/obj/item/gun/ballistic/revolver/can_fire()
+/obj/item/gun/ballistic/revolver/can_fire(check_lockout = FALSE)
 	if(!double_action && !hammer_cocked)
 		return FALSE
 	return ..()

@@ -364,7 +364,11 @@
 	unwield(user)
 	eject_magazine(user, TRUE)
 
-/obj/item/gun/ballistic/can_fire()
+/obj/item/gun/ballistic/can_fire(check_lockout = FALSE)
+	. = ..()
+	if(!.)
+		return
+
 	return chambered?.loaded_projectile
 
 /obj/item/gun/ballistic/attackby(obj/item/A, mob/user, params)

@@ -37,7 +37,10 @@
 		return
 	. = ..()
 
-/obj/item/gun/magic/can_fire()
+/obj/item/gun/magic/can_fire(check_lockout = FALSE)
+	. = ..()
+	if(!.)
+		return
 	return charges
 
 /obj/item/gun/magic/recharge_newshot()

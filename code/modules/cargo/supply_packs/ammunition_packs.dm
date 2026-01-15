@@ -35,6 +35,17 @@
 	)
 	crate_name = ".38 special crate"
 
+/datum/supply_pack/ammunition/c38_prostrator
+	name = ".38 Prostrator Speedloaders"
+	desc = "Contains three speedloaders of .38 Prostrator"
+	cost = PAYCHECK_ASSISTANT * 5 + CARGO_CRATE_VALUE
+	contains = list(
+		/obj/item/ammo_box/c38,
+		/obj/item/ammo_box/c38,
+		/obj/item/ammo_box/c38,
+	)
+	crate_name = ".38 prostrator crate"
+
 /datum/supply_pack/ammunition/c38_specialer
 	name = ".38 Special-er Speedloaders"
 	desc = "Contains several speedloaders for experimental rounds of the .38 Special caliber."

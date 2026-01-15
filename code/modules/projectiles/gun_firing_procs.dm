@@ -133,21 +133,19 @@
 	if(tk_firing(user))
 		if(message)
 			visible_message(
-				span_danger("[src] fires itself[pointblank ? " point blank at [pbtarget]!" : "!"]"),
-				blind_message = span_hear("You hear a gunshot!"),
+				span_danger("[src] fires itself[pointblank ? " point blank at <b>[pbtarget]</b>." : "."]"),
+				blind_message = span_hear("You hear a gunshot."),
 				vision_distance = COMBAT_MESSAGE_RANGE
 			)
 
 	else if(pointblank)
 		if(message)
 			user.visible_message(
-				span_danger("[user] fires [src] point blank at [pbtarget]!"),
-				span_danger("You fire [src] point blank at [pbtarget]!"),
-				span_hear("You hear a gunshot!"),
+				span_danger("<b>[user]</b> fires <b>[src]</b> point blank at <b>[pbtarget]</b>."),
+				null,
+				span_hear("You hear a gunshot."),
 				COMBAT_MESSAGE_RANGE,
-				pbtarget
 			)
-			to_chat(pbtarget, span_userdanger("[user] fires [src] point blank at you!"))
 
 		/// Apply pointblank knockback to the target
 		if(pb_knockback > 0 && ismob(pbtarget))
@@ -158,10 +156,9 @@
 	else if(!tk_firing(user))
 		if(message)
 			user.visible_message(
-					span_danger("[user] fires [src]!"),
-					blind_message = span_hear("You hear a gunshot!"),
-					vision_distance = COMBAT_MESSAGE_RANGE,
-					ignored_mobs = user
+				span_danger("<b>[user]</b> fires [src]."),
+				blind_message = span_hear("You hear a gunshot."),
+				vision_distance = COMBAT_MESSAGE_RANGE,
 			)
 
 	if(smoking_gun)

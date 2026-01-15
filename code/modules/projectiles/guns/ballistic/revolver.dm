@@ -43,7 +43,7 @@
 /obj/item/gun/ballistic/revolver/on_trigger_pull(atom/target, mob/user)
 	. = ..()
 	if(double_action && !hammer_cocked)
-		toggle_hammer() // Don't pass user, we don't care about the visible_message
+		toggle_hammer()
 
 /obj/item/gun/ballistic/revolver/can_fire(check_lockout = FALSE)
 	if(!double_action && !hammer_cocked)
@@ -104,11 +104,54 @@
 	user.changeNext_move(CLICK_CD_RAPID)
 	return TRUE
 
+/obj/item/gun/ballistic/revolver/on_disarm_attempt(mob/living/user, mob/living/attacker)
+	if(!hammer_cocked)
+		return // Gun safety!
+	return ..()
+
+// Delicious misfires
+/obj/item/gun/ballistic/revolver/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+	. = ..()
+	if(!isturf(loc)) // Caught, deleted, idk man.
+		return
+
+	if(double_action && !hammer_cocked) // We're going to assume the double action revolvers have standard safety features.
+		return
+
+	if(!prob(10))
+		return
+
+	var/atom/shot_target
+
+	if(!isturf(hit_atom) && prob(30))
+		shot_target = hit_atom
+
+	if(!shot_target)
+		shot_target = get_random_perimeter_turf(loc, rand(3, 10))
+
+	if(do_fire_gun(shot_target, null, bonus_spread = 10))
+		if(throwingdatum.thrower)
+			log_combat(throwingdatum.thrower, shot_target, "threw a gun and it discharged at")
+
 /// Toggles the hammer. If the hammer is to be cocked, it rotates the cylinder and loads the round in that chamber, if there is one.
 /obj/item/gun/ballistic/revolver/proc/toggle_hammer(mob/user)
 	PRIVATE_PROC(TRUE)
 
 	if(hammer_cocked)
+		if(isliving(user) && chambered?.loaded_projectile)
+			var/mob/living/living_user = user
+			if(!wielded) // One-handed decocking is generally ill-advised
+				var/datum/roll_result/result = living_user.stat_roll(7, /datum/rpg_skill/fine_motor)
+				switch(result.outcome)
+					if(CRIT_FAILURE, FAILURE)
+						var/turf/shot_target = get_edge_target_turf(user, user.dir)
+						result.do_skill_sound(user)
+						to_chat(user, result.create_tooltip("Your thumb slips, and the hammer strikes the cartridge. Consider not disarming a firearm with one hand."))
+						do_fire_gun(shot_target, user, bonus_spread = 30)
+						log_combat(user, shot_target, "caused a misfire due to one-handed decocking towards", src)
+						user.dropItemToGround(src)
+						return
+
 		user?.visible_message(span_subtle("[user] decocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
 		hammer_cocked = FALSE
 		update_appearance()

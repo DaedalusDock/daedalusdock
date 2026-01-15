@@ -400,7 +400,7 @@ TYPEINFO_DEF(/obj/item/gun)
 
 /obj/item/gun/on_disarm_attempt(mob/living/user, mob/living/attacker)
 	var/list/turfs = list()
-	for(var/turf/T in view())
+	for(var/turf/T in view(src))
 		turfs += T
 
 	if(!length(turfs))
@@ -409,8 +409,8 @@ TYPEINFO_DEF(/obj/item/gun)
 	var/turf/shoot_to = pick(turfs)
 	if(do_fire_gun(shoot_to, user, message = FALSE, bonus_spread = 10))
 		user.visible_message(
-			span_danger("\The [src] goes off during the struggle!"),
-			blind_message = span_hear("You hear a gunshot!")
+			span_danger("[src] goes off during the struggle."),
+			blind_message = span_hear("You hear a gunshot.")
 		)
 		log_combat(attacker, user, "caused a misfire with a disarm")
 		return TRUE

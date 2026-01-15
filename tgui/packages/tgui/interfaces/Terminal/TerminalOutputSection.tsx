@@ -45,10 +45,11 @@ export const TerminalOutputSection = (props: TerminalOutputSectionProps) => {
       container_id="terminalOutput"
     >
       <Box
-        fontFamily="Consolas"
+        fontFamily="'IBM VGA 9x16', 'Consolas'"
         height="100%"
         color={fontColor}
-        fontSize="1.2em"
+        fontSize="16px"
+        lineHeight="16px"
         preserveWhitespace
         dangerouslySetInnerHTML={{ __html: fancyAnsi.toHtml(fixed_html) }}
       />

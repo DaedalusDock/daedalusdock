@@ -95,7 +95,7 @@
 		var/name_length = length(file.name)
 		if(name_length < longest_name_length)
 			if(isnull(cache_spaces[name_length]))
-				cache_spaces[name_length] = jointext(new /list(longest_name_length - name_length + 1), "&nbsp")
+				cache_spaces[name_length] = jointext(new /list(longest_name_length - name_length + 1), " ")
 
 			str = "[cache_spaces[name_length]][str]"
 
@@ -168,7 +168,7 @@
 /// Rename a file
 /datum/shell_command/thinkdos/rename
 	aliases = list("move","mv", "rename", "ren")
-	help_text = "Moves or renames a file or folder.\nUsage: 'move \[options?\] \[path\] \[destination path\]'\n\nSee 'cd' for more information.\n-f, --force &nbsp&nbsp&nbsp&nbsp&nbsp&nbspOverwrite any existing files in the destination location."
+	help_text = "Moves or renames a file or folder.\nUsage: 'move \[options?\] \[path\] \[destination path\]'\n\nSee 'cd' for more information.\n-f, --force       Overwrite any existing files in the destination location."
 
 /datum/shell_command/thinkdos/rename/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(length(arguments) != 2)
@@ -230,7 +230,7 @@
 /// Copy a file (opens can of worms and begins eating them).
 /datum/shell_command/thinkdos/copy
 	aliases = list("copy","cp")
-	help_text = "Copies a file to another location.\nUsage: 'move \[options?\] \[path\] \[destination path\]'\n\nSee 'cd' for more information.\n-f, --force &nbsp&nbsp&nbsp&nbsp&nbsp&nbspOverwrite any existing files in the destination location."
+	help_text = "Copies a file to another location.\nUsage: 'move \[options?\] \[path\] \[destination path\]'\n\nSee 'cd' for more information.\n-f, --force       Overwrite any existing files in the destination location."
 
 /datum/shell_command/thinkdos/copy/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(length(arguments) != 2)
@@ -305,8 +305,8 @@
 		"Usage: 'delete \[options?\] \[path\]'",
 		"\nSee 'cd' for more information.",
 	)
-	help_list += "[fit_with("-f, --force", 20, "&nbsp", TRUE)]Overwrite any existing files in the destination location."
-	help_list += "[fit_with("-r, -R, --recursive", 20, "&nbsp", TRUE)]Allow deletion of folders."
+	help_list += "[fit_with("-f, --force", 20, " ", TRUE)]Overwrite any existing files in the destination location."
+	help_list += "[fit_with("-r, -R, --recursive", 20, " ", TRUE)]Allow deletion of folders."
 	help_text = jointext(help_list, "\n")
 
 /datum/shell_command/thinkdos/delete/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
@@ -462,7 +462,7 @@
 
 /datum/shell_command/thinkdos/tree
 	aliases = list("tree")
-	help_text = "Displays the file system structure relative to a directory.\nUsage: 'tree \[options?\] \[directory?\]'\n\n-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
+	help_text = "Displays the file system structure relative to a directory.\nUsage: 'tree \[options?\] \[directory?\]'\n\n-f, --file       Display files."
 
 /datum/shell_command/thinkdos/tree/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/datum/c4_file/folder/targeted_dir = system.parse_directory(jointext(arguments, " "), system.current_directory)
@@ -479,7 +479,7 @@
 	system.println(jointext(output, "\n"))
 
 /datum/shell_command/thinkdos/tree/proc/search_dir(datum/c4_file/folder/folder, list/output, show_files, depth)
-	var/spaces = jointext(new /list((depth * 2) + 1), "&nbsp")
+	var/spaces = jointext(new /list((depth * 2) + 1), " ")
 
 	for(var/datum/c4_file/file as anything in folder.contents)
 		var/is_folder = istype(file, /datum/c4_file/folder)
@@ -504,9 +504,9 @@
 		"Manage background processes.",
 		"Usage: 'backprog \[argument 1\] \[argument 2?\]'",
 	)
-	help_list += "[fit_with("k, kill", 20, "&nbsp", TRUE)]Terminate a background process."
-	help_list += "[fit_with("s, switch", 20, "&nbsp", TRUE)]Focus a background process."
-	help_list += "[fit_with("v, view", 20, "&nbsp", TRUE)]Display background processes."
+	help_list += "[fit_with("k, kill", 20, " ", TRUE)]Terminate a background process."
+	help_list += "[fit_with("s, switch", 20, " ", TRUE)]Focus a background process."
+	help_list += "[fit_with("v, view", 20, " ", TRUE)]Display background processes."
 	help_text = jointext(help_list, "\n")
 
 /datum/shell_command/thinkdos/backprog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)

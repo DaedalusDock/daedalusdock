@@ -35,18 +35,15 @@
 	system.println(title_text)
 	system.println("Welcome to DocDock, type !help to get started.")
 
-/datum/c4_file/terminal_program/notepad/parse_cmdline(text)
-	return splittext(text, " ")
-
 /datum/c4_file/terminal_program/notepad/std_in(text)
 	. = ..()
-	var/list/arguments = parse_cmdline(text)
+	var/list/arguments = splittext(text, " ")
 	var/command = arguments[1]
 	arguments.Cut(1,2)
 
 	var/datum/c4_file/terminal_program/operating_system/os = get_os()
 
-	if(command[1] == "!")
+	if(text[1] == "!")
 		command = copytext(command, 2)
 		for(var/datum/shell_command/potential_command as anything in edit_commands)
 			if(potential_command.try_exec(command, os, src, arguments, null))

@@ -135,7 +135,7 @@
 	if(!command_log || drive.read_only)
 		return FALSE
 
-	command_log.data += text
+	command_log.data += "[text]\n"
 	return TRUE
 
 /// Write to the command log if it's enabled, then print to the screen.
@@ -255,7 +255,7 @@
 	command_log = log_file
 	RegisterSignal(command_log, list(COMSIG_COMPUTER4_FILE_RENAMED, COMSIG_COMPUTER4_FILE_ADDED, COMSIG_PARENT_QDELETING), PROC_REF(log_file_gone))
 
-	log_file.data += "\n[ANSI_WRAP_BOLD("STARTUP")]: [stationtime2text()], [stationdate2text()]"
+	log_file.data += "[ANSI_WRAP_BOLD("STARTUP")]: [stationtime2text()], [stationdate2text()]\n"
 	return TRUE
 
 

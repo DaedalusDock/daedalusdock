@@ -10,26 +10,57 @@
 	dry_fire_sound = 'sound/weapons/gun/revolver/dry_fire.ogg'
 	rack_sound = 'sound/weapons/gun/revolver/hammer_cock.ogg'
 	rack_sound_volume = 15
+
 	casing_ejector = FALSE
 	internal_magazine = TRUE
+	auto_chamber = FALSE // Revolvers rely on the hammer to cycle the cylinder.
+
 	bolt = /datum/gun_bolt/no_bolt
 
-	var/spin_delay = 10
-	var/recent_spin = 0
 	var/last_fire = 0
+	/// Double action revolvers will cock the hammer upon pulling the trigger.
+	var/double_action = TRUE
+	/// The hammer status. You better know how a revolver works if you're planning to edit this code.
+	var/hammer_cocked = FALSE
 
 /obj/item/gun/ballistic/revolver/add_context(atom/source, list/context, obj/item/held_item, mob/user)
 	. = ..()
 	context[SCREENTIP_CONTEXT_RMB] = "Spin barrel"
 	return CONTEXTUAL_SCREENTIP_SET
 
+
 /obj/item/gun/ballistic/revolver/get_controls_info()
 	. = ..()
 	. += "Right Click - Spin barrel."
+	. += "Activate - Cock hammer."
 
-/obj/item/gun/ballistic/revolver/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
+/obj/item/gun/ballistic/revolver/examine(mob/user)
+	. = ..()
+	if((user in viewers(4, loc)))
+		. += span_info("The hammer is [hammer_cocked ? "cocked" : "at rest."]")
+	else
+		. += span_alert("You can not see if the hammer is cocked.")
+
+/obj/item/gun/ballistic/revolver/on_trigger_pull(atom/target, mob/user)
+	. = ..()
+	if(double_action && !hammer_cocked)
+		toggle_hammer() // Don't pass user, we don't care about the visible_message
+
+/obj/item/gun/ballistic/revolver/can_fire()
+	if(!double_action && !hammer_cocked)
+		return FALSE
+	return ..()
+
+/obj/item/gun/ballistic/revolver/shoot_with_empty_chamber(mob/living/user)
+	. = ..()
+	if(hammer_cocked)
+		toggle_hammer()
+
+/obj/item/gun/ballistic/revolver/after_firing(mob/living/user, pointblank, atom/pbtarget, message)
 	. = ..()
 	last_fire = world.time
+	if(hammer_cocked)
+		toggle_hammer()
 
 /obj/item/gun/ballistic/revolver/chamber_round(keep_bullet, spin_cylinder = TRUE, replace_new_round)
 	if(!magazine) //if it mag was qdel'd somehow.
@@ -40,10 +71,11 @@
 	else
 		chambered = magazine.stored_ammo[1]
 
-/obj/item/gun/ballistic/revolver/shoot_with_empty_chamber(mob/living/user as mob|obj)
-	..()
-	if(auto_chamber)
-		chamber_round(spin_cylinder = TRUE)
+/obj/item/gun/ballistic/revolver/single_action/dry_fire_feedback(mob/user)
+	if(!double_action && !hammer_cocked)
+		to_chat(user, span_warning("The trigger pulls back with no resistance."))
+		return
+	return ..()
 
 /obj/item/gun/ballistic/revolver/attack_self_secondary(mob/user, modifiers)
 	. = ..()
@@ -61,6 +93,34 @@
 	spin()
 	return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
+/obj/item/gun/ballistic/revolver/rack(mob/living/user)
+	var/datum/roll_result/result = user.stat_roll(3, /datum/rpg_skill/fine_motor) // You can only fail this if you have fine-motor debuffs or just eat shit on the crit roll.
+	switch(result.outcome)
+		if(CRIT_FAILURE, FAILURE)
+			result.do_skill_sound(user)
+			to_chat(user, result.create_tooltip("Your finger slips off the hammer."))
+			return FALSE
+
+	toggle_hammer(user)
+	user.changeNext_move(CLICK_CD_RAPID)
+	return TRUE
+
+/// Toggles the hammer. If the hammer is to be cocked, it rotates the cylinder and loads the round in that chamber, if there is one.
+/obj/item/gun/ballistic/revolver/proc/toggle_hammer(mob/user)
+	PRIVATE_PROC(TRUE)
+
+	if(hammer_cocked)
+		user?.visible_message(span_subtle("[user] decocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
+		hammer_cocked = FALSE
+		update_appearance()
+		return
+
+	user?.visible_message(span_subtle("[user] cocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
+	hammer_cocked = TRUE
+	update_chamber(!chambered, TRUE, TRUE)
+	bolt.post_rack()
+	update_appearance()
+
 /obj/item/gun/ballistic/revolver/verb/spin()
 	set name = "Spin Chamber"
 	set category = "Object"
@@ -71,17 +131,14 @@
 	if(M.stat || !M.is_holding(src))
 		return
 
-	if (recent_spin > world.time)
+	if (world.time < usr.next_move)
 		return
 
-	recent_spin = world.time + spin_delay
-
 	if(do_spin())
+		usr.changeNext_move(CLICK_CD_MELEE)
 		playsound(usr, SFX_REVOLVER_SPIN, 30, FALSE)
 		usr.visible_message(span_notice("[usr] spins [src]'s chamber."))
 		return TRUE
-	else
-		verbs -= /obj/item/gun/ballistic/revolver/verb/spin
 
 /obj/item/gun/ballistic/revolver/proc/do_spin()
 	var/obj/item/ammo_box/magazine/internal/cylinder/C = magazine
@@ -161,7 +218,7 @@
 
 /obj/item/gun/ballistic/revolver/detective/examine(mob/user)
 	. = ..()
-	var/datum/roll_result/result = user.get_examine_result("detgun_examine",)
+	var/datum/roll_result/result = user.get_examine_result("detgun_examine", 13, /datum/rpg_skill/fourteen_eyes)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)
 		. += result.create_tooltip("No mere firearm – a cultural artifact. An all-time classic, chambered in .38 Special and packing six rounds, perfect for six criminals. ", body_only = TRUE)
@@ -171,7 +228,7 @@
 	if(user.mind?.assigned_role?.title != JOB_DETECTIVE)
 		return
 
-	var/datum/roll_result/result = user.get_examine_result("detgun_suicide_flavor", /datum/rpg_skill/fourteen_eyes, only_once = TRUE)
+	var/datum/roll_result/result = user.get_examine_result("detgun_suicide_flavor", 13, /datum/rpg_skill/electric_body, only_once = TRUE)
 	if(result?.outcome >= SUCCESS)
 		result.do_skill_sound(user)
 		to_chat(
@@ -319,76 +376,12 @@
 		user.drop_all_held_items()
 		user.Paralyze(80)
 
-
 /obj/item/gun/ballistic/revolver/single_action
 	name = "single action revolver"
-
-	one_hand_rack = TRUE
-	auto_chamber = FALSE // SAAs rotate the cylinder when the hammer is cocked.
-
-	var/hammer_cocked = FALSE
-
-/obj/item/gun/ballistic/revolver/single_action/get_controls_info()
-	. = ..()
-	. += "Activate - Cock hammer."
+	double_action = FALSE
 
 /obj/item/gun/ballistic/revolver/single_action/update_icon_state()
 	icon_state = hammer_cocked ? "[base_icon_state]_cocked" : base_icon_state
-	return ..()
-
-/obj/item/gun/ballistic/revolver/single_action/examine(mob/user)
-	. = ..()
-	if((user in viewers(4, loc)))
-		. += span_info("The hammer is [hammer_cocked ? "cocked" : "at rest."]")
-	else
-		. += span_alert("You can not see if the hammer is cocked.")
-
-/obj/item/gun/ballistic/revolver/single_action/proc/toggle_hammer(mob/user)
-	PRIVATE_PROC(TRUE)
-
-	if(hammer_cocked)
-		user?.visible_message(span_subtle("[user] decocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
-		hammer_cocked = FALSE
-		update_appearance()
-		return
-
-	user?.visible_message(span_subtle("[user] cocks the hammer of [src]."), vision_distance = COMBAT_MESSAGE_RANGE)
-	hammer_cocked = TRUE
-	update_chamber(!chambered, TRUE, TRUE)
-	bolt.post_rack()
-	update_appearance()
-
-/obj/item/gun/ballistic/revolver/single_action/rack(mob/living/user)
-	var/datum/roll_result/result = user.stat_roll(3, /datum/rpg_skill/fine_motor) // You can only fail this if you have fine-motor debuffs or just eat shit on the crit roll.
-	switch(result.outcome)
-		if(CRIT_FAILURE, FAILURE)
-			result.do_skill_sound(user)
-			to_chat(user, result.create_tooltip("Your finger slips off the hammer."))
-			return FALSE
-
-	toggle_hammer(user)
-	user.changeNext_move(CLICK_CD_RAPID)
-	return TRUE
-
-/obj/item/gun/ballistic/revolver/single_action/can_fire()
-	if(!hammer_cocked)
-		return FALSE
-	return ..()
-
-/obj/item/gun/ballistic/revolver/single_action/shoot_with_empty_chamber(mob/living/user)
-	. = ..()
-	if(hammer_cocked)
-		toggle_hammer()
-
-/obj/item/gun/ballistic/revolver/single_action/do_fire_gun(atom/target, mob/living/user, message, params, zone_override, bonus_spread)
-	. = ..()
-	if(hammer_cocked)
-		toggle_hammer()
-
-/obj/item/gun/ballistic/revolver/single_action/dry_fire_feedback(mob/user)
-	if(!hammer_cocked)
-		to_chat(user, span_warning("The trigger pulls back with no resistance."))
-		return
 	return ..()
 
 //SEC REVOLVER
@@ -401,3 +394,4 @@
 	initial_caliber = CALIBER_38
 	alternative_caliber = CALIBER_357
 	alternative_ammo_misfires = FALSE
+

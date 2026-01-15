@@ -199,7 +199,9 @@ TYPEINFO_DEF(/obj/item/gun)
 
 /// check if there's enough ammo/energy/whatever to shoot one time
 /// i.e if clicking would make it shoot
-/obj/item/gun/proc/can_fire()
+/obj/item/gun/proc/can_fire(check_lockout = FALSE)
+	if(check_lockout && fire_lockout)
+		return FALSE
 	return TRUE
 
 /// Check if the user is firing this gun with telekinesis.

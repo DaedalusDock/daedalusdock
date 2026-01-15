@@ -13,6 +13,9 @@
 	if(QDELETED(target) || !target.x)
 		return
 
+	if(fire_lockout)
+		return
+
 	// We're shooting, don't queue up another burst.
 	if(firing_burst)
 		return
@@ -39,6 +42,7 @@
 			return
 
 	// * AT THIS POINT, WE ARE ABLE TO PULL THE TRIGGER * //
+	on_trigger_pull(target, user) // Double action revolvers need to cock the hammer before anything happens.
 	if(!can_fire()) //Just because you can pull the trigger doesn't mean it can shoot.
 		shoot_with_empty_chamber(user)
 		try_fire_akimbo(arglist(args))
@@ -79,8 +83,21 @@
 			bonus_spread += dual_wield_spread
 			loop_counter++
 			addtimer(CALLBACK(gun, TYPE_PROC_REF(/obj/item/gun, do_fire_gun), target, user, TRUE, params, null, bonus_spread), loop_counter)
+
+
+/**
+ * Called immediately before checking can_fire(), the gun may be unable to fire at this time.
+ *
+ * Arguments:
+ * * target - The thing being shot at.
+ * * user - The mob firing the gun.
+ */
+/obj/item/gun/proc/on_trigger_pull(atom/target, mob/user)
+	return
+
 /**
  * Called before the weapon is fired, before the projectile is created.
+ * If the weapon dry fires, this won't be called.
  *
  * Arguments:
  * * target - The thing being shot at.
@@ -233,16 +250,11 @@
  * * message - If TRUE, will give chat feedback.
  */
 /obj/item/gun/proc/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
-	// We're on cooldown.
-	if(fire_lockout)
-		return
-
 	if(user)
 		SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, src, target, params, zone_override)
 		add_fingerprint(user)
 
 	SEND_SIGNAL(src, COMSIG_GUN_FIRED, user, target, params, zone_override)
-
 
 	//Vary by at least this much
 	var/base_bonus_spread = 0
@@ -274,7 +286,7 @@
 	else
 		if(!chambered)
 			shoot_with_empty_chamber(user)
-			return
+			return FALSE
 
 		sprd = round((rand(0, 1) - 0.5) * DUALWIELD_PENALTY_EXTRA_MULTIPLIER * (randomized_gun_spread + randomized_bonus_spread))
 
@@ -282,7 +294,7 @@
 		before_firing(target,user)
 		if(!chambered.fire_casing(target, user, params, , suppressed, zone_override, sprd, src))
 			shoot_with_empty_chamber(user)
-			return
+			return FALSE
 
 		// Post-fire things
 		after_firing(user, get_dist(user, target) <= 1, target, message)

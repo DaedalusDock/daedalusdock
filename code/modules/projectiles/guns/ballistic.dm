@@ -292,7 +292,7 @@
 
 ///Drops the bolt from a locked position
 /obj/item/gun/ballistic/proc/drop_bolt(mob/user = null)
-	playsound(src, bolt_drop_sound, bolt_drop_sound_volume, FALSE)
+	playsound(src, bolt_drop_sound, bolt_drop_sound_volume, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
 	if (user)
 		to_chat(user, span_notice("You drop the [bolt_wording] of [src]."))
 
@@ -312,9 +312,9 @@
 			to_chat(user, span_notice("You load [AM] into [src]."))
 
 		if (magazine.ammo_count())
-			playsound(src, load_sound, load_sound_volume, load_sound_vary)
+			playsound(src, load_sound, load_sound_volume, load_sound_vary, SHORT_RANGE_SOUND_EXTRARANGE)
 		else
-			playsound(src, load_empty_sound, load_sound_volume, load_sound_vary)
+			playsound(src, load_empty_sound, load_sound_volume, load_sound_vary, SHORT_RANGE_SOUND_EXTRARANGE)
 
 		bolt.magazine_inserted()
 		update_appearance()
@@ -332,9 +332,9 @@
 	bolt.magazine_ejected()
 
 	if (magazine.ammo_count())
-		playsound(src, eject_sound, eject_sound_volume, eject_sound_vary)
+		playsound(src, eject_sound, eject_sound_volume, eject_sound_vary, SHORT_RANGE_SOUND_EXTRARANGE)
 	else
-		playsound(src, eject_empty_sound, eject_sound_volume, eject_sound_vary)
+		playsound(src, eject_empty_sound, eject_sound_volume, eject_sound_vary, SHORT_RANGE_SOUND_EXTRARANGE)
 
 	var/obj/item/ammo_box/old_mag = magazine
 	magazine = null
@@ -393,7 +393,7 @@
 			var/num_loaded = magazine?.attempt_load_round(A, user, params, TRUE)
 			if (num_loaded)
 				to_chat(user, span_notice("You load [num_loaded] [cartridge_wording]\s into [src]."))
-				playsound(src, load_sound, load_sound_volume, load_sound_vary)
+				playsound(src, load_sound, load_sound_volume, load_sound_vary, SHORT_RANGE_SOUND_EXTRARANGE)
 
 				bolt.loaded_ammo()
 
@@ -475,7 +475,7 @@
 
 	if (!chambered && !get_ammo())
 		if (empty_alarm)
-			playsound(src, empty_alarm_sound, empty_alarm_volume, empty_alarm_vary)
+			playsound(src, empty_alarm_sound, empty_alarm_volume, empty_alarm_vary, SHORT_RANGE_SOUND_EXTRARANGE)
 			update_appearance()
 
 	bolt.after_chambering()
@@ -566,7 +566,7 @@
 			return OXYLOSS
 	else
 		user.visible_message(span_suicide("[user] is pretending to blow [user.p_their()] brain[user.p_s()] out with [src]! It looks like [user.p_theyre()] trying to commit suicide!</b>"))
-		playsound(src, dry_fire_sound, 30, TRUE)
+		playsound(src, dry_fire_sound, 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		return OXYLOSS
 
 #undef BRAINS_BLOWN_THROW_SPEED

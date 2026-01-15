@@ -180,7 +180,7 @@
 
 	if(do_spin())
 		usr.changeNext_move(CLICK_CD_MELEE)
-		playsound(usr, SFX_REVOLVER_SPIN, 30, FALSE)
+		playsound(usr, SFX_REVOLVER_SPIN, 30, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
 		usr.visible_message(span_notice("[usr] spins [src]'s chamber."))
 		return TRUE
 
@@ -190,6 +190,36 @@
 	if(.)
 		C.spin()
 		chamber_round(spin_cylinder = FALSE)
+
+
+/obj/item/gun/ballistic/revolver/verb/rotate_clockwise()
+	set name = "Rotate Clockwise"
+	set category = "Object"
+	set desc = "Rotate the cylinder clockwise."
+	set waitfor = FALSE
+
+	if(!isliving(usr) || !usr.canUseTopic(src, USE_IGNORE_TK|USE_CLOSE|USE_NEED_HANDS) || !usr.is_holding(src))
+		return
+
+	rotate_cylinder(TRUE)
+
+/obj/item/gun/ballistic/revolver/verb/rotate_counter_clockwise()
+	set name = "Rotate Counter-Clockwise"
+	set category = "Object"
+	set desc = "Rotate the cylinder counter-clockwise."
+	set waitfor = FALSE
+
+	if(!isliving(usr) || !usr.canUseTopic(src, USE_IGNORE_TK|USE_CLOSE|USE_NEED_HANDS) || !usr.is_holding(src))
+		return
+
+	rotate_cylinder()
+
+/// Rotate the cylinder and update the chamber.
+/obj/item/gun/ballistic/revolver/proc/rotate_cylinder(inverse = FALSE)
+	var/obj/item/ammo_box/magazine/internal/cylinder/C = magazine
+	C.rotate(inverse)
+	chamber_round(spin_cylinder = FALSE)
+	playsound(src, 'sound/weapons/gun/revolver/cylinder_turn.ogg', 50, FALSE, SILENCED_SOUND_EXTRARANGE)
 
 /obj/item/gun/ballistic/revolver/verb/inspect_cylinder()
 	set name = "Inspect Cylinder"
@@ -234,12 +264,6 @@
 	if (magazine)
 		boolets += magazine.ammo_count(countempties)
 	return boolets
-
-/obj/item/gun/ballistic/revolver/examine(mob/user)
-	. = ..()
-	var/live_ammo = get_ammo(FALSE, FALSE)
-	if(user == get(loc, /mob) && get_ammo(FALSE, TRUE))
-		. += span_info("[live_ammo ? live_ammo : "None"] of them are live rounds.")
 
 /obj/item/gun/ballistic/revolver/ignition_effect(atom/A, mob/user)
 	if(last_fire && last_fire + 15 SECONDS > world.time)
@@ -356,7 +380,7 @@
 		if(!can_trigger_gun(user))
 			return
 	if(target != user)
-		playsound(src, dry_fire_sound, 30, TRUE)
+		playsound(src, dry_fire_sound, 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		user.visible_message(
 			span_danger("[user.name] tries to fire \the [src] at the same time, but only succeeds at looking like an idiot."), \
 			span_danger("\The [src]'s anti-combat mechanism prevents you from firing it at anyone but yourself!"))
@@ -386,7 +410,7 @@
 				return
 
 		user.visible_message(span_danger("*click*"))
-		playsound(src, dry_fire_sound, 30, TRUE)
+		playsound(src, dry_fire_sound, 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 
 /obj/item/gun/ballistic/revolver/russian/proc/shoot_self(mob/living/carbon/human/user, affecting = BODY_ZONE_HEAD)
 	user.apply_damage(300, BRUTE, affecting)

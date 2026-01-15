@@ -22,10 +22,16 @@
 	return !(null in stored_ammo)
 
 /// Rotates the cylinder once.
-/obj/item/ammo_box/magazine/internal/cylinder/proc/rotate()
-	var/b = stored_ammo[1]
-	stored_ammo.Cut(1,2)
-	stored_ammo.Insert(0, b)
+/obj/item/ammo_box/magazine/internal/cylinder/proc/rotate(inverse = FALSE)
+	var/cache
+	if(!inverse)
+		cache = stored_ammo[1]
+		stored_ammo.Cut(1,2)
+		stored_ammo += cache
+	else
+		cache = stored_ammo[max_ammo]
+		stored_ammo.len--
+		stored_ammo.Insert(1, cache)
 
 /// Rotates the cylinder a random:tm: number of times.
 /obj/item/ammo_box/magazine/internal/cylinder/proc/spin()

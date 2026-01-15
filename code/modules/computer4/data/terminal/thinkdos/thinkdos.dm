@@ -43,10 +43,10 @@
 	change_dir(containing_folder)
 
 	var/title_text = list(
-		"[ANSI_FG_RED]",   @" ___  _    _       _    ___  ___  ___ ", "\n",
-		"[ANSI_FG_GREEN]", @"|_ _|| |_ <_>._ _ | |__| . \| . |/ __>", "\n",
-		"[ANSI_FG_YELLOW]",@" | | | . || || ' || / /| | || | |\__ \", "\n",
-		"[ANSI_FG_BLUE]",  @" |_| |_|_||_||_|_||_\_\|___/`___'<___/", "[ANSI_FG_RESET]"
+		"[ANSI_FG_RED]",    @" ___  _    _       _    ___  ___  ___ ", "\n",
+		"[ANSI_FG_YELLOW]", @"|_ _|| |_ <_>._ _ | |__| . \| . |/ __>", "\n",
+		"[ANSI_FG_BLUE]",   @" | | | . || || ' || / /| | || | |\__ \", "\n",
+		"[ANSI_FG_CYAN]",   @" |_| |_|_||_||_|_||_\_\|___/`___'<___/", "[ANSI_FG_RESET]"
 	).Join("")
 	println(title_text)
 

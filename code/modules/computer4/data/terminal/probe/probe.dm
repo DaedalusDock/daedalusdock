@@ -22,7 +22,7 @@
 	system.println("Welcome to NetProbe, type 'help' to get started.")
 
 	if(!get_adapter())
-		system.println("<b>Error:</b> No network adapter found.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] No network adapter found.")
 
 /// Getter for a network adapter.
 /datum/c4_file/terminal_program/probe/proc/get_adapter()

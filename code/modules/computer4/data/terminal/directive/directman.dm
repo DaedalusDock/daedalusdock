@@ -24,7 +24,7 @@
 	. = ..()
 
 	if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
-		system.println("<b>Error:</b> Unable to locate wireless adapter.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate wireless adapter.")
 
 	system.clear_screen(TRUE)
 	view_home()
@@ -81,7 +81,7 @@
 				system.clear_screen(TRUE)
 				if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
 					view_home()
-					system.println("<b>Error:</b> Unable to locate wireless adapter.")
+					system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate wireless adapter.")
 					return
 				view_new()
 				return TRUE
@@ -90,7 +90,7 @@
 			if(lowertext(parsed_cmdline.raw) == "s")
 				if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
 					view_home()
-					system.println("<b>Error:</b> Unable to locate wireless adapter.")
+					system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate wireless adapter.")
 					return
 
 				addtimer(CALLBACK(SSdirectives, TYPE_PROC_REF(/datum/controller/subsystem/directives, enact_directive), viewing_directive), rand(3, 10) SECONDS)

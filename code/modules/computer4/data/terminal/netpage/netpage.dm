@@ -24,10 +24,10 @@
 
 	system.clear_screen(TRUE)
 	var/title_text = list(
-		@"<pre style='margin: 0px'>      ___ ___  __        __   ___</pre>",
-		@"<pre style='margin: 0px'>|\ | |__   |  |__)  /\  / _` |__ </pre>",
-		@"<pre style='margin: 0px'>| \| |___  |  |    /~~\ \__> |___</pre>",
-	).Join("")
+		@"      ___ ___  __        __   ___",
+		@"|\ | |__   |  |__)  /\  / _` |__ ",
+		@"| \| |___  |  |    /~~\ \__> |___",
+	).Join("\n")
 	system.println(title_text)
 
 	check_for_errors()
@@ -48,18 +48,18 @@
 	var/datum/c4_file/terminal_program/operating_system/thinkdos/system = get_os()
 
 	if(!get_adapter())
-		system.println("<b>Error:</b> Unable to locate network adapter.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate network adapter.")
 		. = TRUE
 
 	if(system.needs_login)
 		return .
 
 	if(!get_reader())
-		system.println("<b>Error:</b> Unable to locate card reader.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate card reader.")
 		return TRUE
 
 	if(!get_reader().inserted_card)
-		system.println("<b>Error:</b> No card inserted.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] No card inserted.")
 		return TRUE
 
 	return FALSE

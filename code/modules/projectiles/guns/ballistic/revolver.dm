@@ -109,29 +109,30 @@
 		return // Gun safety!
 	return ..()
 
-// Delicious misfires
-/obj/item/gun/ballistic/revolver/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
-	. = ..()
-	if(!isturf(loc)) // Caught, deleted, idk man.
-		return
+// NOTE: This is not really doable until do_fire_gun() supports passing null as a user.
+// // Delicious misfires
+// /obj/item/gun/ballistic/revolver/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
+// 	. = ..()
+// 	if(!isturf(loc)) // Caught, deleted, idk man.
+// 		return
 
-	if(double_action && !hammer_cocked) // We're going to assume the double action revolvers have standard safety features.
-		return
+// 	if(double_action && !hammer_cocked) // We're going to assume the double action revolvers have standard safety features.
+// 		return
 
-	if(!prob(10))
-		return
+// 	if(!prob(10))
+// 		return
 
-	var/atom/shot_target
+// 	var/atom/shot_target
 
-	if(!isturf(hit_atom) && prob(30))
-		shot_target = hit_atom
+// 	if(!isturf(hit_atom) && prob(30))
+// 		shot_target = hit_atom
 
-	if(!shot_target)
-		shot_target = get_random_perimeter_turf(loc, rand(3, 10))
+// 	if(!shot_target)
+// 		shot_target = get_random_perimeter_turf(loc, rand(3, 10))
 
-	if(do_fire_gun(shot_target, null, bonus_spread = 10))
-		if(throwingdatum.thrower)
-			log_combat(throwingdatum.thrower, shot_target, "threw a gun and it discharged at")
+// 	if(do_fire_gun(shot_target, null, bonus_spread = 10))
+// 		if(throwingdatum.thrower)
+// 			log_combat(throwingdatum.thrower, shot_target, "threw a gun and it discharged at")
 
 /// Toggles the hammer. If the hammer is to be cocked, it rotates the cylinder and loads the round in that chamber, if there is one.
 /obj/item/gun/ballistic/revolver/proc/toggle_hammer(mob/user)

@@ -59,6 +59,12 @@ TYPEINFO_DEF(/obj/item/ammo_box/c38)
 	desc = "Designed to quickly reload revolvers. Iceblox bullets contain a cryogenic payload."
 	ammo_type = /obj/item/ammo_casing/c38/iceblox
 
+/obj/item/ammo_box/c38/blank
+	name = "speed loader (.38 Blank)"
+	desc = "Designed to quickly reload revolvers. Contains harmless blanks."
+	ammo_type = /obj/item/ammo_casing/c38/blank
+	icon_state = "38blank"
+
 /obj/item/ammo_box/c9mm
 	name = "ammo box (9mm)"
 	icon_state = "9mmbox"

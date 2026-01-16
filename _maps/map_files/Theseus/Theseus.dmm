@@ -29855,10 +29855,19 @@
 /area/station/commons/toilet/auxiliary)
 "kIH" = (
 /obj/structure/table,
-/obj/machinery/recharger{
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/item/ammo_box/c38/blank{
+	pixel_x = -11;
+	pixel_y = 10
+	},
+/obj/item/ammo_box/c38/blank{
+	pixel_x = -6;
 	pixel_y = 4
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/item/ammo_box/c38/blank{
+	pixel_x = 2;
+	pixel_y = 0
+	},
 /turf/open/floor/iron,
 /area/station/security/lockers)
 "kIR" = (

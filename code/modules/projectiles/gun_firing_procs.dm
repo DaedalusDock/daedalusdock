@@ -241,9 +241,8 @@
  * The proc for firing the gun. This won't perform any non-gun checks. Returns TRUE if a round was fired.
  *
  * Arguments:
+ * * target - The target of the shot.
  * * user - The mob firing the gun.
- * * pointblank - Is this a pointblank shot?
- * * pbtarget - If this is a pointblank shot, what is the target?
  * * message - If TRUE, will give chat feedback.
  */
 /obj/item/gun/proc/do_fire_gun(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)

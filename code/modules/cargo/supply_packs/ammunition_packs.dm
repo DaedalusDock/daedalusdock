@@ -82,11 +82,22 @@
 
 /datum/supply_pack/ammunition/c38_special/rubber
 	name = ".38 Special Rubbershot Speedloader"
-	desc = "Contains three speedloaders  of bouncy rubber .38 ammunition, for when you want to bounce your shots off anything and everything."
+	desc = "Contains three speedloaders of bouncy rubber .38 ammunition, for when you want to bounce your shots off anything and everything."
 	cost = PAYCHECK_ASSISTANT * 3.5 + CARGO_CRATE_VALUE
 	contains = list(
 		/obj/item/ammo_box/c38/match/bouncy,
 		/obj/item/ammo_box/c38/match/bouncy,
 		/obj/item/ammo_box/c38/match/bouncy,
+	)
+
+
+/datum/supply_pack/ammunition/c38_special/blank
+	name = ".38 Special Blank Speedloader"
+	desc = "Contains three speedloaders of blank .38 ammunition."
+	cost = PAYCHECK_ASSISTANT * 1.5 + CARGO_CRATE_VALUE
+	contains = list(
+		/obj/item/ammo_box/c38/blank,
+		/obj/item/ammo_box/c38/blank,
+		/obj/item/ammo_box/c38/blank,
 	)
 

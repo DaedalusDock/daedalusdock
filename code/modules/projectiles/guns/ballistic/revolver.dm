@@ -11,6 +11,7 @@
 	rack_sound = 'sound/weapons/gun/revolver/hammer_cock.ogg'
 	rack_sound_volume = 15
 
+	one_hand_rack = TRUE
 	casing_ejector = FALSE
 	internal_magazine = TRUE
 	auto_chamber = FALSE // Revolvers rely on the hammer to cycle the cylinder.

@@ -299,10 +299,10 @@
 // Gun procs.
 
 /obj/item/gun/proc/on_autofire_start(mob/living/shooter)
-	if(fire_lockout || shooter.incapacitated() || !can_trigger_gun(shooter))
+	if(shooter.incapacitated() || !can_trigger_gun(shooter))
 		return FALSE
 
-	if(!can_fire())
+	if(!can_fire(check_lockout = TRUE))
 		shoot_with_empty_chamber(shooter)
 		return FALSE
 
@@ -317,9 +317,10 @@
 
 /obj/item/gun/proc/do_autofire(datum/source, atom/target, mob/living/shooter, params)
 	SIGNAL_HANDLER
-	if(fire_lockout || shooter.incapacitated())
+	if(shooter.incapacitated())
 		return NONE
-	if(!can_fire())
+
+	if(!can_fire(check_lockout = TRUE))
 		shoot_with_empty_chamber(shooter)
 		return NONE
 

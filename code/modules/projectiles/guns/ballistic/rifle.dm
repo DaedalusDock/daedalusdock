@@ -34,7 +34,7 @@
 
 	drop_bolt(user)
 
-/obj/item/gun/ballistic/rifle/can_fire()
+/obj/item/gun/ballistic/rifle/can_fire(check_lockout = FALSE)
 	if(bolt.is_locked)
 		return FALSE
 	return ..()

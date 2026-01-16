@@ -346,7 +346,7 @@
 
 /**
  * Returns a scalar value based on the given skill's current value.
- * max_scalar defines the scalar at a skill sum of 18.
+ * max_scalar defines the scalar at a skill sum of 18, or at 3 if using inverse.
  * A skill sum of 3 will return the inverse of the max_scalar (1 / max_scalar)
 **/
 /datum/stats/proc/get_skill_as_scalar(datum/rpg_skill/skill, max_scalar = 0, inverse = FALSE)

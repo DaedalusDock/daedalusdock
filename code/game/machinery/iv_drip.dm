@@ -277,11 +277,16 @@
 	return use_internal_storage ? reagents : reagent_container?.reagents
 
 /// Rechecks the distance to the attached mob and breaks if needed.
-/obj/machinery/iv_drip/proc/check_attached_dist(datum/source)
+/obj/machinery/iv_drip/proc/check_attached_dist(instant = FALSE)
 	SIGNAL_HANDLER
 
-	if(get_dist(src, attached) > 1)
-		detach_iv(TRUE)
+	// This makes it so if you're pulling it behind you via grabbing, it doesn't fuck up. Hacky? yes.
+	spawn(0)
+		if(!attached)
+			return
+
+		if(get_dist(src, attached) > 1)
+			detach_iv(TRUE)
 
 /obj/machinery/iv_drip/verb/eject_beaker()
 	set category = "Object"

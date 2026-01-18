@@ -284,8 +284,7 @@
 /area/space)
 "bh" = (
 /obj/machinery/door/airlock/external{
-	name = "Solar Maintenance";
-	req_access_txt = "10"
+	name = "Solar Maintenance"
 	},
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
@@ -3174,6 +3173,7 @@
 "ly" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/iron/white,
 /area/station/maintenance/starboard/lesser)
 "lA" = (
@@ -3520,14 +3520,6 @@
 "mN" = (
 /turf/closed/wall,
 /area/station/engineering/main)
-"mO" = (
-/obj/structure/cable/smart_cable/color/yellow,
-/obj/machinery/power/apc/auto_name/directional/east,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/structure/overfloor_catwalk/iron_dark,
-/turf/open/floor/plating,
-/area/station/maintenance/port/aft)
 "mP" = (
 /obj/machinery/atmospherics/components/trinary/filter/atmos/plasma{
 	dir = 1
@@ -7554,13 +7546,6 @@
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/mix_input,
 /turf/open/floor/engine/vacuum,
 /area/station/engineering/atmos)
-"Bx" = (
-/obj/structure/cable/smart_cable/color/yellow,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/iron,
-/area/station/hallway/primary/central/aft)
 "By" = (
 /obj/effect/turf_decal/ported/techfloor/edges{
 	dir = 8
@@ -8088,7 +8073,6 @@
 /area/station/engineering/supermatter/room)
 "Dz" = (
 /obj/machinery/power/apc/auto_name/directional/north,
-/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "DA" = (
@@ -9353,6 +9337,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
+/obj/structure/cable/smart_cable/color/yellow,
 /turf/open/floor/plating,
 /area/station/service/kitchen)
 "HV" = (
@@ -11447,8 +11432,7 @@
 /area/station/hallway/primary/fore)
 "PB" = (
 /obj/machinery/door/airlock/engineering{
-	name = "Starboard Solar Access";
-	req_access_txt = "10"
+	name = "Starboard Solar Access"
 	},
 /obj/effect/mapping_helpers/access/any/engineering/general/airlock,
 /turf/open/floor/plating,
@@ -13158,6 +13142,12 @@
 /obj/structure/closet/secure_closet/atmospherics,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"VN" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/smart_cable/color/yellow,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/turf/open/floor/iron,
+/area/station/hallway/primary/central/aft)
 "VO" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/maintenance,
@@ -13328,8 +13318,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/door/airlock/external{
-	name = "Solar Maintenance";
-	req_access_txt = "10"
+	name = "Solar Maintenance"
 	},
 /obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
 	cycle_id = "starboard-solars-airlock"
@@ -38083,8 +38072,8 @@ Zx
 Gj
 NR
 nJ
+TJ
 Cs
-Qt
 Qt
 Qt
 gI
@@ -38340,8 +38329,8 @@ nJ
 Gg
 nJ
 nJ
-Bx
-mS
+Qt
+VN
 mS
 mS
 yd
@@ -40627,7 +40616,7 @@ un
 Ft
 Ft
 fZ
-mO
+fZ
 ti
 fZ
 fK

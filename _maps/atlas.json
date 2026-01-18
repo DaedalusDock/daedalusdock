@@ -7,5 +7,6 @@
 		{
 			"Gravity": 1
 		}
-	]
+	],
+	"run_mapping_tests": true
 }

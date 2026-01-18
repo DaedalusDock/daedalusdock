@@ -216,7 +216,7 @@
 		qdel(C)
 		return
 
-/obj/item/gun/energy/wormhole_projector/can_fire()
+/obj/item/gun/energy/wormhole_projector/can_fire(check_lockout = FALSE)
 	if(!firing_core)
 		return FALSE
 	return ..()
@@ -360,7 +360,7 @@
 		return
 	return ..()
 
-/obj/item/gun/energy/gravity_gun/can_fire()
+/obj/item/gun/energy/gravity_gun/can_fire(check_lockout = FALSE)
 	if(!firing_core)
 		return FALSE
 	return ..()

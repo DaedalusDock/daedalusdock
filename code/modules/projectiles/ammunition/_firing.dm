@@ -1,30 +1,36 @@
 /obj/item/ammo_casing/proc/fire_casing(atom/target, mob/living/user, params, distro, quiet, zone_override, spread, atom/fired_from)
 	distro += variance
-	var/targloc = get_turf(target)
-	ready_proj(target, user, quiet, zone_override, fired_from)
-	if(pellets == 1)
-		if(distro) //We have to spread a pixel-precision bullet. throw_proj was called before so angles should exist by now...
-			if(randomspread)
-				spread = round((rand() - 0.5) * distro)
-			else //Smart spread
-				spread = round(1 - 0.5) * distro
 
-		if(!throw_proj(target, targloc, user, params, spread, fired_from))
-			return FALSE
+	if(is_blank)
+		QDEL_NULL(loaded_projectile)
 	else
-		if(isnull(loaded_projectile))
-			return FALSE
+		var/targloc = get_turf(target)
+		ready_proj(target, user, quiet, zone_override, fired_from)
+		if(pellets == 1)
+			if(distro) //We have to spread a pixel-precision bullet. throw_proj was called before so angles should exist by now...
+				if(randomspread)
+					spread = round((rand() - 0.5) * distro)
+				else //Smart spread
+					spread = round(1 - 0.5) * distro
 
-		AddComponent(/datum/component/pellet_cloud, projectile_type, pellets)
-		SEND_SIGNAL(src, COMSIG_PELLET_CLOUD_INIT, target, user, fired_from, randomspread, spread, zone_override, params, distro)
+			if(!throw_proj(target, targloc, user, params, spread, fired_from))
+				return FALSE
+		else
+			if(isnull(loaded_projectile))
+				return FALSE
+
+			AddComponent(/datum/component/pellet_cloud, projectile_type, pellets)
+			SEND_SIGNAL(src, COMSIG_PELLET_CLOUD_INIT, target, user, fired_from, randomspread, spread, zone_override, params, distro)
 
 	var/next_delay = click_cooldown_override || CLICK_CD_RANGE
 	if(HAS_TRAIT(user, TRAIT_DOUBLE_TAP))
 		next_delay = round(next_delay * 0.5)
 
 	user.changeNext_move(next_delay)
+
 	if(!tk_firing(user, fired_from))
 		user.newtonian_move(get_dir(target, user))
+
 	else if(ismovable(fired_from))
 		var/atom/movable/firer = fired_from
 		if(!firer.newtonian_move(get_dir(target, fired_from), instant = TRUE))
@@ -42,6 +48,7 @@
 /obj/item/ammo_casing/proc/ready_proj(atom/target, mob/living/user, quiet, zone_override = "", atom/fired_from)
 	if (!loaded_projectile)
 		return
+
 	loaded_projectile.original = target
 	loaded_projectile.firer = user
 	loaded_projectile.fired_from = fired_from

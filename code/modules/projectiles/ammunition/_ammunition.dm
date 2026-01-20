@@ -13,6 +13,9 @@ TYPEINFO_DEF(/obj/item/ammo_casing)
 	w_class = WEIGHT_CLASS_TINY
 	override_notes = TRUE
 
+	/// Blanks don't actually spawn projectiles and don't deal any damage.
+	var/is_blank = FALSE
+
 	///What sound should play when this ammo is fired
 	var/fire_sound = null
 	///Which kind of guns it can be loaded into

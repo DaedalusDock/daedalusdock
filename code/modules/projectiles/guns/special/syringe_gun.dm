@@ -40,7 +40,10 @@ TYPEINFO_DEF(/obj/item/gun/syringe)
 		return
 	chambered.newshot()
 
-/obj/item/gun/syringe/can_fire()
+/obj/item/gun/syringe/can_fire(check_lockout = FALSE)
+	. = ..()
+	if(!.)
+		return
 	return syringes.len
 
 /obj/item/gun/syringe/do_chamber_update()

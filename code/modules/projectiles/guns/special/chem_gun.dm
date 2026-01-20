@@ -28,7 +28,10 @@ TYPEINFO_DEF(/obj/item/gun/chem)
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/item/gun/chem/can_fire()
+/obj/item/gun/chem/can_fire(check_lockout = FALSE)
+	. = ..()
+	if(!.)
+		return
 	return syringes_left
 
 /obj/item/gun/chem/do_chamber_update()

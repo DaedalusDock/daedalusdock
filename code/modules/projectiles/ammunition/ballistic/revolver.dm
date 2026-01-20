@@ -19,13 +19,19 @@
 	caliber = CALIBER_N762
 	projectile_type = /obj/projectile/bullet/n762
 
-// .38 (Detective's Gun)
+// .38 (Detective's Gun/Juno Revolver)
 
 /obj/item/ammo_casing/c38
 	name = ".38 bullet casing"
 	desc = "A .38 bullet casing."
 	caliber = CALIBER_38
 	projectile_type = /obj/projectile/bullet/c38
+
+/obj/item/ammo_casing/c38/prostrator
+	name = ".38 Prostrator bullet casing"
+	desc = "A .38 \"Prostrator\" bullet casing."
+	caliber = CALIBER_38
+	projectile_type = /obj/projectile/bullet/c38/prostrator
 
 /obj/item/ammo_casing/c38/trac
 	name = ".38 TRAC bullet casing"
@@ -56,3 +62,9 @@
 	name = ".38 Iceblox bullet casing"
 	desc = "A .38 Iceblox bullet casing."
 	projectile_type = /obj/projectile/bullet/c38/iceblox
+
+/obj/item/ammo_casing/c38/blank
+	name = ".38 Blank bullet casing"
+	desc = "A .38 Blank bullet casing."
+	caliber = CALIBER_38
+	is_blank = TRUE

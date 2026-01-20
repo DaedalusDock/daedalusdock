@@ -827,9 +827,11 @@
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/cmo)
 "cw" = (
-/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/bridge)
 "cx" = (
@@ -7960,7 +7962,9 @@
 	icon_state = "computer";
 	dir = 8
 	},
-/obj/structure/cable/smart_cable/color/yellow,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/bridge)
 "wp" = (
@@ -8409,6 +8413,14 @@
 /obj/effect/mapping_helpers/paint_wall/medical,
 /turf/open/floor/plating,
 /area/station/medical/medbay)
+"xD" = (
+/obj/effect/spawner/structure/window/reinforced/grille,
+/obj/effect/mapping_helpers/paint_wall/bridge,
+/obj/structure/cable/yellow{
+	icon_state = "2"
+	},
+/turf/open/floor/plating,
+/area/station/command/bridge)
 "xE" = (
 /obj/machinery/door/airlock/security{
 	name = "Armory"
@@ -10710,7 +10722,9 @@
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/storage)
 "DU" = (
-/obj/structure/cable/smart_cable/color/yellow,
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
 /turf/open/floor/iron/stairs/old{
 	dir = 8
 	},
@@ -13918,6 +13932,13 @@
 /obj/structure/closet/emcloset,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
+"MV" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/cable/red{
+	icon_state = "4"
+	},
+/turf/open/space/basic,
+/area/space/nearstation)
 "MW" = (
 /obj/machinery/camera/autoname/directional/south{
 	network = list("Cargo");
@@ -14723,6 +14744,16 @@
 /obj/machinery/atmospherics/pipe/layer_manifold/scrubbers/visible,
 /turf/open/floor/iron,
 /area/station/engineering/atmos)
+"OX" = (
+/obj/machinery/door/airlock/maintenance,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/effect/mapping_helpers/access/all/engineering/maintenance/airlock,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/turf/open/floor/plating,
+/area/station/maintenance/disposal)
 "OY" = (
 /obj/effect/landmark/navigate_destination/disposals,
 /turf/open/floor/plating,
@@ -15837,8 +15868,10 @@
 /area/station/security/office)
 "Sc" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
-/obj/structure/cable/smart_cable/color/yellow,
 /obj/effect/mapping_helpers/paint_wall/bridge,
+/obj/structure/cable/yellow{
+	icon_state = "1"
+	},
 /turf/open/floor/plating,
 /area/station/command/bridge)
 "Sd" = (
@@ -16441,7 +16474,6 @@
 /obj/item/screwdriver,
 /obj/item/wrench,
 /obj/structure/cable/smart_cable/color/yellow,
-/obj/structure/overfloor_catwalk/iron_dark,
 /obj/structure/overfloor_catwalk/iron_dark,
 /turf/open/floor/plating,
 /area/station/medical/cryo)
@@ -17913,11 +17945,6 @@
 /obj/structure/plasticflaps,
 /turf/open/floor/plating,
 /area/station/cargo/storage)
-"XW" = (
-/obj/structure/overfloor_catwalk/iron_dark,
-/obj/structure/overfloor_catwalk/iron_dark,
-/turf/open/floor/plating/airless,
-/area/space/nearstation)
 "XY" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 4
@@ -18052,9 +18079,17 @@
 /turf/open/space/basic,
 /area/space/nearstation)
 "Ys" = (
-/obj/structure/cable/smart_cable/color/yellow,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/yellow{
+	icon_state = "9"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "10"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
 /turf/open/floor/iron/stairs/old{
 	dir = 8
 	},
@@ -42684,7 +42719,7 @@ zr
 Dd
 Ax
 os
-XW
+os
 os
 os
 WO
@@ -49888,7 +49923,7 @@ qn
 Ii
 Ii
 Ii
-Sm
+MV
 Ii
 Ii
 Ii
@@ -60403,7 +60438,7 @@ Tu
 zQ
 fF
 Ju
-fE
+OX
 Ju
 Ju
 lF
@@ -62700,7 +62735,7 @@ Vo
 gA
 vk
 hH
-Sc
+xD
 DU
 Ys
 DU

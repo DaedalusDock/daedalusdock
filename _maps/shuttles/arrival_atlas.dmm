@@ -1,0 +1,402 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/open/space/basic,
+/area/template_noop)
+"b" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 4
+	},
+/obj/machinery/light/directional/south,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"d" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 4
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"f" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"i" = (
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+"k" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 4
+	},
+/obj/machinery/light/directional/north,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"m" = (
+/obj/structure/closet/firecloset/full{
+	anchored = 1
+	},
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"n" = (
+/obj/machinery/requests_console/directional/west,
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+"o" = (
+/obj/docking_port/mobile/arrivals{
+	dir = 4;
+	dwidth = 5;
+	width = 11;
+	height = 18
+	},
+/turf/closed/wall/mineral/titanium,
+/area/shuttle/arrival)
+"p" = (
+/obj/structure/table/reinforced,
+/obj/machinery/light/directional/north,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"q" = (
+/turf/closed/wall/mineral/titanium,
+/area/shuttle/arrival)
+"r" = (
+/obj/machinery/door/airlock/titanium{
+	name = "Arrivals Shuttle Airlock"
+	},
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+"s" = (
+/obj/machinery/light/directional/north,
+/obj/structure/table/reinforced,
+/obj/effect/spawner/random/medical/medkit,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"u" = (
+/obj/structure/closet/firecloset/full,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"w" = (
+/obj/machinery/door/airlock/public/glass{
+	name = "Fire Closet"
+	},
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+"y" = (
+/obj/structure/table/reinforced,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"z" = (
+/obj/machinery/door/airlock/public/glass{
+	name = "Bridge"
+	},
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+"C" = (
+/obj/structure/shuttle/engine/propulsion/right{
+	dir = 8
+	},
+/turf/open/floor/plating/airless,
+/area/shuttle/arrival)
+"G" = (
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"H" = (
+/obj/structure/shuttle/engine/propulsion/left{
+	dir = 8
+	},
+/turf/open/floor/plating/airless,
+/area/shuttle/arrival)
+"I" = (
+/obj/machinery/light/directional/south,
+/obj/structure/table/reinforced,
+/obj/item/radio,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"J" = (
+/obj/structure/chair/comfy/shuttle{
+	dir = 4
+	},
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+"K" = (
+/obj/structure/table/reinforced,
+/obj/item/radio,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"N" = (
+/obj/structure/closet/emcloset/anchored,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"P" = (
+/obj/machinery/door/airlock/public/glass{
+	name = "Emergency Closet"
+	},
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+"Q" = (
+/obj/structure/table/reinforced,
+/obj/effect/spawner/random/medical/medkit,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"T" = (
+/obj/structure/shuttle/engine/heater{
+	dir = 8
+	},
+/turf/open/floor/plating/airless,
+/area/shuttle/arrival)
+"U" = (
+/obj/structure/shuttle/engine/propulsion/left{
+	dir = 8
+	},
+/turf/open/space/basic,
+/area/shuttle/arrival)
+"V" = (
+/obj/item/radio/intercom/directional/west,
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+"W" = (
+/obj/structure/shuttle/engine/propulsion/right{
+	dir = 8
+	},
+/turf/open/space/basic,
+/area/shuttle/arrival)
+"X" = (
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/mineral/titanium,
+/area/shuttle/arrival)
+"Y" = (
+/obj/effect/spawner/structure/window/reinforced/shuttle,
+/turf/open/floor/mineral/titanium/blue,
+/area/shuttle/arrival)
+
+(1,1,1) = {"
+a
+q
+H
+H
+H
+o
+C
+C
+C
+q
+a
+"}
+(2,1,1) = {"
+a
+q
+T
+T
+T
+q
+T
+T
+T
+q
+a
+"}
+(3,1,1) = {"
+a
+q
+q
+q
+q
+q
+q
+q
+q
+q
+a
+"}
+(4,1,1) = {"
+U
+q
+u
+m
+m
+q
+N
+N
+N
+q
+W
+"}
+(5,1,1) = {"
+q
+q
+X
+G
+G
+q
+X
+G
+G
+q
+q
+"}
+(6,1,1) = {"
+q
+q
+q
+w
+q
+q
+q
+P
+q
+q
+q
+"}
+(7,1,1) = {"
+a
+f
+d
+i
+d
+d
+d
+i
+d
+f
+a
+"}
+(8,1,1) = {"
+a
+q
+k
+i
+d
+d
+d
+i
+b
+q
+a
+"}
+(9,1,1) = {"
+a
+r
+i
+i
+q
+f
+q
+i
+i
+r
+a
+"}
+(10,1,1) = {"
+a
+Y
+d
+i
+n
+i
+V
+i
+d
+Y
+a
+"}
+(11,1,1) = {"
+a
+r
+i
+i
+d
+i
+d
+i
+i
+r
+a
+"}
+(12,1,1) = {"
+a
+q
+k
+d
+d
+i
+d
+d
+b
+q
+a
+"}
+(13,1,1) = {"
+a
+f
+d
+d
+d
+i
+d
+d
+d
+f
+a
+"}
+(14,1,1) = {"
+a
+q
+p
+d
+d
+i
+d
+d
+y
+q
+a
+"}
+(15,1,1) = {"
+a
+q
+q
+f
+q
+z
+q
+f
+q
+q
+a
+"}
+(16,1,1) = {"
+a
+a
+f
+Q
+J
+i
+J
+K
+f
+a
+a
+"}
+(17,1,1) = {"
+a
+a
+q
+s
+J
+J
+J
+I
+q
+a
+a
+"}
+(18,1,1) = {"
+a
+a
+q
+f
+f
+f
+f
+f
+q
+a
+a
+"}

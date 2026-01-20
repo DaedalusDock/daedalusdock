@@ -33,7 +33,8 @@
 		"cargo" = "cargo_box",
 		"ferry" = "ferry_fancy",
 		"whiteship" = "whiteship_box",
-		"emergency" = "emergency_box")
+		"emergency" = "emergency_box",
+	)
 
 	/// Dictionary of job sub-typepath to template changes dictionary
 	var/job_changes = list()

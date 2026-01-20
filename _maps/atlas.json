@@ -3,10 +3,10 @@
 	"map_name": "Atlas",
 	"map_path": "map_files/Atlas",
 	"map_file": "atlas.dmm",
+	"run_mapping_tests": true,
 	"traits": [
 		{
 			"Gravity": 1
 		}
-	],
-	"run_mapping_tests": true
+	]
 }

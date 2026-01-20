@@ -635,10 +635,6 @@
 /obj/machinery/light_switch/directional/south,
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/treatment_center)
-"bU" = (
-/obj/structure/chair/stool/directional/west,
-/turf/open/floor/iron/white/white_large,
-/area/station/hallway/secondary/entry)
 "bV" = (
 /obj/structure/closet/secure_closet/hydroponics,
 /turf/open/floor/iron/ported/techfloor,
@@ -648,6 +644,18 @@
 /obj/machinery/vending/coffee,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/exit/departure_lounge)
+"bX" = (
+/obj/docking_port/stationary{
+	name = "arrivals";
+	dir = 4;
+	width = 11;
+	height = 18;
+	id = "arrivals_stationary";
+	roundstart_template = /datum/map_template/shuttle/arrival/atlas;
+	dwidth = 5
+	},
+/turf/open/space/basic,
+/area/space)
 "bY" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
 /obj/structure/cable/red{
@@ -1131,6 +1139,7 @@
 	dir = 1
 	},
 /obj/machinery/airalarm/directional/north,
+/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
 /turf/open/floor/iron,
 /area/station/tcommsat/server)
 "ds" = (
@@ -5045,13 +5054,6 @@
 	},
 /turf/open/floor/plating,
 /area/station/security/detectives_office)
-"oc" = (
-/obj/structure/chair/stool/directional/east,
-/obj/structure/cable/smart_cable/color/yellow,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/turf/open/floor/iron/white/white_large,
-/area/station/hallway/secondary/entry)
 "od" = (
 /obj/structure/cable/yellow{
 	icon_state = "3"
@@ -6613,7 +6615,7 @@
 /obj/structure/cable/red{
 	icon_state = "3"
 	},
-/obj/machinery/atmospherics/components/unary/vent_pump/on/layer4,
+/obj/machinery/announcement_system,
 /turf/open/floor/iron,
 /area/station/tcommsat/server)
 "sn" = (
@@ -13287,18 +13289,6 @@
 	},
 /turf/open/floor/wood,
 /area/station/service/chapel)
-"Lk" = (
-/obj/docking_port/stationary{
-	name = "arrivals";
-	dir = 8;
-	width = 7;
-	height = 15;
-	id = "arrivals_stationary";
-	dwidth = 3;
-	roundstart_template = /datum/map_template/shuttle/arrival/box
-	},
-/turf/open/space/basic,
-/area/space)
 "Ll" = (
 /turf/open/floor/plating,
 /area/station/engineering/storage/tech)
@@ -13822,7 +13812,6 @@
 	},
 /area/station/security/brig)
 "MG" = (
-/obj/structure/chair/stool/directional/east,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron/white/white_large,
 /area/station/hallway/secondary/entry)
@@ -15211,7 +15200,6 @@
 /obj/structure/cable/red{
 	icon_state = "5"
 	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/camera/autoname/directional/south{
 	network = list("Engineering");
 	name = "engineering camera"
@@ -56600,7 +56588,7 @@ Ii
 Ii
 Ii
 Ii
-Ii
+bX
 Ii
 Ii
 Ii
@@ -58645,8 +58633,8 @@ uu
 FC
 bI
 qL
-bU
-bU
+qL
+qL
 qL
 wK
 RY
@@ -59159,7 +59147,7 @@ oV
 FC
 bI
 UD
-oc
+UD
 MG
 qL
 wK
@@ -59683,7 +59671,7 @@ Ii
 Ii
 Ii
 Ii
-Lk
+Ii
 Ii
 Ii
 Ii

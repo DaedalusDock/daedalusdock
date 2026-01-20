@@ -598,6 +598,10 @@
 	suffix = "omega"
 	name = "arrival shuttle (Omega)"
 
+/datum/map_template/shuttle/arrival/atlas
+	suffix = "atlas"
+	name = "arrival shuttle (Atlas)"
+
 /datum/map_template/shuttle/escape_pod/default
 	suffix = "default"
 	name = "escape pod (Default)"

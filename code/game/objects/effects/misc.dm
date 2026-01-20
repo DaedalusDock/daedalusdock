@@ -85,7 +85,8 @@
 
 /obj/effect/abstract/marker/intercom
 	name = "intercom range marker"
-	color = COLOR_YELLOW
+	icon = 'modular_pariah/master_files/icons/testing/Zone.dmi'
+	icon_state = "created"
 
 /obj/effect/dummy/lighting_obj
 	name = "lighting fx obj"

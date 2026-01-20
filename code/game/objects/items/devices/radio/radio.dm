@@ -94,11 +94,13 @@ TYPEINFO_DEF(/obj/item/radio)
 	set_on(on)
 
 	AddElement(/datum/element/empprotection, EMP_PROTECT_WIRES)
+	SET_TRACKING(__TYPE__)
 
 /obj/item/radio/Destroy()
 	remove_radio_all(src) //Just to be sure
 	QDEL_NULL(wires)
 	QDEL_NULL(keyslot)
+	UNSET_TRACKING(__TYPE__)
 	return ..()
 
 /obj/item/radio/proc/set_frequency(new_frequency)

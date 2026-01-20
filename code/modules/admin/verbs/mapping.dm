@@ -120,6 +120,7 @@ GLOBAL_LIST_EMPTY(dirty_vars)
 					output += "<li><font color='red'>FULLY overlapping cameras at [ADMIN_VERBOSEJMP(C1)] Networks: [json_encode(C1.network)] and [json_encode(C2.network)]</font></li>"
 				if(C1.loc == C2.loc)
 					output += "<li>Overlapping cameras at [ADMIN_VERBOSEJMP(C1)] Networks: [json_encode(C1.network)] and [json_encode(C2.network)]</li>"
+
 		var/turf/T = get_step(C1,C1.dir)
 		if(!T || !isturf(T) || !T.density )
 			if(!(locate(/obj/structure/grille) in T))
@@ -142,14 +143,22 @@ GLOBAL_LIST_EMPTY(dirty_vars)
 	var/static/intercom_range_display_status = FALSE
 	intercom_range_display_status = !intercom_range_display_status //blame cyberboss if this breaks something //blamed
 
+	to_chat(usr, span_info(""))
 	for(var/obj/effect/abstract/marker/intercom/marker in GLOB.all_abstract_markers)
 		qdel(marker)
 
-	if(intercom_range_display_status)
-		for(var/frequency in GLOB.all_radios)
-			for(var/obj/item/radio/intercom/intercom in GLOB.all_radios[frequency])
-				for(var/turf/turf in view(7,intercom.loc))
-					new /obj/effect/abstract/marker/intercom(turf)
+	if(!intercom_range_display_status)
+		to_chat(usr, span_info("Cleared intercom ranges."))
+	else
+		to_chat(usr, span_info("Displaying intercom ranges. Green is full range, red is hearing/speaking range."))
+		for(var/obj/item/radio/intercom/intercom in INSTANCES_OF(/obj/item/radio))
+			for(var/turf/turf in view(world.view, intercom.loc))
+				var/obj/effect/abstract/marker/intercom/marker = new(turf)
+				if(get_dist(marker, intercom) <= intercom.canhear_range)
+					marker.color = COLOR_RED
+				else
+					marker.color = COLOR_GREEN
+
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Show Intercom Range") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/show_map_reports()

@@ -6,7 +6,7 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 4
 	},
-/obj/machinery/light/directional/south,
+/obj/machinery/light/cold/directional,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
 "d" = (
@@ -26,7 +26,7 @@
 /obj/structure/chair/comfy/shuttle{
 	dir = 4
 	},
-/obj/machinery/light/directional/north,
+/obj/machinery/light/cold/directional/north,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
 "m" = (
@@ -50,7 +50,7 @@
 /area/shuttle/arrival)
 "p" = (
 /obj/structure/table/reinforced,
-/obj/machinery/light/directional/north,
+/obj/machinery/light/cold/directional/north,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
 "q" = (
@@ -63,9 +63,9 @@
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/arrival)
 "s" = (
-/obj/machinery/light/directional/north,
 /obj/structure/table/reinforced,
 /obj/effect/spawner/random/medical/medkit,
+/obj/machinery/light/small/directional/north,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
 "u" = (
@@ -80,6 +80,7 @@
 /area/shuttle/arrival)
 "y" = (
 /obj/structure/table/reinforced,
+/obj/machinery/light/cold/directional,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
 "z" = (
@@ -104,9 +105,9 @@
 /turf/open/floor/plating/airless,
 /area/shuttle/arrival)
 "I" = (
-/obj/machinery/light/directional/south,
 /obj/structure/table/reinforced,
 /obj/item/radio,
+/obj/machinery/light/small/directional/south,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/arrival)
 "J" = (
@@ -312,13 +313,13 @@ a
 (12,1,1) = {"
 a
 q
-k
+d
 d
 d
 i
 d
 d
-b
+d
 q
 a
 "}

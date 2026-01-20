@@ -868,7 +868,7 @@
 /obj/machinery/conveyor_switch/oneway{
 	id = "wastedisposal"
 	},
-/turf/open/floor/iron,
+/turf/open/floor/plating,
 /area/station/maintenance/disposal)
 "cE" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -2810,7 +2810,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on/layer4{
 	dir = 8
 	},
-/turf/open/floor/iron,
+/turf/open/floor/plating,
 /area/station/maintenance/disposal)
 "hW" = (
 /turf/open/floor/iron/iron_large,
@@ -5946,7 +5946,6 @@
 	dir = 4
 	},
 /obj/structure/disposalpipe/trunk,
-/obj/machinery/light/small/maintenance/directional/west,
 /turf/open/floor/plating,
 /area/station/maintenance/disposal)
 "qD" = (
@@ -7500,7 +7499,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
 	},
-/turf/open/floor/iron,
+/turf/open/floor/plating,
 /area/station/maintenance/disposal)
 "uV" = (
 /obj/machinery/power/apc/auto_name/directional/north,
@@ -9029,7 +9028,7 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
 	},
-/turf/open/floor/iron,
+/turf/open/floor/plating,
 /area/station/maintenance/disposal)
 "zl" = (
 /obj/machinery/atmospherics/pipe/smart/simple/green/visible,
@@ -9690,6 +9689,11 @@
 	},
 /turf/open/floor/wood,
 /area/station/service/library)
+"AX" = (
+/obj/effect/turf_decal/tile/dark/opposingcorners,
+/obj/machinery/light/small/directional/west,
+/turf/open/floor/iron/white,
+/area/station/hallway/secondary/entry)
 "AY" = (
 /obj/structure/cable/smart_cable/color/yellow,
 /obj/structure/overfloor_catwalk/iron_dark,
@@ -12085,10 +12089,6 @@
 /obj/effect/spawner/random/maintenance,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
-"HP" = (
-/obj/machinery/light/small/maintenance/directional/east,
-/turf/open/floor/plating,
-/area/station/maintenance/starboard/greater)
 "HQ" = (
 /obj/effect/turf_decal/siding/fancy/grey{
 	dir = 8
@@ -13554,10 +13554,6 @@
 /obj/machinery/door/firedoor/border_only,
 /turf/open/floor/iron/ported/techfloor,
 /area/station/service/library)
-"LX" = (
-/obj/effect/spawner/structure/window/reinforced,
-/turf/open/space/basic,
-/area/station/maintenance/disposal)
 "LY" = (
 /obj/structure/chair/sofa{
 	dir = 4
@@ -15248,6 +15244,11 @@
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/fore)
+"Qx" = (
+/obj/effect/turf_decal/tile/dark/opposingcorners,
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/iron/white,
+/area/station/hallway/secondary/entry)
 "Qy" = (
 /obj/structure/chair/plastic{
 	dir = 1
@@ -57091,7 +57092,7 @@ CV
 aU
 tm
 wL
-HP
+EF
 EF
 ev
 Ii
@@ -58637,7 +58638,7 @@ qL
 qL
 qL
 wK
-RY
+Qx
 RY
 Nt
 RG
@@ -58894,8 +58895,8 @@ BU
 Sr
 UF
 uS
-RF
-RF
+uS
+uS
 uS
 Ii
 Ii
@@ -59152,7 +59153,7 @@ MG
 qL
 wK
 RY
-RY
+AX
 Nt
 RG
 Ii
@@ -60433,7 +60434,7 @@ lF
 et
 lF
 KU
-Dl
+Zr
 RG
 Ii
 Ii
@@ -60690,7 +60691,7 @@ Is
 mz
 et
 KU
-Dl
+Zr
 RG
 Ii
 Ii
@@ -60947,7 +60948,7 @@ KU
 KU
 KU
 KU
-Dl
+Zr
 RG
 Ii
 Ii
@@ -61203,8 +61204,8 @@ bv
 zk
 hV
 Zr
-LX
-Dl
+Zr
+Zr
 RG
 Ii
 Ii

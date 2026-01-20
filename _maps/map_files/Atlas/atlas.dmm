@@ -2695,6 +2695,7 @@
 /obj/structure/table,
 /obj/machinery/door/firedoor/border_only,
 /obj/effect/mapping_helpers/access/all/supply/general/windoor,
+/obj/machinery/door/window/left/directional/south,
 /turf/open/floor/iron/iron_large,
 /area/station/cargo/storage)
 "hH" = (
@@ -2934,8 +2935,7 @@
 /area/station/hallway/primary/starboard)
 "is" = (
 /obj/machinery/door/airlock/highsecurity{
-	name = "AI Core";
-	req_access_txt = "16"
+	name = "AI Core"
 	},
 /obj/structure/cable/red{
 	icon_state = "12"
@@ -6397,8 +6397,7 @@
 /area/station/commons/lounge)
 "rH" = (
 /obj/machinery/door/airlock/highsecurity{
-	name = "Network Control";
-	req_one_access_txt = "61;16"
+	name = "Network Control"
 	},
 /obj/structure/cable/smart_cable/color,
 /obj/effect/mapping_helpers/access/any/command/ai_upload/airlock,
@@ -13875,6 +13874,7 @@
 	},
 /obj/machinery/door/firedoor/border_only,
 /obj/effect/mapping_helpers/access/all/supply/general/windoor,
+/obj/machinery/door/window/right/directional/south,
 /turf/open/floor/iron/iron_large,
 /area/station/cargo/storage)
 "MP" = (
@@ -17020,8 +17020,7 @@
 "Vp" = (
 /obj/structure/cable/smart_cable/color,
 /obj/machinery/door/airlock/highsecurity{
-	name = "Network Control";
-	req_one_access_txt = "61;16"
+	name = "Network Control"
 	},
 /obj/effect/mapping_helpers/access/any/command/ai_upload/airlock,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{

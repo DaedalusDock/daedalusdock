@@ -23195,6 +23195,10 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/iron/dark,
 /area/station/security/courtroom)
+"ipz" = (
+/obj/structure/reagent_dispensers/fueltank,
+/turf/closed/wall/r_wall/prepainted/mars,
+/area/station/maintenance/fore)
 "ipP" = (
 /turf/closed/wall/prepainted/mars,
 /area/station/security/prison/rec)
@@ -85904,7 +85908,7 @@ gAT
 uNH
 bXE
 iFu
-bXE
+fuf
 jkN
 gAT
 tTP
@@ -91568,7 +91572,7 @@ iHk
 iHk
 tMP
 moM
-gKU
+far
 gkj
 xVk
 lNZ
@@ -101750,8 +101754,8 @@ aaa
 whB
 rpq
 hyE
-hyE
-hyE
+ipz
+ipz
 hyE
 hyE
 hyE

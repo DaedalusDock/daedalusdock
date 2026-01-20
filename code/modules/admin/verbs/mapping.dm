@@ -153,7 +153,10 @@ GLOBAL_LIST_EMPTY(dirty_vars)
 		to_chat(usr, span_info("Displaying intercom ranges. Green is full range, red is hearing/speaking range."))
 		for(var/obj/item/radio/intercom/intercom in INSTANCES_OF(/obj/item/radio))
 			for(var/turf/turf in view(world.view, intercom.loc))
-				var/obj/effect/abstract/marker/intercom/marker = new(turf)
+				var/obj/effect/abstract/marker/intercom/marker = (locate() in turf) || new(turf)
+				if(marker.color == COLOR_RED)
+					continue
+
 				if(get_dist(marker, intercom) <= intercom.canhear_range)
 					marker.color = COLOR_RED
 				else

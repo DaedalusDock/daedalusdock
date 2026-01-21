@@ -382,7 +382,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 		// It's a surprise tool that'll help us later
 		#ifndef UNIT_TESTS
-		var/datum/roll_result/result = user.stat_roll(6, /datum/rpg_skill/handicraft, roll_modifier)
+		var/datum/roll_result/result = user.stat_roll(6, /datum/rpg_skill/fine_motor, roll_modifier)
 		#else
 		var/datum/roll_result/result = GLOB.success_roll
 		#endif

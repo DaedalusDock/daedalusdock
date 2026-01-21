@@ -27,7 +27,7 @@ DEFINE_INTERACTABLE(/obj/machinery/light)
 	///The inner radius of the bulb's light, where it is at maximum brightness
 	var/bulb_inner_range = 1.8
 	///Basically the alpha of the emitted light source
-	var/bulb_power = 0.6
+	var/bulb_power = 0.8
 	///The falloff of the emitted light. Adjust until it looks good.
 	var/bulb_falloff = 1.85
 	///Default colour of the light.

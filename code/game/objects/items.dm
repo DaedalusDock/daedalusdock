@@ -1464,7 +1464,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	delay *= toolspeed * skill_modifier
 
 	if(delay && iscarbon(user) && user.stats.cooldown_finished("use_tool")) // Fuck borgs!!!
-		var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/handicraft)
+		var/datum/roll_result/result = user.stat_roll(7, /datum/rpg_skill/fine_motor)
 		switch(result.outcome)
 			if(CRIT_SUCCESS)
 				result.do_skill_sound(user)
@@ -1799,6 +1799,9 @@ DEFINE_INTERACTABLE(/obj/item)
 	pickup_animation.layer = ABOVE_MOB_LAYER
 	pickup_animation.transform.Scale(0.75)
 	pickup_animation.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+
+	// Preventing overlay lighting images from stacking during pickup animations.
+	remove_lighting_underlays(pickup_animation)
 
 	var/direction = get_dir(source, target)
 	var/to_x = target.base_pixel_x

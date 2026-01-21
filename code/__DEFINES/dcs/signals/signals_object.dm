@@ -38,12 +38,6 @@
 	/// Can't use tools on the machine
 	#define COMPONENT_CANT_USE_MACHINE_TOOLS (1<<1)
 
-///from obj/machinery/iv_drip/IV_attach(target, usr) : (attachee)
-#define COMSIG_IV_ATTACH "iv_attach"
-///from obj/machinery/iv_drip/IV_detach() : (detachee)
-#define COMSIG_IV_DETACH "iv_detach"
-
-
 // /obj/machinery/computer/teleporter
 /// from /obj/machinery/computer/teleporter/proc/set_target(target, old_target)
 #define COMSIG_TELEPORTER_NEW_TARGET "teleporter_new_target"

@@ -40,13 +40,22 @@ def props_to_string(props):
     return "{{{}}}".format(";".join([f"{k} = {v}" for k, v in props.items()]))
 
 
-def string_to_props(propstring, verbose = False):
+def string_to_props(propstring, verbose=False):
     props = dict()
     for raw_prop in re.split(split_re, propstring):
-        if not raw_prop or raw_prop.strip() == ';':
+        if not raw_prop:
             continue
+        raw_prop = raw_prop.strip()
+        if not raw_prop or raw_prop == ';':
+            continue
+
         prop = raw_prop.split('=', maxsplit=1)
-        props[prop[0].strip()] = prop[1].strip() if len(prop) > 1 else None
+        key = prop[0].strip()
+        if not key:        # <-- FIX: skip empty keys
+            continue
+
+        props[key] = prop[1].strip() if len(prop) > 1 else None
+
     if verbose:
         print("{0} to {1}".format(propstring, props))
     return props

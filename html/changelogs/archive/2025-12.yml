@@ -1,0 +1,13 @@
+2025-12-01:
+  Kapu1178:
+  - bugfix: AI can use objects using binary radials.
+  - bugfix: Flashes have a cooldown again.
+  - bugfix: Directives give money.
+  - bugfix: MedTrak comments no longer softlock the computer.
+2025-12-03:
+  Kapu1178:
+  - rscadd: Replaced the round end menu with a new one.
+2025-12-06:
+  francinum:
+  - bugfix: the corners of space will no longer result in the BYOND equivalent of
+      a chunk ban.

@@ -1,7 +1,6 @@
 /datum/job/security_officer
 	title = JOB_SECURITY_OFFICER
-	description = "Protect company assets, follow the Standard Operating \
-		Procedure, eat donuts."
+	description = "Carry out the Federation's will."
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
 	department_head = list(JOB_SECURITY_MARSHAL)
 	faction = FACTION_STATION
@@ -46,6 +45,25 @@
 	rpg_title = "Guard"
 	job_flags = JOB_ANNOUNCE_ARRIVAL | JOB_CREW_MANIFEST | JOB_EQUIP_RANK | JOB_CREW_MEMBER | JOB_NEW_PLAYER_JOINABLE | JOB_REOPEN_ON_ROUNDSTART_LOSS | JOB_ASSIGN_QUIRKS | JOB_CAN_BE_INTERN
 
+/datum/job/security_officer/after_spawn(mob/living/spawned, client/player_client)
+	. = ..()
+	spawned.apply_status_effect(/datum/status_effect/skill_mod/security)
+
+/datum/job/security_officer/on_join_popup(client/C, job_title_pref)
+	var/content = {"
+		<div style='width:100%; text-align:center; font-size: 20px'>
+		You are the <b>[title]</b>
+		</div>
+		<br>
+		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
+		You have been hired by the Federation for "peacekeeping" aboard a remote colony. You know good things do not befall those who disobey them.
+		</div>
+	"}
+	var/datum/browser/popup = new(C.mob, "jobinfo", "Role Information", 480, 360)
+	popup.set_window_options("can_close=1;can_resize=0")
+	popup.set_content(content)
+	popup.open(FALSE)
+
 /datum/outfit/job/security
 	name = "Security Officer"
 	jobtype = /datum/job/security_officer
@@ -53,7 +71,7 @@
 	id_template = /datum/access_template/job/security_officer
 	uniform = /obj/item/clothing/under/rank/security/officer
 	suit = /obj/item/clothing/suit/armor/vest/sec
-	suit_store = /obj/item/gun/energy/disabler
+	suit_store = /obj/item/gun/ballistic/revolver/single_action/juno
 	backpack_contents = list(
 		/obj/item/storage/evidencebag = 1,
 		)
@@ -71,8 +89,8 @@
 	chameleon_extras = list(
 		/obj/item/clothing/glasses/hud/security/sunglasses,
 		/obj/item/clothing/head/helmet,
-		/obj/item/gun/energy/disabler,
-		)
+		/obj/item/gun/ballistic/revolver/single_action/juno,
+	)
 		//The helmet is necessary because /obj/item/clothing/head/helmet/sec is overwritten in the chameleon list by the standard helmet, which has the same name and icon state
 	implants = list(/obj/item/implant/mindshield)
 

@@ -1,4 +1,4 @@
-/datum/c4_file/terminal_program/medtrak/proc/edit_name(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_name(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_name = trim(html_encode(stdin.raw), MAX_NAME_LEN)
 
 	if(!(length(new_name)))
@@ -8,7 +8,7 @@
 	medtrak.update_record(DATACORE_NAME, "NAME", new_name)
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_sex(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_sex(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_sex = trim(html_encode(stdin.raw), MAX_NAME_LEN)
 
 	if(!length(new_sex))
@@ -18,7 +18,7 @@
 	medtrak.update_record(DATACORE_GENDER, "SEX", new_sex)
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_age(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_age(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_age = text2num(ckey(stdin.raw))
 
 	if(isnull(new_age) || !(new_age in 1 to 200))
@@ -28,7 +28,7 @@
 	medtrak.update_record(DATACORE_AGE, "AGE", "[new_age]")
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_species(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_species(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_species = trim(html_encode(stdin.raw), MAX_NAME_LEN)
 
 	if(!length(new_species))
@@ -38,7 +38,7 @@
 	medtrak.update_record(DATACORE_SPECIES, "SPECIES", new_species)
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_blood_type(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_blood_type(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_blood_type = trim(html_encode(stdin.raw), MAX_NAME_LEN)
 
 	if(!length(new_blood_type))
@@ -48,7 +48,7 @@
 	medtrak.update_record(DATACORE_BLOOD_TYPE, "BLOOD_TYPE", new_blood_type)
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_blood_dna(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_blood_dna(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_blood_dna = trim(html_encode(stdin.raw), MAX_NAME_LEN)
 
 	if(!length(new_blood_dna))
@@ -58,7 +58,7 @@
 	medtrak.update_record(DATACORE_BLOOD_DNA, "BLOOD_DNA", new_blood_dna)
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_disabilities(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_disabilities(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_disabilities = trim(html_encode(stdin.raw), MAX_MESSAGE_LEN)
 
 	if(!length(new_disabilities))
@@ -68,7 +68,7 @@
 	medtrak.update_record(DATACORE_DISABILITIES, "DISABILITIES", new_disabilities)
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_diseases(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_diseases(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_diseases = trim(html_encode(stdin.raw), MAX_MESSAGE_LEN)
 
 	if(!length(new_diseases))
@@ -78,7 +78,7 @@
 	medtrak.update_record(DATACORE_DISEASES, "DISEASES", new_diseases)
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_allergies(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_allergies(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_allergies = trim(html_encode(stdin.raw), MAX_MESSAGE_LEN)
 
 	if(!length(new_allergies))
@@ -88,7 +88,7 @@
 	medtrak.update_record(DATACORE_ALLERGIES, "ALLERGIES", new_allergies)
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_physical_health(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_physical_health(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/choice = text2num(stdin.raw)
 	var/list/options = list(
 		PHYSHEALTH_OK,
@@ -110,7 +110,7 @@
 	medtrak.update_record(DATACORE_PHYSICAL_HEALTH, "PHYSICAL_STATUS", options[choice])
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_mental_health(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_mental_health(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/choice = text2num(stdin.raw)
 	var/list/options = list(
 		MENHEALTH_OK,
@@ -134,7 +134,7 @@
 	medtrak.update_record(DATACORE_MENTAL_HEALTH, "MENTAL_STATUS", options[choice])
 	medtrak.view_record()
 
-/datum/c4_file/terminal_program/medtrak/proc/edit_notes(datum/c4_file/terminal_program/medtrak/medtrak, datum/shell_stdin/stdin)
+/datum/c4_file/terminal_program/medtrak/proc/edit_notes(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
 	var/new_notes = trim(html_encode(stdin.raw), MAX_MESSAGE_LEN)
 
 	if(!length(new_notes))

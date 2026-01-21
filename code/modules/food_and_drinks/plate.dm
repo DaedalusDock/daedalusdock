@@ -100,7 +100,7 @@
 
 		else
 			var/mob/living/carbon/human/user = thrower
-			roll = user.stat_roll(10, /datum/rpg_skill/skirmish, bodyzone_modifier, -7, src).outcome
+			roll = user.stat_roll(10, /datum/rpg_skill/bloodsport, bodyzone_modifier, -7, src).outcome
 
 		switch(roll)
 			if(FAILURE, CRIT_FAILURE)

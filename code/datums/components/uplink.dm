@@ -144,7 +144,7 @@
 
 
 /datum/component/uplink/ui_state(mob/user)
-	return GLOB.inventory_state
+	return GLOB.inventory_or_implant_state
 
 /datum/component/uplink/ui_interact(mob/user, datum/tgui/ui)
 	active = TRUE

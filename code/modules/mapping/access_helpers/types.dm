@@ -5,7 +5,7 @@
 // -------------------- Command access helpers
 MAKE_ABSTRACT(command, "access_helper_com")
 
-MAKE_REAL(command/general, ACCESS_MANAGEMENT)
+MAKE_REAL(command/general, ACCESS_FEDERATION)
 MAKE_REAL(command/ai_upload, ACCESS_AI_UPLOAD)
 MAKE_REAL(command/teleporter, ACCESS_TELEPORTER)
 MAKE_REAL(command/eva, ACCESS_EVA)

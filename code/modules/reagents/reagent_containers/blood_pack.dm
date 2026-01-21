@@ -4,47 +4,55 @@
 	icon = 'icons/obj/bloodpack.dmi'
 	icon_state = "bloodpack"
 	volume = 200
-	var/datum/blood/blood_type = null
-	var/unique_blood = null
-	var/labelled = FALSE
+
+	reagent_flags = INJECTABLE | DRAWABLE | TRANSPARENT
 	fill_icon_thresholds = list(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+
+	/// /datum/blood typepath or a string for the label.
+	var/blood_type = null
+	/// Reagent type to use instead of /datum/reagent/blood
+	var/unique_blood = null
 
 /obj/item/reagent_containers/blood/Initialize(mapload)
 	. = ..()
-	if(ispath(blood_type))
-		blood_type = GET_BLOOD_REF(blood_type)
+	var/datum/blood/blood_ref = GET_BLOOD_REF(blood_type)
+	if(blood_ref)
 		reagents.add_reagent(unique_blood || /datum/reagent/blood, 200, list("viruses"=null,"blood_DNA"=null,"blood_type"=blood_type,"resistances"=null,"trace_chem"=null))
-		update_appearance(UPDATE_NAME)
-	else if(blood_type)
+
+	else if(unique_blood)
 		reagents.add_reagent(unique_blood, 200, list("viruses"=null,"blood_DNA"=null,"resistances"=null,"trace_chem"=null))
-		update_appearance(UPDATE_NAME)
 
-/// Handles updating the container when the reagents change.
-/obj/item/reagent_containers/blood/on_reagent_change(datum/reagents/holder, ...)
-	var/datum/reagent/blood/new_reagent = holder.has_reagent(/datum/reagent/blood)
-	if(new_reagent && new_reagent.data && new_reagent.data["blood_type"])
-		blood_type = new_reagent.data["blood_type"]
-	else if(holder.has_reagent(/datum/reagent/consumable/liquidelectricity))
-		blood_type = "LE"
-	else
-		blood_type = null
-	return ..()
-
-/obj/item/reagent_containers/blood/update_name(updates)
-	. = ..()
-	if(labelled)
-		return
-	if(istype(blood_type))
-		name = "blood pack - [blood_type.name]"
+	if(blood_ref)
+		name = "blood pack - [blood_ref.name]"
 	else
 		name = "blood pack[blood_type ? " - [blood_type]" : null]"
+
+/obj/item/reagent_containers/blood/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if (istype(tool, /obj/item/pen) || istype(tool, /obj/item/toy/crayon))
+		if(!user.is_literate())
+			to_chat(user, span_notice("You scribble illegibly on the label of [src]."))
+			return ITEM_INTERACT_BLOCKING
+
+		var/custom_label = tgui_input_text(user, "What would you like to label the blood pack?", "Blood Pack", name, MAX_NAME_LEN)
+		if(!user.canUseTopic(src, USE_CLOSE) || user.get_active_held_item() != tool)
+			return ITEM_INTERACT_BLOCKING
+
+		if(!do_after(user, src, 2 SECONDS, DO_IGNORE_SLOWDOWNS|DO_IGNORE_USER_LOC_CHANGE|DO_PUBLIC, display = tool))
+			return ITEM_INTERACT_BLOCKING
+
+		if(!user.canUseTopic(src, USE_CLOSE) || user.get_active_held_item() != tool)
+			return ITEM_INTERACT_BLOCKING
+
+		if(custom_label)
+			name = "blood pack - [custom_label]"
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/reagent_containers/blood/random
 	icon_state = "random_bloodpack"
 
 /obj/item/reagent_containers/blood/random/Initialize(mapload)
 	icon_state = "bloodpack"
-	blood_type = pick(GLOB.blood_datums):type
+	blood_type = astype(pick(GLOB.blood_datums), /datum/blood)
 	return ..()
 
 /obj/item/reagent_containers/blood/a_plus
@@ -74,23 +82,3 @@
 
 /obj/item/reagent_containers/blood/universal
 	blood_type = /datum/blood/universal
-
-/obj/item/reagent_containers/blood/attackby(obj/item/tool, mob/user, params)
-	if (istype(tool, /obj/item/pen) || istype(tool, /obj/item/toy/crayon))
-		if(!user.is_literate())
-			to_chat(user, span_notice("You scribble illegibly on the label of [src]!"))
-			return
-		var/custom_label = tgui_input_text(user, "What would you like to label the blood pack?", "Blood Pack", name, MAX_NAME_LEN)
-		if(!user.canUseTopic(src, USE_CLOSE))
-			return
-		if(user.get_active_held_item() != tool)
-			return
-		if(custom_label)
-			labelled = TRUE
-			name = "blood pack - [custom_label]"
-			balloon_alert(user, "new label set")
-		else
-			labelled = FALSE
-			update_appearance(UPDATE_NAME)
-	else
-		return ..()

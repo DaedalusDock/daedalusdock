@@ -413,11 +413,11 @@ SUBSYSTEM_DEF(job)
 
 	JobDebug("DO, Len: [unassigned.len]")
 
-	if(unassigned.len == 0)
-		return validate_required_jobs(required_jobs)
-
 	//Scale number of open security officer slots to population
 	setup_officer_positions()
+
+	if(unassigned.len == 0)
+		return validate_required_jobs(required_jobs)
 
 	//Jobs will have fewer access permissions if the number of players exceeds the threshold defined in game_options.txt
 	var/mat = CONFIG_GET(number/minimal_access_threshold)
@@ -662,7 +662,8 @@ SUBSYSTEM_DEF(job)
 	var/ssc = CONFIG_GET(number/security_scaling_coeff)
 	if(ssc > 0)
 		if(J.spawn_positions > 0)
-			var/officer_positions = min(12, max(J.spawn_positions, round(unassigned.len / ssc))) //Scale between configured minimum and 12 officers
+			//Scale between configured minimum and 12 officers
+			var/officer_positions = clamp(round(unassigned.len / ssc), J.spawn_positions, 12)
 			JobDebug("Setting open security officer positions to [officer_positions]")
 			J.total_positions = officer_positions
 			J.spawn_positions = officer_positions
@@ -672,13 +673,12 @@ SUBSYSTEM_DEF(job)
 	if(equip_needed < 0) // -1: infinite available slots
 		equip_needed = 12
 
-	for(var/i=equip_needed-5, i>0, i--)
-		if(GLOB.secequipment.len)
-			var/spawnloc = GLOB.secequipment[1]
-			new /obj/structure/closet/secure_closet/security/sec(spawnloc)
-			GLOB.secequipment -= spawnloc
-		else //We ran out of spare locker spawns!
-			break
+	for(var/i in equip_needed to 1 step -1)
+		if(!GLOB.secequipment.len)
+			break //We ran out of spare locker spawns!
+
+		var/turf/spawnloc = pick_n_take(GLOB.secequipment)
+		new /obj/structure/closet/secure_closet/security/sec(spawnloc)
 
 /datum/controller/subsystem/job/proc/HandleFeedbackGathering()
 	for(var/datum/job/job as anything in joinable_occupations)
@@ -824,13 +824,13 @@ SUBSYSTEM_DEF(job)
 ///////////////////////////////////
 //Keeps track of all living heads//
 ///////////////////////////////////
-/datum/controller/subsystem/job/proc/get_living_heads(management_only)
+/datum/controller/subsystem/job/proc/get_living_heads(federation_only)
 	. = list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(player.stat == DEAD || !player.mind?.assigned_role)
 			continue
 
-		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT))
+		if(federation_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
 			. += player.mind
 
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
@@ -839,28 +839,28 @@ SUBSYSTEM_DEF(job)
 ////////////////////////////
 //Keeps track of all heads//
 ////////////////////////////
-/datum/controller/subsystem/job/proc/get_all_heads(management_only)
+/datum/controller/subsystem/job/proc/get_all_heads(federation_only)
 	. = list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(!player.mind?.assigned_role)
 			continue
 
-		if(management_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT))
+		if(federation_only && (player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION))
 			. += player.mind
 
 		else if ((player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_COMPANY_LEADER))
 			. += player.mind
 
 /////////////////////////////////
-//Keeps track of all management//
+//Keeps track of all Federation members//
 /////////////////////////////////
-/datum/controller/subsystem/job/proc/get_all_management(management_only)
+/datum/controller/subsystem/job/proc/get_all_federation()
 	. += list()
 	for(var/mob/living/carbon/human/player as anything in GLOB.human_list)
 		if(!player.mind?.assigned_role)
 			continue
 
-		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT)
+		if(player.mind.assigned_role.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION)
 			. += player.mind
 
 //////////////////////////////////////////////
@@ -935,8 +935,8 @@ SUBSYSTEM_DEF(job)
 	var/obj/item/id_slot = new_captain.get_item_by_slot(ITEM_SLOT_ID)
 	if(id_slot)
 		var/obj/item/card/id/id_card = id_slot.GetID(TRUE) || locate() in id_slot
-		if(id_card && !(ACCESS_MANAGEMENT in id_card.access))
-			id_card.add_access(ACCESS_MANAGEMENT)
+		if(id_card && !(ACCESS_FEDERATION in id_card.access))
+			id_card.add_access(ACCESS_FEDERATION)
 
 	assigned_captain = TRUE
 
@@ -1004,16 +1004,16 @@ SUBSYSTEM_DEF(job)
 	JobDebug("Assign Captain: Nobody signed up for captain. Pulling from users signed up for Command.")
 
 	// Okay nobody is signed up for captain, let's try something more drastic.
-	var/datum/job_department/management = get_department_type(/datum/job_department/command)
-	for(var/datum/job/management_job as anything in management.department_jobs)
+	var/datum/job_department/federation = get_department_type(/datum/job_department/command)
+	for(var/datum/job/federation_job as anything in federation.department_jobs)
 		for(var/level in level_order)
-			var/list/candidates = FindOccupationCandidates(management_job, level)
+			var/list/candidates = FindOccupationCandidates(federation_job, level)
 			if(!candidates.len)
 				continue
 
 			for(var/mob/dead/new_player/candidate as anything in candidates)
 				if(AssignRole(candidate, captain_job))
-					JobDebug("Assign Captain: Found captain from pool of management roles.")
+					JobDebug("Assign Captain: Found captain from pool of Federation roles.")
 					return TRUE
 
 	JobDebug("Assign Captain: Failed, no captain was found. DivideOccupations aborted.")

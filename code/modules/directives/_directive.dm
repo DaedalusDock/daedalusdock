@@ -28,7 +28,7 @@
 	priority_announce(
 		get_announce_start_text(),
 		"Executive Order",
-		"An executive order has been issued. Failure to comply will result in punishment up to and including execution. [delay_string]",
+		"An executive order has been issued. [delay_string]",
 		sound_type = ANNOUNCER_ATTENTION,
 		send_to_newscaster = TRUE,
 		do_not_modify = TRUE,
@@ -58,9 +58,9 @@
 	SHOULD_CALL_PARENT(TRUE)
 	announce_start()
 
-	var/datum/bank_account/fed_account = SSeconomy.bank_accounts_by_id[ACCOUNT_GOV]
+	var/datum/bank_account/fed_account = SSeconomy.department_accounts_by_id[ACCOUNT_GOV]
 	fed_account.adjust_money(reward)
-	aas_radio_message("[reward] marks have been deposited into the Federation account.", list(RADIO_CHANNEL_COMMAND))
+	aas_radio_message("[reward] marks have been deposited into the Federation account.", list(RADIO_CHANNEL_FEDERATION))
 
 /// Idk if this will ever be used but you never know!
 /datum/directive/proc/end(successful)

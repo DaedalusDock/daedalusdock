@@ -63,6 +63,7 @@
 
 	write_log("[system.current_user.registered_name] accessed the records database.")
 
+	system.clear_screen(TRUE)
 	home_text()
 
 /// Getter for the log file. This isn't kept as a ref because I don't want to manage the ref. :)
@@ -98,24 +99,24 @@
 		return
 
 	var/datum/c4_file/terminal_program/operating_system/thinkdos/system = get_os()
-	var/datum/shell_stdin/parsed_stdin = parse_std_in(text)
+	var/datum/parsed_cmdline/parsed_cmdline = parse_cmdline(text)
 
 	if(awaiting_input)
 		var/datum/callback/_awaiting = awaiting_input // Null beforehand incase the awaiting input awaits another input.
 		awaiting_input = null
-		_awaiting.Invoke(src, parsed_stdin)
+		_awaiting.Invoke(src, parsed_cmdline)
 		return
 
-	var/lowertext_command = lowertext(parsed_stdin.command)
+	var/lowertext_command = lowertext(parsed_cmdline.command)
 
 	switch(current_menu)
 		if(MEDTRAK_MENU_HOME)
 			for(var/datum/shell_command/command as anything in home_commands)
-				if(command.try_exec(lowertext_command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+				if(command.try_exec(lowertext_command, system, src, parsed_cmdline.arguments, parsed_cmdline.options))
 					return TRUE
 
 		if(MEDTRAK_MENU_INDEX)
-			var/input_num = text2num(parsed_stdin.command)
+			var/input_num = text2num(parsed_cmdline.command)
 			if(isnum(input_num))
 				if(input_num == 0)
 					view_home()
@@ -131,11 +132,11 @@
 				return TRUE
 
 			for(var/datum/shell_command/command as anything in index_commands)
-				if(command.try_exec(lowertext_command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+				if(command.try_exec(lowertext_command, system, src, parsed_cmdline.arguments, parsed_cmdline.options))
 					return TRUE
 
 		if(MEDTRAK_MENU_RECORD)
-			var/input_num = text2num(parsed_stdin.command)
+			var/input_num = text2num(parsed_cmdline.command)
 			if(isnum(input_num))
 				if(input_num == 0)
 					view_index()
@@ -145,12 +146,12 @@
 				return TRUE
 
 			for(var/datum/shell_command/command as anything in record_commands)
-				if(command.try_exec(lowertext_command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+				if(command.try_exec(lowertext_command, system, src, parsed_cmdline.arguments, parsed_cmdline.options))
 					return TRUE
 
 		if(MEDTRAK_MENU_COMMENTS)
 			for(var/datum/shell_command/command as anything in comment_commands)
-				if(command.try_exec(lowertext_command, system, src, parsed_stdin.arguments, parsed_stdin.options))
+				if(command.try_exec(lowertext_command, system, src, parsed_cmdline.arguments, parsed_cmdline.options))
 					return TRUE
 
 /// Prints the home menu options

@@ -21,8 +21,8 @@
 #define ACCESS_CAPTAIN 20
 #define ACCESS_ALL_PERSONAL_LOCKERS 21
 #define ACCESS_CHAPEL_OFFICE 22
-/// Faction access for Management
-#define ACCESS_MANAGEMENT 23
+/// Faction access for the Federation
+#define ACCESS_FEDERATION 23
 #define ACCESS_ATMOSPHERICS 24
 #define ACCESS_BAR 25
 #define ACCESS_JANITOR 26
@@ -165,12 +165,12 @@ Comment here because it really doesn't like them anywhere else here
 	/obj/item/modular_computer/tablet/pda/detective = list(/datum/access_group/station/independent_areas), \
 	/obj/item/modular_computer/tablet/pda/warden = list(/datum/access_group/station/security), \
 	/obj/item/modular_computer/tablet/pda/janitor = list(/datum/access_group/station/independent_areas), \
-	/obj/item/modular_computer/tablet/pda/heads/hop = list(/datum/access_group/station/management), \
-	/obj/item/modular_computer/tablet/pda/heads/hos = list(/datum/access_group/station/management), \
-	/obj/item/modular_computer/tablet/pda/heads/cmo = list(/datum/access_group/station/management), \
-	/obj/item/modular_computer/tablet/pda/heads/ce = list(/datum/access_group/station/management), \
-	/obj/item/modular_computer/tablet/pda/heads/rd = list(/datum/access_group/station/management), \
-	/obj/item/modular_computer/tablet/pda/captain = list(/datum/access_group/station/management), \
+	/obj/item/modular_computer/tablet/pda/heads/hop = list(/datum/access_group/station/federation), \
+	/obj/item/modular_computer/tablet/pda/heads/hos = list(/datum/access_group/station/federation), \
+	/obj/item/modular_computer/tablet/pda/heads/cmo = list(/datum/access_group/station/federation), \
+	/obj/item/modular_computer/tablet/pda/heads/ce = list(/datum/access_group/station/federation), \
+	/obj/item/modular_computer/tablet/pda/heads/rd = list(/datum/access_group/station/federation), \
+	/obj/item/modular_computer/tablet/pda/captain = list(/datum/access_group/station/federation), \
 	/obj/item/modular_computer/tablet/pda/cargo = list(/datum/access_group/station/cargo), \
 	/obj/item/modular_computer/tablet/pda/shaftminer = list(/datum/access_group/station/cargo), \
 	/obj/item/modular_computer/tablet/pda/chaplain = list(/datum/access_group/station/independent_areas), \

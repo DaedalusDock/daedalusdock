@@ -7,5 +7,5 @@
 
 	)
 	crate_name = "experimental hypospray crate"
-	supply_flags = SUPPLY_PACK_GOVERNMENT
+	supply_flags = SUPPLY_PACK_FEDERATION
 

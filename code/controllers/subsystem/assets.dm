@@ -5,11 +5,6 @@ SUBSYSTEM_DEF(assets)
 
 	var/list/datum/asset_cache_item/cache = list()
 
-	/// Put RSC refs here
-	var/list/preload = list(
-		'fonts/ibmvga9.ttf',
-	)
-
 	var/datum/asset_transport/transport = new()
 
 /datum/controller/subsystem/assets/OnConfigLoad()
@@ -39,4 +34,3 @@ SUBSYSTEM_DEF(assets)
 
 /datum/controller/subsystem/assets/Recover()
 	cache = SSassets.cache
-	preload = SSassets.preload

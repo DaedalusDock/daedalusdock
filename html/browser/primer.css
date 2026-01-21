@@ -1,0 +1,95 @@
+.uiWrapper {
+	height: 100%;
+}
+
+.uiContent {
+	padding: 0 !important;
+	height: 100%;
+}
+
+.newspaper_header {
+	text-align: center;
+	font-family: "Playfair Display", serif;
+	font-weight: 900;
+	text-transform: uppercase;
+	font-size: 3rem;
+	margin-bottom: 1.2rem;
+}
+
+.newspaper_headline {
+	text-align: center;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 2.5rem;
+	border-bottom: 2px solid #2f2f2f;
+	border-top: 2px solid #2f2f2f;
+	padding: 12px 0 12px 0;
+}
+
+.newspaper {
+	font-size: 1rem;
+	font-family: "Droid Serif", serif;
+	line-height: normal;
+	background-color: #f9f7f1;
+	color: #2f2f2f;
+	height: 100%;
+}
+
+.newspaper .columns {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	overflow-x: hidden; /*I am not sure why this is needed, but removing it causes phantom overflow*/
+}
+.newspaper .column {
+	display: inline-block;
+	padding: 0 1% 0 1%;
+	vertical-align: top;
+	margin-bottom: 2rem;
+	flex: 1 1 0;
+}
+
+.newspaper .content {
+	margin: 1.5rem 2% 0 2%;
+}
+
+.newspaper .blurb {
+	margin-bottom: 1.2rem;
+}
+
+.column:nth-child(3n + 2),
+.column:nth-child(3n + 3) {
+	border-left: 1px solid #2f2f2f;
+}
+
+.column .headline {
+	text-align: center;
+	font-family: "Playfair Display", serif;
+	display: block;
+	margin: 0 auto;
+	font-size: 2rem;
+}
+
+.column .headline.subhead {
+	font-weight: 400;
+	font-size: 1.2rem;
+	box-sizing: border-box;
+	padding: 10px 0 10px 0;
+}
+.column .headline.subhead:before {
+	border-top: 1px solid #2f2f2f;
+	content: "";
+	width: 100px;
+	height: 7px;
+	display: block;
+	margin: 0 auto;
+}
+.column .headline.subhead:after {
+	border-bottom: 1px solid #2f2f2f;
+	content: "";
+	width: 100px;
+	height: 10px;
+	display: block;
+	margin: 0 auto;
+}

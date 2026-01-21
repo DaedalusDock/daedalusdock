@@ -13,7 +13,7 @@
 	var/static/list/commands
 
 	/// Lazy queue of shell commands. When the system is active, it will try to run these.
-	var/list/datum/shell_stdin/queued_commands
+	var/list/datum/parsed_cmdline/queued_commands
 
 	/// Boolean, determines if errors are written to the log file.
 	var/log_errors = TRUE
@@ -55,8 +55,8 @@
 	else
 		println("Type 'help' to get started.")
 
-/datum/c4_file/terminal_program/operating_system/thinkdos/parse_std_in(text)
-	RETURN_TYPE(/list/datum/shell_stdin)
+/datum/c4_file/terminal_program/operating_system/thinkdos/parse_cmdline(text)
+	RETURN_TYPE(/list/datum/parsed_cmdline)
 
 	var/list/split_raw = splittext(text, THINKDOS_SYMBOL_SEPARATOR)
 	if(length(split_raw) > THINKDOS_MAX_COMMANDS)
@@ -66,7 +66,7 @@
 
 	. = list()
 	for(var/raw_command in split_raw)
-		. += new /datum/shell_stdin(trimtext(raw_command)) //built-in is faster, don't care about right whitespace
+		. += new /datum/parsed_cmdline(trimtext(raw_command)) //built-in is faster, don't care about right whitespace
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/std_in(text)
 	. = ..()
@@ -77,18 +77,18 @@
 	println(encoded_in)
 	write_log(encoded_in)
 
-	var/list/datum/shell_stdin/parsed_stdins = parse_std_in(text)
-	if(!length(parsed_stdins)) //okay
+	var/list/datum/parsed_cmdline/parsed_cmdlines = parse_cmdline(text)
+	if(!length(parsed_cmdlines)) //okay
 		return TRUE
 
 	if(!current_user && needs_login)
-		var/datum/shell_stdin/login_stdin = parsed_stdins[1]
+		var/datum/parsed_cmdline/login_stdin = parsed_cmdlines[1]
 		var/datum/shell_command/thinkdos/login/login_command = locate() in commands
 		if(!login_command.try_exec(login_stdin.command, src, src, login_stdin.arguments, login_stdin.options))
 			println("Login required. Please login using 'login'.")
 		return
 
-	queued_commands = parsed_stdins
+	queued_commands = parsed_cmdlines
 	handle_command_queue()
 	return TRUE
 
@@ -103,15 +103,30 @@
 		if(active_program != src) //We are now blocking
 			break
 
-		var/datum/shell_stdin/parsed_stdin = popleft(queued_commands)
+		var/datum/parsed_cmdline/parsed_cmdline = popleft(queued_commands)
 		var/recognized = FALSE
 		for(var/datum/shell_command/potential_command as anything in commands)
-			if(potential_command.try_exec(parsed_stdin.command, src, src, parsed_stdin.arguments, parsed_stdin.options))
+			if(potential_command.try_exec(parsed_cmdline.command, src, src, parsed_cmdline.arguments, parsed_cmdline.options))
 				recognized = TRUE
 				break
+		// Check if we executed a shell command, if so, break out of the while loop.
+		if(recognized)
+			continue //We aren't being re-called from unload_program(), so we have to loop back to the start here.
+		// Otherwise,  Search the local directory for a matching program
+		// Argument passing doesn't exist for programs so we can just ignore it.
+		var/datum/c4_file/terminal_program/program_to_run = resolve_filepath(parsed_cmdline.command)
+		if(!istype(program_to_run) || istype(program_to_run, /datum/c4_file/terminal_program/operating_system))
+			// If that one's not good, Search the bin directory for a matching program
+			program_to_run = resolve_filepath(parsed_cmdline.command, get_bin_folder())
+
+		if(istype(program_to_run) && !istype(program_to_run, /datum/c4_file/terminal_program/operating_system))
+			execute_program(program_to_run, parsed_cmdline) //This will block command queue execution.
+			recognized = TRUE
+			break
+
 
 		if(!recognized)
-			println("'[html_encode(parsed_stdin.raw)]' is not recognized as an internal or external command.")
+			println("'[html_encode(parsed_cmdline.raw)]' is not recognized as an internal or external command.")
 
 	UNSETEMPTY(queued_commands)
 
@@ -216,6 +231,13 @@
 
 	return log_dir
 
+/// Get the bin folder. The bin directory holds normal programs.
+/datum/c4_file/terminal_program/operating_system/thinkdos/proc/get_bin_folder()
+	//the `/bin` part here is technically supposed to be reading the physical computer's default program dir.
+	//But that's dumb and /bin should always be correct.
+	return parse_directory(THINKDOS_BIN_DIRECTORY, drive.root, FALSE)
+
+
 /// Create the log file, or append a startup log.
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/initialize_logs()
 	if(command_log)
@@ -235,6 +257,8 @@
 
 	log_file.data += "<br><b>STARTUP:</b> [stationtime2text()], [stationdate2text()]"
 	return TRUE
+
+
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/set_current_user(datum/c4_file/user/new_user)
 	if(current_user)

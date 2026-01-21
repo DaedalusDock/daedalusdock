@@ -1,10 +1,11 @@
 TYPEINFO_DEF(/obj/machinery/button)
 	default_armor = list(BLUNT = 50, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 90, ACID = 70)
 
+DEFINE_INTERACTABLE(/obj/machinery/button)
 /obj/machinery/button
 	name = "button"
 	desc = "A remote control switch."
-	icon = 'icons/obj/stationobjs.dmi'
+	icon = 'icons/obj/machines/buttons.dmi'
 	icon_state = "doorctrl"
 
 	resistance_flags = LAVA_PROOF | FIRE_PROOF
@@ -12,7 +13,9 @@ TYPEINFO_DEF(/obj/machinery/button)
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.02
 	power_channel = AREA_USAGE_ENVIRON
 
+	var/light_mask = "doorctrl-light-mask"
 	var/skin = "doorctrl"
+
 	var/obj/item/assembly/device
 	var/obj/item/electronics/airlock/board
 	var/device_type = null
@@ -57,8 +60,13 @@ TYPEINFO_DEF(/obj/machinery/button)
 
 /obj/machinery/button/update_overlays()
 	. = ..()
+
+	if(!(machine_stat & (NOPOWER|BROKEN)) && !panel_open)
+		. += emissive_appearance(icon, light_mask, alpha = 120)
+
 	if(!panel_open)
 		return
+
 	if(device)
 		. += "button-device"
 	if(board)
@@ -196,11 +204,12 @@ TYPEINFO_DEF(/obj/machinery/button)
 /obj/machinery/button/door
 	name = "door button"
 	desc = "A door remote control switch."
+
 	var/normaldoorcontrol = FALSE
 	var/specialfunctions = OPEN // Bitflag, see assembly file
 	var/sync_doors = TRUE
 
-MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/button/door, 24)
+MAPPING_DIRECTIONAL_HELPERS_ROBUST_INVERSE_DIR(/obj/machinery/button/door, 28, -20, 21, -21)
 
 /obj/machinery/button/door/indestructible
 	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF

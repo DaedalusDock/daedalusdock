@@ -2,9 +2,10 @@
 	name = "toilet"
 	desc = "The HT-451, a torque rotation-based, waste disposal unit for small matter. This one seems remarkably clean."
 	icon = 'icons/obj/watercloset.dmi'
-	icon_state = "toilet00"
+	icon_state = "toilet"
 	density = FALSE
 	anchored = TRUE
+
 	var/open = FALSE //if the lid is up
 	var/cistern = 0 //if the cistern bit is open
 	var/w_items = 0 //the combined w_class of all the items in the cistern
@@ -16,7 +17,6 @@
 	. = ..()
 	open = round(rand(0, 1))
 	update_appearance()
-
 
 /obj/structure/toilet/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
@@ -82,9 +82,11 @@
 	else
 		to_chat(user, span_warning("You need a tighter grip!"))
 
-/obj/structure/toilet/update_icon_state()
-	icon_state = "toilet[open][cistern]"
-	return ..()
+/obj/structure/toilet/update_overlays()
+	. = ..()
+	. += image(icon, open ? "lid-up" : "lid-down")
+	if(cistern)
+		. += image(icon, "cisternlid")
 
 /obj/structure/toilet/deconstruct()
 	if(!(flags_1 & NODECONSTRUCT_1))

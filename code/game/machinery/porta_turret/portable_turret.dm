@@ -11,7 +11,7 @@
 #define TURRET_FLAG_SHOOT_ANOMALOUS (1<<4)  // Checks if it can shoot at unidentified lifeforms (ie xenos)
 #define TURRET_FLAG_SHOOT_UNSHIELDED (1<<5) // Checks if it can shoot people that aren't mindshielded and who arent heads
 #define TURRET_FLAG_SHOOT_BORGS (1<<6) // checks if it can shoot cyborgs
-#define TURRET_FLAG_SHOOT_MANAGEMENT (1<<7) // checks if it can shoot at management
+#define TURRET_FLAG_SHOOT_FEDERATION (1<<7) // checks if it can shoot at feds
 
 DEFINE_BITFIELD(turret_flags, list(
 	"TURRET_FLAG_SHOOT_ALL_REACT" = TURRET_FLAG_SHOOT_ALL_REACT,
@@ -21,7 +21,7 @@ DEFINE_BITFIELD(turret_flags, list(
 	"TURRET_FLAG_SHOOT_ANOMALOUS" = TURRET_FLAG_SHOOT_ANOMALOUS,
 	"TURRET_FLAG_SHOOT_UNSHIELDED" = TURRET_FLAG_SHOOT_UNSHIELDED,
 	"TURRET_FLAG_SHOOT_BORGS" = TURRET_FLAG_SHOOT_BORGS,
-	"TURRET_FLAG_SHOOT_MANAGEMENT" = TURRET_FLAG_SHOOT_MANAGEMENT,
+	"TURRET_FLAG_SHOOT_FEDERATION" = TURRET_FLAG_SHOOT_FEDERATION,
 ))
 
 TYPEINFO_DEF(/obj/machinery/porta_turret)
@@ -225,7 +225,7 @@ TYPEINFO_DEF(/obj/machinery/porta_turret)
 		"neutralize_unidentified" = turret_flags & TURRET_FLAG_SHOOT_ANOMALOUS,
 		"neutralize_nonmindshielded" = turret_flags & TURRET_FLAG_SHOOT_UNSHIELDED,
 		"neutralize_cyborgs" = turret_flags & TURRET_FLAG_SHOOT_BORGS,
-		"neutralize_heads" = turret_flags & TURRET_FLAG_SHOOT_MANAGEMENT,
+		"neutralize_heads" = turret_flags & TURRET_FLAG_SHOOT_FEDERATION,
 		"manual_control" = manual_control,
 		"silicon_user" = FALSE,
 		"allow_manual_control" = FALSE,
@@ -270,7 +270,7 @@ TYPEINFO_DEF(/obj/machinery/porta_turret)
 			turret_flags ^= TURRET_FLAG_SHOOT_BORGS
 			return TRUE
 		if("shootheads")
-			turret_flags ^= TURRET_FLAG_SHOOT_MANAGEMENT
+			turret_flags ^= TURRET_FLAG_SHOOT_FEDERATION
 			return TRUE
 		if("manual")
 			if(!issilicon(usr))
@@ -543,9 +543,9 @@ TYPEINFO_DEF(/obj/machinery/porta_turret)
 			return 10
 
 	// If we aren't shooting heads then return a threatcount of 0
-	if (!(turret_flags & TURRET_FLAG_SHOOT_MANAGEMENT))
+	if (!(turret_flags & TURRET_FLAG_SHOOT_FEDERATION))
 		var/datum/job/apparent_job = SSjob.GetJob(perp.get_assignment())
-		if(apparent_job?.departments_bitflags & DEPARTMENT_BITFLAG_MANAGEMENT)
+		if(apparent_job?.departments_bitflags & DEPARTMENT_BITFLAG_FEDERATION)
 			return 0
 
 	if(turret_flags & TURRET_FLAG_AUTH_WEAPONS) //check for weapon authorization
@@ -786,7 +786,7 @@ TYPEINFO_DEF(/obj/machinery/porta_turret/syndicate/shuttle)
 
 /obj/machinery/porta_turret/ai
 	faction = list("silicon")
-	turret_flags = TURRET_FLAG_SHOOT_CRIMINALS | TURRET_FLAG_SHOOT_ANOMALOUS | TURRET_FLAG_SHOOT_MANAGEMENT
+	turret_flags = TURRET_FLAG_SHOOT_CRIMINALS | TURRET_FLAG_SHOOT_ANOMALOUS | TURRET_FLAG_SHOOT_FEDERATION
 
 /obj/machinery/porta_turret/ai/Initialize(mapload)
 	. = ..()

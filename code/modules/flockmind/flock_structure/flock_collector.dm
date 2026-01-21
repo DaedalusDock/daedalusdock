@@ -91,7 +91,10 @@
 	var/turf/our_turf = get_turf(src)
 
 	var/list/considered_allturfs = list(our_turf)
-	var/list/considered_flockturfs = list(our_turf)
+	var/list/considered_flockturfs = list()
+
+	if(istype(our_turf, /turf/open/floor/flock))
+		considered_flockturfs += our_turf
 
 	for(var/direction in GLOB.cardinals)
 		var/turf/open/floor/flock/iter_turf = our_turf

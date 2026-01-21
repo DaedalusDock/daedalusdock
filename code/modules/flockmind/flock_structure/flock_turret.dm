@@ -32,8 +32,8 @@
 		icon_state = "teleblocker-off"
 	. = ..()
 
-/obj/structure/flock/gnesis_turret/update_info_tag()
-	info_tag.set_text("Gnesis: [reagents.total_volume]/[reagents.maximum_volume]")
+// /obj/structure/flock/gnesis_turret/update_info_tag()
+// 	info_tag.set_text("Gnesis: [reagents.total_volume]/[reagents.maximum_volume]")
 
 /obj/structure/flock/gnesis_turret/process(delta_time)
 	if(isnull(flock))

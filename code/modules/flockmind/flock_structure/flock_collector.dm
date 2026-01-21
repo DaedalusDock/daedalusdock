@@ -99,7 +99,7 @@
 		for(var/i in 1 to max_range)
 			iter_turf = get_step(iter_turf, direction)
 
-			if(keep_flockturfs && (!istype(iter_turf) || iter_turf.broken))
+			if(keep_flockturfs && (!istype(iter_turf, /turf/open/floor/flock) || iter_turf.broken))
 				keep_flockturfs = FALSE
 
 			if(keep_flockturfs)

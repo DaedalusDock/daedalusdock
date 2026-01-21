@@ -68,7 +68,7 @@
 	return ..()
 
 /atom/movable/screen/flockdrone_part/update_icon_state()
-	if(part_ref.is_active())
+	if(part_ref?.is_active())
 		icon_state = active_state
 	else
 		icon_state = inactive_state

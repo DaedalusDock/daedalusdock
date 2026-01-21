@@ -55,6 +55,7 @@
 	STOP_PROCESSING(SSprocessing, src)
 
 	if(flock && !flock_won_da_game)
+		flock.free_structure(src)
 		flock.game_over(completely_destroy = TRUE)
 
 	turfs_to_convert = null

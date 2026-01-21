@@ -4,11 +4,6 @@
 	check_flags = AB_CHECK_CONSCIOUS
 	render_button = FALSE
 
-#warn add flock tables
-#warn add flock closets
-#warn add flock lattice
-#warn add flock chairs
-
 /datum/action/cooldown/flock/deconstruct/is_valid_target(atom/cast_on)
 	var/turf/clicked_atom_turf = get_turf(cast_on)
 	if(!clicked_atom_turf)

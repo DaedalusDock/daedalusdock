@@ -9,6 +9,10 @@
 	max_integrity = 200
 
 	build_time = 10 SECONDS
+	no_flock_decon = TRUE
+
+/obj/structure/flock/rift/update_info_tag()
+	info_tag.set_text("Entry Time: [build_time_left()] seconds")
 
 /obj/structure/flock/rift/finish_building()
 	. = ..()
@@ -30,7 +34,7 @@
 	// Convert turfs
 	for(var/turf/open/floor/T as anything in convertable_turfs)
 		if(flock)
-			flock.convert_turf(T)
+			flock.claim_turf(T)
 		else
 			flock_convert_turf(T)
 

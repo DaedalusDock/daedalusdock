@@ -1130,8 +1130,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/airalarm, 21)
 
 	alert_type = code
 
-
-
 #undef AALARM_MODE_SCRUBBING
 #undef AALARM_MODE_VENTING
 #undef AALARM_MODE_PANIC

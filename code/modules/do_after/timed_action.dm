@@ -131,7 +131,7 @@
 		cancel()
 		return
 
-	if(!on_process())
+	if(!on_process(delta_time))
 		cancel()
 		return
 
@@ -144,7 +144,7 @@
 		progbar.update(world.time - start_time)
 
 /// For subtypes to implement behavior in process(). Return FALSE to cancel the timed action.
-/datum/timed_action/proc/on_process()
+/datum/timed_action/proc/on_process(delta_time)
 	return TRUE
 
 /// Called when the timed action succeeds.

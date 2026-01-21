@@ -380,7 +380,7 @@ TYPEINFO_DEF(/obj/machinery/porta_turret)
 
 		addtimer(CALLBACK(src, PROC_REF(toggle_on), TRUE), rand(60,600))
 
-/obj/machinery/porta_turret/take_damage(damage, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+/obj/machinery/porta_turret/take_damage(damage, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, armor_penetration = 0, allow_break = TRUE)
 	. = ..()
 	if(. && atom_integrity > 0) //damage received
 		if(prob(30))

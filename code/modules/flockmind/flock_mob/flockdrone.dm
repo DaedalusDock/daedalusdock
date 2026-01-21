@@ -1,16 +1,36 @@
 /mob/living/simple_animal/flock/drone
+	hud_type = /datum/hud/flockdrone
 	ai_controller = /datum/ai_controller/flock/drone
 
-	compute_provided = FLOCK_COMPUTE_COST_DRONE
-	var/flock_phasing = FALSE
+	move_force = MOVE_FORCE_WEAK
+
+	actions_to_grant = list(
+		/datum/action/cooldown/flock/release_control,
+		/datum/action/cooldown/flock/convert,
+		/datum/action/cooldown/flock/deconstruct,
+		/datum/action/cooldown/flock/flock_heal,
+		/datum/action/cooldown/flock/cage_mob,
+		/datum/action/cooldown/flock/nest,
+		/datum/action/cooldown/flock/deposit,
+	)
+
+	bandwidth_provided = FLOCK_COMPUTE_COST_DRONE
+
 	/// A mob possessing this mob.
-	var/mob/camera/flock/controlled_by
+	var/tmp/mob/camera/flock/controlled_by
+
+	var/list/datum/flockdrone_part/parts = list()
+	/// Active flockdrone part.
+	var/datum/flockdrone_part/active_part
 
 /mob/living/simple_animal/flock/drone/Initialize(mapload, join_flock)
+	create_parts()
+	set_active_part(parts[1])
 	. = ..()
 	flock?.stat_drones_made++
 
 	ADD_TRAIT(src, TRAIT_IMPORTANT_SPEAKER, INNATE_TRAIT)
+	ADD_TRAIT(src, TRAIT_ALWAYS_BUTCHERABLE, INNATE_TRAIT)
 
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
 	set_real_name(flock_realname(FLOCK_TYPE_DRONE))
@@ -19,27 +39,210 @@
 	if(stat == CONSCIOUS)
 		INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, say), pick(GLOB.flockdrone_created_phrases), null, null, null, null, null, "flock spawn")
 
-	var/datum/action/cooldown/flock/flock_heal/repair = new
-	repair.Grant(src)
-
 /mob/living/simple_animal/flock/drone/Destroy()
 	release_control()
-	QDEL_NULL(resources)
+	QDEL_NULL(substrate)
+	QDEL_LIST(parts)
+	active_part = null // whatever was here was qdeleted by qdel_list(parts)
 	return ..()
 
+/mob/living/simple_animal/flock/drone/examine(mob/user)
+	if(!isflockmob(user))
+		return ..()
+
+	var/cognition = "TORPID"
+	if(stat == DEAD)
+		cognition = "DEAD"
+	else if(controlled_by || ckey)
+		cognition = "SAPIENT"
+	else if(dormant)
+		cognition = "ABSENT"
+	else if(HAS_TRAIT(src, TRAIT_AI_PAUSED))
+		cognition = "HIBERNATING"
+
+	. = list(
+		span_flocksay("<b>###=- Ident confirmed, data packet received.</b>"),
+		controlled_by ? span_flocksay("<b>ID:</b> [controlled_by.real_name] (controlling [real_name])") : span_flocksay("<b>ID:</b> [real_name]"),
+		span_flocksay("<b>Flock:</b> [flock?.name || "N/A"]"),
+		span_flocksay("<b>Substrate: [substrate.has_points()]</b>"),
+		span_flocksay("<b>System Integrity: [round(health / maxHealth, 0.1) * 100]</b>"),
+		span_flocksay("<b>Cognition:</b> [cognition]"),
+	)
+
+	if(cognition == "TORPID" && length(ai_controller?.current_behaviors))
+		var/datum/ai_behavior/flock/flock_behavior = locate() in ai_controller.current_behaviors
+		if(istype(flock_behavior))
+			. += span_flocksay("<b>Task: [flock_behavior.name]")
+
+	. += span_flocksay("<b>###=-</b>")
+
 /mob/living/simple_animal/flock/drone/death(gibbed, cause_of_death)
-	stop_flockphase()
+	stop_flockphase(TRUE)
+	release_control()
 	say(pick(GLOB.flockdrone_death_phrases))
 	if(flock)
-		flock_talk(null, "Connection to drone [real_name] lost.", flock)
+		flock_talk(null, "Connection to drone [real_name] lost.", flock, involuntary = TRUE)
+
+	var/datum/flockdrone_part/absorber/absorber = locate() in parts
+	absorber.try_drop_item()
 	return ..()
 
 /mob/living/simple_animal/flock/drone/Life(delta_time, times_fired)
 	. = ..()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
-		resources.remove_points(1)
-		if(!resources.has_points(1))
+		if(avoid_stop_flockphase())
+			flockphase_tax()
+		else
 			stop_flockphase()
+
+
+/mob/living/simple_animal/flock/drone/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change)
+	. = ..()
+
+	// Stop existing flockphasing if we can't flockphase, also update the oldloc if it was a flock floor.
+	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
+		if(istype(old_loc, /turf/open/floor/flock))
+			var/turf/open/floor/flock/flockfloor = old_loc
+			LAZYREMOVE(flockfloor.flockrunning_mobs, src)
+			flockfloor.update_power()
+
+	// Mob can't flockphase.
+	if(!isflockturf(loc) || !can_flockphase())
+		stop_flockphase(TRUE)
+		return
+
+	// Being in a wall forces flockphase if able.
+	if(istype(loc, /turf/closed/wall/flock))
+		if(flockphase_tax())
+			start_flockphase()
+			return
+		return
+
+	// Either the client wants to flockphase, of if uncliented, already flockphasing.
+	var/wants_to_flockphase = client ? client.keys_held["Shift"] : HAS_TRAIT(src, TRAIT_FLOCKPHASE)
+	if(!wants_to_flockphase)
+		stop_flockphase()
+		return
+
+	if(istype(loc, /turf/open/floor/flock))
+		var/turf/open/floor/flock/flockfloor = loc
+		// Also incapable of flockphasing.
+		if(flockfloor.broken)
+			stop_flockphase(TRUE)
+			return
+
+		if(flockphase_tax())
+			start_flockphase()
+			LAZYADD(flockfloor.flockrunning_mobs, src)
+			flockfloor.update_power()
+			return
+		return
+
+/mob/living/simple_animal/flock/drone/get_status_tab_items()
+	. = ..()
+	. += "Substrate: [substrate.has_points()]"
+
+/mob/living/simple_animal/flock/drone/MouseDroppedOn(atom/dropping, atom/user)
+	. = ..()
+	if(dropping != user || !istype(user, /mob/camera/flock))
+		return
+
+	var/mob/camera/flock/ghost_bird = user
+	if(istype(user) && ghost_bird.flock == flock)
+		take_control(user)
+
+/mob/living/simple_animal/flock/drone/Click(location, control, params)
+	. = ..()
+	var/mob/camera/flock/ghost_bird = usr
+	if(!istype(ghost_bird))
+		return
+
+	var/list/modifiers = params2list(params)
+	if(!modifiers?[RIGHT_CLICK])
+		return
+
+	var/list/choices = list()
+	var/image/I = image('icons/hud/radial.dmi', "radial_use")
+	choices["order"] = I
+
+	I = image('icons/hud/radial.dmi', "radial_control")
+	choices["control"] = I
+
+	var/result = show_radial_menu(usr, get_turf(src), choices, "[REF(usr)]_flock_click")
+	switch(result)
+		if("control")
+			take_control(ghost_bird)
+
+		if("order")
+			var/datum/action/cooldown/flock/control_drone/order_action = locate() in ghost_bird.actions
+			if(order_action)
+				if(order_action.selected_bird)
+					order_action.unset_click_ability(usr)
+				else
+					order_action.set_click_ability(usr)
+					order_action.Trigger(target = src)
+
+/mob/living/simple_animal/flock/drone/resolve_unarmed_attack(atom/attack_target, list/modifiers)
+	if(modifiers?[RIGHT_CLICK])
+		active_part?.right_click_on(attack_target, TRUE)
+	else
+		active_part?.left_click_on(attack_target, TRUE)
+
+/mob/living/simple_animal/flock/drone/RangedAttack(atom/A, modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(modifiers?[RIGHT_CLICK])
+		active_part?.right_click_on(A, FALSE)
+	else
+		active_part?.left_click_on(A, FALSE)
+
+/mob/living/simple_animal/update_health_hud()
+	var/severity = 0
+	var/healthpercent = ceil((health/maxHealth) * 100)
+	if(hud_used?.healthdoll) //to really put you in the boots of a simplemob
+		var/atom/movable/screen/flockdrone_health/healthdoll = hud_used.healthdoll
+		switch(healthpercent)
+			if(100 to INFINITY)
+				severity = 0
+			if(81 to 99)
+				severity = 1
+			if(65 to 80)
+				severity = 2
+			if(49 to 64)
+				severity = 3
+			if(33 to 48)
+				severity = 4
+			if(17 to 32)
+				severity = 5
+			if(1 to 16)
+				severity = 6
+			else
+				severity = 7
+
+		healthdoll.icon_state = "health[severity]"
+
+	if(severity > 0)
+		overlay_fullscreen("brute", /atom/movable/screen/fullscreen/brute, min(severity, 6))
+	else
+		clear_fullscreen("brute")
+
+
+/mob/living/simple_animal/flock/drone/harvest(mob/living/user)
+	var/list/loot = list(
+		/obj/item/stack/sheet/gnesis = 1,
+		/obj/item/shard/gnesis_glass = 1,
+	)
+
+	for(var/i in 3 to 6)
+		var/path = pick_weight(loot)
+		new path(drop_location())
+
+	playsound(src, SFX_SHATTER, 30, TRUE, SILENCED_SOUND_EXTRARANGE)
+
+	// Spawn flock organs here
+	qdel(src)
 
 /mob/living/simple_animal/flock/drone/get_flock_data()
 	var/list/data = ..()
@@ -56,6 +259,37 @@
 
 	data["task"] = current_behavior_name || "hibernating"
 	return data
+
+/mob/living/simple_animal/flock/drone/on_ai_status_change(datum/ai_controller/source, ai_status)
+	. = ..()
+	if(ai_status == AI_STATUS_OFF && controlled_by)
+		task_tag.set_text("Controlled By: [controlled_by.real_name]")
+
+/mob/living/simple_animal/flock/drone/dormantize()
+	if(!flock)
+		return ..()
+
+	if(controlled_by)
+		release_control(FALSE)
+		flock_talk(null, "Connection to drone [real_name] lost.", flock, involuntary = TRUE)
+
+	spawn(-1)
+		say("error: out of signal range, disconnecting")
+	return ..()
+
+/// Sets the active flockdrone part.
+/mob/living/simple_animal/flock/drone/proc/set_active_part(datum/flockdrone_part/new_part)
+	var/datum/flockdrone_part/old_part = active_part
+	active_part = new_part
+
+	active_part.screen_obj?.update_appearance()
+	old_part?.screen_obj?.update_appearance()
+
+/// Create all of the part datums for this mob.
+/mob/living/simple_animal/flock/drone/proc/create_parts()
+	parts += new /datum/flockdrone_part/converter(src)
+	parts += new /datum/flockdrone_part/incapacitator(src)
+	parts += new /datum/flockdrone_part/absorber(src)
 
 /mob/living/simple_animal/flock/drone/proc/start_flockphase()
 	if(HAS_TRAIT(src, TRAIT_FLOCKPHASE))
@@ -77,10 +311,12 @@
 	animate(src, color = color_matrix, transform = shrink, time = 0.5 SECONDS, easing = SINE_EASING)
 	return TRUE
 
-/mob/living/simple_animal/flock/drone/proc/stop_flockphase()
+/mob/living/simple_animal/flock/drone/proc/stop_flockphase(force)
 	if(!HAS_TRAIT(src, TRAIT_FLOCKPHASE))
 		return FALSE
 
+	if(!force && avoid_stop_flockphase())
+		return FALSE
 
 	playsound(src, 'goon/sounds/flockmind/flockdrone_floorrun.ogg', 30, TRUE, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 
@@ -97,7 +333,8 @@
 
 	if(istype(loc, /turf/open/floor/flock))
 		var/turf/open/floor/flock/flockfloor = loc
-		flockfloor.turn_off()
+		LAZYREMOVE(flockfloor.flockrunning_mobs, src)
+		flockfloor.update_power()
 
 	var/turf/turfloc = loc
 	if(turfloc.can_flock_occupy(src))
@@ -108,22 +345,35 @@
 			forceMove(T)
 			break
 
+/// Called in stop_flockphase() to attempt stopping flockphase due to being in a wall or something.
+/mob/living/simple_animal/flock/drone/proc/avoid_stop_flockphase()
+	if(!can_flockphase())
+		return FALSE
+
+	if(isclosedturf(loc))
+		return TRUE
+
+	if(client?.keys_held["Shift"])
+		return TRUE
+
+/// Returns TRUE if the drone can flockphase.
 /mob/living/simple_animal/flock/drone/proc/can_flockphase()
+	if(stat != CONSCIOUS)
+		return FALSE
+
 	if(length(grabbed_by))
 		return FALSE
 
-	if(!resources.has_points())
+	if(!substrate.has_points())
 		return FALSE
 
 	return TRUE
 
+/// Deducts the substrate tax for flockphasing, ending flockphase if the drone ran out of points.
 /mob/living/simple_animal/flock/drone/proc/flockphase_tax()
-	if(!HAS_TRAIT(src, TRAIT_FLOCKPHASE))
-		return FALSE
-
-	resources.remove_points(1)
-	if(!resources.has_points())
-		stop_flockphase()
+	substrate.remove_points(1)
+	if(!substrate.has_points())
+		stop_flockphase(TRUE)
 		return FALSE
 	return TRUE
 
@@ -144,7 +394,7 @@
 	if(controlled_by.mind)
 		controlled_by.mind.transfer_to(src)
 	else
-		key = controlled_by.key
+		PossessByPlayer(controlled_by.key)
 
 	if(isflocktrace(controlled_by))
 		flock.add_notice(src, FLOCK_NOTICE_FLOCKTRACE_CONTROL)
@@ -154,12 +404,20 @@
 	to_chat(src, "<span class='flocksay'><b>\[SYSTEM: Control of drone [real_name] established.\]</b></span>")
 	return TRUE
 
-/mob/living/simple_animal/flock/drone/proc/release_control()
+/mob/living/simple_animal/flock/drone/proc/release_control(go_dormant = FALSE)
 	if(isnull(controlled_by))
 		return
 
+	task_tag.set_text("")
+
+	var/dest_was_safe = TRUE
+	var/turf/destination = get_turf(src)
+	if(!flock.is_on_safe_z(destination))
+		dest_was_safe = FALSE
+		destination = get_turf(pick_safe(flock.drones)) || get_safe_random_station_turf()
+
 	var/mob/camera/flock/master_bird = controlled_by
-	master_bird = null
+	controlled_by = null
 
 	if(flock)
 		flock.remove_notice(src, FLOCK_NOTICE_FLOCKMIND_CONTROL)
@@ -167,18 +425,23 @@
 
 	if(isnull(master_bird) && ckey)
 		if(flock)
-			master_bird = new /mob/camera/flock/trace(src, flock)
+			master_bird = new /mob/camera/flock/trace(destination, flock)
 		else
 			ghostize(FALSE)
 
 	if(!master_bird)
 		return
 
-	master_bird.forceMove(get_turf(src))
+	master_bird.forceMove(destination)
 	if(mind)
 		mind.transfer_to(master_bird)
 
-	flock_talk(null, "Control of [real_name] surrendered.", flock)
+	flock_talk(null, "Control of [real_name] surrendered.", flock, involuntary = TRUE)
+	if(!dest_was_safe)
+		to_chat(master_bird, span_warning("You feel your consciousness weaking as you are ripped further from your rift, and you retreat back to safety."))
+
+	if(!flock && go_dormant)
+		dormantize()
 
 /mob/living/simple_animal/flock/drone/proc/split_into_bits()
 	ai_controller.PauseAi(3 SECONDS)

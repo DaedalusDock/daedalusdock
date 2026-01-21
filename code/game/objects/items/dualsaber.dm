@@ -37,7 +37,7 @@ TYPEINFO_DEF(/obj/item/dualsaber)
 	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
 	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
-	max_integrity = 200
+	max_integrity = 50
 	resistance_flags = FIRE_PROOF
 
 	var/w_class_on = WEIGHT_CLASS_BULKY

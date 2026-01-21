@@ -156,7 +156,7 @@ GLOBAL_LIST_INIT(uranium_recipes, list ( \
 	singular_name = "plasma sheet"
 	sheettype = "plasma"
 	resistance_flags = FLAMMABLE
-	max_integrity = 100
+	max_integrity = 30
 	mats_per_unit = list(/datum/material/plasma=MINERAL_MATERIAL_AMOUNT)
 	grind_results = list(/datum/reagent/toxin/plasma = 20)
 	point_value = 20

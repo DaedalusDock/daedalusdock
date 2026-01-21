@@ -6,17 +6,18 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 
 /************************************Base proc************************************/
 
-/atom/proc/shuttleRotate(rotation, params=ROTATE_DIR|ROTATE_SMOOTH|ROTATE_OFFSET)
-	if(params & ROTATE_DIR)
+// HEY ASSHOLE. ANY TIME YOU CALL THIS PROC, PASS IN 'ALL' TO PARAMS. YOU'LL THANK ME IN 10 YEARS ~Kapu
+/atom/proc/shuttleRotate(rotation, params)
+	if(params & SHUTTLE_ROTATE_DIR)
 		//rotate our direction
 		setDir(angle2dir(rotation+dir2angle(dir)))
 
 	//resmooth if need be.
-	if(params & ROTATE_SMOOTH && smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
+	if(params & SHUTTLE_ROTATE_SMOOTH && smoothing_flags & (SMOOTH_CORNERS|SMOOTH_BITMASK))
 		QUEUE_SMOOTH(src)
 
 	//rotate the pixel offsets too.
-	if((pixel_x || pixel_y) && (params & ROTATE_OFFSET))
+	if((pixel_x || pixel_y) && (params & SHUTTLE_ROTATE_OFFSET))
 		if(rotation < 0)
 			rotation += 360
 		for(var/turntimes=rotation/90;turntimes>0;turntimes--)
@@ -42,7 +43,7 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 /************************************Turf rotate procs************************************/
 
 /turf/closed/mineral/shuttleRotate(rotation, params)
-	params &= ~ROTATE_OFFSET
+	params &= ~SHUTTLE_ROTATE_OFFSET
 	return ..()
 
 /************************************Mob rotate procs************************************/
@@ -51,7 +52,7 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 /mob/shuttleRotate(rotation, params)
 	params = NONE
 	. = ..()
-	if(!buckled)
+	if(!buckled && (params & SHUTTLE_ROTATE_DIR))
 		setDir(angle2dir(rotation+dir2angle(dir)))
 
 /mob/dead/observer/shuttleRotate(rotation, params)
@@ -74,7 +75,7 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 	boot_dir = angle2dir(rotation + dir2angle(boot_dir))
 
 /obj/structure/alien/weeds/shuttleRotate(rotation, params)
-	params &= ~ROTATE_OFFSET
+	params &= ~SHUTTLE_ROTATE_OFFSET
 	return ..()
 
 /************************************Machine rotate procs************************************/
@@ -101,6 +102,10 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 		var/new_pos = supposed_node_connect.Find(node_dir)
 		nodes[new_pos] = nodes_copy[i]
 
+/obj/machinery/light/shuttleRotate(rotation, params)
+	params &= ~SHUTTLE_ROTATE_OFFSET // setDir() handles pixel offsets.
+	return ..()
+
 //prevents shuttles attempting to rotate this since it messes up sprites
 /obj/machinery/gateway/shuttleRotate(rotation, params)
 	params = NONE
@@ -113,7 +118,7 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 
 /obj/machinery/door/airlock/shuttleRotate(rotation, params)
 	. = ..()
-	if(cyclelinkeddir && (params & ROTATE_DIR))
+	if(cyclelinkeddir && (params & SHUTTLE_ROTATE_DIR))
 		cyclelinkeddir = angle2dir(rotation+dir2angle(cyclelinkeddir))
 		// If we update the linked airlock here, the partner airlock might
 		// not be present yet, so don't do that. Just assume we're still
@@ -121,5 +126,5 @@ If ever any of these procs are useful for non-shuttles, rename it to proc/rotate
 
 /obj/machinery/porta_turret/shuttleRotate(rotation, params)
 	. = ..()
-	if(wall_turret_direction && (params & ROTATE_DIR))
+	if(wall_turret_direction && (params & SHUTTLE_ROTATE_DIR))
 		wall_turret_direction = turn(wall_turret_direction,rotation)

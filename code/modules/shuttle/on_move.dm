@@ -77,7 +77,7 @@ All ShuttleMove procs go here
 		oldT.ScrapeAway(baseturfs.len - shuttle_boundary + 1)
 
 	if(rotation)
-		shuttleRotate(rotation) //see shuttle_rotate.dm
+		shuttleRotate(rotation, ALL) //see shuttle_rotate.dm
 
 	return TRUE
 
@@ -116,8 +116,9 @@ All ShuttleMove procs go here
 
 	if(light)
 		update_light()
+
 	if(rotation)
-		shuttleRotate(rotation)
+		shuttleRotate(rotation, ALL)
 
 	return TRUE
 

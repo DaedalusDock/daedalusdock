@@ -8,5 +8,8 @@
 		{
 			"Gravity": 1
 		}
-	]
+	],
+	"shuttles": {
+		"emergency": "emergency_goon"
+	}
 }

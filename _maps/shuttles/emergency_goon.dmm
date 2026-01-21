@@ -20,10 +20,6 @@
 "d" = (
 /turf/closed/wall/mineral/titanium,
 /area/shuttle/escape)
-"f" = (
-/obj/machinery/status_display/evac,
-/turf/closed/wall/mineral/titanium,
-/area/shuttle/escape)
 "g" = (
 /obj/machinery/door/airlock/titanium{
 	name = "Emergency Shuttle Airlock"
@@ -58,7 +54,7 @@
 	use_power = 0
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
+/area/shuttle/escape)
 "m" = (
 /obj/effect/spawner/structure/window/reinforced/shuttle,
 /turf/open/floor/plating,
@@ -94,7 +90,8 @@
 /turf/open/floor/mineral/titanium/blue,
 /area/shuttle/escape)
 "t" = (
-/turf/closed/wall/mineral/titanium/interior,
+/obj/machinery/status_display/evac/directional/north,
+/turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
 "u" = (
 /obj/structure/chair/comfy/brown{
@@ -170,7 +167,7 @@
 	dir = 4
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
+/area/shuttle/escape)
 "I" = (
 /obj/structure/table/reinforced,
 /obj/structure/window/reinforced{
@@ -182,14 +179,14 @@
 /area/shuttle/escape)
 "J" = (
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
+/area/shuttle/escape)
 "K" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Emergency Shuttle Brig"
 	},
 /obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
+/area/shuttle/escape)
 "L" = (
 /obj/structure/table/reinforced,
 /obj/item/storage/medkit/regular,
@@ -202,6 +199,7 @@
 /area/shuttle/escape)
 "R" = (
 /obj/machinery/light/small/directional/south,
+/obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/mineral/titanium/white,
 /area/shuttle/escape)
 "S" = (
@@ -216,8 +214,9 @@
 	dir = 4
 	},
 /obj/machinery/light/small/directional/north,
+/obj/machinery/status_display/evac/directional/east,
 /turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
+/area/shuttle/escape)
 "V" = (
 /obj/machinery/light/directional/north,
 /turf/open/floor/mineral/titanium,
@@ -309,9 +308,9 @@ d
 d
 d
 w
-f
 d
-f
+d
+d
 K
 d
 d
@@ -430,7 +429,7 @@ S
 r
 S
 s
-t
+r
 d
 a
 "}
@@ -441,7 +440,7 @@ d
 m
 d
 E
-f
+d
 m
 d
 d

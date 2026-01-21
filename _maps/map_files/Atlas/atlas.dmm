@@ -2182,6 +2182,10 @@
 /obj/machinery/airalarm/directional/west,
 /turf/open/floor/wood,
 /area/station/service/bar)
+"gn" = (
+/obj/structure/lattice,
+/turf/open/space/basic,
+/area/station/hallway/secondary/exit/departure_lounge)
 "go" = (
 /obj/effect/turf_decal/siding/fancy/grey/corner{
 	dir = 4
@@ -3784,11 +3788,6 @@
 /obj/machinery/light_switch/directional/east,
 /turf/open/floor/iron,
 /area/station/commons/locker)
-"kA" = (
-/obj/structure/lattice/catwalk,
-/obj/structure/marker_beacon/burgundy,
-/turf/open/space/basic,
-/area/space)
 "kB" = (
 /obj/effect/turf_decal/tile/neutral/opposingcorners,
 /obj/machinery/light/floor/has_bulb,
@@ -8297,6 +8296,16 @@
 /obj/structure/extinguisher_cabinet/directional/north,
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/hallway/primary/central/fore)
+"xm" = (
+/obj/machinery/door/airlock/external{
+	name = "Departure Lounge Airlock";
+	space_dir = 1
+	},
+/obj/effect/mapping_helpers/airlock/cyclelink_helper_multi{
+	cycle_id = "departures"
+	},
+/turf/open/floor/iron/ported/techfloor_grid,
+/area/station/hallway/secondary/exit/departure_lounge)
 "xn" = (
 /obj/structure/table,
 /turf/open/floor/plating,
@@ -8675,6 +8684,11 @@
 /obj/machinery/light_switch/directional/east,
 /turf/open/floor/wood,
 /area/station/cargo/qm)
+"ym" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/marker_beacon/burgundy,
+/turf/open/space/basic,
+/area/station/hallway/secondary/exit/departure_lounge)
 "yn" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/wood,
@@ -10713,9 +10727,6 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/command)
-"DS" = (
-/turf/open/floor/engine,
-/area/station/hallway/secondary/exit/departure_lounge)
 "DT" = (
 /obj/machinery/door/airlock/medical/glass{
 	name = "Medical Storage"
@@ -14273,14 +14284,6 @@
 /obj/structure/table/wood,
 /turf/open/floor/wood,
 /area/station/security/detectives_office)
-"NO" = (
-/obj/machinery/door/airlock/external{
-	name = "Departure Lounge Airlock";
-	space_dir = 1
-	},
-/obj/effect/mapping_helpers/airlock/cyclelink_helper,
-/turf/open/floor/engine,
-/area/station/hallway/secondary/exit/departure_lounge)
 "NP" = (
 /obj/effect/decal/cleanable/blood/drip,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -15143,16 +15146,6 @@
 /obj/structure/disposalpipe/segment,
 /turf/open/floor/iron/white,
 /area/station/medical/disposal)
-"Qi" = (
-/obj/machinery/door/airlock/external{
-	name = "Departure Lounge Airlock";
-	space_dir = 1
-	},
-/obj/effect/mapping_helpers/airlock/cyclelink_helper{
-	dir = 1
-	},
-/turf/open/floor/engine,
-/area/station/hallway/secondary/exit/departure_lounge)
 "Qj" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
 /obj/effect/spawner/random/trash/food_packaging,
@@ -57814,9 +57807,9 @@ Ii
 Ii
 Ii
 Ii
-kA
-Tz
-Tz
+Ii
+Ii
+Ii
 DV
 iz
 iz
@@ -58071,9 +58064,9 @@ Ii
 Ii
 Ii
 Ii
-DV
-iz
-iz
+ym
+gn
+gn
 DV
 qr
 vN
@@ -58328,11 +58321,11 @@ Ii
 Ii
 Ii
 Ii
-NO
-DS
-DS
-Qi
-RS
+DV
+iz
+iz
+DV
+QM
 wM
 RS
 Uk
@@ -58584,12 +58577,12 @@ Ii
 Ii
 Ii
 Ii
-Ii
-iz
+WZ
+xm
 QJ
 QJ
-iz
-QM
+xm
+RS
 wM
 RS
 Hc
@@ -58842,11 +58835,11 @@ Ii
 Ii
 Ii
 Ii
-iz
+xm
 QJ
 QJ
-iz
-bW
+xm
+RS
 wM
 RS
 mc
@@ -59098,12 +59091,12 @@ Ii
 Ii
 Ii
 Ii
-WZ
-NO
-DS
-DS
-Qi
-RS
+Ii
+DV
+iz
+iz
+DV
+bW
 Or
 Or
 Or
@@ -59356,9 +59349,9 @@ Ii
 Ii
 Ii
 Ii
-DV
-iz
-iz
+ym
+gn
+gn
 DV
 Zf
 Or
@@ -59613,9 +59606,9 @@ Ii
 Ii
 Ii
 Ii
-kA
-qn
-qn
+Ii
+RG
+RG
 Qs
 Qs
 cX

@@ -413,7 +413,6 @@
 /obj/machinery/atmospherics/pipe/layer_manifold/general/visible{
 	dir = 4
 	},
-/obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -426,6 +425,7 @@
 /obj/effect/turf_decal/siding/fancy/grey{
 	dir = 4
 	},
+/obj/machinery/atmospherics/pipe/bridge_pipe/scrubbers/visible,
 /turf/open/floor/iron/iron_edge{
 	dir = 8
 	},
@@ -16735,7 +16735,6 @@
 /obj/machinery/atmospherics/pipe/layer_manifold/general/visible{
 	dir = 4
 	},
-/obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
@@ -16745,6 +16744,7 @@
 /obj/effect/turf_decal/siding/fancy/grey{
 	dir = 4
 	},
+/obj/machinery/atmospherics/pipe/bridge_pipe/scrubbers/visible,
 /turf/open/floor/iron/iron_edge{
 	dir = 8
 	},
@@ -19285,13 +19285,13 @@
 /obj/machinery/atmospherics/pipe/layer_manifold/general/visible{
 	dir = 4
 	},
-/obj/machinery/atmospherics/pipe/smart/simple/scrubbers/visible,
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
 /obj/effect/turf_decal/siding/fancy/grey{
 	dir = 4
 	},
+/obj/machinery/atmospherics/pipe/bridge_pipe/scrubbers/visible,
 /turf/open/floor/iron/iron_edge{
 	dir = 8
 	},

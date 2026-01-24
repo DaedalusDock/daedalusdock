@@ -13,7 +13,7 @@
 	stamina_critical_chance = 0
 
 	resistance_flags = FLAMMABLE
-	max_integrity = 40
+	max_integrity = 3
 	novariants = FALSE
 	item_flags = NOBLUDGEON
 	cost = 250

@@ -232,4 +232,8 @@
 	show_when_dead = TRUE
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 
-/atom/movable/screen/fullscreen/bloodlust
+/atom/movable/screen/fullscreen/flock_convert
+	icon = 'goon/icons/hud/flockmindcircuit.dmi'
+	icon_state = "flockmindcircuit"
+	layer = FLOCK_CONVERT_LAYER
+	show_when_dead = FALSE

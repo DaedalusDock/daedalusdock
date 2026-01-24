@@ -4,6 +4,11 @@
 	SStgui.on_logout(src)
 	unset_machine()
 	remove_from_player_list()
+
+	//Reload info huds
+	for(var/obj/effect/abstract/info_tag/tag as anything in seeing_info_tags)
+		tag.hide_from(client)
+
 	..()
 
 	if(loc)

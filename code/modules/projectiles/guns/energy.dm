@@ -137,7 +137,11 @@
 	if(ammo_type.len > 1 && can_select)
 		select_fire(user)
 
-/obj/item/gun/energy/can_fire()
+/obj/item/gun/energy/can_fire(check_lockout = FALSE)
+	. = ..()
+	if(!.)
+		return
+
 	var/obj/item/ammo_casing/energy/shot = ammo_type[select]
 	return !QDELETED(cell) ? (cell.charge >= shot.e_cost) : FALSE
 

@@ -2,6 +2,7 @@
 	name = "Convert"
 	click_to_activate = TRUE
 	check_flags = AB_CHECK_CONSCIOUS
+	render_button = FALSE
 
 	var/obj/effect/abstract/flock_conversion/turf_effect
 
@@ -36,6 +37,11 @@
 	playsound(owner, 'goon/sounds/flockmind/flockdrone_convert.ogg', 30, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE)
 
 	var/turf/clicked_atom_turf = get_turf(target)
+	var/mob/living/simple_animal/flock/bird = owner
+	astype(bird, /mob/living/simple_animal/flock/drone)?.stop_flockphase(TRUE)
+
+	if(!bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT))
+		return FALSE
 
 	if(isfloorturf(clicked_atom_turf) || iswallturf(clicked_atom_turf))
 		return convert_turf(clicked_atom_turf)
@@ -67,7 +73,12 @@
 	if(!is_valid_target(T))
 		return FALSE
 
-	flock_convert_turf(T, bird.flock)
+	if(bird.flock)
+		bird.flock.claim_turf(T)
+	else
+		flock_convert_turf(T, bird.flock)
+
+	bird.substrate.remove_points(FLOCK_SUBSTRATE_COST_CONVERT)
 	return TRUE
 
 /obj/effect/abstract/flock_conversion

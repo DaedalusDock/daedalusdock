@@ -2243,11 +2243,12 @@ TYPEINFO_DEF(/atom)
  * Arguments:
  * * to_dir - What direction we're trying to move in, relevant for things like directional windows that only block movement in certain directions
  * * pass_info - Datum that stores info about the thing that's trying to pass us
+ * * leaving - TRUE if the mob would be leaving the turf to go to another one. Used to make up for the lack of enter/exit.
  *
  * IMPORTANT NOTE: /turf/proc/LinkBlockedWithAccess assumes that overrides of CanAStarPass will always return true if density is FALSE
  * If this is NOT you, ensure you edit your can_astar_pass variable. Check __DEFINES/path.dm
  **/
-/atom/proc/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/atom/proc/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	if(pass_info && (pass_info.pass_flags & pass_flags_self))
 		return TRUE
 	. = !density

@@ -18,6 +18,16 @@
 	uses_integrity = TRUE
 	max_integrity = 250
 
+/turf/closed/wall/flock/Initialize(mapload)
+	. = ..()
+	ADD_TRAIT(src, TRAIT_FLOCK_THING, INNATE_TRAIT)
+	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
+
+/turf/closed/wall/flock/Destroy(force)
+	REMOVE_TRAIT(src, TRAIT_FLOCK_THING, INNATE_TRAIT) // Turfs are persistent refs
+	qdel(GetComponent(/datum/component/flock_protection))
+	return ..()
+
 /turf/closed/wall/flock/atom_break(damage_flag)
 	. = ..()
 	ScrapeAway()
@@ -28,7 +38,7 @@
 		return
 	//playsound here?
 
-/turf/closed/wall/flock/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/turf/closed/wall/flock/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	. = ..()
 	if(.)
 		return
@@ -47,32 +57,5 @@
 	if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
 		return TRUE
 
-	if(bird.resources.has_points())
+	if(bird.can_flockphase())
 		return TRUE
-
-/turf/closed/wall/flock/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-
-	if(isnull(old_loc) || !isflockdrone(arrived))
-		return
-
-	var/mob/living/simple_animal/flock/drone/bird = arrived
-	if(!HAS_TRAIT(bird, TRAIT_FLOCKPHASE) && bird.resources.has_points())
-		bird.start_flockphase()
-
-	if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
-		bird.resources.remove_points(1)
-		if(!bird.resources.has_points())
-			bird.stop_flockphase()
-
-/turf/closed/wall/flock/Exited(atom/movable/gone, direction)
-	. = ..()
-	if(!isflockdrone(gone))
-		return
-
-	var/mob/living/simple_animal/flock/drone/bird = gone
-	if(!HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
-		return
-
-	if(!isflockturf(get_step(bird, direction)))
-		bird.stop_flockphase()

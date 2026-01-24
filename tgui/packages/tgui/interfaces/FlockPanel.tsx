@@ -18,7 +18,156 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-const FlockPartitions = (props) => {
+type FlockPanelData = {
+  category: string;
+  category_lengths: FlockCategoryLengths;
+  drones: FlockDroneInfo[];
+  enemies: FlockEnemy[];
+  partitions: FlockTraceInfo[];
+  stats: FlockStat[];
+  structures: FlockStructureInfo[];
+  vitals: FlockVitals;
+};
+
+type FlockMobInfo = {
+  area: string;
+  health: number;
+  name: string;
+  ref: string;
+  resources: number;
+};
+
+type FlockTraceInfo = FlockMobInfo & {
+  host?: string;
+};
+
+type FlockDroneInfo = FlockMobInfo & {
+  controller_ref?: string;
+  task: string;
+};
+
+type FlockStructureInfo = {
+  area: string;
+  compute: number;
+  desc: string;
+  health: number;
+  name: string;
+  ref: string;
+};
+
+type FlockEnemy = {
+  area: string;
+  name: string;
+  ref: string;
+};
+
+type FlockCategoryLengths = {
+  drones: number;
+  enemies: number;
+  structures: number;
+  traces: number;
+};
+
+type FlockStat = {
+  name: string;
+  value: number;
+};
+
+type FlockVitals = {
+  name: string;
+};
+
+export const FlockPanel = (props) => {
+  const { act, data } = useBackend<FlockPanelData>();
+  const [sortBy, setSortBy] = useLocalState('sortBy', 'resources');
+  const {
+    vitals,
+    partitions,
+    drones,
+    structures,
+    enemies,
+    stats,
+    category_lengths,
+    category,
+  } = data;
+
+  return (
+    <Window
+      theme="flock"
+      title={'Flockmind ' + vitals.name}
+      width={600}
+      height={450}
+    >
+      <Window.Content scrollable>
+        <Tabs>
+          <Tabs.Tab
+            selected={category === 'drones'}
+            onClick={() => {
+              act('change_tab', { tab: 'drones' });
+            }}
+          >
+            Drones {`(${category_lengths['drones']})`}
+          </Tabs.Tab>
+          <Tabs.Tab
+            selected={category === 'traces'}
+            onClick={() => {
+              act('change_tab', { tab: 'traces' });
+            }}
+          >
+            Partitions {`(${category_lengths['traces']})`}
+          </Tabs.Tab>
+          <Tabs.Tab
+            selected={category === 'structures'}
+            onClick={() => {
+              act('change_tab', { tab: 'structures' });
+            }}
+          >
+            Structures {`(${category_lengths['structures']})`}
+          </Tabs.Tab>
+          <Tabs.Tab
+            selected={category === 'enemies'}
+            onClick={() => {
+              act('change_tab', { tab: 'enemies' });
+            }}
+          >
+            Enemies {`(${category_lengths['enemies']})`}
+          </Tabs.Tab>
+          <Tabs.Tab
+            selected={category === 'stats'}
+            onClick={() => {
+              act('change_tab', { tab: 'stats' });
+            }}
+          >
+            Stats
+          </Tabs.Tab>
+        </Tabs>
+
+        {category === 'drones' && (
+          <Box>
+            <Dropdown
+              options={['name', 'health', 'resources', 'area']}
+              selected="resources"
+              onSelected={(value) => setSortBy(value)}
+            />
+            <FlockDrones drones={drones} sortBy={sortBy} />
+          </Box>
+        )}
+        {category === 'traces' && <FlockPartitions partitions={partitions} />}
+        {category === 'structures' && (
+          <FlockStructures structures={structures} />
+        )}
+        {category === 'enemies' && <FlockEnemies enemies={enemies} />}
+        {category === 'stats' && <FlockStats stats={stats} />}
+      </Window.Content>
+    </Window>
+  );
+};
+
+type FlockPartitionsProps = {
+  partitions: FlockTraceInfo[];
+};
+
+const FlockPartitions = (props: FlockPartitionsProps) => {
   const { act } = useBackend();
   const { partitions } = props;
   return (
@@ -148,7 +297,12 @@ const capitalizeString = function (string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-const FlockDrones = (props) => {
+type FlockDronesProps = {
+  drones: FlockDroneInfo[];
+  sortBy: string;
+};
+
+const FlockDrones = (props: FlockDronesProps) => {
   const { act } = useBackend();
   const { drones, sortBy } = props;
   return (
@@ -228,8 +382,12 @@ const FlockDrones = (props) => {
   );
 };
 
+type FlockStructuresProps = {
+  structures: FlockStructureInfo[];
+};
+
 // TODO: actual structure information (power draw/generation etc.)
-const FlockStructures = (props) => {
+const FlockStructures = (props: FlockStructuresProps) => {
   const { act } = useBackend();
   const { structures } = props;
   return (
@@ -254,9 +412,9 @@ const FlockStructures = (props) => {
               <Stack.Item grow={1}>
                 <Section height="100%">
                   {structure.compute > 0 &&
-                    'Compute provided: ' + structure.compute}
+                    'Bandwidth Provided: ' + structure.compute}
                   {structure.compute < 0 &&
-                    'Compute cost: ' + structure.compute}
+                    'Bandwidth Cost: ' + -structure.compute}
                 </Section>
               </Stack.Item>
               {/* buttons */}
@@ -294,7 +452,11 @@ const FlockStructures = (props) => {
   );
 };
 
-const FlockEnemies = (props) => {
+type FlockEnemiesProps = {
+  enemies: FlockEnemy[];
+};
+
+const FlockEnemies = (props: FlockEnemiesProps) => {
   const { act } = useBackend();
   const { enemies } = props;
   return (
@@ -348,7 +510,11 @@ const FlockEnemies = (props) => {
   );
 };
 
-const FlockStats = (props) => {
+type FlockStatsProps = {
+  stats: FlockStat[];
+};
+
+const FlockStats = (props: FlockStatsProps) => {
   const { stats } = props;
   return (
     <Stack vertical>
@@ -370,91 +536,5 @@ const FlockStats = (props) => {
         );
       })}
     </Stack>
-  );
-};
-
-export const FlockPanel = (props) => {
-  const { act, data } = useBackend();
-  const [sortBy, setSortBy] = useLocalState('sortBy', 'resources');
-  const {
-    vitals,
-    partitions,
-    drones,
-    structures,
-    enemies,
-    stats,
-    category_lengths,
-    category,
-  } = data;
-
-  return (
-    <Window
-      theme="flock"
-      title={'Flockmind ' + vitals.name}
-      width={600}
-      height={450}
-    >
-      <Window.Content scrollable>
-        <Tabs>
-          <Tabs.Tab
-            selected={category === 'drones'}
-            onClick={() => {
-              act('change_tab', { tab: 'drones' });
-            }}
-          >
-            Drones {`(${category_lengths['drones']})`}
-          </Tabs.Tab>
-          <Tabs.Tab
-            selected={category === 'traces'}
-            onClick={() => {
-              act('change_tab', { tab: 'traces' });
-            }}
-          >
-            Partitions {`(${category_lengths['traces']})`}
-          </Tabs.Tab>
-          <Tabs.Tab
-            selected={category === 'structures'}
-            onClick={() => {
-              act('change_tab', { tab: 'structures' });
-            }}
-          >
-            Structures {`(${category_lengths['structures']})`}
-          </Tabs.Tab>
-          <Tabs.Tab
-            selected={category === 'enemies'}
-            onClick={() => {
-              act('change_tab', { tab: 'enemies' });
-            }}
-          >
-            Enemies {`(${category_lengths['enemies']})`}
-          </Tabs.Tab>
-          <Tabs.Tab
-            selected={category === 'stats'}
-            onClick={() => {
-              act('change_tab', { tab: 'stats' });
-            }}
-          >
-            Stats
-          </Tabs.Tab>
-        </Tabs>
-
-        {category === 'drones' && (
-          <Box>
-            <Dropdown
-              options={['name', 'health', 'resources', 'area']}
-              selected="resources"
-              onSelected={(value) => setSortBy(value)}
-            />
-            <FlockDrones drones={drones} sortBy={sortBy} />
-          </Box>
-        )}
-        {category === 'traces' && <FlockPartitions partitions={partitions} />}
-        {category === 'structures' && (
-          <FlockStructures structures={structures} />
-        )}
-        {category === 'enemies' && <FlockEnemies enemies={enemies} />}
-        {category === 'stats' && <FlockStats stats={stats} />}
-      </Window.Content>
-    </Window>
   );
 };

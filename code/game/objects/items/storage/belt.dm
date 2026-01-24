@@ -14,7 +14,7 @@
 	slot_flags = ITEM_SLOT_BELT
 	attack_verb_continuous = list("whips", "lashes", "disciplines")
 	attack_verb_simple = list("whip", "lash", "discipline")
-	max_integrity = 300
+	max_integrity = 10
 
 	equip_sound = 'sound/items/equip/toolbelt_equip.ogg'
 	equip_delay_self = EQUIP_DELAY_BELT
@@ -359,11 +359,11 @@
 		))
 
 /obj/item/storage/belt/security/full/PopulateContents()
-	new /obj/item/reagent_containers/spray/pepper(src)
-	new /obj/item/restraints/handcuffs(src)
-	new /obj/item/grenade/flashbang(src)
-	new /obj/item/assembly/flash/handheld(src)
 	new /obj/item/melee/baton/security/loaded(src)
+	new /obj/item/restraints/handcuffs(src)
+	new /obj/item/assembly/flash/handheld(src)
+	new /obj/item/ammo_box/c38(src)
+	new /obj/item/ammo_box/c38/prostrator(src)
 	update_appearance()
 
 /obj/item/storage/belt/security/webbing

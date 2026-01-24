@@ -54,6 +54,9 @@ TYPEINFO_DEF(/obj/item/gun)
 	/// True if a gun dosen't need a pin, mostly used for abstract guns like tentacles and meathooks
 	var/pinless = FALSE
 
+	/// If TRUE, the gun will automatically call update_chamber() upon successfully firing.
+	var/auto_chamber = TRUE
+
 	/* Sounds */
 	var/fire_sound = 'sound/weapons/gun/pistol/shot.ogg'
 	var/fire_sound_volume = 50
@@ -182,24 +185,23 @@ TYPEINFO_DEF(/obj/item/gun)
 
 /obj/item/gun/examine(mob/user)
 	. = ..()
-	if(!pinless)
-		if(pin)
-			. += "It has \a [pin] installed."
-			. += span_info("[pin] looks like it could be removed with some <b>tools</b>.")
-		else
-			. += "It doesn't have a <b>firing pin</b> installed, and won't fire."
+	if(user == get(loc, /mob))
+		if(!pinless && !pin)
+			. += span_alert("It lacks a firing pin.")
 
 	if(bayonet)
-		. += "It has \a [bayonet] [can_bayonet ? "" : "permanently "]affixed to it."
+		. += span_info("It has \a [bayonet] [can_bayonet ? "" : "permanently "]affixed to it.")
 		if(can_bayonet) //if it has a bayonet and this is false, the bayonet is permanent.
 			. += span_info("[bayonet] looks like it can be <b>unscrewed</b> from [src].")
 
 	if(can_bayonet)
-		. += "It has a <b>bayonet</b> lug on it."
+		. += span_info("It has a <b>bayonet</b> lug on it.")
 
 /// check if there's enough ammo/energy/whatever to shoot one time
 /// i.e if clicking would make it shoot
-/obj/item/gun/proc/can_fire()
+/obj/item/gun/proc/can_fire(check_lockout = FALSE)
+	if(check_lockout && fire_lockout)
+		return FALSE
 	return TRUE
 
 /// Check if the user is firing this gun with telekinesis.
@@ -398,7 +400,7 @@ TYPEINFO_DEF(/obj/item/gun)
 
 /obj/item/gun/on_disarm_attempt(mob/living/user, mob/living/attacker)
 	var/list/turfs = list()
-	for(var/turf/T in view())
+	for(var/turf/T in view(src))
 		turfs += T
 
 	if(!length(turfs))
@@ -407,8 +409,8 @@ TYPEINFO_DEF(/obj/item/gun)
 	var/turf/shoot_to = pick(turfs)
 	if(do_fire_gun(shoot_to, user, message = FALSE, bonus_spread = 10))
 		user.visible_message(
-			span_danger("\The [src] goes off during the struggle!"),
-			blind_message = span_hear("You hear a gunshot!")
+			span_danger("[src] goes off during the struggle."),
+			blind_message = span_hear("You hear a gunshot.")
 		)
 		log_combat(attacker, user, "caused a misfire with a disarm")
 		return TRUE

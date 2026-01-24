@@ -12,7 +12,7 @@
  * * max_interact_count: The action will automatically fail if they are already performing this many or more actions with the given interaction_key.
  * * display: An atom or image to display over the user's head. Only works with DO_PUBLIC flag.
  */
-/proc/do_after(atom/movable/user, atom/target, time = 0, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display)
+/proc/do_after(atom/movable/user, atom/target, time = 0, timed_action_flags = NONE, progress = TRUE, datum/callback/extra_checks, interaction_key, max_interact_count = 1, image/display, action_type = /datum/timed_action)
 	if(!user)
 		return FALSE
 
@@ -38,27 +38,38 @@
 			sortTim(temp, GLOBAL_PROC_REF(cmp_text_asc))
 			interaction_key = jointext(temp, "-")
 
-	if(interaction_key) //Do we have a interaction_key now?
-		var/current_interaction_count = LAZYACCESS(user.do_afters, interaction_key) || 0
+	if(interaction_key)
+		var/current_interaction_count = length(LAZYACCESS(user.do_afters, interaction_key))
 		if(current_interaction_count >= max_interact_count) //We are at our peak
 			return
-		LAZYSET(user.do_afters, interaction_key, current_interaction_count + 1)
 
-	var/datum/timed_action/action = new(user, target, time, progress, timed_action_flags, extra_checks, display)
+	var/datum/timed_action/action = new action_type(user, target, time, progress, timed_action_flags, extra_checks, display)
+
+	if(interaction_key)
+		LAZYINITLIST(user.do_afters)
+		LAZYADD(user.do_afters[interaction_key], action)
 
 	. = action.wait()
 
 	if(interaction_key)
-		var/reduced_interaction_count = (LAZYACCESS(user.do_afters, interaction_key)) - 1
-		if(reduced_interaction_count > 0) // Not done yet!
-			LAZYSET(user.do_afters, interaction_key, reduced_interaction_count)
+		LAZYREMOVE(user.do_afters[interaction_key], action)
+		if(length(LAZYACCESS(user.do_afters, interaction_key)) == 0) // Not done yet!
+			LAZYREMOVE(user.do_afters, interaction_key)
 			return
-		LAZYREMOVE(user.do_afters, interaction_key)
-
 
 /// Returns the total amount of do_afters this mob is taking part in
 /mob/proc/do_after_count()
 	var/count = 0
-	for(var/key in do_afters)
-		count += do_afters[key]
+	for(var/interaction_key, action_list in do_afters)
+		count += length(action_list)
 	return count
+
+/// Cancel do afters, optionally pass an interaction key to cancel specific ones.
+/mob/proc/cancel_do_afters(cancel_key)
+	if(cancel_key)
+		for(var/datum/timed_action/action as anything in LAZYACCESS(do_afters, cancel_key))
+			action.cancel()
+		return
+
+	for(var/interaction_key in do_afters)
+		cancel_do_afters(interaction_key)

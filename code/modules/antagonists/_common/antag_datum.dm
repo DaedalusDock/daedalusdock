@@ -545,6 +545,11 @@ GLOBAL_LIST_EMPTY(antagonists)
 		if (antag_hud.mobShouldSee(owner.current))
 			antag_hud.show_to(owner.current)
 
+/// Helper proc for adding an objective instance.
+/datum/antagonist/proc/add_objective(datum/objective/O)
+	O.owner ||= owner // Multi-owner objectives are a fuck
+	objectives += O
+
 //This one is created by admin tools for custom objectives
 /datum/antagonist/custom
 	antagpanel_category = "Custom"

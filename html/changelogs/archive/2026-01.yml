@@ -13,3 +13,22 @@
 2026-01-15:
   Kapu1178:
   - tweak: Adjusted the lighting of the map.
+2026-01-24:
+  Kapu1178:
+  - rscadd: Replaced the Disabler Mk. II with the Single Action Revolver 'Juno', a
+      .38 Special revolver just like the P.I's.
+  - rscadd: Added .38 Prostrator, a special cartridge with a high-voltage electric
+      payload. Or something like that. It stuns people, okay?
+  - tweak: Replaced the pepperspray & flashbang in the security belt with a .38 Special
+      speedloader and .38 Prostrator speedloader.
+  - rscadd: You can now inspect the contents of a revolver cylinder using the Inspect
+      Cylinder verb (pictured below).
+  - rscadd: Improved magazine reloading in general.
+  - bugfix: Fixed single-action revolvers randomly refusing to fire.
+  - bugfix: .38 speedloaders actually speedload.
+  - bugfix: Security locker count scales with player population.
+  - rscadd: Blood packs can be added to or drawn from using syringes.
+  - refactor: Fixed up IV drip code.
+  - rscadd: Mostly completes the Divine Flock.
+  - balance: Reduced the damage-over-time of being on fire.
+  - balance: Reduced the integrity of items by ALOT.

@@ -516,7 +516,7 @@
 /turf/open/floor/iron/iron_large,
 /area/station/engineering/supermatter/room)
 "aEX" = (
-/obj/machinery/light_switch/directional/north,
+/obj/machinery/c4_embedded_controller/slave/directional/north,
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/service/janitor)
 "aFb" = (
@@ -6373,6 +6373,10 @@
 	icon_state = "cult"
 	},
 /area/station/service/chapel)
+"hdg" = (
+/turf/closed/wall/prepainted/medical,
+/turf/closed/wall/prepainted/medical,
+/area/station/medical/medbay)
 "hds" = (
 /obj/structure/table/wood,
 /obj/item/pen,
@@ -10429,6 +10433,8 @@
 "lfu" = (
 /obj/machinery/portable_atmospherics/scrubber,
 /obj/effect/turf_decal/box/corners,
+/obj/machinery/c4_embedded_controller/airlock_pinpad/bolt/directional/south,
+/obj/effect/mapping_helpers/embedded_controller/static_id/janitor,
 /turf/open/floor/iron,
 /area/station/maintenance/starboard/aft)
 "lfG" = (
@@ -10721,6 +10727,7 @@
 /obj/structure/reagent_dispensers/watertank,
 /obj/effect/turf_decal/bot,
 /obj/machinery/light/small/directional/north,
+/obj/machinery/light_switch/directional/west,
 /turf/open/floor/iron/ported/techfloor,
 /area/station/service/janitor)
 "lvH" = (
@@ -21008,6 +21015,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/firedoor,
+/obj/effect/mapping_helpers/door_control_linker/random_id,
 /turf/open/floor/iron/iron_large,
 /area/station/service/janitor)
 "wch" = (
@@ -61770,7 +61778,7 @@ aUw
 aUw
 aUw
 qPP
-qPP
+hdg
 nuO
 uXD
 wLE

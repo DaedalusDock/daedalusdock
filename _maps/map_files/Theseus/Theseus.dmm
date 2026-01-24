@@ -7679,7 +7679,7 @@
 /area/station/hallway/primary/central/aft)
 "cIb" = (
 /obj/effect/mapping_helpers/broken_floor,
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/wood,
 /area/station/maintenance/port/aft)
 "cIu" = (
@@ -8572,10 +8572,7 @@
 /obj/structure/chair/plastic{
 	dir = 1
 	},
-/obj/machinery/atm{
-	pixel_y = 0;
-	pixel_x = -32
-	},
+/obj/machinery/atm/directional/north,
 /turf/open/floor/iron,
 /area/station/hallway/primary/port)
 "cZg" = (
@@ -11363,7 +11360,7 @@
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
 	},
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "eaY" = (
@@ -15380,10 +15377,7 @@
 "fuv" = (
 /obj/machinery/vending/clothing,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
-/obj/machinery/atm{
-	pixel_y = 0;
-	pixel_x = 32
-	},
+/obj/machinery/atm/directional/north,
 /turf/open/floor/iron,
 /area/station/commons/locker)
 "fuD" = (
@@ -25152,7 +25146,7 @@
 	icon_state = "12"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/carpet,
 /area/station/service/library)
 "jal" = (
@@ -36576,7 +36570,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/storage_shared)
 "mWE" = (
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/wood,
 /area/station/commons/lounge)
 "mXa" = (
@@ -38755,7 +38749,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "4"
 	},
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
 "nKc" = (
@@ -40545,7 +40539,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/hallway/secondary/exit/departure_lounge)
 "orU" = (
@@ -47199,7 +47193,7 @@
 /turf/open/floor/iron,
 /area/station/engineering/storage_shared)
 "qKQ" = (
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /obj/structure/chair/stool/directional/north,
 /turf/open/floor/wood,
 /area/station/medical/medbay/lobby)
@@ -52545,10 +52539,7 @@
 /obj/effect/turf_decal/tile/neutral/half/contrasted{
 	dir = 8
 	},
-/obj/machinery/atm{
-	pixel_y = 0;
-	pixel_x = -32
-	},
+/obj/machinery/atm/directional/north,
 /obj/machinery/camera/directional/west{
 	c_tag = "Dormitories - Recreation Area 1#"
 	},
@@ -53378,10 +53369,7 @@
 	icon_state = "3"
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atm{
-	pixel_y = 0;
-	pixel_x = 32
-	},
+/obj/machinery/atm/directional/north,
 /turf/open/floor/iron,
 /area/station/service/library)
 "sRo" = (
@@ -55531,7 +55519,7 @@
 "tHx" = (
 /obj/item/beacon,
 /obj/effect/turf_decal/delivery,
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
 "tHC" = (
@@ -57716,7 +57704,7 @@
 	dir = 1
 	},
 /obj/effect/turf_decal/tile/yellow/opposingcorners,
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/iron/white,
 /area/station/hallway/secondary/entry)
 "uwD" = (
@@ -60870,7 +60858,7 @@
 "vBa" = (
 /obj/effect/spawner/random/vending/colavend,
 /obj/effect/turf_decal/tile/neutral/opposingcorners,
-/obj/machinery/atm,
+/obj/machinery/atm/directional/north,
 /turf/open/floor/iron/dark,
 /area/station/commons/dorms)
 "vBb" = (

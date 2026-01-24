@@ -1,3 +1,4 @@
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/atm, 32)
 /obj/machinery/atm
 	name = "automated teller machine"
 	desc = "An age-old technology for managing one's wealth."
@@ -6,8 +7,6 @@
 	base_icon_state = "atm"
 
 	layer = ABOVE_OBJ_LAYER + 0.001
-	pixel_y = 32
-	base_pixel_y = 32
 
 	resistance_flags = INDESTRUCTIBLE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1

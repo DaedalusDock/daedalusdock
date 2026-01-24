@@ -2728,6 +2728,7 @@
 	id = "QMLoaddoor2";
 	name = "Supply Dock Loading Door"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/cargo/storage)
 "cWR" = (
@@ -4450,6 +4451,7 @@
 	id = "QMLoaddoor";
 	name = "Supply Dock Loading Door"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/cargo/storage)
 "eWX" = (
@@ -6054,6 +6056,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/cargo/storage)
 "gNV" = (
@@ -10701,7 +10704,6 @@
 /turf/open/floor/plating,
 /area/station/security/prison)
 "lwe" = (
-/obj/machinery/power/apc/auto_name/directional/south,
 /obj/structure/rack/shelf,
 /obj/item/storage/toolbox/electrical,
 /obj/structure/cable/yellow{
@@ -17939,6 +17941,7 @@
 	cycle_id = "cargo-dock-airlock"
 	},
 /obj/effect/mapping_helpers/access/all/supply/general/airlock,
+/obj/machinery/door/firedoor,
 /turf/open/floor/engine,
 /area/station/cargo/storage)
 "sLZ" = (

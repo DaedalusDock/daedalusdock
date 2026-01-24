@@ -2360,10 +2360,6 @@
 /obj/structure/overfloor_catwalk/iron_dark,
 /turf/open/floor/plating,
 /area/station/maintenance/port/central)
-"cwu" = (
-/turf/closed/wall/prepainted/medical,
-/turf/closed/wall/prepainted/medical,
-/area/station/medical/medbay)
 "cxn" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -61774,7 +61770,7 @@ aUw
 aUw
 aUw
 qPP
-cwu
+qPP
 nuO
 uXD
 wLE

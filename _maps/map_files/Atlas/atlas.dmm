@@ -873,7 +873,7 @@
 /obj/structure/table,
 /obj/effect/landmark/event_spawn,
 /obj/effect/turf_decal/tile/red/opposingcorners,
-/obj/item/storage/photo_album/hos,
+/obj/machinery/projector,
 /turf/open/floor/iron/norn,
 /area/station/security/brig)
 "baT" = (
@@ -2360,6 +2360,10 @@
 /obj/structure/overfloor_catwalk/iron_dark,
 /turf/open/floor/plating,
 /area/station/maintenance/port/central)
+"cwu" = (
+/turf/closed/wall/prepainted/medical,
+/turf/closed/wall/prepainted/medical,
+/area/station/medical/medbay)
 "cxn" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
@@ -3309,6 +3313,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/access/all/command/captain/airlock,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "dDA" = (
@@ -4441,6 +4446,18 @@
 /obj/effect/landmark/navigate_destination/kitchen,
 /turf/open/floor/iron/white,
 /area/station/maintenance/starboard/lesser)
+"eVc" = (
+/obj/effect/turf_decal/siding/thinplating{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/effect/landmark/start/head_of_security,
+/turf/open/floor/iron/norn,
+/area/station/security/brig)
 "eWF" = (
 /obj/machinery/conveyor{
 	dir = 1;
@@ -4570,6 +4587,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/maintenance,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron,
 /area/station/maintenance/port/aft)
 "fcR" = (
@@ -5424,6 +5442,7 @@
 /obj/machinery/door/airlock/maintenance,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
 "fXR" = (
@@ -5508,6 +5527,7 @@
 	},
 /obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/access/all/engineering/maintenance/airlock,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/maintenance/port/central)
 "giT" = (
@@ -5565,6 +5585,7 @@
 	},
 /obj/machinery/door/airlock/maintenance,
 /obj/effect/mapping_helpers/access/all/command/general/airlock,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/maintenance/disposal)
 "glz" = (
@@ -5707,6 +5728,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/maintenance/disposal)
 "gqz" = (
@@ -6736,6 +6758,18 @@
 	dir = 8
 	},
 /area/station/cargo/storage)
+"hsX" = (
+/obj/effect/turf_decal/siding/thinplating{
+	dir = 1
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/effect/landmark/start/warden,
+/turf/open/floor/iron/norn,
+/area/station/security/brig)
 "htb" = (
 /obj/structure/window/reinforced/plasma/spawner/east,
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/oxygen_output{
@@ -12409,6 +12443,7 @@
 /obj/machinery/door/airlock/maintenance,
 /obj/machinery/atmospherics/pipe/smart/simple/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/access/any/engineering/engine_equipment/airlock,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/engineering/storage)
 "nit" = (
@@ -15691,15 +15726,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/station/hallway/primary/central/fore)
-"qBw" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/structure/cable/yellow{
-	icon_state = "3"
-	},
-/obj/structure/overfloor_catwalk/iron_dark,
-/turf/open/floor/iron/iron_large,
-/area/station/maintenance/port/aft)
 "qBx" = (
 /obj/structure/cable/red{
 	icon_state = "5"
@@ -15910,6 +15936,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/command/heads_quarters/cmo)
 "qMd" = (
@@ -18363,6 +18390,7 @@
 /obj/machinery/door/airlock/maintenance,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "toh" = (
@@ -19028,6 +19056,7 @@
 /area/station/maintenance/port/central)
 "ufG" = (
 /obj/structure/chair/comfy/brown,
+/obj/effect/landmark/start/detective,
 /turf/open/floor/wood,
 /area/station/security/detectives_office)
 "ufK" = (
@@ -20170,6 +20199,7 @@
 	dir = 4
 	},
 /obj/effect/turf_decal/tile/red/opposingcorners,
+/obj/effect/landmark/start/security_officer,
 /turf/open/floor/iron/norn,
 /area/station/security/brig)
 "vlT" = (
@@ -20375,6 +20405,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/structure/overfloor_catwalk/iron_dark,
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
 "vzx" = (
@@ -20799,6 +20830,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/airlock/maintenance_hatch,
 /obj/effect/mapping_helpers/access/any/engineering/engine_equipment/airlock,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/aft)
 "vVo" = (
@@ -21119,6 +21151,7 @@
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/red/opposingcorners,
+/obj/effect/landmark/start/security_officer,
 /turf/open/floor/iron/norn,
 /area/station/security/brig)
 "wgn" = (
@@ -43936,7 +43969,7 @@ uiu
 eJq
 eqe
 eqe
-qBw
+eqe
 gRc
 eqe
 eqe
@@ -61418,7 +61451,7 @@ kyt
 tai
 xhd
 kky
-dbD
+hsX
 mCl
 tpm
 aqh
@@ -61675,7 +61708,7 @@ ykR
 tai
 qJV
 opp
-dbD
+eVc
 bIN
 bah
 eet
@@ -61695,7 +61728,7 @@ aUw
 aUw
 aUw
 qPP
-qPP
+cwu
 nuO
 uXD
 wLE

@@ -2,7 +2,7 @@ pygit2==1.11.1
 bidict==0.22.1
 Pillow==9.4.0
 # changelogs
-PyYaml==6.0.1 #Also the Linter.
+PyYaml==6.0 #Also the Linter.
 beautifulsoup4==4.11.2
 # ezdb
 mysql-connector-python==8.0.33

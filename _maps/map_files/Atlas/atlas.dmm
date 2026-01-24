@@ -6368,10 +6368,6 @@
 	icon_state = "cult"
 	},
 /area/station/service/chapel)
-"hdg" = (
-/turf/closed/wall/prepainted/medical,
-/turf/closed/wall/prepainted/medical,
-/area/station/medical/medbay)
 "hds" = (
 /obj/structure/table/wood,
 /obj/item/pen,
@@ -61775,7 +61771,7 @@ aUw
 aUw
 aUw
 qPP
-hdg
+qPP
 nuO
 uXD
 wLE

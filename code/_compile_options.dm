@@ -169,9 +169,9 @@
 /////////////////////// MISC PERFORMANCE
 
 //uncomment this to load centcom and runtime station and thats it.
-#define LOWMEMORYMODE
+// #define LOWMEMORYMODE
 //force a map for lowmemorymode
-#define FORCE_MAP "atlas"
+// #define FORCE_MAP "runtimestation"
 
 //uncomment to enable the spatial grid debug proc.
 // #define SPATIAL_GRID_ZLEVEL_STATS

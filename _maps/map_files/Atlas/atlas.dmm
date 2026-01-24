@@ -1864,7 +1864,6 @@
 	pixel_y = 4
 	},
 /obj/structure/window/spawner,
-/obj/machinery/door/firedoor/border_only,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/ported/techfloor,
 /area/station/service/library)
@@ -10029,10 +10028,6 @@
 	dir = 8
 	},
 /area/station/security/brig)
-"kNS" = (
-/turf/closed/wall/prepainted/medical,
-/turf/closed/wall/prepainted/medical,
-/area/station/medical/medbay)
 "kPc" = (
 /obj/structure/table/glass,
 /obj/machinery/newscaster/directional/north,
@@ -14305,7 +14300,6 @@
 "pfr" = (
 /obj/structure/table/wood,
 /obj/structure/window/spawner,
-/obj/machinery/door/firedoor/border_only,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/ported/techfloor,
 /area/station/service/library)
@@ -17555,7 +17549,6 @@
 	pixel_x = -7;
 	pixel_y = 4
 	},
-/obj/machinery/door/firedoor/border_only,
 /obj/effect/mapping_helpers/access/all/supply/general/windoor,
 /obj/machinery/door/window/right/directional/south,
 /obj/machinery/door/firedoor,
@@ -21413,7 +21406,6 @@
 /area/station/medical/medbay)
 "wBw" = (
 /obj/structure/table,
-/obj/machinery/door/firedoor/border_only,
 /obj/effect/mapping_helpers/access/all/supply/general/windoor,
 /obj/machinery/door/window/left/directional/south,
 /obj/machinery/door/firedoor,
@@ -22023,7 +22015,6 @@
 "xhh" = (
 /obj/structure/table/wood,
 /obj/machinery/door/window/left/directional/south,
-/obj/machinery/door/firedoor/border_only,
 /obj/effect/mapping_helpers/access/any/service/library/windoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/ported/techfloor,
@@ -61704,7 +61695,7 @@ aUw
 aUw
 aUw
 qPP
-kNS
+qPP
 nuO
 uXD
 wLE

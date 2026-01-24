@@ -14417,13 +14417,6 @@
 "far" = (
 /turf/open/floor/plating,
 /area/station/maintenance/aft/greater)
-"faE" = (
-/obj/structure/disposalpipe/sorting/mail/flip{
-	dir = 4;
-	sortType = 16
-	},
-/turf/open/space/basic,
-/area/space)
 "faJ" = (
 /obj/machinery/door/airlock/public/glass{
 	name = "Genpop Brig"
@@ -119306,7 +119299,7 @@ aaa
 aaa
 aaa
 aaa
-faE
+aaa
 aaa
 aaa
 aaa

@@ -2474,6 +2474,11 @@
 /obj/effect/turf_decal/bot,
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/service/janitor)
+"cGe" = (
+/obj/structure/railing,
+/obj/effect/landmark/blobstart,
+/turf/open/floor/plating,
+/area/station/maintenance/starboard/aft)
 "cGY" = (
 /obj/structure/chair/sofa/corp/right,
 /turf/open/floor/wood,
@@ -2697,6 +2702,10 @@
 "cTA" = (
 /turf/open/floor/iron,
 /area/station/maintenance/port/central)
+"cUt" = (
+/obj/effect/landmark/start/clown,
+/turf/open/floor/iron,
+/area/station/service/theater)
 "cVl" = (
 /obj/structure/table/wood,
 /obj/effect/turf_decal/siding/fancy/grey{
@@ -7069,6 +7078,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "9"
 	},
+/obj/effect/landmark/blobstart,
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "hHy" = (
@@ -10382,6 +10392,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /turf/open/floor/plating,
 /area/station/hallway/primary/fore)
+"leK" = (
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/obj/structure/overfloor_catwalk/iron_dark,
+/obj/effect/landmark/blobstart,
+/turf/open/floor/plating,
+/area/station/maintenance/port/aft)
 "lfe" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible{
 	dir = 4
@@ -17296,6 +17316,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/effect/landmark/blobstart,
 /turf/open/floor/plating,
 /area/station/maintenance/port/central)
 "saA" = (
@@ -17754,6 +17775,10 @@
 	},
 /turf/open/floor/iron,
 /area/station/service/chapel/office)
+"sCb" = (
+/obj/effect/landmark/carpspawn,
+/turf/open/space/basic,
+/area/space)
 "sCH" = (
 /obj/structure/rack/shelf,
 /obj/effect/turf_decal/tile/yellow/half{
@@ -17877,6 +17902,7 @@
 /obj/structure/chair/plastic{
 	dir = 1
 	},
+/obj/effect/landmark/start/clown,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "sHK" = (
@@ -18584,6 +18610,16 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/iron,
 /area/station/maintenance/starboard/aft)
+"twn" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/effect/landmark/blobstart,
+/turf/open/floor/plating,
+/area/station/maintenance/port/aft)
 "txe" = (
 /obj/structure/trash_can,
 /obj/machinery/firealarm/directional/east{
@@ -21188,6 +21224,11 @@
 	},
 /turf/open/floor/iron,
 /area/station/command/meeting_room/council)
+"wje" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/landmark/blobstart,
+/turf/open/floor/plating,
+/area/station/maintenance/starboard/lesser)
 "wkk" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on/layer2{
 	dir = 8
@@ -22547,6 +22588,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "10"
 	},
+/obj/effect/landmark/blobstart,
 /turf/open/floor/plating,
 /area/station/maintenance/port/fore)
 "xIm" = (
@@ -22775,6 +22817,10 @@
 	},
 /turf/open/floor/carpet,
 /area/station/service/library)
+"xZm" = (
+/obj/effect/landmark/blobstart,
+/turf/open/floor/plating,
+/area/station/maintenance/starboard/greater)
 "xZu" = (
 /turf/open/space/basic,
 /area/station/cargo/mining/asteroid_magnet)
@@ -39858,7 +39904,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe
@@ -40673,7 +40719,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe
@@ -44768,7 +44814,7 @@ lYn
 uKs
 vTZ
 clt
-ajC
+cGe
 vYF
 qAs
 tPa
@@ -44994,7 +45040,7 @@ vOe
 uiu
 qWV
 iPj
-fiu
+leK
 iPj
 rgp
 xVE
@@ -46263,7 +46309,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe
@@ -48631,7 +48677,7 @@ uGc
 ntY
 ebZ
 qPH
-ouj
+wje
 qPH
 xIm
 sxn
@@ -49108,7 +49154,7 @@ gTk
 rDk
 aXx
 bWQ
-xGh
+twn
 xGh
 xGh
 vpG
@@ -50962,7 +51008,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe
@@ -59118,7 +59164,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe
@@ -59701,7 +59747,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe
@@ -61225,7 +61271,7 @@ uqi
 qwV
 viu
 ygd
-ygd
+xZm
 ygd
 hUO
 qkY
@@ -66325,7 +66371,7 @@ oti
 bjS
 vEd
 wtI
-vcw
+cUt
 ddD
 tXc
 gOr
@@ -68426,7 +68472,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe
@@ -69149,7 +69195,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe
@@ -70723,7 +70769,7 @@ vOe
 vOe
 vOe
 vOe
-vOe
+sCb
 vOe
 vOe
 vOe

@@ -386,6 +386,7 @@
 	name = "Fore Hallway"
 	},
 /obj/machinery/door/firedoor,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/central/fore)
 "avC" = (
@@ -477,6 +478,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/coldroom)
 "aCw" = (
@@ -931,6 +933,7 @@
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/medbay)
 "bdQ" = (
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/stairs/left,
 /area/station/hallway/primary/fore)
 "beV" = (
@@ -1780,6 +1783,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/storage)
 "bZp" = (
@@ -1967,6 +1971,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/hallway/primary/fore)
 "cgm" = (
@@ -3239,6 +3244,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/medical/surgery/port)
 "dAU" = (
@@ -5083,6 +5089,7 @@
 	name = "Medical Storage"
 	},
 /obj/effect/mapping_helpers/access/all/medical/general/airlock,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/storage)
 "fGm" = (
@@ -5314,13 +5321,11 @@
 /area/station/maintenance/port/aft)
 "fSy" = (
 /obj/structure/table,
-/obj/machinery/door/firedoor/border_only{
-	dir = 1
-	},
 /obj/machinery/telephone/medical{
 	friendly_name = "Aether Ward Reception"
 	},
 /obj/machinery/power/data_terminal,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/medical/medbay)
 "fSW" = (
@@ -5879,6 +5884,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/lesser)
 "gAH" = (
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/textured_large,
 /area/station/medical/treatment_center)
 "gBW" = (
@@ -8118,6 +8124,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/command/heads_quarters/cmo)
 "iJW" = (
@@ -8791,6 +8798,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/medical/medbay)
 "jtl" = (
@@ -10078,6 +10086,7 @@
 	name = "Cryogenics Maintenance Access";
 	stripe_paint = "#52B4E9"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/medical/cryo)
 "kSj" = (
@@ -13187,6 +13196,7 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Laundry"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/commons/fitness/locker_room)
 "nSF" = (
@@ -13690,6 +13700,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/textured_large,
 /area/station/medical/treatment_center)
 "ouW" = (
@@ -14184,6 +14195,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/medical/surgery/port)
 "oXF" = (
@@ -14480,6 +14492,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/medical/morgue)
 "prq" = (
@@ -14573,6 +14586,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/morgue)
 "pwT" = (
@@ -15565,6 +15579,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/access/all/medical/general/airlock,
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/medical/surgery/starboard)
 "qxb" = (
@@ -16785,6 +16800,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/effect/mapping_helpers/access/all/medical/cmo/airlock,
 /obj/structure/disposalpipe/segment,
+/obj/machinery/door/firedoor,
 /turf/open/floor/wood,
 /area/station/command/heads_quarters/cmo)
 "rDH" = (
@@ -19084,6 +19100,7 @@
 	icon_state = "3"
 	},
 /obj/structure/curtain,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/commons/fitness/locker_room)
 "ujd" = (
@@ -19361,6 +19378,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/white/white_large,
 /area/station/medical/pharmacy)
 "uyf" = (
@@ -19450,6 +19468,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/central/fore)
@@ -19638,6 +19657,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
+/obj/machinery/door/firedoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/central/fore)
@@ -20326,6 +20346,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "3"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/stairs/medium,
 /area/station/hallway/primary/fore)
 "vxk" = (
@@ -20424,6 +20445,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/plating,
 /area/station/medical/medbay)
 "vFe" = (
@@ -20452,9 +20474,7 @@
 /area/station/engineering/engine_smes)
 "vHj" = (
 /obj/structure/table,
-/obj/machinery/door/firedoor/border_only{
-	dir = 1
-	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/medical/medbay)
 "vHq" = (
@@ -21144,6 +21164,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/central/fore)
 "wkH" = (
@@ -22181,6 +22202,7 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron,
 /area/station/commons/toilet/restrooms)
 "xqL" = (
@@ -22826,6 +22848,7 @@
 /turf/open/floor/iron/white,
 /area/station/medical/treatment_center)
 "yfh" = (
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/stairs/right,
 /area/station/hallway/primary/fore)
 "ygd" = (
@@ -22898,6 +22921,7 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
+/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/medical/surgery/starboard)
 "ykk" = (

@@ -387,7 +387,6 @@
 	name = "Fore Hallway"
 	},
 /obj/machinery/door/firedoor,
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/central/fore)
 "avC" = (
@@ -1361,7 +1360,6 @@
 	icon_state = "3"
 	},
 /obj/effect/mapping_helpers/access/all/supply/general/airlock,
-/obj/machinery/door/firedoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/cargo/miningoffice)
@@ -3741,7 +3739,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/door/firedoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/starboard)
@@ -8446,7 +8443,6 @@
 /obj/machinery/door/firedoor,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/mapping_helpers/access/all/supply/general/airlock,
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/cargo/storage)
 "iZZ" = (
@@ -8802,7 +8798,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/medical/medbay)
 "jtl" = (
@@ -11343,7 +11338,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/effect/mapping_helpers/access/all/supply/general/airlock,
-/obj/machinery/door/firedoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/cargo/miningoffice)
@@ -15301,7 +15295,6 @@
 /obj/machinery/door/airlock/public/glass{
 	name = "Fore Central Hallway"
 	},
-/obj/machinery/door/firedoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/starboard)
@@ -19489,7 +19482,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/door/firedoor,
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/central/fore)
 "uDx" = (
@@ -19677,7 +19669,6 @@
 	},
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/door/firedoor,
 /obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/central/fore)
@@ -20957,7 +20948,6 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/firedoor,
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/service/janitor)
 "wch" = (
@@ -21187,7 +21177,6 @@
 /obj/structure/cable/yellow{
 	icon_state = "12"
 	},
-/obj/machinery/door/firedoor,
 /turf/open/floor/iron/iron_large,
 /area/station/hallway/primary/central/fore)
 "wkH" = (

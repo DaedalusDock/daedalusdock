@@ -744,7 +744,7 @@
 		announce_objectives(TRUE)
 
 	//Something in here might have changed your mob
-	if(self_antagging && (!usr || !usr.client) && current.client)
+	if(self_antagging && (!usr || !usr.client) && current?.client)
 		usr = current
 	traitor_panel()
 

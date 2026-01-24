@@ -747,7 +747,7 @@
 		burning_items |= leg_clothes
 
 	for(var/obj/item/burning in burning_items)
-		burning.fire_act((stacks * 25 * delta_time)) //damage taken is reduced to 2% of this value by fire_act()
+		burning.fire_act((stacks * 10 * delta_time)) //damage taken is reduced to 2% of this value by fire_act()
 
 /mob/living/carbon/human/update_fire_overlay(stacks, on_fire, last_icon_state, suffix = "")
 	var/fire_icon = "generic_burning[suffix]"

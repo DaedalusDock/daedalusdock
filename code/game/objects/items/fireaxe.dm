@@ -22,7 +22,7 @@ TYPEINFO_DEF(/obj/item/fireaxe)
 	attack_verb_simple = list("attack", "chop", "cleave", "tear", "lacerate", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
-	max_integrity = 200
+	max_integrity = 30
 	resistance_flags = FIRE_PROOF
 
 /obj/item/fireaxe/Initialize(mapload)

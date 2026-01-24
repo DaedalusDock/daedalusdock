@@ -131,7 +131,7 @@ TYPEINFO_DEF(/obj/item/shield/riot/buckler)
 	resistance_flags = FLAMMABLE
 	block_chance = 30
 	transparent = FALSE
-	max_integrity = 55
+	max_integrity = 50
 	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/shield/riot/buckler/shatter(mob/living/carbon/human/owner)

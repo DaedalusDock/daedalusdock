@@ -27,6 +27,8 @@
 		diagonal_handling = isnull(diagonal_handling_override) ? diagonal_handling : diagonal_handling_override,
 		)
 
+	controller.clear_blackboard_key(BB_PATH_TO_USE)
+
 	RegisterSignal(loop, COMSIG_MOVELOOP_PREPROCESS_CHECK, PROC_REF(pre_move))
 	RegisterSignal(loop, COMSIG_MOVELOOP_POSTPROCESS, PROC_REF(post_move))
 	RegisterSignal(loop, COMSIG_MOVELOOP_REPATH, PROC_REF(repath_incoming))

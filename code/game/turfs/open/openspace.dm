@@ -109,7 +109,7 @@
 /turf/open/openspace/rust_heretic_act()
 	return FALSE
 
-/turf/open/openspace/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/turf/open/openspace/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	var/atom/movable/our_movable = pass_info.caller_ref.resolve()
 	if(our_movable && !our_movable.can_z_move(DOWN, src, null , ZMOVE_FALL_FLAGS)) //If we can't fall here (flying/lattice), it's fine to path through
 		return TRUE

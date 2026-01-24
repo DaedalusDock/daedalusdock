@@ -80,14 +80,17 @@
 		var/mob/camera/flock/overmind/ghost_bird = speaker
 		used_name = ghost_bird.real_name
 
+	var/silicon_message = stars(message, 50)
 	if(mob_speaker)
 		var/say_verb = pick("sings", "clicks", "whistles", "intones", "transmits", "submits", "uploads")
 		message = "[say_verb], \"[message]\""
+		silicon_message = "[say_verb], \"[silicon_message]\""
 	else
 		message = "alerts, [gradient_text(message, "#3cb5a3", "#124e43")]"
+		silicon_message = "alerts, [gradient_text(silicon_message, "#3cb5a3", "#124e43")]"
 
 	var/flock_message = "<span class='game say [jointext(spans, " ")]'><span class='bold'>\[[flock ? flock.name : "--.--"]\]</span> [span_name("[used_name]")] <span class='message'>[message]</span></span>"
-	var/silicon_message = "<span class='game say [jointext(spans, " ")]'><span class='bold'>\[?????\]</span> [span_name("[used_name]")] <span class='message'>[stars(message, 50)]</span></span>"
+	silicon_message = "<span class='game say [jointext(spans, " ")]'><span class='bold'>\[?????\]</span> [span_name("[used_name]")] <span class='message'>[silicon_message]</span></span>"
 
 	for(var/mob/player as anything in GLOB.player_list)
 		if(isflockmob(player))

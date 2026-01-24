@@ -17,7 +17,7 @@
 	GLOB.mob_living_list += src
 	SSpoints_of_interest.make_point_of_interest(src)
 	voice_type = pick(voice_type2sound)
-	mob_mood = new(src)
+	create_mood()
 
 	AddElement(/datum/element/movetype_handler)
 	gravity_setup()
@@ -2335,3 +2335,9 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 /mob/living/set_nutrition(change)
 	. = ..()
 	mob_mood?.update_nutrition_moodlets()
+
+/// This exists so mobs can override mood creation.
+/mob/living/proc/create_mood()
+	if(mob_mood)
+		CRASH("Tried to run create_mood but we already have one.")
+	mob_mood = new(src)

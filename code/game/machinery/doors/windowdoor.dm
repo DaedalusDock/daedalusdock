@@ -172,7 +172,7 @@ TYPEINFO_DEF(/obj/machinery/door/window)
 		return ZONE_BLOCKED
 
 //used in the AStar algorithm to determinate if the turf the door is on is passable
-/obj/machinery/door/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/machinery/door/window/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	return !density || (dir != to_dir) || (check_access_list(pass_info.access) && hasPower() && !pass_info.no_id)
 
 /obj/machinery/door/window/proc/on_exit(datum/source, atom/movable/leaving, direction)
@@ -267,7 +267,7 @@ TYPEINFO_DEF(/obj/machinery/door/window)
 /obj/machinery/door/window/fire_act(exposed_temperature, exposed_volume, turf/adjacent)
 	take_damage(round(exposed_temperature / 200), BURN, 0, 0)
 
-/obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
+/obj/structure/window/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, armor_penetration = 0, allow_break = TRUE)
 	var/initial_damage_percentage = get_integrity_percentage()
 	. = ..()
 	if(.) //received damage

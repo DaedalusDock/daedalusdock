@@ -13,9 +13,27 @@
 	var/health = 50
 	var/is_on = FALSE
 
+	/// List of mobs flockrunning on this turf, lazylist.
+	var/list/mob/living/simple_animal/flock/flockrunning_mobs
+	/// List of pylons powering this turf, lazylist.
+	var/list/obj/structure/flock/collector/connected_pylons
+
 /turf/open/floor/flock/Initialize(mapload)
 	. = ..()
+	ADD_TRAIT(src, TRAIT_FLOCK_THING, INNATE_TRAIT)
 	AddComponent(/datum/component/flock_protection, FALSE, TRUE, FALSE, FALSE)
+
+/turf/open/floor/flock/Destroy(force)
+	REMOVE_TRAIT(src, TRAIT_FLOCK_NODECON, INNATE_TRAIT) // Turfs dont disappear!!!
+	qdel(GetComponent(/datum/component/flock_protection))
+	connected_pylons = null
+
+	for(var/mob/living/simple_animal/flock/drone/bird in flockrunning_mobs)
+		if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
+			bird.stop_flockphase(TRUE)
+
+	flockrunning_mobs = null
+	return ..()
 
 /turf/open/floor/flock/get_flock_id()
 	return "Conduit"
@@ -36,62 +54,15 @@
 			icon_state = base_icon_state
 	return ..()
 
-/turf/open/floor/flock/break_tile()
-	. = ..()
-	for(var/mob/living/simple_animal/flock/drone/bird in src)
-		if(HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
-			bird.stop_flockphase()
+/// Turns the tile on or off depending on what state it should be in.
+/turf/open/floor/flock/proc/update_power()
+	var/should_be_on = FALSE
+	if(!broken && (length(connected_pylons) || length(flockrunning_mobs)))
+		should_be_on = TRUE
 
-/turf/open/floor/flock/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
-	. = ..()
-	if(!isflockdrone(arrived))
+	if(should_be_on == is_on)
 		return
 
-	var/mob/living/simple_animal/flock/drone/bird = arrived
-
-	if(broken)
-		bird.stop_flockphase()
-		return
-
-	if(bird.client?.keys_held["Shift"] && bird.can_flockphase())
-		bird.start_flockphase()
-
-	if(bird.flockphase_tax() && !is_on)
-		turn_on()
-
-/turf/open/floor/flock/Exited(atom/movable/gone, direction)
-	. = ..()
-	if(!isflockdrone(gone))
-		return
-
-	var/mob/living/simple_animal/flock/drone/bird = gone
-	if(!HAS_TRAIT(bird, TRAIT_FLOCKPHASE))
-		return
-
-	var/have_a_phasing_bird = FALSE
-	for(var/mob/living/simple_animal/flock/drone/bird_in_src in src)
-		if(HAS_TRAIT(bird_in_src, TRAIT_FLOCKPHASE))
-			have_a_phasing_bird = TRUE
-			break
-
-	if(!have_a_phasing_bird)
-		turn_off()
-
-	if(!isflockturf(bird.loc))
-		bird.stop_flockphase()
-
-/turf/open/floor/flock/proc/turn_on()
-	if(is_on || broken)
-		return
-
-	is_on = TRUE
-	set_light_on(FALSE)
-	update_appearance(UPDATE_ICON_STATE)
-
-/turf/open/floor/flock/proc/turn_off()
-	if(!is_on)
-		return
-
-	is_on = FALSE
-	set_light_on(TRUE)
+	is_on = should_be_on
+	set_light_on(is_on)
 	update_appearance(UPDATE_ICON_STATE)

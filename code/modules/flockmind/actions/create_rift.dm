@@ -9,6 +9,15 @@
 		to_chat(owner, span_warning("This place is not safe enough for a rift."))
 		return FALSE
 
+	if(T.contains_dense_objects())
+		to_chat(owner, span_warning("There is not enough room for a rift here."))
+		return FALSE
+
+	var/area/A = T.loc
+	if(!(A.area_flags & BLOBS_ALLOWED))
+		to_chat(owner, span_warning("We cannot create a rift here."))
+		return FALSE
+
 	if(!T.can_flock_occupy())
 		to_chat(owner, span_warning("There is something blocking this spot."))
 		return FALSE

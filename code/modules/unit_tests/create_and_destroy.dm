@@ -99,8 +99,10 @@ GLOBAL_VAR_INIT(running_create_and_destroy, FALSE)
 	ignore += typesof(/obj/structure/industrial_lift)
 	//throws garbage to the log if it spawns without neighbors. It's a mapping helper anyways.
 	ignore += typesof(/obj/structure/cable/smart_cable)
-			// Throws a warning due to passing a zero-duration argument after mapload
+	// Throws a warning due to passing a zero-duration argument after mapload
 	ignore += typesof(/obj/effect/abstract/smell_holder)
+	// These expect to be paired with a flockdrone part.
+	ignore += typesof(/atom/movable/screen/flockdrone_part)
 
 	var/list/cached_contents = spawn_at.contents.Copy()
 	var/original_turf_type = spawn_at.type

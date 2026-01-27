@@ -33,6 +33,10 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 	var/obj/item/encryptionkey/keyslot2 = null
 
+/obj/item/radio/headset/Initialize(mapload)
+	. = ..()
+	possibly_deactivate_in_loc()
+
 /obj/item/radio/headset/suicide_act(mob/living/carbon/user)
 	user.visible_message(span_suicide("[user] begins putting \the [src]'s antenna up [user.p_their()] nose! It looks like [user.p_theyre()] trying to give [user.p_them()]self cancer!"))
 	return TOXLOSS
@@ -57,11 +61,6 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 			. += span_info("Alt-click to toggle the high-volume mode.")
 	else
 		. += span_notice("A small screen on the headset flashes, it's too small to read without holding or wearing the headset.")
-
-/obj/item/radio/headset/Initialize(mapload)
-	. = ..()
-	recalculate_channels()
-	possibly_deactivate_in_loc()
 
 /obj/item/radio/headset/proc/possibly_deactivate_in_loc()
 	if(ismob(loc))
@@ -263,13 +262,10 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 /obj/item/radio/headset/screwdriver_act(mob/living/user, obj/item/tool)
 	user.set_machine(src)
 	if(keyslot || keyslot2)
-		for(var/ch_name in channels)
-			SSpackets.remove_object(src, GLOB.radio_channel_to_frequency[ch_name])
-			secure_radio_connections[ch_name] = null
-
 		if(keyslot)
 			user.put_in_hands(keyslot)
 			keyslot = null
+
 		if(keyslot2)
 			user.put_in_hands(keyslot2)
 			keyslot2 = null

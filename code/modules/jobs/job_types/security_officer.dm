@@ -106,12 +106,6 @@
 	backpack_contents = null
 	box = null
 
-/obj/item/radio/headset/headset_sec/alt/department/Initialize(mapload)
-	. = ..()
-	wires = new/datum/wires/radio(src)
-	secure_radio_connections = list()
-	recalculate_channels()
-
 /obj/item/radio/headset/headset_sec/alt/department/engi
 	keyslot = new /obj/item/encryptionkey/headset_sec
 	keyslot2 = new /obj/item/encryptionkey/headset_eng

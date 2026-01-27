@@ -65,16 +65,22 @@ TYPEINFO_DEF(/obj/item/radio)
 
 	/// Encryption key handling
 	var/obj/item/encryptionkey/keyslot
-	/// If true, can hear the special binary channel.
+	/// If true, can hear the special binary channel. Set by encryption key!
 	var/translate_binary = FALSE
-	/// If true, can say/hear on the special CentCom channel.
+	/// If true, can say/hear on the special CentCom channel. Set by encryption key!
 	var/independent = FALSE
-	/// If true, hears all well-known channels automatically, and can say/hear on the Syndicate channel.
+	/// If true, hears all well-known channels automatically, and can say/hear on the Syndicate channel. Set by encryption key!
 	var/syndie = FALSE
-	/// associative list of the encrypted radio channels this radio is currently set to listen/broadcast to, of the form: list(channel name = TRUE or FALSE)
+
+	/// k:v list of channel_name -> listening state (in the form of bitflags, ie, FREQ_LISTENING).
+	/// This list is automatically built by recalculate_channels().
 	var/list/channels
-	/// associative list of the encrypted radio channels this radio can listen/broadcast to, of the form: list(channel name = channel frequency)
-	var/list/secure_radio_connections
+
+	/// k:v list of channel_name -> channel frequency number AS STRING.
+	/// This list is automatically built by recalculate_channels().
+	/// Any channel in this list we are actively receiving communications on.
+	var/list/listening_radio_channels
+
 	/// Overrides the zlevel(s) that receive the signal.
 	var/list/broadcast_z_override
 
@@ -82,13 +88,16 @@ TYPEINFO_DEF(/obj/item/radio)
 	wires = new /datum/wires/radio(src)
 	if(prison_radio)
 		wires.cut(WIRE_TX) // OH GOD WHY
-	secure_radio_connections = list()
+
 	. = ..()
+
 	SET_TRACKING(__TYPE__)
 
-	for(var/ch_name in channels)
-		secure_radio_connections[ch_name] = add_radio(src, GLOB.radio_channel_to_frequency[ch_name])
+	// Set these up, since recalculate channels and friends expects them to exist.
+	channels = list()
+	listening_radio_channels = list()
 
+	recalculate_channels()
 	set_listening(should_be_listening)
 	set_broadcasting(should_be_broadcasting)
 	set_frequency(sanitize_frequency(frequency, freerange))
@@ -117,7 +126,7 @@ TYPEINFO_DEF(/obj/item/radio)
 /// Builds the channels list, and sets translate_binary/syndie/independant state
 /obj/item/radio/proc/recalculate_channels()
 	reset_channels()
-	channels = get_channels()
+	channels += get_channels()
 
 	if(keyslot)
 		if(keyslot.translate_binary)
@@ -127,8 +136,8 @@ TYPEINFO_DEF(/obj/item/radio)
 		if(keyslot.independent)
 			independent = TRUE
 
-	for(var/channel_name in channels)
-		secure_radio_connections[channel_name] = add_radio(src, GLOB.radio_channel_to_frequency[channel_name])
+	if(listening)
+		readd_listening_radio_channels()
 
 /// Returns the channels available to the radio, for use by recalculate_channels()
 /obj/item/radio/proc/get_channels()
@@ -138,12 +147,12 @@ TYPEINFO_DEF(/obj/item/radio)
 
 /// Wipes radio channel state for recalculate_channels()
 /obj/item/radio/proc/reset_channels()
-	channels = list()
+	channels.Cut()
 
-	for(var/radio_key,radio_freq in secure_radio_connections)
+	for(var/radio_key,radio_freq in listening_radio_channels)
 		remove_radio(src, radio_freq)
 
-	secure_radio_connections = list()
+	listening_radio_channels.Cut()
 
 	translate_binary = FALSE
 	syndie = FALSE
@@ -152,14 +161,13 @@ TYPEINFO_DEF(/obj/item/radio)
 ///goes through all radio channels we should be listening for and readds them to the global list
 /obj/item/radio/proc/readd_listening_radio_channels()
 	for(var/channel_name in channels)
-		add_radio(src, GLOB.radio_channel_to_frequency[channel_name])
+		listening_radio_channels[channel_name] = add_radio(src, GLOB.radio_channel_to_frequency[channel_name])
 
-	add_radio(src, FREQ_COMMON)
+	listening_radio_channels[RADIO_CHANNEL_COMMON] = add_radio(src, FREQ_COMMON)
 
 /obj/item/radio/proc/make_syndie() // Turns normal radios into Syndicate radios!
 	qdel(keyslot)
 	keyslot = new /obj/item/encryptionkey/syndicate
-	syndie = TRUE
 	recalculate_channels()
 
 /obj/item/radio/interact(mob/user)
@@ -286,12 +294,14 @@ TYPEINFO_DEF(/obj/item/radio)
 
 	// From the channel, determine the frequency and get a reference to it.
 	var/freq
-	if(channel && channels && channels.len > 0)
+	if(channel && length(channels))
 		if(channel == MODE_DEPARTMENT)
 			channel = channels[1]
-		freq = secure_radio_connections[channel]
+
+		freq = listening_radio_channels[channel]
 		if (!channels[channel]) // if the channel is turned off, don't broadcast
 			return
+
 	else
 		freq = frequency
 		channel = null
@@ -547,10 +557,6 @@ TYPEINFO_DEF(/obj/item/radio)
 	if(!keyslot)
 		to_chat(user, span_warning("This radio doesn't have any encryption keys!"))
 		return
-
-	for(var/ch_name in channels)
-		SSpackets.remove_object(src, GLOB.radio_channel_to_frequency[ch_name])
-		secure_radio_connections[ch_name] = null
 
 	if(keyslot)
 		var/turf/user_turf = get_turf(user)

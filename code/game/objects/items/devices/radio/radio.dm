@@ -1,5 +1,3 @@
-#define FREQ_LISTENING (1<<0)
-
 TYPEINFO_DEF(/obj/item/radio)
 	default_materials = list(/datum/material/iron=75, /datum/material/glass=25)
 
@@ -72,7 +70,7 @@ TYPEINFO_DEF(/obj/item/radio)
 	/// If true, hears all well-known channels automatically, and can say/hear on the Syndicate channel. Set by encryption key!
 	var/syndie = FALSE
 
-	/// k:v list of channel_name -> listening state (in the form of bitflags, ie, FREQ_LISTENING).
+	/// k:v list of channel_name -> listening state (in the form of bitflags, ie, CHANNEL_STATUS_LISTENING).
 	/// This list is automatically built by recalculate_channels().
 	var/list/channels
 
@@ -143,7 +141,7 @@ TYPEINFO_DEF(/obj/item/radio)
 /obj/item/radio/proc/get_channels()
 	. = list()
 	for(var/channel_name in keyslot?.channels)
-		.[channel_name] ||= keyslot.channels[channel_name]
+		.[channel_name] = CHANNEL_STATUS_LISTENING
 
 /// Wipes radio channel state for recalculate_channels()
 /obj/item/radio/proc/reset_channels()
@@ -270,13 +268,13 @@ TYPEINFO_DEF(/obj/item/radio)
 	return ITALICS | REDUCE_RANGE
 
 /obj/item/radio/proc/talk_into_impl(atom/movable/talking_movable, message, channel, list/spans, datum/language/language, list/message_mods)
-	if(!on)
-		return // the device has to be on
-	if(!talking_movable || !message)
+	if(!on) // the device has to be on
+		return
+	if(!talking_movable || !message) // sanity
 		return
 	if(wires.is_cut(WIRE_TX))  // Permacell and otherwise tampered-with radios
 		return
-	if(!talking_movable.IsVocal())
+	if(!talking_movable.IsVocal()) // non-vocal speakers cant speak on radio, dummy
 		return
 
 	if(use_command)
@@ -298,9 +296,10 @@ TYPEINFO_DEF(/obj/item/radio)
 		if(channel == MODE_DEPARTMENT)
 			channel = channels[1]
 
-		freq = listening_radio_channels[channel]
-		if (!channels[channel]) // if the channel is turned off, don't broadcast
+		if (!(channels[channel] & CHANNEL_STATUS_LISTENING)) // if the channel is turned off, don't broadcast
 			return
+
+		freq = listening_radio_channels[channel]
 
 	else
 		freq = frequency
@@ -371,7 +370,7 @@ TYPEINFO_DEF(/obj/item/radio)
 			if (idx && (idx % 2) == (message_mods[RADIO_EXTENSION] == MODE_L_HAND))
 				return
 
-	talk_into(speaker, raw_message, , spans, language=message_language, message_mods=filtered_mods)
+	talk_into(speaker, raw_message, null, spans, language=message_language, message_mods=filtered_mods)
 
 /// Checks if this radio can receive on the given frequency.
 /obj/item/radio/proc/can_receive(input_frequency, list/levels)
@@ -390,12 +389,12 @@ TYPEINFO_DEF(/obj/item/radio)
 
 	if(syndie) // Syndicate radios snoop all frequencies if one frequency is listening, I guess??
 		for(var/channel_key,listening_status in channels)
-			if(listening_status & FREQ_LISTENING)
+			if(listening_status & CHANNEL_STATUS_LISTENING)
 				return TRUE
 
 	var/input_channel = GLOB.radio_frequency_to_channel[input_frequency]
 	var/listening_status = channels[input_channel]
-	if((listening_status & FREQ_LISTENING))
+	if((listening_status & CHANNEL_STATUS_LISTENING))
 		return TRUE
 
 	return FALSE
@@ -422,7 +421,7 @@ TYPEINFO_DEF(/obj/item/radio)
 	data["freqlock"] = freqlock
 	data["channels"] = list()
 	for(var/channel in channels)
-		data["channels"][channel] = channels[channel] & FREQ_LISTENING
+		data["channels"][channel] = channels[channel] & CHANNEL_STATUS_LISTENING
 	data["command"] = command
 	data["useCommand"] = use_command
 	data["subspace"] = subspace_transmission
@@ -459,10 +458,10 @@ TYPEINFO_DEF(/obj/item/radio)
 			var/channel = params["channel"]
 			if(!(channel in channels))
 				return
-			if(channels[channel] & FREQ_LISTENING)
-				channels[channel] &= ~FREQ_LISTENING
+			if(channels[channel] & CHANNEL_STATUS_LISTENING)
+				channels[channel] &= ~CHANNEL_STATUS_LISTENING
 			else
-				channels[channel] |= FREQ_LISTENING
+				channels[channel] |= CHANNEL_STATUS_LISTENING
 			. = TRUE
 		if("command")
 			use_command = !use_command
@@ -500,12 +499,17 @@ TYPEINFO_DEF(/obj/item/radio)
 	. = ..()
 	if (. & EMP_PROTECT_SELF)
 		return
+
 	emped++ //There's been an EMP; better count it
+
 	var/curremp = emped //Remember which EMP this was
+
 	if (listening && equipped_to) // if the radio is turned on and on someone's person they notice
 		to_chat(equipped_to, span_warning("\The [src] overloads."))
+
 	for (var/ch_name in channels)
-		channels[ch_name] = 0
+		channels[ch_name] = NONE
+
 	set_on(FALSE)
 	addtimer(CALLBACK(src, PROC_REF(end_emp_effect), curremp), 200)
 
@@ -543,7 +547,7 @@ TYPEINFO_DEF(/obj/item/radio)
 	var/mob/living/silicon/robot/R = loc
 	if(istype(R))
 		for(var/ch_name in R.model.radio_channels)
-			.[ch_name] = TRUE
+			.[ch_name] = CHANNEL_STATUS_LISTENING
 
 /obj/item/radio/borg/syndicate
 	syndie = TRUE

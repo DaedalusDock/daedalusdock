@@ -10,7 +10,7 @@
 	icon = 'icons/obj/power_cond/cable.dmi'
 	icon_state = "0"
 	color = "yellow"
-	layer = WIRE_LAYER //Above hidden pipes, GAS_PIPE_HIDDEN_LAYER
+	layer = MAP_SWITCH(WIRE_LAYER, GAS_PUMP_LAYER) //Above hidden pipes, GAS_PIPE_HIDDEN_LAYER
 	anchored = TRUE
 	obj_flags = CAN_BE_HIT
 

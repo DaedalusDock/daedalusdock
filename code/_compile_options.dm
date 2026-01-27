@@ -170,6 +170,8 @@
 
 //uncomment this to load centcom and runtime station and thats it.
 // #define LOWMEMORYMODE
+//force a map for lowmemorymode
+// #define FORCE_MAP "runtimestation"
 
 //uncomment to enable the spatial grid debug proc.
 // #define SPATIAL_GRID_ZLEVEL_STATS
@@ -248,7 +250,9 @@
 #endif
 
 #ifdef LOWMEMORYMODE
+#if !defined(FORCE_MAP)
 #define FORCE_MAP "runtimestation"
+#endif
 #define FORCE_MAP_DIRECTORY "_maps"
 #warn LOW MEMORY MODE ENABLED.
 #endif

@@ -1330,6 +1330,7 @@
 #include "code\game\area\areas\misc.dm"
 #include "code\game\area\areas\shuttles.dm"
 #include "code\game\area\areas\station.dm"
+#include "code\game\area\areas\atlas\ai_monitored.dm"
 #include "code\game\area\areas\ruins\_ruins.dm"
 #include "code\game\area\areas\ruins\space.dm"
 #include "code\game\area\areas\ruins\templates.dm"

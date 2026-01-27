@@ -16,7 +16,7 @@ TYPEINFO_DEF(/obj/structure/shuttle)
 
 /obj/structure/shuttle/engine
 	name = "engine"
-	desc = "A bluespace engine used to make shuttles move."
+	desc = "An engine used to make shuttles move."
 	density = TRUE
 	anchored = TRUE
 	var/engine_power = 1
@@ -124,7 +124,6 @@ TYPEINFO_DEF(/obj/structure/shuttle)
 
 /obj/structure/shuttle/engine/propulsion/burst
 	name = "burst engine"
-	desc = "An engine that releases a large bluespace burst to propel it."
 
 /obj/structure/shuttle/engine/propulsion/burst/cargo
 	state = ENGINE_UNWRENCHED

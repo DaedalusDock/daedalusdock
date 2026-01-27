@@ -28,6 +28,6 @@
 		freq_to_check = rand(start, end)
 		if(!(freq_to_check % 2)) // Ensure the last digit is an odd number
 			freq_to_check++
-	while((freq_to_check == 0) || ("[freq_to_check]" in GLOB.reverseradiochannels))
+	while((freq_to_check == 0) || ("[freq_to_check]" in GLOB.radio_frequency_to_channel))
 
 	return freq_to_check

@@ -87,7 +87,7 @@ TYPEINFO_DEF(/obj/item/radio)
 	SET_TRACKING(__TYPE__)
 
 	for(var/ch_name in channels)
-		secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
+		secure_radio_connections[ch_name] = add_radio(src, GLOB.radio_channel_to_frequency[ch_name])
 
 	set_listening(should_be_listening)
 	set_broadcasting(should_be_broadcasting)
@@ -128,7 +128,7 @@ TYPEINFO_DEF(/obj/item/radio)
 			independent = TRUE
 
 	for(var/channel_name in channels)
-		secure_radio_connections[channel_name] = add_radio(src, GLOB.radiochannels[channel_name])
+		secure_radio_connections[channel_name] = add_radio(src, GLOB.radio_channel_to_frequency[channel_name])
 
 /// Returns the channels available to the radio, for use by recalculate_channels()
 /obj/item/radio/proc/get_channels()
@@ -152,7 +152,7 @@ TYPEINFO_DEF(/obj/item/radio)
 ///goes through all radio channels we should be listening for and readds them to the global list
 /obj/item/radio/proc/readd_listening_radio_channels()
 	for(var/channel_name in channels)
-		add_radio(src, GLOB.radiochannels[channel_name])
+		add_radio(src, GLOB.radio_channel_to_frequency[channel_name])
 
 	add_radio(src, FREQ_COMMON)
 
@@ -377,10 +377,17 @@ TYPEINFO_DEF(/obj/item/radio)
 	// allow checks: are we listening on that frequency?
 	if (input_frequency == frequency)
 		return TRUE
-	for(var/ch_name in channels)
-		if(channels[ch_name] & FREQ_LISTENING)
-			if(GLOB.radiochannels[ch_name] == text2num(input_frequency) || syndie)
+
+	if(syndie) // Syndicate radios snoop all frequencies if one frequency is listening, I guess??
+		for(var/channel_key,listening_status in channels)
+			if(listening_status & FREQ_LISTENING)
 				return TRUE
+
+	var/input_channel = GLOB.radio_frequency_to_channel[input_frequency]
+	var/listening_status = channels[input_channel]
+	if((listening_status & FREQ_LISTENING))
+		return TRUE
+
 	return FALSE
 
 /obj/item/radio/ui_state(mob/user)
@@ -542,7 +549,7 @@ TYPEINFO_DEF(/obj/item/radio)
 		return
 
 	for(var/ch_name in channels)
-		SSpackets.remove_object(src, GLOB.radiochannels[ch_name])
+		SSpackets.remove_object(src, GLOB.radio_channel_to_frequency[ch_name])
 		secure_radio_connections[ch_name] = null
 
 	if(keyslot)

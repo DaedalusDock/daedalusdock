@@ -264,7 +264,7 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 	user.set_machine(src)
 	if(keyslot || keyslot2)
 		for(var/ch_name in channels)
-			SSpackets.remove_object(src, GLOB.radiochannels[ch_name])
+			SSpackets.remove_object(src, GLOB.radio_channel_to_frequency[ch_name])
 			secure_radio_connections[ch_name] = null
 
 		if(keyslot)

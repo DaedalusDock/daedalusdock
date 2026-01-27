@@ -61,7 +61,7 @@
 		.["upgrades"] += list(list("name" = initial(upgrade.name), "installed" = installed, "type" = upgradetype))
 	.["laws"] = borg.laws ? borg.laws.get_law_list(include_zeroth = TRUE, render_html = FALSE) : list()
 	.["channels"] = list()
-	for (var/k in GLOB.radiochannels)
+	for (var/k in GLOB.radio_channel_to_frequency)
 		if (k == RADIO_CHANNEL_COMMON)
 			continue
 		.["channels"] += list(list("name" = k, "installed" = (k in borg.radio.channels)))

@@ -2,12 +2,12 @@ name: CI Suite
 on:
   push:
     branches:
-    - master
-    - 'project/**'
+      - master
+      - "project/**"
   pull_request:
     branches:
-    - master
-    - 'project/**'
+      - master
+      - "project/**"
 jobs:
   run_linters:
     if: ( !contains(github.event.head_commit.message, '[ci skip]') )
@@ -31,6 +31,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+      - name: Python setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
       - name: Install Tools
         run: |
           pip3 install setuptools
@@ -39,7 +43,7 @@ jobs:
           tools/bootstrap/python -c ''
       - name: Give Linters A Go
         id: linter-setup
-        run: ':'
+        run: ":"
       - name: Run Grep Checks
         if: steps.linter-setup.conclusion == 'success' && !cancelled()
         run: bash tools/ci/check_grep.sh

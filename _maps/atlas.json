@@ -1,0 +1,16 @@
+{
+	"version": 1,
+	"map_name": "Atlas",
+	"map_path": "map_files/Atlas",
+	"map_file": "atlas.dmm",
+	"webmap_id": "Atlas",
+	"run_mapping_tests": true,
+	"traits": [
+		{
+			"Gravity": 1
+		}
+	],
+	"shuttles": {
+		"emergency": "emergency_goon"
+	}
+}

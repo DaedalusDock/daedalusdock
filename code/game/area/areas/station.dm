@@ -980,6 +980,10 @@
 	name = "\improper Ward (Aft)"
 	icon_state = "med_aft"
 
+/area/station/medical/medbay/aft
+	name = "\improper Ward (Fore)"
+	icon_state = "med_fore"
+
 /area/station/medical/storage
 	name = "\improper Ward Storage"
 	icon_state = "med_storage"

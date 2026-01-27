@@ -12,5 +12,5 @@
 
 	return BEHAVIOR_PERFORM_COOLDOWN | BEHAVIOR_PERFORM_SUCCESS
 
-/datum/ai_behavior/idle_random_walk/score(datum/ai_controller/controller)
+/datum/ai_behavior/idle_random_walk/goap_score(datum/ai_controller/controller)
 	return 1

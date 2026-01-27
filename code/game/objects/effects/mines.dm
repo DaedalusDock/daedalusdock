@@ -52,7 +52,7 @@
 
 	triggermine(AM)
 
-/obj/effect/mine/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir)
+/obj/effect/mine/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armor_penetration = 0, allow_break = TRUE)
 	. = ..()
 	triggermine()
 

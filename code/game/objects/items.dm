@@ -14,7 +14,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	///the icon to indicate this object is being dragged
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
-	max_integrity = 200
+	max_integrity = 10
 	obj_flags = NONE
 	pass_flags = PASSTABLE
 

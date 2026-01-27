@@ -147,7 +147,7 @@ TYPEINFO_DEF(/obj/structure/grille)
 	if(!. && istype(mover, /obj/projectile))
 		return prob(30)
 
-/obj/structure/grille/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/structure/grille/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	if(!density)
 		return TRUE
 

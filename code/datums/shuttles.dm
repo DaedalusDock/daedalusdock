@@ -558,6 +558,10 @@
 	suffix = "delta"
 	name = "cargo ferry (Delta)"
 
+/datum/map_template/shuttle/mining/atlas
+	suffix = "atlas"
+	name = "mining shuttle (Atlas)"
+
 /datum/map_template/shuttle/mining/delta
 	suffix = "delta"
 	name = "mining shuttle (Delta)"
@@ -593,6 +597,10 @@
 /datum/map_template/shuttle/arrival/omega
 	suffix = "omega"
 	name = "arrival shuttle (Omega)"
+
+/datum/map_template/shuttle/arrival/atlas
+	suffix = "atlas"
+	name = "arrival shuttle (Atlas)"
 
 /datum/map_template/shuttle/escape_pod/default
 	suffix = "default"

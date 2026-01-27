@@ -1,5 +1,5 @@
 #!/bin/bash
 
 
-md5sum -c - <<< "4d783933c74290b3a219068790b2046f *html/changelogs/example.yml"
-python3 tools/changelog/ss13_genchangelog.py html/changelogs
+md5sum -c - <<< "6fd98c16cc74226a409d43ddb2a4541f *html/changelogs/example.yml"
+tools/bootstrap/python tools/changelog/ss13_genchangelog.py html/changelogs

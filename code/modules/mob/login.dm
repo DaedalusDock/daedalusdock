@@ -90,6 +90,10 @@
 		var/datum/atom_hud/alternate_appearance/AA = v
 		AA.onNewMob(src)
 
+	//Reload info huds
+	for(var/obj/effect/abstract/info_tag/tag as anything in seeing_info_tags)
+		tag.show_to(client)
+
 	update_client_colour()
 	update_mouse_pointer()
 	update_ambience_area(get_area(src))

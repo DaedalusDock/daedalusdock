@@ -800,6 +800,8 @@ GLOBAL_LIST_EMPTY(map_model_default)
 			area_instance = GLOB.areas_by_type[area_type]
 			// If the global list DOESN'T have this area it's either not a unique area, or it just hasn't been created yet
 			if (!area_instance)
+				if(!ispath(area_type, /area))
+					CRASH("([crds.x] [crds.y] [crds.z]) has no area defined.")
 				area_instance = new area_type(null)
 				if(!area_instance)
 					CRASH("[area_type] failed to be new'd, what'd you do?")

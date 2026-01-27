@@ -277,7 +277,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	if(istype(mover) && (mover.pass_flags & PASSGLASS))
 		return !opacity
 
-/obj/machinery/door/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/machinery/door/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	. = ..()
 	if(.)
 		return
@@ -414,7 +414,7 @@ DEFINE_INTERACTABLE(/obj/machinery/door)
 	try_to_crowbar_secondary(tool, user, forced_open)
 	return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/door/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+/obj/machinery/door/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, armor_penetration = 0, allow_break = TRUE)
 	. = ..()
 	if(. && atom_integrity > 0)
 		if(damage_amount >= 10 && prob(30))

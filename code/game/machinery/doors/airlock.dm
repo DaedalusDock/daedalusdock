@@ -1308,7 +1308,7 @@
 	assemblytype = initial(airlock.assemblytype)
 	update_appearance()
 
-/obj/machinery/door/airlock/CanAStarPass(to_dir, datum/can_pass_info/pass_info)
+/obj/machinery/door/airlock/CanAStarPass(to_dir, datum/can_pass_info/pass_info, leaving)
 	//Airlock is passable if it is open (!density), bot has access, and is not bolted shut or powered off)
 	return !density || (!locked && !pass_info.no_id && check_access_list(pass_info.access) && hasPower())
 
@@ -1402,7 +1402,7 @@
 		log_combat(user, src, message)
 		log_touch(user)
 
-/obj/machinery/door/airlock/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
+/obj/machinery/door/airlock/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir, armor_penetration = 0, allow_break = TRUE)
 	if((damage_amount >= atom_integrity) && (damage_flag == BOMB))
 		flags_1 |= NODECONSTRUCT_1  //If an explosive took us out, don't drop the assembly
 

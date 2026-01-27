@@ -4,7 +4,6 @@
 	button_icon_state = "diffract"
 	click_to_activate = TRUE
 
-
 /datum/action/cooldown/flock/diffract_drone/is_valid_target(atom/cast_on)
 	if(!isflockdrone(cast_on))
 		return FALSE

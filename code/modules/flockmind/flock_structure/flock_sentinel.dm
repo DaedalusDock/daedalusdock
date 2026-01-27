@@ -12,10 +12,12 @@
 	max_integrity = 80
 
 	flock_id = "Sentinel"
-	active_compute_cost = 20
+	active_bandwidth_cost = 20
+
+	resource_cost = 150
 
 	/// Attacks require charging
-	var/datum/point_holder/charge = 0
+	var/datum/point_holder/charge
 	/// Charge gained per second while a target is in range
 	var/charge_per_second = 10
 	/// Trend of charge.
@@ -26,10 +28,10 @@
 	var/damage_per_zap = 5
 
 /obj/structure/flock/sentinel/Initialize(mapload, joinflock)
-	. = ..()
-	START_PROCESSING(SSobj, src)
 	charge = new
 	charge.set_max_points(100)
+	. = ..()
+	START_PROCESSING(SSobj, src)
 
 /obj/structure/flock/sentinel/Destroy(force)
 	STOP_PROCESSING(SSobj, src)
@@ -43,15 +45,16 @@
 
 	// Check if the flock can continue to run the sentinel
 	if(active)
-		if(flock.available_compute() < 0)
+		if(flock.available_bandwidth() < 0)
 			set_active(FALSE)
 	else
-		if(flock.can_afford(active_compute_cost))
+		if(flock.can_afford(active_bandwidth_cost))
 			set_active(TRUE)
 
 	if(!active)
 		if(charge.has_points())
 			charge.adjust_points((charge_per_second / 2) * delta_time)
+			update_info_tag()
 			charge_status = LOSING_CHARGE
 		else
 			charge_status = NOT_CHARGED
@@ -61,6 +64,7 @@
 	// Gain more charge
 	if(charge_status != CHARGED)
 		charge.adjust_points(charge_per_second * delta_time)
+		update_info_tag()
 		if(charge.has_points(100))
 			charge_status = CHARGED
 			update_appearance(UPDATE_ICON_STATE)
@@ -92,6 +96,7 @@
 
 	charge_status = CHARGING
 	charge.adjust_points(-100)
+	update_info_tag()
 
 	tesla_zap_target(src, target, TESLA_MOB_DAMAGE_TO_POWER(damage_per_zap))
 	addtimer(TRAIT_CALLBACK_REMOVE(target, TRAIT_SHOCKED_BY_SENTINEL, ref(src)), 2 SECONDS)
@@ -139,6 +144,26 @@
 	else
 		icon_state = "sentinel"
 	return ..()
+
+/obj/structure/flock/sentinel/flock_structure_examine(mob/user)
+	var/charge_status_str
+	switch (charge_status)
+		if (NOT_CHARGED)
+			charge_status_str = "Idle"
+		if (LOSING_CHARGE)
+			charge_status_str = "Losing charge"
+		if (CHARGING)
+			charge_status_str = "Charging"
+		if (CHARGED)
+			charge_status_str = "Charged"
+
+	return list(
+		span_flocksay("<b>Status:</b> [charge_status_str]"),
+		span_flocksay("<b>Charge Percentage: [charge.has_points()]%"),
+	)
+
+/obj/structure/flock/sentinel/update_info_tag()
+	info_tag.set_text("Charge: [charge.has_points()]%")
 
 #undef NOT_CHARGED
 #undef LOSING_CHARGE

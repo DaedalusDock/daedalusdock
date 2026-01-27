@@ -1,6 +1,6 @@
 /datum/action/cooldown/flock/ping
 	name = "Ping"
-	desc = "Request attention from other elements of the flock."
+	desc = "Request attention from other partitions of the Flock."
 	button_icon_state = "ping"
 	cooldown_time = 5 SECONDS
 	click_to_activate = TRUE

@@ -17,10 +17,16 @@ map theseus
 	#default
 	#voteweight 0.5
 	votable
+	minplayers 10
 endmap
 
 map runtimestation
 endmap
 
 map multiz_debug
+endmap
+
+map atlas
+	votable
+	maxplayers 15
 endmap

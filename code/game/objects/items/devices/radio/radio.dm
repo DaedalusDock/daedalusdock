@@ -398,7 +398,7 @@ TYPEINFO_DEF(/obj/item/radio)
 			if(listening_status & CHANNEL_STATUS_LISTENING)
 				return TRUE
 
-	var/input_channel = GLOB.radio_frequency_to_channel[input_frequency]
+	var/input_channel = GLOB.radio_frequency_to_channel["[input_frequency]"]
 	var/listening_status = channels[input_channel]
 	if((listening_status & CHANNEL_STATUS_LISTENING))
 		return TRUE

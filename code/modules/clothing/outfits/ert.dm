@@ -51,7 +51,7 @@
 		return
 	var/obj/item/radio/R = H.ears
 	R.keyslot = new /obj/item/encryptionkey/heads/captain
-	R.recalculateChannels()
+	R.recalculate_channels()
 
 /datum/outfit/centcom/ert/commander/alert
 	name = "ERT Commander - High Alert"
@@ -88,7 +88,7 @@
 
 	var/obj/item/radio/R = H.ears
 	R.keyslot = new /obj/item/encryptionkey/heads/hos
-	R.recalculateChannels()
+	R.recalculate_channels()
 
 /datum/outfit/centcom/ert/security/alert
 	name = "ERT Security - High Alert"
@@ -127,7 +127,7 @@
 
 	var/obj/item/radio/R = H.ears
 	R.keyslot = new /obj/item/encryptionkey/heads/cmo
-	R.recalculateChannels()
+	R.recalculate_channels()
 
 /datum/outfit/centcom/ert/medic/alert
 	name = "ERT Medic - High Alert"
@@ -167,7 +167,7 @@
 
 	var/obj/item/radio/R = H.ears
 	R.keyslot = new /obj/item/encryptionkey/heads/ce
-	R.recalculateChannels()
+	R.recalculate_channels()
 
 /datum/outfit/centcom/ert/engineer/alert
 	name = "ERT Engineer - High Alert"
@@ -269,7 +269,7 @@
 		return
 	var/obj/item/radio/R = H.ears
 	R.keyslot = new /obj/item/encryptionkey/heads/hop
-	R.recalculateChannels()
+	R.recalculate_channels()
 
 /datum/outfit/centcom/ert/chaplain/inquisitor
 	name = "Inquisition Chaplain"
@@ -310,7 +310,7 @@
 
 	var/obj/item/radio/R = H.ears
 	R.keyslot = new /obj/item/encryptionkey/headset_service
-	R.recalculateChannels()
+	R.recalculate_channels()
 
 /datum/outfit/centcom/ert/janitor/heavy
 	name = "ERT Janitor - Heavy Duty"
@@ -348,7 +348,7 @@
 		return
 	var/obj/item/radio/R = H.ears
 	R.keyslot = new /obj/item/encryptionkey/headset_service
-	R.recalculateChannels()
+	R.recalculate_channels()
 	ADD_TRAIT(H, TRAIT_NAIVE, INNATE_TRAIT)
 	H.dna.add_mutation(/datum/mutation/human/clumsy)
 	for(var/datum/mutation/human/clumsy/M in H.dna.mutations)
@@ -565,7 +565,7 @@
 		return
 	var/obj/item/radio/headset = equipper.ears
 	headset.keyslot = new /obj/item/encryptionkey/heads/captain
-	headset.recalculateChannels()
+	headset.recalculate_channels()
 
 /datum/outfit/centcom/ert/marine/security
 	name = "Marine Heavy"
@@ -583,7 +583,7 @@
 
 	var/obj/item/radio/headset = equipper.ears
 	headset.keyslot = new /obj/item/encryptionkey/heads/hos
-	headset.recalculateChannels()
+	headset.recalculate_channels()
 
 /datum/outfit/centcom/ert/marine/medic
 	name = "Marine Medic"
@@ -610,7 +610,7 @@
 
 	var/obj/item/radio/headset = equipper.ears
 	headset.keyslot = new /obj/item/encryptionkey/heads/cmo
-	headset.recalculateChannels()
+	headset.recalculate_channels()
 
 /datum/outfit/centcom/ert/marine/engineer
 	name = "Marine Engineer"
@@ -632,4 +632,4 @@
 
 	var/obj/item/radio/headset = equipper.ears
 	headset.keyslot = new /obj/item/encryptionkey/heads/ce
-	headset.recalculateChannels()
+	headset.recalculate_channels()

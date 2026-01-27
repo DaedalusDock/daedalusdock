@@ -20,7 +20,7 @@
 	radio.set_frequency(FREQ_SUPPLY)
 	radio.subspace_transmission = TRUE
 	radio.canhear_range = -1
-	radio.recalculateChannels()
+	radio.recalculate_channels()
 
 	if(!order_datums.len)
 		for(var/path in subtypesof(/datum/orderable_item))

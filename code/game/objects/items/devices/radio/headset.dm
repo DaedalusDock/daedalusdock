@@ -60,7 +60,7 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 
 /obj/item/radio/headset/Initialize(mapload)
 	. = ..()
-	recalculateChannels()
+	recalculate_channels()
 	possibly_deactivate_in_loc()
 
 /obj/item/radio/headset/proc/possibly_deactivate_in_loc()
@@ -112,7 +112,7 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 	. = ..()
 	qdel(keyslot)
 	keyslot = new /obj/item/encryptionkey/binary
-	recalculateChannels()
+	recalculate_channels()
 
 /obj/item/radio/headset/headset_sec
 	name = "security radio headset"
@@ -274,7 +274,7 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 			user.put_in_hands(keyslot2)
 			keyslot2 = null
 
-		recalculateChannels()
+		recalculate_channels()
 		to_chat(user, span_notice("You pop out the encryption keys in the headset."))
 
 	else
@@ -301,18 +301,14 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 			keyslot2 = W
 
 
-		recalculateChannels()
+		recalculate_channels()
 	else
 		return ..()
 
 
-/obj/item/radio/headset/recalculateChannels()
+/obj/item/radio/headset/recalculate_channels()
 	. = ..()
 	if(keyslot2)
-		for(var/ch_name in keyslot2.channels)
-			if(!(ch_name in src.channels))
-				LAZYSET(channels, ch_name, keyslot2.channels[ch_name])
-
 		if(keyslot2.translate_binary)
 			translate_binary = TRUE
 		if(keyslot2.syndie)
@@ -320,8 +316,10 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 		if (keyslot2.independent)
 			independent = TRUE
 
-		for(var/ch_name in channels)
-			secure_radio_connections[ch_name] = add_radio(src, GLOB.radiochannels[ch_name])
+/obj/item/radio/headset/get_channels()
+	. = ..()
+	for(var/channel_name in keyslot?.channels)
+		.[channel_name] ||= keyslot.channels[channel_name]
 
 /obj/item/radio/headset/AltClick(mob/living/user)
 	if(!istype(user) || !Adjacent(user) || user.incapacitated())

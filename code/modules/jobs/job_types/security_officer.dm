@@ -110,7 +110,7 @@
 	. = ..()
 	wires = new/datum/wires/radio(src)
 	secure_radio_connections = list()
-	recalculateChannels()
+	recalculate_channels()
 
 /obj/item/radio/headset/headset_sec/alt/department/engi
 	keyslot = new /obj/item/encryptionkey/headset_sec

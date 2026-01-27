@@ -121,7 +121,7 @@ TYPEINFO_DEF(/obj/machinery/atmospherics/components/unary/cryo_cell)
 	radio.keyslot = new radio_key
 	radio.subspace_transmission = TRUE
 	radio.canhear_range = -1
-	radio.recalculateChannels()
+	radio.recalculate_channels()
 
 	occupant_vis = new(null, src)
 	add_viscontents(occupant_vis)

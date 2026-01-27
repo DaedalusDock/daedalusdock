@@ -889,7 +889,7 @@
 	mainframe.deployed_shell = null
 	undeployment_action.Remove(src)
 	if(radio) //Return radio to normal
-		radio.recalculateChannels()
+		radio.recalculate_channels()
 	if(!QDELETED(builtInCamera))
 		builtInCamera.c_tag = real_name //update the camera name too
 	diag_hud_set_aishell()

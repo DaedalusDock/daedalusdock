@@ -114,14 +114,12 @@ TYPEINFO_DEF(/obj/item/radio)
 	if(listening && on)
 		add_radio(src, new_frequency)
 
-/obj/item/radio/proc/recalculateChannels()
-	resetChannels()
+/// Builds the channels list, and sets translate_binary/syndie/independant state
+/obj/item/radio/proc/recalculate_channels()
+	reset_channels()
+	channels = get_channels()
 
 	if(keyslot)
-		for(var/channel_name in keyslot.channels)
-			if(!(channel_name in channels))
-				channels[channel_name] = keyslot.channels[channel_name]
-
 		if(keyslot.translate_binary)
 			translate_binary = TRUE
 		if(keyslot.syndie)
@@ -132,10 +130,21 @@ TYPEINFO_DEF(/obj/item/radio)
 	for(var/channel_name in channels)
 		secure_radio_connections[channel_name] = add_radio(src, GLOB.radiochannels[channel_name])
 
-// Used for cyborg override
-/obj/item/radio/proc/resetChannels()
+/// Returns the channels available to the radio, for use by recalculate_channels()
+/obj/item/radio/proc/get_channels()
+	. = list()
+	for(var/channel_name in keyslot?.channels)
+		.[channel_name] ||= keyslot.channels[channel_name]
+
+/// Wipes radio channel state for recalculate_channels()
+/obj/item/radio/proc/reset_channels()
 	channels = list()
+
+	for(var/radio_key,radio_freq in secure_radio_connections)
+		remove_radio(src, radio_freq)
+
 	secure_radio_connections = list()
+
 	translate_binary = FALSE
 	syndie = FALSE
 	independent = FALSE
@@ -151,7 +160,7 @@ TYPEINFO_DEF(/obj/item/radio)
 	qdel(keyslot)
 	keyslot = new /obj/item/encryptionkey/syndicate
 	syndie = TRUE
-	recalculateChannels()
+	recalculate_channels()
 
 /obj/item/radio/interact(mob/user)
 	if(unscrewed && !isAI(user))
@@ -447,7 +456,7 @@ TYPEINFO_DEF(/obj/item/radio)
 				if(!subspace_transmission)
 					channels = list()
 				else
-					recalculateChannels()
+					recalculate_channels()
 				. = TRUE
 
 /obj/item/radio/suicide_act(mob/living/user)
@@ -512,13 +521,12 @@ TYPEINFO_DEF(/obj/item/radio)
 	canhear_range = 0
 	dog_fashion = null
 
-/obj/item/radio/borg/resetChannels()
+/obj/item/radio/borg/get_channels()
 	. = ..()
-
 	var/mob/living/silicon/robot/R = loc
 	if(istype(R))
 		for(var/ch_name in R.model.radio_channels)
-			channels[ch_name] = TRUE
+			.[ch_name] = TRUE
 
 /obj/item/radio/borg/syndicate
 	syndie = TRUE
@@ -543,7 +551,7 @@ TYPEINFO_DEF(/obj/item/radio)
 			keyslot.forceMove(user_turf)
 			keyslot = null
 
-	recalculateChannels()
+	recalculate_channels()
 	to_chat(user, span_notice("You pop out the encryption key in the radio."))
 	return ..()
 
@@ -559,7 +567,7 @@ TYPEINFO_DEF(/obj/item/radio)
 				return
 			keyslot = attacking_item
 
-		recalculateChannels()
+		recalculate_channels()
 
 
 /obj/item/radio/off // Station bounced radios, their only difference is spawning with the speakers off, this was made to help the lag.

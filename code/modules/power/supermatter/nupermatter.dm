@@ -133,7 +133,7 @@ GLOBAL_DATUM(main_supermatter_engine, /obj/machinery/power/supermatter)
 	radio.keyslot = new radio_key
 	radio.canhear_range = -1
 	radio.set_listening(FALSE, TRUE)
-	radio.recalculateChannels()
+	radio.recalculate_channels()
 
 	AddElement(/datum/element/lateral_bound, TRUE)
 	AddComponent(/datum/component/smell, INTENSITY_SUBTLE, SCENT_FRAGRANCE, "weird", 2)

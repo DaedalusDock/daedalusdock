@@ -186,7 +186,7 @@
 					borg.radio.keyslot.independent = TRUE
 				message_admins("[key_name_admin(user)] added the [channel] radio channel to [ADMIN_LOOKUPFLW(borg)].")
 				log_silicon("[key_name(user)] added the [channel] radio channel to [key_name(borg)].")
-			borg.radio.recalculateChannels()
+			borg.radio.recalculate_channels()
 		if ("setmodule")
 			var/new_model_path = text2path(params["module"])
 			if (ispath(new_model_path))

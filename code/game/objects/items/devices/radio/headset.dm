@@ -34,6 +34,7 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 	var/obj/item/encryptionkey/keyslot2 = null
 
 /obj/item/radio/headset/Initialize(mapload)
+	can_broadcast_on_common = !SSmapping.config.disable_headset_common
 	. = ..()
 	possibly_deactivate_in_loc()
 

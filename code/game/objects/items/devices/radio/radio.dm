@@ -308,6 +308,9 @@ TYPEINFO_DEF(/obj/item/radio)
 		freq = frequency
 		channel = null
 
+	if(freq == FREQ_COMMON && !can_broadcast_on_common)
+		return
+
 	// Nearby active jammers prevent the message from transmitting
 	var/turf/position = get_turf(src)
 	for(var/obj/item/jammer/jammer as anything in GLOB.active_jammers)

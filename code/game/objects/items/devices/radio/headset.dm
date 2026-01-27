@@ -44,23 +44,44 @@ TYPEINFO_DEF(/obj/item/radio/headset)
 /obj/item/radio/headset/examine(mob/user)
 	. = ..()
 
-	if(item_flags & IN_INVENTORY && loc == user)
-		// construction of frequency description
-		var/list/avail_chans = list("Use [RADIO_KEY_COMMON] for the currently tuned frequency")
-		if(translate_binary)
-			avail_chans += "use [MODE_TOKEN_BINARY] for [MODE_BINARY]"
-		if(length(channels))
-			for(var/i in 1 to length(channels))
-				if(i == 1)
-					avail_chans += "use [MODE_TOKEN_DEPARTMENT] or [GLOB.channel_tokens[channels[i]]] for [lowertext(channels[i])]"
-				else
-					avail_chans += "use [GLOB.channel_tokens[channels[i]]] for [lowertext(channels[i])]"
-		. += span_notice("A small screen on the headset displays the following available frequencies:\n[english_list(avail_chans)].")
+	if(!(item_flags & IN_INVENTORY) || loc != user)
+		return
 
-		if(command)
-			. += span_info("Alt-click to toggle the high-volume mode.")
-	else
-		. += span_notice("A small screen on the headset flashes, it's too small to read without holding or wearing the headset.")
+	// construction of frequency description
+	var/list/avail_chans = list()
+	avail_chans[list(RADIO_KEY_COMMON)] = "currently tuned frequency"
+
+	if(translate_binary)
+		avail_chans[list(MODE_TOKEN_BINARY)] = "binary"
+
+	if(length(channels))
+		avail_chans[list(MODE_TOKEN_DEPARTMENT, GLOB.channel_tokens[channels[1]])] = channels[1]
+		for(var/i in 2 to length(channels))
+			avail_chans[list(GLOB.channel_tokens[channels[i]])] = channels[i]
+
+	var/list/table_rows = list()
+	for(var/keys,channel_name in avail_chans)
+		table_rows += {"
+			<tr>
+			<td style='text-align: right;padding-right: 1em;border-right: 1px #9ab0ff solid'>[jointext(keys, " ")]</td>
+			<td style='padding-left: 1em;border-left: 1px #9ab0ff solid'>[lowertext(channel_name)]</td>
+			</tr>
+		"}
+
+	var/table_html = {"
+		<table style='border-collapse: collapse'>
+			<tr style='border-bottom: 1px #9ab0ff solid'>
+				<th style='padding-right: 1em;border-right: 1px #9ab0ff solid'>Input Key</th>
+				<th style='padding-left: 1em'>Channel</th>
+			</tr>
+			[jointext(table_rows, "")]
+		</table>
+	"}
+
+	. += span_info(table_html)
+
+	if(command)
+		. += span_info("Alt-click to toggle the high-volume mode.")
 
 /obj/item/radio/headset/proc/possibly_deactivate_in_loc()
 	if(ismob(loc))

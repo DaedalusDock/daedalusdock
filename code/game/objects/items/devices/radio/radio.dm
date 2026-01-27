@@ -70,6 +70,9 @@ TYPEINFO_DEF(/obj/item/radio)
 	/// If true, hears all well-known channels automatically, and can say/hear on the Syndicate channel. Set by encryption key!
 	var/syndie = FALSE
 
+	// TEMP!
+	var/can_broadcast_on_common = TRUE
+
 	/// k:v list of channel_name -> listening state (in the form of bitflags, ie, CHANNEL_STATUS_LISTENING).
 	/// This list is automatically built by recalculate_channels().
 	var/list/channels

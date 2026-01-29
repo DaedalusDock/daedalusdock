@@ -54,11 +54,11 @@
 	var/datum/c4_file/terminal_program/medtrak/medtrak = program
 	var/obj/item/peripheral/printer/printer = system.get_computer().get_peripheral(PERIPHERAL_TYPE_PRINTER)
 	if(!printer)
-		system.println("<b>Error:</b> Unable to locate printer.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate printer.")
 		return
 
 	if(printer.busy)
-		system.println("<b>Error:</b> Printer is busy.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Printer is busy.")
 		return
 
 	var/list/fields = medtrak.current_record.fields

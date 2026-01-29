@@ -15,7 +15,7 @@
 		return
 
 	if(!options["network"])
-		system.println("Syntax: post --network=\[network ID\] \[message\].<br>Type 'networks' to view networks you may broadcast on.")
+		system.println("Syntax: post --network=\[network ID\] \[message\].\nType 'networks' to view networks you may broadcast on.")
 		return
 
 	var/list/valid_arg_options = list()
@@ -23,7 +23,7 @@
 		valid_arg_options[info.arg_name] = info.pager_class
 
 	if(!(options["network"] in valid_arg_options))
-		system.println("<b>Error:</b> Invalid network ID.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Invalid network ID.")
 		return
 
 	var/message = "[stationtime2text("hh:mm")] | [jointext(arguments, " ")]"

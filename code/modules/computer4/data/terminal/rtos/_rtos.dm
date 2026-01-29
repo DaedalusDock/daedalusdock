@@ -118,7 +118,7 @@
  */
 /datum/c4_file/terminal_program/operating_system/rtos/proc/redraw_screen(update_ui)
 	var/obj/machinery/computer4/computer = get_computer()
-	computer?.text_buffer = jointext(print_history,"<br>")
+	computer?.text_buffer = jointext(print_history,"\n")
 	if(update_ui)
 		SStgui.update_uis(computer)
 	return TRUE

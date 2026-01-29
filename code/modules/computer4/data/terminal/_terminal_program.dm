@@ -17,11 +17,11 @@
 		return TRUE
 
 	if(!system.current_user)
-		system.println("<b>Error:</b> Unable to locate credentials.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate credentials.")
 		return FALSE
 
 	if(length(req_access & system.current_user.access) != length(req_access))
-		system.println("<b>Error:</b> User '[html_encode(system.current_user.registered_name)]' does not have the required access credentials.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] User '[html_encode(system.current_user.registered_name)]' does not have the required access credentials.")
 		return FALSE
 
 	return TRUE

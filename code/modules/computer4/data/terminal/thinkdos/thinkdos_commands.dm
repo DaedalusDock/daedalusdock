@@ -50,7 +50,7 @@
 		output.Insert(1, "Use help \[command\] to see specific information about a command.", "List of available commands:")
 
 
-	system.println(jointext(output, "<br>"))
+	system.println(jointext(output, "\n"))
 
 /// Clear the screen
 /datum/shell_command/thinkdos/home
@@ -63,16 +63,16 @@
 /// Print the contents of the current directory.
 /datum/shell_command/thinkdos/dir
 	aliases = list("dir", "catalog", "ls")
-	help_text = "Prints the contents of a directory.<br>Usage: 'dir \[directory?\]'"
+	help_text = "Prints the contents of a directory.\nUsage: 'dir \[directory?\]'"
 
 /datum/shell_command/thinkdos/dir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/inputted_path = jointext(arguments, " ")
 	var/datum/c4_file/folder/targeted_dir = system.parse_directory(inputted_path, system.current_directory)
 	if(!targeted_dir)
-		system.print_error("<b>Error:</b> Invalid directory or path.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Invalid directory or path.")
 		return
 
-	system.println("<b>Contents of [targeted_dir.path_to_string()]:</b>", FALSE)
+	system.println("[ANSI_WRAP_BOLD("Contents of [targeted_dir.path_to_string()]:")]", FALSE)
 
 	var/list/directory_text = list()
 	var/list/cache_spaces = new /list(16)
@@ -95,14 +95,14 @@
 		var/name_length = length(file.name)
 		if(name_length < longest_name_length)
 			if(isnull(cache_spaces[name_length]))
-				cache_spaces[name_length] = jointext(new /list(longest_name_length - name_length + 1), "&nbsp")
+				cache_spaces[name_length] = jointext(new /list(longest_name_length - name_length + 1), " ")
 
 			str = "[cache_spaces[name_length]][str]"
 
 		directory_text += str
 
 	if(length(directory_text))
-		system.println(jointext(directory_text, "<br>"))
+		system.println(jointext(directory_text, "\n"))
 
 /// Change the current directory to the root of the current folder.
 /datum/shell_command/thinkdos/root
@@ -111,48 +111,48 @@
 
 /datum/shell_command/thinkdos/root/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.change_dir(system.current_directory.drive.root)
-	system.println("<b>Current Directory is now [system.current_directory.path_to_string()]</b>")
+	system.println("[ANSI_WRAP_BOLD("Current Directory is now [system.current_directory.path_to_string()]")]")
 	return
 
 /// Change directory.
 /datum/shell_command/thinkdos/cd
 	aliases = list("cd", "chdir")
-	help_text = "Changes the current directory.<br>Usage: 'cd \[directory\]'<br><br>'.' refers to the current directory.<br>'../' refers to the parent directory."
+	help_text = "Changes the current directory.\nUsage: 'cd \[directory\]'\n\n'.' refers to the current directory.\n'../' refers to the parent directory."
 
 /datum/shell_command/thinkdos/cd/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"cd \[directory string\]\".")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"cd \[directory string\]\".")
 		return
 
 	var/target_dir = jointext(arguments, " ")
 
 	var/datum/c4_file/folder/new_dir = system.parse_directory(target_dir, system.current_directory)
 	if(!new_dir)
-		system.print_error("<b>Error:</b> Invalid directory or path.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Invalid directory or path.")
 		return
 
 	system.change_dir(new_dir)
-	system.println("<b>Current Directory is now [system.current_directory.path_to_string()]</b>")
+	system.println("[ANSI_WRAP_BOLD("Current Directory is now [system.current_directory.path_to_string()]")]")
 
 
 /// Create a folder.
 /datum/shell_command/thinkdos/makedir
 	aliases = list("makedir", "mkdir")
-	help_text = "Creates a new folder.<br>Usage: 'makedir \[directory\]'<br><br>See 'cd' for more information."
+	help_text = "Creates a new folder.\nUsage: 'makedir \[directory\]'\n\nSee 'cd' for more information."
 
 /datum/shell_command/thinkdos/makedir/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"makedir \[new directory name\]\"")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"makedir \[new directory name\]\"")
 		return
 
 	var/folder_name = trim(jointext(arguments, ""), 16)
 
 	if(system.resolve_filepath(folder_name))
-		system.print_error("<b>Error:</b> File name in use.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] File name in use.")
 		return
 
 	if(!system.validate_file_name(folder_name))
-		system.print_error("<b>Error:</b> Invalid character(s).")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Invalid character(s).")
 		return
 
 	var/datum/c4_file/folder/new_folder = new
@@ -160,7 +160,7 @@
 
 	if(!system.current_directory.try_add_file(new_folder))
 		qdel(new_folder)
-		system.print_error("<b>Error:</b> Unable to create new directory.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Unable to create new directory.")
 		return
 
 	system.println("New directory created.")
@@ -168,11 +168,11 @@
 /// Rename a file
 /datum/shell_command/thinkdos/rename
 	aliases = list("move","mv", "rename", "ren")
-	help_text = "Moves or renames a file or folder.<br>Usage: 'move \[options?\] \[path\] \[destination path\]'<br><br>See 'cd' for more information.<br>-f, --force &nbsp&nbsp&nbsp&nbsp&nbsp&nbspOverwrite any existing files in the destination location."
+	help_text = "Moves or renames a file or folder.\nUsage: 'move \[options?\] \[path\] \[destination path\]'\n\nSee 'cd' for more information.\n-f, --force       Overwrite any existing files in the destination location."
 
 /datum/shell_command/thinkdos/rename/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(length(arguments) != 2)
-		system.println("<b>Syntax:</b> \"rename \[name of target] \[new name]\"")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"rename \[name of target] \[new name]\"")
 		return
 
 	var/old_path = arguments[1]
@@ -182,7 +182,7 @@
 
 	var/datum/c4_file/file = system.resolve_filepath(old_path)
 	if(!file)
-		system.print_error("<b>Error:</b> Source file not found.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Source file not found.")
 		return
 
 	var/datum/file_path/destination_info = system.text_to_filepath(new_path)
@@ -190,11 +190,11 @@
 
 	var/datum/c4_file/folder/destination_folder = system.parse_directory(destination_info.directory, system.current_directory)
 	if(!destination_folder)
-		system.print_error("<b>Error:</b> Target directory not found.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Target directory not found.")
 		return
 
 	if(desired_name && !system.validate_file_name(desired_name))
-		system.print_error("<b>Error:</b> Invalid character in name.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Invalid character in name.")
 		return
 
 	var/old_name = file.name
@@ -211,17 +211,17 @@
 		if(err == "Target in use.")
 			err += " Use -f to overwrite."
 
-		system.print_error("<b>Error:</b> [err]")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] [err]")
 		return
 
 	var/datum/c4_file/shares_name = destination_folder.get_file(desired_name)
 	if(shares_name)
 		if(!overwrite)
-			system.print_error("<b>Error:</b> Target in use. Use -f to overwrite.")
+			system.print_error("[ANSI_WRAP_BOLD("Error:")] Target in use. Use -f to overwrite.")
 			return
 
 		if(!destination_folder.try_delete_file(shares_name))
-			system.print_error("<b>Error:</b> Unable to delete target.")
+			system.print_error("[ANSI_WRAP_BOLD("Error:")] Unable to delete target.")
 			return
 
 	file.set_name(desired_name)
@@ -230,11 +230,11 @@
 /// Copy a file (opens can of worms and begins eating them).
 /datum/shell_command/thinkdos/copy
 	aliases = list("copy","cp")
-	help_text = "Copies a file to another location.<br>Usage: 'move \[options?\] \[path\] \[destination path\]'<br><br>See 'cd' for more information.<br>-f, --force &nbsp&nbsp&nbsp&nbsp&nbsp&nbspOverwrite any existing files in the destination location."
+	help_text = "Copies a file to another location.\nUsage: 'move \[options?\] \[path\] \[destination path\]'\n\nSee 'cd' for more information.\n-f, --force       Overwrite any existing files in the destination location."
 
 /datum/shell_command/thinkdos/copy/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(length(arguments) != 2)
-		system.println("<b>Syntax:</b> \"copy \[name of target] \[new location]\"")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"copy \[name of target] \[new location]\"")
 		return
 
 	var/old_path = arguments[1]
@@ -244,11 +244,11 @@
 
 	var/datum/c4_file/to_copy = system.resolve_filepath(old_path)
 	if(!to_copy)
-		system.print_error("<b>Error:</b> Source file not found.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Source file not found.")
 		return
 
 	if(to_copy.size + system.drive.root.size > system.drive.disk_capacity)
-		system.print_error("<b>Error:</b> Copy operation would exceed disk storage.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Copy operation would exceed disk storage.")
 		return
 
 	var/datum/file_path/destination_info = system.text_to_filepath(new_path)
@@ -256,11 +256,11 @@
 
 	var/datum/c4_file/folder/destination_folder = system.parse_directory(destination_info.directory, system.current_directory)
 	if(!destination_folder)
-		system.print_error("<b>Error:</b> Target directory not found.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Target directory not found.")
 		return
 
 	if(desired_name && !system.validate_file_name(desired_name))
-		system.print_error("<b>Error:</b> Invalid character in name.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Invalid character in name.")
 		return
 
 	// Preserve the existing file name if we didn't specify a new name.
@@ -269,27 +269,27 @@
 	var/datum/c4_file/shares_name = destination_folder.get_file(desired_name)
 	if(shares_name)
 		if(shares_name == to_copy)
-			system.print_error("<b>Error:</b> Cannot copy in-place.")
+			system.print_error("[ANSI_WRAP_BOLD("Error:")] Cannot copy in-place.")
 			return
 
 		if(!overwrite)
-			system.print_error("<b>Error:</b> Target in use. Use -f to overwrite.")
+			system.print_error("[ANSI_WRAP_BOLD("Error:")] Target in use. Use -f to overwrite.")
 			return
 
 		if(!destination_folder.try_delete_file(shares_name))
-			system.print_error("<b>Error:</b> Unable to delete target.")
+			system.print_error("[ANSI_WRAP_BOLD("Error:")] Unable to delete target.")
 			return
 
 	var/datum/c4_file/copy = to_copy.copy()
 	copy?.set_name(desired_name)
 
 	if(isnull(copy))
-		system.print_error("<b>Error:</b> Unable to copy file.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Unable to copy file.")
 		return
 
 	if(!destination_folder.try_add_file(copy))
 		qdel(copy)
-		system.print_error("<b>Error:</b> Unable to copy file.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Unable to copy file.")
 		return
 
 	system.println("Copied [to_copy.name] to [copy.path_to_string()].")
@@ -303,15 +303,15 @@
 	var/list/help_list = list(
 		"Deletes the specified file from the drive.",
 		"Usage: 'delete \[options?\] \[path\]'",
-		"<br>See 'cd' for more information.",
+		"\nSee 'cd' for more information.",
 	)
-	help_list += "[fit_with("-f, --force", 20, "&nbsp", TRUE)]Overwrite any existing files in the destination location."
-	help_list += "[fit_with("-r, -R, --recursive", 20, "&nbsp", TRUE)]Allow deletion of folders."
-	help_text = jointext(help_list, "<br>")
+	help_list += "[fit_with("-f, --force", 20, " ", TRUE)]Overwrite any existing files in the destination location."
+	help_list += "[fit_with("-r, -R, --recursive", 20, " ", TRUE)]Allow deletion of folders."
+	help_text = jointext(help_list, "\n")
 
 /datum/shell_command/thinkdos/delete/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"del \[-f\] \[file name].\"")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"del \[-f\] \[file name].\"")
 		return
 
 	var/force = !!length(options & list("f", "force"))
@@ -320,21 +320,21 @@
 	var/datum/c4_file/file = system.resolve_filepath(jointext(arguments, ""))
 
 	if(!file)
-		system.print_error("<b>Error:</b> File not found.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] File not found.")
 		return
 
 	if(istype(file, /datum/c4_file/folder))
 		if(!recursive)
-			system.print_error("<b>Error: Use -r option to delete folders.")
+			system.print_error("[ANSI_WRAP_BOLD("Error:")] Use -r option to delete folders.")
 			return
 
 		var/datum/c4_file/folder/to_delete = file
 		if(length(to_delete.contents) && !force)
-			system.print_error("<b>Error:</b> Folder is not empty. Use -f to delete anyway.")
+			system.print_error("[ANSI_WRAP_BOLD("Error:")] Folder is not empty. Use -f to delete anyway.")
 			return
 
 	if(file == system && !force)
-		system.print_error("<b>Error:</b> Access denied.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Access denied.")
 		return
 
 	if(!file.containing_folder) // is root
@@ -349,7 +349,7 @@
 	if(file.containing_folder.try_delete_file(file))
 		system.println("File deleted.")
 	else
-		system.print_error("<b>Error:</b> Unable to delete file.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Unable to delete file.")
 
 /datum/shell_command/thinkdos/initlogs
 	aliases = list("initlogs")
@@ -357,11 +357,11 @@
 
 /datum/shell_command/thinkdos/initlogs/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(system.command_log)
-		system.print_error("<b>Error:</b> File already exists.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] File already exists.")
 		return
 
 	if(!system.initialize_logs())
-		system.print_error("<b>Error:</b> File already exists.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] File already exists.")
 		return
 
 	system.println("Logging re-initialized.")
@@ -372,7 +372,7 @@
 
 /datum/shell_command/thinkdos/print/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"print \[text to be printed]\"")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"print \[text to be printed]\"")
 		return
 
 	var/text = html_encode(jointext(arguments, " "))
@@ -380,16 +380,16 @@
 
 /datum/shell_command/thinkdos/read
 	aliases = list("read", "type")
-	help_text = "Displays the contents of a file.<br>Usage: 'read \[directory\]'"
+	help_text = "Displays the contents of a file.\nUsage: 'read \[directory\]'"
 
 /datum/shell_command/thinkdos/read/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"read \[file name].\"")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"read \[file name].\"")
 		return
 
 	var/datum/c4_file/file = system.resolve_filepath(jointext(arguments, ""))
 	if(!file)
-		system.println("<b>Error</b>: No file found.")
+		system.println("[ANSI_WRAP_BOLD("Error")]: No file found.")
 		return
 
 	system.println(html_encode(file.to_string()))
@@ -399,7 +399,7 @@
 	help_text = "Displays the version of the operating system."
 
 /datum/shell_command/thinkdos/version/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	system.println("[system.system_version]<br>Copyright Thinktronic Systems, LTD.")
+	system.println("[system.system_version]\nCopyright Thinktronic Systems, LTD.")
 
 /datum/shell_command/thinkdos/time
 	aliases = list("time")
@@ -410,16 +410,16 @@
 
 /datum/shell_command/thinkdos/sizeof
 	aliases = list("sizeof", "du")
-	help_text = "Displays the size of a file on disk.<br>Usage: 'sizeof \[directory\]'"
+	help_text = "Displays the size of a file on disk.\nUsage: 'sizeof \[directory\]'"
 
 /datum/shell_command/thinkdos/sizeof/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"sizeof \[file path].\"")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"sizeof \[file path].\"")
 		return
 
 	var/datum/c4_file/file = system.resolve_filepath(jointext(arguments, ""))
 	if(!file)
-		system.print_error("<b>Error:</b> File does not exist.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] File does not exist.")
 		return
 
 	system.println(file.size)
@@ -427,47 +427,47 @@
 /// Renames the drive title
 /datum/shell_command/thinkdos/title
 	aliases = list("title")
-	help_text = "Changes the name of the current .<br>Usage: 'title \[new name\]'"
+	help_text = "Changes the name of the current .\nUsage: 'title \[new name\]'"
 
 /datum/shell_command/thinkdos/title/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"title \[title name]\" Set name of active drive to given title.")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"title \[title name]\" Set name of active drive to given title.")
 		return
 
 	if(system.drive.read_only)
-		system.print_error("<b>Error:</b> Unable to set title string.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Unable to set title string.")
 		return
 
 	var/new_title = sanitize(trim(jointext(arguments, ""), 8))
 	system.drive.title = new_title
-	system.println("Drive title set to <b>[new_title]</b>.")
+	system.println("Drive title set to [ANSI_WRAP_BOLD("[new_title]")].")
 
 /datum/shell_command/thinkdos/run_prog
 	aliases = list("run")
-	help_text = "Runs an executable file.<br>Usage: 'run \[file\]'"
+	help_text = "Runs an executable file.\nUsage: 'run \[file\]'"
 
 /datum/shell_command/thinkdos/run_prog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> \"run \[program filepath].\"")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] \"run \[program filepath].\"")
 		return
 
 	var/file_path = jointext(arguments, "")
 
 	var/datum/c4_file/terminal_program/program_to_run = system.resolve_filepath(file_path, system.current_directory)
 	if(!istype(program_to_run) || istype(program_to_run, /datum/c4_file/terminal_program/operating_system))
-		system.print_error("<b>Error: Cannot find executable.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Cannot find executable.")
 		return
 
 	system.execute_program(program_to_run)
 
 /datum/shell_command/thinkdos/tree
 	aliases = list("tree")
-	help_text = "Displays the file system structure relative to a directory.<br>Usage: 'tree \[options?\] \[directory?\]'<br><br>-f, --file &nbsp&nbsp&nbsp&nbsp&nbsp&nbspDisplay files."
+	help_text = "Displays the file system structure relative to a directory.\nUsage: 'tree \[options?\] \[directory?\]'\n\n-f, --file       Display files."
 
 /datum/shell_command/thinkdos/tree/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/datum/c4_file/folder/targeted_dir = system.parse_directory(jointext(arguments, " "), system.current_directory)
 	if(!targeted_dir)
-		system.print_error("<b>Error:</b> Invalid directory or path.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Invalid directory or path.")
 		return
 
 	var/show_files = !!length(options & list("f", "files"))
@@ -476,10 +476,10 @@
 
 	search_dir(targeted_dir, output, show_files, 1)
 
-	system.println(jointext(output, "<br>"))
+	system.println(jointext(output, "\n"))
 
 /datum/shell_command/thinkdos/tree/proc/search_dir(datum/c4_file/folder/folder, list/output, show_files, depth)
-	var/spaces = jointext(new /list((depth * 2) + 1), "&nbsp")
+	var/spaces = jointext(new /list((depth * 2) + 1), " ")
 
 	for(var/datum/c4_file/file as anything in folder.contents)
 		var/is_folder = istype(file, /datum/c4_file/folder)
@@ -504,14 +504,14 @@
 		"Manage background processes.",
 		"Usage: 'backprog \[argument 1\] \[argument 2?\]'",
 	)
-	help_list += "[fit_with("k, kill", 20, "&nbsp", TRUE)]Terminate a background process."
-	help_list += "[fit_with("s, switch", 20, "&nbsp", TRUE)]Focus a background process."
-	help_list += "[fit_with("v, view", 20, "&nbsp", TRUE)]Display background processes."
-	help_text = jointext(help_list, "<br>")
+	help_list += "[fit_with("k, kill", 20, " ", TRUE)]Terminate a background process."
+	help_list += "[fit_with("s, switch", 20, " ", TRUE)]Focus a background process."
+	help_list += "[fit_with("v, view", 20, " ", TRUE)]Display background processes."
+	help_text = jointext(help_list, "\n")
 
 /datum/shell_command/thinkdos/backprog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(!length(arguments))
-		system.println("<b>Syntax:</b> backprog \[argument\]<br><b>Valid arguments:</b> view, kill, switch")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] backprog \[argument\]\n[ANSI_WRAP_BOLD("Valid arguments:")] view, kill, switch")
 		return
 
 	var/sub_name = arguments[1]
@@ -522,20 +522,20 @@
 		if(sub_command.try_exec(sub_name, system, program, inner_arguments, null))
 			return
 
-	system.println("<b>Syntax:</b> backprog \[argument\]<br><b>Valid arguments:</b> view, kill, switch")
+	system.println("[ANSI_WRAP_BOLD("Syntax:")] backprog \[argument\]\n[ANSI_WRAP_BOLD("Valid arguments:")] view, kill, switch")
 
 /datum/shell_command/thinkdos_backprog/view
 	aliases = list("view", "v")
 
 /datum/shell_command/thinkdos_backprog/view/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
-	var/list/out = list("<b>Current programs in memory:</b>")
+	var/list/out = list("[ANSI_WRAP_BOLD("Current programs in memory:")]")
 
 	var/count = 0
 	for(var/datum/c4_file/terminal_program/running_program as anything in system.processing_programs)
 		count++
-		out += "<b>ID: [count]</b> [running_program == system ? "SYSTEM" : running_program.name]"
+		out += "[ANSI_WRAP_BOLD("ID: [count]")] [running_program == system ? "SYSTEM" : running_program.name]"
 
-	system.println(jointext(out, "<br>"))
+	system.println(jointext(out, "\n"))
 
 /datum/shell_command/thinkdos_backprog/kill
 	aliases = list("kill", "k")
@@ -543,16 +543,16 @@
 /datum/shell_command/thinkdos_backprog/kill/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/id = text2num(jointext(arguments, ""))
 	if(isnull(id))
-		system.println("<b>Syntax:</b> backprog kill \[program id\]")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] backprog kill \[program id\]")
 		return
 
 	if(!(id in 1 to length(system.processing_programs)))
-		system.print_error("<b>Error:</b> Array index out of bounds.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Array index out of bounds.")
 		return
 
 	var/datum/c4_file/terminal_program/to_kill = system.processing_programs[id]
 	if(to_kill == system)
-		system.print_error("<b>Error:</b> Unable to terminate process.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Unable to terminate process.")
 		return
 
 	system.unload_program(to_kill)
@@ -564,16 +564,16 @@
 /datum/shell_command/thinkdos_backprog/switch_prog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/id = text2num(jointext(arguments, ""))
 	if(isnull(id))
-		system.println("<b>Syntax:</b> backprog switch \[program id\]")
+		system.println("[ANSI_WRAP_BOLD("Syntax:")] backprog switch \[program id\]")
 		return
 
 	if(!(id in 1 to length(system.processing_programs)))
-		system.print_error("<b>Error:</b> Array index out of bounds.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Array index out of bounds.")
 		return
 
 	var/datum/c4_file/terminal_program/to_run = system.processing_programs[id]
 	if(to_run == system)
-		system.print_error("<b>Error:</b> Process already focused.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Process already focused.")
 		return
 
 	system.execute_program(to_run)
@@ -588,7 +588,7 @@
 
 	var/obj/item/peripheral/card_reader/reader = system.get_computer().get_peripheral(PERIPHERAL_TYPE_CARD_READER)
 	if(!reader)
-		system.println("<b>Error:</b> No card reader detected.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] No card reader detected.")
 		return
 
 	var/datum/signal/login_packet = reader.scan_card()
@@ -596,11 +596,11 @@
 		system.login(login_packet.data["name"], login_packet.data["job"], login_packet.data["access"])
 
 	else if(login_packet == "nocard")
-		system.print_error("<b>Error:</b> No ID card inserted.")
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] No ID card inserted.")
 
 /datum/shell_command/thinkdos/logout
 	aliases = list("logout", "logoff")
 
 /datum/shell_command/thinkdos/logout/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.logout()
-	system.println("Logout complete. Have a secure day.<br><br>Authentication required.<br>Please insert card and 'login'.")
+	system.println("Logout complete. Have a secure day.\n\nAuthentication required.\nPlease insert card and 'login'.")

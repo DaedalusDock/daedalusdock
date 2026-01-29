@@ -3034,6 +3034,7 @@
 #include "code\modules\computer4\data\terminal\rtos\pincode_door.dm"
 #include "code\modules\computer4\data\terminal\rtos\simple_door_control.dm"
 #include "code\modules\computer4\data\terminal\rtos\slave.dm"
+#include "code\modules\computer4\data\terminal\test_progs\dbg_ansi.dm"
 #include "code\modules\computer4\data\terminal\test_progs\flagtest.dm"
 #include "code\modules\computer4\data\terminal\thinkdos\thinkdos.dm"
 #include "code\modules\computer4\data\terminal\thinkdos\thinkdos_commands.dm"

@@ -29,7 +29,7 @@
 	system.clear_screen(TRUE)
 	if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
 		directman.view_home()
-		system.println("<b>Error:</b> Unable to locate wireless adapter.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate wireless adapter.")
 		return
 
 	directman.view_current()
@@ -42,7 +42,7 @@
 	system.clear_screen(TRUE)
 	if(!system.get_computer().get_peripheral(PERIPHERAL_TYPE_WIRELESS_CARD))
 		directman.view_home()
-		system.println("<b>Error:</b> Unable to locate wireless adapter.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate wireless adapter.")
 		return
 
 	directman.view_new()

@@ -98,9 +98,9 @@
 
 	if(!(choice in 1 to length(options)))
 		await_input(
-			{"Edit Physical Status<br>
-			\[1\] [PHYSHEALTH_OK]<br>
-			\[2\] [PHYSHEALTH_CARE]<br>
+			{"Edit Physical Status\n
+			\[1\] [PHYSHEALTH_OK]\n
+			\[2\] [PHYSHEALTH_CARE]\n
 			\[3\] [PHYSHEALTH_DECEASED]
 			"},
 			CALLBACK(src, PROC_REF(edit_physical_health))
@@ -121,10 +121,10 @@
 
 	if(!(choice in 1 to length(options)))
 		await_input(
-			{"Edit Mental Status<br>
-			\[1\] [MENHEALTH_OK]<br>
-			\[2\] [MENHEALTH_WATCH]<br>
-			\[3\] [MENHEALTH_UNSTABLE]<br>
+			{"Edit Mental Status\n
+			\[1\] [MENHEALTH_OK]\n
+			\[2\] [MENHEALTH_WATCH]\n
+			\[3\] [MENHEALTH_UNSTABLE]\n
 			\[4\] [MENHEALTH_INSANE]
 			"},
 			CALLBACK(src, PROC_REF(edit_mental_health))

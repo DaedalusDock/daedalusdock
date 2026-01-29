@@ -40,13 +40,13 @@
 		sortTim(output, GLOBAL_PROC_REF(cmp_text_asc))
 		output.Insert(1,
 			"Typing text without a '!' prefix will write to the current line.",
-			"You can change lines by typing '!\[number\]'. Zero will change to highest line number.<br>",
+			"You can change lines by typing '!\[number\]'. Zero will change to highest line number.\n",
 			"Use help \[command\] to see specific information about a command.",
 			"List of available commands:"
 		)
 
 
-	system.println(jointext(output, "<br>"))
+	system.println(jointext(output, "\n"))
 
 /datum/shell_command/notepad/edit_cmd/quit
 	aliases = list("quit", "q", "exit")
@@ -75,7 +75,7 @@
 /datum/shell_command/notepad/edit_cmd/delete/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/datum/c4_file/terminal_program/notepad/notepad = program
 	if(!length(notepad.note_list))
-		system.println("<b>Error:</b> Nothing to delete.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Nothing to delete.")
 		return
 
 	if(notepad.working_line == 0)
@@ -102,7 +102,7 @@
 		print += "\[[fit_with_zeros("[i]", 3)]\] [note] [assoc_note ? "=[assoc_note]" : ""]"
 
 	system.clear_screen(TRUE)
-	system.println(jointext(print, "<br>"))
+	system.println(jointext(print, "\n"))
 
 /datum/shell_command/notepad/edit_cmd/load_note
 	aliases = list("load", "l")
@@ -123,7 +123,7 @@
 
 	else if(istype(found_file, /datum/c4_file/text))
 		var/datum/c4_file/text/text = found_file
-		notepad.note_list = splittext(text.data, "<br>")
+		notepad.note_list = splittext(text.data, "\n")
 	else
 		system.println("Error: File not found.")
 		return
@@ -145,12 +145,12 @@
 
 	var/datum/c4_file/record/existing_file = system.resolve_filepath(path_info.raw)
 	if(existing_file && !istype(existing_file, /datum/c4_file/record))
-		system.println("<b>Error:</b> Name in use.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Name in use.")
 		return
 
 	if(existing_file)
 		if(existing_file.drive.read_only)
-			system.println("<b>Error</b>: Cannot open file for write.")
+			system.println("[ANSI_WRAP_BOLD("Error")]: Cannot open file for write.")
 			return
 
 		existing_file.stored_record.fields = notepad.note_list.Copy()
@@ -159,7 +159,7 @@
 
 	var/datum/c4_file/folder/dest_folder = system.parse_directory(path_info.directory, system.current_directory)
 	if(!dest_folder || dest_folder.drive.read_only)
-		system.println("<b>Error</b>: Cannot open directory for write.")
+		system.println("[ANSI_WRAP_BOLD("Error")]: Cannot open directory for write.")
 		return
 
 	existing_file = new
@@ -169,7 +169,7 @@
 		system.println("File saved to [existing_file.path_to_string()].")
 	else
 		qdel(existing_file)
-		system.println("<b>Error</b>: Unable to save to directory.")
+		system.println("[ANSI_WRAP_BOLD("Error")]: Unable to save to directory.")
 
 /datum/shell_command/notepad/edit_cmd/print
 	aliases = list("print", "p")
@@ -179,12 +179,12 @@
 	var/datum/c4_file/terminal_program/notepad/notepad = program
 	var/obj/item/peripheral/printer/printer = system.get_computer().get_peripheral(PERIPHERAL_TYPE_PRINTER)
 	if(!printer)
-		system.println("<b>Error:</b> Unable to locate printer.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate printer.")
 		return
 
 	if(printer.busy)
-		system.println("<b>Error:</b> Printer is busy.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Printer is busy.")
 		return
 
-	printer.print(jointext(notepad.note_list, "<br>"), html_encode(trim(jointext(arguments, ""))) || "printout")
+	printer.print(jointext(notepad.note_list, "\n"), html_encode(trim(jointext(arguments, ""))) || "printout")
 	system.println("Printing...")

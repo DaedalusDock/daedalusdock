@@ -371,10 +371,10 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 /obj/machinery/computer4/proc/post_system()
 	text_buffer = ""
 
-	text_buffer += "Initializing system...<br>"
+	text_buffer += "Initializing system...\n"
 
 	if(!internal_disk)
-		text_buffer = "<font color=red>1701 - NO FIXED DISK</font><br>"
+		text_buffer = "1701 - NO FIXED DISK\n"
 
 	// Os already known.
 	if(operating_system)
@@ -387,25 +387,25 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 		var/datum/c4_file/terminal_program/operating_system/new_os = locate() in inserted_disk?.root.contents
 
 		if(new_os)
-			text_buffer += "Booting from inserted drive...<br>"
+			text_buffer += "Booting from inserted drive...\n"
 			set_operating_system(new_os)
 		else
-			text_buffer += "<font color=red>Non-system disk or disk error.</font><br>"
+			text_buffer += "Non-system disk or disk error.\n"
 
 	// Okay how about the internal drive?
 	if(!operating_system && internal_disk)
 		var/datum/c4_file/terminal_program/operating_system/new_os = locate() in internal_disk?.root.contents
 
 		if(new_os)
-			text_buffer += "Booting from fixed drive...<br>"
+			text_buffer += "Booting from fixed drive...\n"
 			set_operating_system(new_os)
 		else
-			text_buffer += "<font color=red>Unable to boot from fixed drive.</font><br>"
+			text_buffer += "Unable to boot from fixed drive.\n"
 
 
 	// Fuck.
 	if(!operating_system)
-		text_buffer += "<font color=red>ERR - BOOT FAILURE</font><br>"
+		text_buffer += "ERR - BOOT FAILURE\n"
 
 	SStgui.update_uis(src)
 
@@ -416,7 +416,7 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	if(operating_system)
 		set_operating_system(null)
 
-	text_buffer = "Rebooting system...<br>"
+	text_buffer = "Rebooting system...\n"
 
 	tgui_input_history = list()
 	tgui_input_index = list()

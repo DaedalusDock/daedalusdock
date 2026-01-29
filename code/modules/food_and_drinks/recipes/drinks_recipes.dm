@@ -4,7 +4,7 @@
 	optimal_temp = 250
 	temp_exponent_factor = 1
 	thermic_constant = 0
-	rate_up_lim = 60
+	base_reaction_rate = 60
 
 ////////////////////////////////////////// COCKTAILS //////////////////////////////////////
 

@@ -28,7 +28,7 @@
 #define WHISPER_MODE "the type of whisper"
 #define MODE_WHISPER "whisper"
 
-#define MODE_DEPARTMENT "department"
+#define MODE_DEPARTMENT "workplace"
 #define MODE_KEY_DEPARTMENT "h"
 #define MODE_TOKEN_DEPARTMENT ":h"
 

@@ -857,9 +857,8 @@
 		if(AI.radio.syndie)
 			radio.make_syndie()
 		radio.subspace_transmission = TRUE
-		radio.channels = AI.radio.channels
-		for(var/chan in radio.channels)
-			radio.secure_radio_connections[chan] = add_radio(radio, GLOB.radiochannels[chan])
+		radio.keyslot.channels = AI.radio.channels
+		radio.recalculate_channels()
 
 	diag_hud_set_aishell()
 	undeployment_action.Grant(src)
@@ -889,7 +888,7 @@
 	mainframe.deployed_shell = null
 	undeployment_action.Remove(src)
 	if(radio) //Return radio to normal
-		radio.recalculateChannels()
+		radio.recalculate_channels()
 	if(!QDELETED(builtInCamera))
 		builtInCamera.c_tag = real_name //update the camera name too
 	diag_hud_set_aishell()

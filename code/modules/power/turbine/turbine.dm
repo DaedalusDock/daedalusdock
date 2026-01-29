@@ -301,7 +301,7 @@
 	radio = new(src)
 	radio.keyslot = new radio_key
 	radio.set_listening(FALSE, TRUE)
-	radio.recalculateChannels()
+	radio.recalculate_channels()
 
 	new /obj/item/paper/guides/jobs/atmos/turbine(loc)
 

@@ -246,26 +246,32 @@ SUBSYSTEM_DEF(packets)
 		start_point = get_turf(source)
 		if(!start_point)
 			return
+
 		//Spatial Grids don't like being asked for negative ranges. -1 is valid and doesn't care about range anyways.
 		if(packet.frequency == FREQ_ATMOS_CONTROL && packet.range > 0)
 			_irps_spatialgrid_atmos(packet,source,start_point) //heehoo big list.
 			return
+
 	var/datum/radio_frequency/freq = packet.frequency_datum
 	//Send the data
 	for(var/current_filter in packet.filter_list)
 		if(isnull(freq.devices[current_filter]))
 			continue //Filter lists are lazy and may not exist.
+
 		for(var/datum/weakref/device_ref as anything in freq.devices[current_filter] - packet.author)
 			var/obj/device = device_ref.resolve()
 			if(isnull(device))
 				freq.devices[current_filter] -= device_ref
 				continue
+
 			if(packet.range)
 				var/turf/end_point = get_turf(device)
 				if(!end_point)
 					continue
+
 				if(start_point.z != end_point.z || (packet.range > 0 && get_dist(start_point, end_point) > packet.range))
 					continue
+
 			device.receive_signal(packet)
 
 /// Do Spatial Grid handling for IRPS, Atmos Radio group.
@@ -340,28 +346,28 @@ SUBSYSTEM_DEF(packets)
 	switch (packet.transmission_method)
 		if (TRANSMISSION_SUBSPACE)
 			// Reaches any radios on the levels
-			var/list/all_radios_of_our_frequency = GLOB.all_radios["[frequency]"]
-			radios = all_radios_of_our_frequency.Copy()
+			var/list/radios_by_frequency_of_our_frequency = GLOB.radios_by_frequency["[frequency]"]
+			radios = radios_by_frequency_of_our_frequency.Copy()
 
 			for(var/obj/item/radio/subspace_radio in radios)
 				if(!subspace_radio.can_receive(frequency, signal_reaches_every_z_level))
 					radios -= subspace_radio
 
 			// Syndicate radios can hear all well-known radio channels
-			if (num2text(frequency) in GLOB.reverseradiochannels)
-				for(var/obj/item/radio/syndicate_radios in GLOB.all_radios["[FREQ_SYNDICATE]"])
+			if (num2text(frequency) in GLOB.radio_frequency_to_channel)
+				for(var/obj/item/radio/syndicate_radios in GLOB.radios_by_frequency["[FREQ_SYNDICATE]"])
 					if(syndicate_radios.can_receive(FREQ_SYNDICATE, RADIO_NO_Z_LEVEL_RESTRICTION))
 						radios |= syndicate_radios
 
 		if (TRANSMISSION_RADIO)
 			// Only radios not currently in subspace mode
-			for(var/obj/item/radio/non_subspace_radio in GLOB.all_radios["[frequency]"])
+			for(var/obj/item/radio/non_subspace_radio in GLOB.radios_by_frequency["[frequency]"])
 				if(!non_subspace_radio.subspace_transmission && non_subspace_radio.can_receive(frequency, signal_reaches_every_z_level))
 					radios += non_subspace_radio
 
 		if (TRANSMISSION_SUPERSPACE)
 			// Only radios which are independent
-			for(var/obj/item/radio/independent_radio in GLOB.all_radios["[frequency]"])
+			for(var/obj/item/radio/independent_radio in GLOB.radios_by_frequency["[frequency]"])
 				if(independent_radio.independent && independent_radio.can_receive(frequency, signal_reaches_every_z_level))
 					radios += independent_radio
 

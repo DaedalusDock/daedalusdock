@@ -92,8 +92,7 @@
 			return FALSE
 
 	if(freq == FREQ_SYNDICATE)
-		if(!(syndie))
-			return FALSE//Prevents broadcast of messages over devices lacking the encryption
+		return !!syndie //Prevents broadcast of messages over devices lacking the encryption
 
 	return TRUE
 

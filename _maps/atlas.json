@@ -12,5 +12,6 @@
 	],
 	"shuttles": {
 		"emergency": "emergency_goon"
-	}
+	},
+	"disable_headset_common": true
 }

@@ -113,6 +113,8 @@
 
 	init_special_attacks()
 
+	init_radio_channels()
+
 /// Inits the crafting recipe list, sorting crafting recipe requirements in the process.
 /proc/init_crafting_recipes(list/crafting_recipes)
 	for(var/path in subtypesof(/datum/crafting_recipe))
@@ -277,3 +279,9 @@ GLOBAL_LIST_EMPTY(special_attacks)
 /proc/init_special_attacks()
 	for(var/datum/special_attack/path as anything in subtypesof(/datum/special_attack))
 		GLOB.special_attacks[path] = new path
+
+/proc/init_radio_channels()
+	for(var/datum/radio_channel/channel_template as anything in subtypesof(/datum/radio_channel))
+		GLOB.radio_frequency_to_channel["[channel_template.frequency]"] = channel_template.key
+		GLOB.radio_channel_to_frequency[channel_template.key] = channel_template.frequency
+		GLOB.freq2icon["[channel_template.frequency]"] = channel_template.icon

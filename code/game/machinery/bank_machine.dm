@@ -16,7 +16,7 @@
 	radio.subspace_transmission = TRUE
 	radio.canhear_range = -1
 	radio.set_listening(FALSE, TRUE)
-	radio.recalculateChannels()
+	radio.recalculate_channels()
 
 /obj/machinery/computer/bank_machine/Destroy()
 	QDEL_NULL(radio)

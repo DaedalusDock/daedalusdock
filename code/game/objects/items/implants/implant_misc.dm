@@ -58,7 +58,7 @@
 	radio.canhear_range = 0
 	if(radio_key)
 		radio.keyslot = new radio_key
-	radio.recalculateChannels()
+	radio.recalculate_channels()
 
 /obj/item/implant/radio/Destroy()
 	QDEL_NULL(radio)

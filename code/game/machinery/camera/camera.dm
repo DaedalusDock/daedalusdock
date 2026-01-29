@@ -528,7 +528,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 			return
 
 	set_light(l_on = !!on)
-	visible_message(span_subtle("[src]'s light flicks [on ? "on" : "off"]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 /obj/machinery/camera/get_remote_view_fullscreens(mob/user)
 	if(view_range == short_range) //unfocused

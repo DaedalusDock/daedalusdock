@@ -38,7 +38,7 @@
 /obj/structure/frame/computer/update_icon_state()
 	. = ..()
 	if(!circuit)
-		icon_state = 0
+		icon_state = "0"
 		return
 
 	if(state == STATE_COMPONENT_MANIPULATION)
@@ -132,6 +132,7 @@
 			circuit = null
 		else
 			hard_drive = null
+		update_appearance()
 		return TRUE
 
 /obj/structure/frame/computer/wirecutter_act(mob/living/user, obj/item/tool)
@@ -174,10 +175,6 @@
 	to_chat(user, span_notice("You start deconstructing the frame..."))
 	if(tool.use_tool(src, user, 2 SECONDS, volume=50))
 		to_chat(user, span_notice("You deconstruct the frame."))
-		var/obj/item/stack/sheet/iron/M = new (drop_location(), 5)
-		if (!QDELETED(M))
-			M.add_fingerprint(user)
-
 		deconstruct(TRUE)
 	return TRUE
 
@@ -283,6 +280,7 @@
 	if(state >= STATE_WIRED)
 		new /obj/item/stack/cable_coil(drop_location(), 5)
 
+	return ..()
 
 /// Screwing in the glass panel
 /obj/structure/frame/computer/proc/finish_construction(mob/living/user, obj/item/I, params)

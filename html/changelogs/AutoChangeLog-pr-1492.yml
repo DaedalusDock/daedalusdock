@@ -1,0 +1,4 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - rscadd: On Atlas, headsets cannot broadcast to the Local channel.

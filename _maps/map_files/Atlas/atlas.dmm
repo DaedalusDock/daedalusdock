@@ -4247,8 +4247,8 @@
 /obj/effect/turf_decal/delivery,
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock{
-	id = "cell1";
-	name = "Cell 1"
+	name = "Cell 1";
+	id_tag = "cell1"
 	},
 /obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/iron/iron_large,
@@ -13928,6 +13928,7 @@
 	icon_state = "3"
 	},
 /obj/machinery/door/firedoor,
+/obj/effect/mapping_helpers/access/all/engineering/maintenance/airlock,
 /turf/open/floor/plating,
 /area/station/service/chapel)
 "nXp" = (
@@ -19247,6 +19248,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/firedoor,
+/obj/effect/mapping_helpers/access/all/engineering/maintenance/airlock,
 /turf/open/floor/plating,
 /area/station/maintenance/fore)
 "toh" = (
@@ -21194,7 +21196,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/effect/mapping_helpers/access/any/engineering/secure/windoor,
 /turf/open/floor/iron/iron_large,
 /area/station/tcommsat/server)
 "vnj" = (
@@ -22668,8 +22669,8 @@
 	},
 /obj/machinery/door/firedoor,
 /obj/machinery/door/airlock{
-	id = "cell2";
-	name = "Cell 2"
+	name = "Cell 2";
+	id_tag = "cell2"
 	},
 /obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/iron/iron_large,

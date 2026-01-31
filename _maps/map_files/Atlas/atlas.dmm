@@ -9047,6 +9047,9 @@
 /obj/effect/turf_decal/ported/techfloor/corners{
 	dir = 4
 	},
+/obj/structure/railing/corner{
+	dir = 4
+	},
 /turf/open/floor/iron/iron_large,
 /area/station/tcommsat/server)
 "jeW" = (
@@ -17435,7 +17438,7 @@
 "rwK" = (
 /obj/machinery/telecomms/allinone,
 /obj/effect/turf_decal/delivery,
-/turf/open/floor/engine/telecomms,
+/turf/open/floor/engine,
 /area/station/tcommsat/server)
 "rwQ" = (
 /obj/effect/spawner/structure/window/reinforced/grille,
@@ -21191,7 +21194,6 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/machinery/door/window/brigdoor/left/directional/east,
 /obj/effect/mapping_helpers/access/any/engineering/secure/windoor,
 /turf/open/floor/iron/iron_large,
 /area/station/tcommsat/server)
@@ -22504,7 +22506,9 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 4
 	},
-/obj/structure/window/reinforced/spawner/east,
+/obj/structure/railing{
+	dir = 4
+	},
 /turf/open/floor/iron/iron_large,
 /area/station/tcommsat/server)
 "wDJ" = (

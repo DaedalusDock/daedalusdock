@@ -1,11 +1,11 @@
 /datum/antagonist_selector/traitor
 	restricted_jobs = list(JOB_CYBORG, JOB_AI)
 	protected_jobs = list(
-		JOB_SECURITY_OFFICER,
-		JOB_WARDEN,
+		JOB_POLICE_PATROLMAN,
+		JOB_POLICE_SERGEANT,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_SECURITY_MARSHAL,
-		JOB_CAPTAIN,
+		JOB_POLICE_CHIEF,
+		JOB_MAYOR,
 		JOB_CHIEF_ENGINEER,
 		JOB_AUGUR
 	)

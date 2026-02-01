@@ -152,28 +152,28 @@ INITIALIZE_IMMEDIATE(/obj/effect/landmark)
 	icon_state = JOB_PROSPECTOR
 
 /obj/effect/landmark/start/security_officer
-	name = JOB_SECURITY_OFFICER
-	icon_state = JOB_SECURITY_OFFICER
+	name = JOB_POLICE_PATROLMAN
+	icon_state = JOB_POLICE_PATROLMAN
 
 /obj/effect/landmark/start/botanist
 	name = JOB_BOTANIST
 	icon_state = JOB_BOTANIST
 
 /obj/effect/landmark/start/head_of_security
-	name = JOB_SECURITY_MARSHAL
-	icon_state = JOB_SECURITY_MARSHAL
+	name = JOB_POLICE_CHIEF
+	icon_state = JOB_POLICE_CHIEF
 
 /obj/effect/landmark/start/captain
-	name = JOB_CAPTAIN
-	icon_state = JOB_CAPTAIN
+	name = JOB_MAYOR
+	icon_state = JOB_MAYOR
 
 /obj/effect/landmark/start/detective
 	name = JOB_DETECTIVE
 	icon_state = JOB_DETECTIVE
 
 /obj/effect/landmark/start/warden
-	name = JOB_WARDEN
-	icon_state = JOB_WARDEN
+	name = JOB_POLICE_SERGEANT
+	icon_state = JOB_POLICE_SERGEANT
 
 /obj/effect/landmark/start/chief_engineer
 	name = JOB_CHIEF_ENGINEER

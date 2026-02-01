@@ -21,7 +21,7 @@
 			/mob/living/simple_animal/pet/dog/corgi/ian,
 			/mob/living/simple_animal/pet/dog/corgi/puppy/ian
 		),
-		JOB_CAPTAIN = /mob/living/simple_animal/pet/fox/renault,
+		JOB_MAYOR = /mob/living/simple_animal/pet/fox/renault,
 		JOB_AUGUR = /mob/living/simple_animal/pet/cat/runtime,
 		JOB_CHIEF_ENGINEER = /mob/living/simple_animal/parrot/poly,
 	)
@@ -44,11 +44,11 @@
 
 	limited_to_department_head = FALSE
 	possible_heads = list(
-		JOB_SECURITY_MARSHAL = list(
+		JOB_POLICE_CHIEF = list(
 			/mob/living/simple_animal/hostile/carp/lia,
 			/mob/living/simple_animal/hostile/retaliate/bat/sgt_araneus
 		),
-		JOB_WARDEN = list(
+		JOB_POLICE_SERGEANT = list(
 			/mob/living/simple_animal/pet/dog/pug/mcgriff
 		)
 	)

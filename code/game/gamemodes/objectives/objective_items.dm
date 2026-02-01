@@ -38,7 +38,7 @@
 	name = "the (TECH BOARD) circuitboard in secure tech storage"
 	var/circuitboard_name
 	excludefromjob = list(
-		JOB_CAPTAIN,
+		JOB_MAYOR,
 		JOB_CHIEF_ENGINEER,
 	)
 	exists_on_map = TRUE
@@ -65,10 +65,10 @@
 	targetitem = /obj/item/aicard
 	name = "an intelliCard"
 	excludefromjob = list(
-		JOB_CAPTAIN,
+		JOB_MAYOR,
 		JOB_CHIEF_ENGINEER,
 		JOB_AUGUR,
-		JOB_SECURITY_MARSHAL,
+		JOB_POLICE_CHIEF,
 		JOB_STATION_ENGINEER,
 		JOB_ATMOSPHERIC_TECHNICIAN,
 	)
@@ -135,7 +135,7 @@
 	name = "the captain's antique laser gun"
 	targetitem = /obj/item/gun/energy/laser/captain
 	difficulty = 5
-	excludefromjob = list(JOB_CAPTAIN)
+	excludefromjob = list(JOB_MAYOR)
 	exists_on_map = TRUE
 
 /obj/item/gun/energy/laser/captain/add_stealing_item_objective()
@@ -145,7 +145,7 @@
 	name = "the security marshal's personal laser gun"
 	targetitem = /obj/item/gun/energy/e_gun/hos
 	difficulty = 10
-	excludefromjob = list(JOB_SECURITY_MARSHAL)
+	excludefromjob = list(JOB_POLICE_CHIEF)
 	exists_on_map = TRUE
 
 /obj/item/gun/energy/e_gun/hos/add_stealing_item_objective()
@@ -155,7 +155,7 @@
 	name = "a hand teleporter"
 	targetitem = /obj/item/hand_tele
 	difficulty = 5
-	excludefromjob = list(JOB_CAPTAIN, JOB_HEAD_OF_PERSONNEL)
+	excludefromjob = list(JOB_MAYOR, JOB_HEAD_OF_PERSONNEL)
 	exists_on_map = TRUE
 
 /obj/item/hand_tele/add_stealing_item_objective()
@@ -165,7 +165,7 @@
 	name = "the Captain's jetpack"
 	targetitem = /obj/item/tank/jetpack/oxygen/captain
 	difficulty = 5
-	excludefromjob = list(JOB_CAPTAIN)
+	excludefromjob = list(JOB_MAYOR)
 	exists_on_map = TRUE
 
 /obj/item/tank/jetpack/oxygen/captain/add_stealing_item_objective()
@@ -185,7 +185,7 @@
 	name = "the medal of captaincy"
 	targetitem = /obj/item/clothing/accessory/medal/gold/captain
 	difficulty = 5
-	excludefromjob = list(JOB_CAPTAIN)
+	excludefromjob = list(JOB_MAYOR)
 	exists_on_map = TRUE
 
 /obj/item/clothing/accessory/medal/gold/captain/add_stealing_item_objective()
@@ -205,7 +205,7 @@
 	name = "the nuclear authentication disk"
 	targetitem = /obj/item/disk/nuclear
 	difficulty = 5
-	excludefromjob = list(JOB_CAPTAIN)
+	excludefromjob = list(JOB_MAYOR)
 
 /datum/objective_item/steal/nukedisc/check_special_completion(obj/item/disk/nuclear/N)
 	return !N.fake
@@ -214,7 +214,7 @@
 	name = "a reflector trenchcoat"
 	targetitem = /obj/item/clothing/suit/hooded/ablative
 	difficulty = 3
-	excludefromjob = list(JOB_SECURITY_MARSHAL, JOB_WARDEN)
+	excludefromjob = list(JOB_POLICE_CHIEF, JOB_POLICE_SERGEANT)
 	exists_on_map = TRUE
 
 /obj/item/clothing/suit/hooded/ablative/add_stealing_item_objective()

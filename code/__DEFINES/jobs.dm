@@ -30,43 +30,50 @@
 //No department
 #define JOB_ASSISTANT "Civilian"
 #define JOB_PRISONER "Prisoner"
-//Command
-#define JOB_CAPTAIN "Superintendent"
+
+// City Council
+#define JOB_MAYOR "Mayor"
 #define JOB_HEAD_OF_PERSONNEL "Delegate"
-#define JOB_SECURITY_CONSULTANT "Security Consultant"
+
 //Silicon
 #define JOB_AI "AI"
 #define JOB_CYBORG "Cyborg"
 #define JOB_PERSONAL_AI "Personal AI"
+
 //Security
-#define JOB_SECURITY_MARSHAL "Security Marshal"
-#define JOB_WARDEN "Brig Lieutenant"
-#define JOB_DETECTIVE "Private Investigator"
-#define JOB_SECURITY_OFFICER "Peacekeeper"
+#define JOB_POLICE_CHIEF "Chief of Police"
+#define JOB_POLICE_SERGEANT "Police Sergeant"
+#define JOB_POLICE_PATROLMAN "Patrolman"
+
 //Engineering
 #define JOB_CHIEF_ENGINEER "Chief Engineer"
 #define JOB_STATION_ENGINEER "Station Engineer"
 #define JOB_ATMOSPHERIC_TECHNICIAN "Atmospheric Technician"
+
 //Medical
 #define JOB_AUGUR "Augur"
 #define JOB_ACOLYTE "Acolyte"
 #define JOB_PARAMEDIC "Paramedic"
 #define JOB_CHEMIST "Chemist"
 #define JOB_VIROLOGIST "Virologist"
+
 //Supply
 #define JOB_QUARTERMASTER "Quartermaster"
 #define JOB_DECKHAND "Deckhand"
 #define JOB_PROSPECTOR "Prospector"
-//Service
+
+// Indies
 #define JOB_BARTENDER "Bartender"
 #define JOB_BOTANIST "Botanist"
 #define JOB_COOK "Cook"
+#define JOB_DETECTIVE "Private Investigator"
 #define JOB_JANITOR "Janitor"
 #define JOB_CLOWN "Clown"
 #define JOB_ARCHIVIST "Archivist"
 #define JOB_LAWYER "Lawyer"
 #define JOB_CHAPLAIN "Chaplain"
 #define JOB_PSYCHOLOGIST "Psychologist"
+
 //ERTs
 #define JOB_ERT_DEATHSQUAD "Death Commando"
 #define JOB_ERT_COMMANDER "Emergency Response Team Commander"

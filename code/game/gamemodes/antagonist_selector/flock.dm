@@ -1,7 +1,7 @@
 /datum/antagonist_selector/flock
 	restricted_jobs = list(
-		JOB_CAPTAIN,
-		JOB_SECURITY_MARSHAL,
+		JOB_MAYOR,
+		JOB_POLICE_CHIEF,
 	)
 
 	antag_datum = /datum/antagonist/flock/overmind

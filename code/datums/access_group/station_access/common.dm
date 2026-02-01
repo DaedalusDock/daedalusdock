@@ -56,7 +56,7 @@
 	)
 
 
-/// Faction head accesses. Does not include the Superintendant.
+/// Faction head accesses. Does not include the Mayor.
 /datum/access_group/station/faction_heads
 	name = "Faction Heads"
 	access = list(

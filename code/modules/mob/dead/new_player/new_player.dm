@@ -174,7 +174,7 @@
 		is_captain = IS_FULL_CAPTAIN
 
 	// If we don't have an assigned cap yet, check if this person qualifies for some from of captaincy.
-	else if(!SSjob.assigned_captain && ishuman(character) && SSjob.chain_of_command[rank] && !is_banned_from(ckey, list(JOB_CAPTAIN)))
+	else if(!SSjob.assigned_captain && ishuman(character) && SSjob.chain_of_command[rank] && !is_banned_from(ckey, list(JOB_MAYOR)))
 		is_captain = IS_ACTING_CAPTAIN
 
 	if(is_captain != IS_NOT_CAPTAIN)

@@ -1,11 +1,11 @@
 /datum/job/head_of_personnel
 	title = JOB_HEAD_OF_PERSONNEL
-	description = "The Superintendent's right hand, and Management's workhorse. Completes tasks on behalf of the Superintendent."
-	department_head = list(JOB_CAPTAIN)
+	description = "The Mayor's right hand, and government's workhorse. Completes tasks on behalf of the Mayor."
+	department_head = list(JOB_MAYOR)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the superintendent"
+	supervisors = "the mayor"
 	selection_color = "#1d1d4f"
 	req_admin_notify = 1
 	minimal_player_age = 10

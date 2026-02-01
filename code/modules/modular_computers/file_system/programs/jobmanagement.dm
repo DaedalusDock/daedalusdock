@@ -16,9 +16,9 @@ GLOBAL_VAR_INIT(time_last_changed_position, 0)
 	var/change_position_cooldown = 30
 	///Jobs blacklisted from having their slots edited.
 	var/static/list/blacklisted = list(
-		JOB_CAPTAIN,
+		JOB_MAYOR,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_SECURITY_MARSHAL,
+		JOB_POLICE_CHIEF,
 		JOB_CHIEF_ENGINEER,
 		JOB_AUGUR,
 		JOB_AI,

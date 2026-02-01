@@ -39,19 +39,19 @@
 	var/list/stolen_valor = list()
 
 	var/static/list/officers_titles = list(
-		JOB_CAPTAIN,
+		JOB_MAYOR,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_SECURITY_MARSHAL,
+		JOB_POLICE_CHIEF,
 	)
 	var/static/list/command_titles = list(
-		JOB_CAPTAIN = "Cpt.",
+		JOB_MAYOR = "Cpt.",
 		JOB_HEAD_OF_PERSONNEL = "Lt.",
 	)
 	var/static/list/security_titles = list(
-		JOB_SECURITY_MARSHAL = "Maj.",
-		JOB_WARDEN = "Sgt.",
+		JOB_POLICE_CHIEF = "Maj.",
+		JOB_POLICE_SERGEANT = "Sgt.",
 		JOB_DETECTIVE = "Det.",
-		JOB_SECURITY_OFFICER = "Officer",
+		JOB_POLICE_PATROLMAN = "Officer",
 	)
 	var/static/list/engineering_titles = list(
 		JOB_CHIEF_ENGINEER = "Chief Engineer",

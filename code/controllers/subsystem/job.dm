@@ -44,11 +44,11 @@ SUBSYSTEM_DEF(job)
 	 * See [/datum/controller/subsystem/ticker/proc/equip_characters]
 	 */
 	var/list/chain_of_command = list(
-		JOB_CAPTAIN = 1,
+		JOB_MAYOR = 1,
 		JOB_HEAD_OF_PERSONNEL = 2,
 		JOB_CHIEF_ENGINEER = 3,
 		JOB_AUGUR = 4,
-		JOB_SECURITY_MARSHAL = 5,
+		JOB_POLICE_CHIEF = 5,
 		JOB_QUARTERMASTER = 6,
 	)
 
@@ -655,7 +655,7 @@ SUBSYSTEM_DEF(job)
 		return C.holder.auto_deadmin()
 
 /datum/controller/subsystem/job/proc/setup_officer_positions()
-	var/datum/job/J = SSjob.GetJob(JOB_SECURITY_OFFICER)
+	var/datum/job/J = SSjob.GetJob(JOB_POLICE_PATROLMAN)
 	if(!J)
 		CRASH("setup_officer_positions(): Security officer job is missing")
 

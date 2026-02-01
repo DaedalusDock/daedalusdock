@@ -1,12 +1,12 @@
 /datum/job/security_officer
-	title = JOB_SECURITY_OFFICER
-	description = "Carry out the Federation's will."
+	title = JOB_POLICE_PATROLMAN
+	description = "DAEDLOCK PLACEHOLDER"
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
-	department_head = list(JOB_SECURITY_MARSHAL)
+	department_head = list(JOB_POLICE_CHIEF)
 	faction = FACTION_STATION
 	total_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
 	spawn_positions = 5 //Handled in /datum/controller/occupations/proc/setup_officer_positions()
-	supervisors = "the security marshal"
+	supervisors = "the chief of police"
 	selection_color = "#602f1c"
 	minimal_player_age = 7
 	exp_requirements = 300
@@ -56,7 +56,7 @@
 		</div>
 		<br>
 		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
-		You have been hired by the Federation for "peacekeeping" aboard a remote colony. You know good things do not befall those who disobey them.
+		DAEDLOCK PLACEHOLDER
 		</div>
 	"}
 	var/datum/browser/popup = new(C.mob, "jobinfo", "Role Information", 480, 360)
@@ -65,7 +65,7 @@
 	popup.open(FALSE)
 
 /datum/outfit/job/security
-	name = "Security Officer"
+	name = JOB_POLICE_PATROLMAN
 	jobtype = /datum/job/security_officer
 
 	id_template = /datum/access_template/job/security_officer

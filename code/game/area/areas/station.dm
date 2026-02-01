@@ -384,12 +384,12 @@
 /area/station/command/heads_quarters
 
 /area/station/command/heads_quarters/captain
-	name = "\improper Superintendent's Office"
+	name = "\improper Mayor's Office"
 	icon_state = "captain"
 	sound_environment = SOUND_AREA_WOODFLOOR
 
 /area/station/command/heads_quarters/captain/private
-	name = "\improper Superintendent's Quarters"
+	name = "\improper Mayor's Quarters"
 	icon_state = "captain_private"
 	sound_environment = SOUND_AREA_WOODFLOOR
 

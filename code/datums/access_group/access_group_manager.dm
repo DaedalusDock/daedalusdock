@@ -6,7 +6,7 @@
 	var/list/templates = list()
 
 /datum/access_group_manager/captain
-	job_title = JOB_CAPTAIN
+	job_title = JOB_MAYOR
 	access_groups = list(/datum/access_group/station/federation)
 
 /datum/access_group_manager/hop
@@ -14,7 +14,7 @@
 	access_groups = list(/datum/access_group/station/independent_areas)
 
 /datum/access_group_manager/security
-	job_title = JOB_SECURITY_MARSHAL
+	job_title = JOB_POLICE_CHIEF
 	access_groups = list(/datum/access_group/station/security)
 
 /datum/access_group_manager/medical

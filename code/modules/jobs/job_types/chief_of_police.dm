@@ -1,8 +1,8 @@
 /datum/job/head_of_security
-	title = JOB_SECURITY_MARSHAL
-	description = "Coordinate security personnel, ensure the Federation's needs are met."
+	title = JOB_POLICE_CHIEF
+	description = "DAEDLOCK PLACEHOLDER"
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
-	department_head = list(JOB_CAPTAIN)
+	department_head = list(JOB_MAYOR)
 	head_announce = list(RADIO_CHANNEL_SECURITY)
 	faction = FACTION_STATION
 	total_positions = 1
@@ -48,7 +48,7 @@
 	spawned.apply_status_effect(/datum/status_effect/skill_mod/security_marshal)
 
 /datum/job/head_of_security/get_captaincy_announcement(mob/living/captain)
-	return "Due to staffing shortages, newly promoted Acting Captain [captain.real_name] on deck!"
+	return "DAEDLOCK PLACEHOLDER"
 
 /datum/job/head_of_security/on_join_popup(client/C, job_title_pref)
 	var/content = {"
@@ -57,8 +57,7 @@
 		</div>
 		<br>
 		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
-		You are loudly and proudly a member of the Federation, and you push your corps to carry out its will.
-		Ensure the Superintendent is pleased, and your team follows your orders. Insubordination is not tolerated.
+		DAEDLOCK PLACEHOLDER
 		</div>
 	"}
 	var/datum/browser/popup = new(C.mob, "jobinfo", "Role Information", 480, 360)
@@ -67,7 +66,7 @@
 	popup.open(FALSE)
 
 /datum/outfit/job/hos
-	name = JOB_SECURITY_MARSHAL
+	name = JOB_POLICE_CHIEF
 	jobtype = /datum/job/head_of_security
 
 	id = /obj/item/card/id/advanced/silver

@@ -4,9 +4,9 @@
 	var/creator_info = ""
 
 /datum/employer/government
-	name = "The Federation"
-	short_name = "Federation"
-	creator_info = "The pool's local government superpower, evolving from the Minervan Trade Union. The Federation showed up on the colony's proverbial doorstep and taken hold over it's inhabitants."
+	name = "City Council"
+	short_name = "City Council"
+	creator_info = "DAEDLOCK PLACEHOLDER"
 
 /datum/employer/daedalus
 	name = "Daedalus Industries"

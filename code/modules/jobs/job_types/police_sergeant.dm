@@ -1,10 +1,8 @@
 /datum/job/warden
-	title = JOB_WARDEN
-	description = "Watch over the Brig and Prison Wing, manage prisoners, \
-		issue equipment to security, work with the Security Marshal \
-		to organize security."
+	title = JOB_POLICE_SERGEANT
+	description = "DAEDLOCK PLACEHOLDER"
 	auto_deadmin_role_flags = DEADMIN_POSITION_SECURITY
-	department_head = list(JOB_SECURITY_MARSHAL)
+	department_head = list(JOB_POLICE_CHIEF)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
@@ -55,8 +53,7 @@
 		</div>
 		<br>
 		<div style='padding: 0px 30px; text-align: center; font-size: 14px;'>
-		You have been hired by the Federation for "peacekeeping" aboard a remote colony. You know good things do not befall those who disobey them.
-		As the [title], you are responsible for keeping the security wing under control, and assisting the Security Marshal.
+		DAEDLOCK PLACEHOLDER
 		</div>
 	"}
 	var/datum/browser/popup = new(C.mob, "jobinfo", "Role Information", 480, 360)
@@ -65,7 +62,7 @@
 	popup.open(FALSE)
 
 /datum/outfit/job/warden
-	name = "Brig Lieutenant"
+	name = JOB_POLICE_SERGEANT
 	jobtype = /datum/job/warden
 
 	id_template = /datum/access_template/job/warden

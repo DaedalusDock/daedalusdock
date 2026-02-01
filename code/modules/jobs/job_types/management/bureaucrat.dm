@@ -1,11 +1,11 @@
 /datum/job/bureaucrat
 	title = "Bureaucrat"
 	description = "Handles relationships with Mars Executive Outcomes. Acts as a guard for Management."
-	department_head = list(JOB_CAPTAIN)
+	department_head = list(JOB_MAYOR)
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the superintendent"
+	supervisors = "the mayor"
 	selection_color = "#1d1d4f"
 	req_admin_notify = 1
 	minimal_player_age = 10

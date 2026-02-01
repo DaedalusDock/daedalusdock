@@ -1,7 +1,7 @@
 /datum/antagonist_selector/nukeop
 	restricted_jobs = list(
-		JOB_CAPTAIN,
-		JOB_SECURITY_MARSHAL,
+		JOB_MAYOR,
+		JOB_POLICE_CHIEF,
 	)// Just to be sure that a nukie getting picked won't ever imply a Captain or HoS not getting drafted
 
 	antag_datum = /datum/antagonist/nukeop

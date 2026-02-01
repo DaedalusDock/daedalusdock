@@ -122,7 +122,7 @@
 	job = /datum/job/botanist
 
 /datum/access_template/job/captain
-	assignment = JOB_CAPTAIN
+	assignment = JOB_MAYOR
 	intern_alt_name = "Subintendant"
 	template_state = "trim_captain"
 	sechud_icon_state = SECHUD_CAPTAIN
@@ -272,8 +272,8 @@
 	job = /datum/job/head_of_personnel
 
 /datum/access_template/job/head_of_security
-	assignment = JOB_SECURITY_MARSHAL
-	intern_alt_name = JOB_SECURITY_MARSHAL + "-in-Training"
+	assignment = JOB_POLICE_CHIEF
+	intern_alt_name = JOB_POLICE_CHIEF + "-in-Training"
 	template_state = "trim_headofsecurity"
 	sechud_icon_state = SECHUD_HEAD_OF_SECURITY
 	extra_access = list(ACCESS_TELEPORTER)
@@ -410,7 +410,7 @@
 
 /// Sec officers have departmental variants. They each have their own trims with bonus departmental accesses.
 /datum/access_template/job/security_officer
-	assignment = JOB_SECURITY_OFFICER
+	assignment = JOB_POLICE_PATROLMAN
 	template_state = "trim_securityofficer"
 	sechud_icon_state = SECHUD_SECURITY_OFFICER
 	extra_access = list(ACCESS_FORENSICS, ACCESS_MAINT_TUNNELS)
@@ -475,7 +475,7 @@
 	datacore_record_key = DATACORE_RECORDS_AETHER
 
 /datum/access_template/job/warden
-	assignment = JOB_WARDEN
+	assignment = JOB_POLICE_SERGEANT
 	template_state = "trim_warden"
 	sechud_icon_state = SECHUD_WARDEN
 	extra_access = list(ACCESS_FORENSICS, ACCESS_MAINT_TUNNELS)

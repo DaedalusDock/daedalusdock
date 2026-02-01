@@ -1,11 +1,11 @@
 /datum/job/captain
-	title = JOB_CAPTAIN
-	description = "The middle-man between the big man at home and the station's inhabitants. Enforce the Federation's will and rule with an iron fist."
+	title = JOB_MAYOR
+	description = "DAEDLOCK PLACEHOLDER"
 	auto_deadmin_role_flags = DEADMIN_POSITION_HEAD|DEADMIN_POSITION_SECURITY
 	faction = FACTION_STATION
 	total_positions = 1
 	spawn_positions = 1
-	supervisors = "the Federation."
+	supervisors = "the OSIC"
 	selection_color = "#2f2f7f"
 	req_admin_notify = 1
 	minimal_player_age = 14
@@ -54,7 +54,7 @@
 	return "[title] [captain.real_name] will be overseeing operations today."
 
 /datum/outfit/job/captain
-	name = JOB_CAPTAIN
+	name = JOB_MAYOR
 	jobtype = /datum/job/captain
 	allow_jumpskirt = FALSE
 

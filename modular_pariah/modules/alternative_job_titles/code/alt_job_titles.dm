@@ -17,15 +17,15 @@
 	alt_titles = list(JOB_AUGUR)
 
 /datum/job/head_of_security
-	alt_titles = list(JOB_SECURITY_MARSHAL)
+	alt_titles = list(JOB_POLICE_CHIEF)
 
 // Security
 
 /datum/job/security_officer
-	alt_titles = list(JOB_SECURITY_OFFICER, "Security Guard")
+	alt_titles = list(JOB_POLICE_PATROLMAN, "Security Guard")
 
 /datum/job/warden
-	alt_titles = list(JOB_WARDEN)
+	alt_titles = list(JOB_POLICE_SERGEANT)
 
 /datum/job/detective
 	alt_titles = list(JOB_DETECTIVE)

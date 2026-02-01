@@ -518,7 +518,7 @@ TYPEINFO_DEF(/obj/item/card/id)
 /obj/item/card/id/advanced/update_overlays()
 	. = ..()
 
-	if(registered_name && registered_name != JOB_CAPTAIN)
+	if(registered_name && registered_name != JOB_MAYOR)
 		. += mutable_appearance(icon, assigned_icon_state)
 
 	var/template_icon_file = template_icon_override ? template_icon_override : template?.template_icon
@@ -568,15 +568,15 @@ TYPEINFO_DEF(/obj/item/card/id)
 	inhand_icon_state = "gold_id"
 
 /obj/item/card/id/advanced/gold/captains_spare
-	name = "superintendent's spare ID"
+	name = "mayor's spare ID"
 	desc = "The spare ID of the High Lord himself."
-	registered_name = JOB_CAPTAIN
+	registered_name = JOB_MAYOR
 	template = /datum/access_template/job/captain
 	registered_age = null
 
 /obj/item/card/id/advanced/gold/captains_spare/update_label() //so it doesn't change to Captain's ID card (Captain) on a sneeze
-	if(registered_name == JOB_CAPTAIN)
-		name = "[initial(name)][(!assignment || assignment == JOB_CAPTAIN) ? "" : " ([assignment])"]"
+	if(registered_name == JOB_MAYOR)
+		name = "[initial(name)][(!assignment || assignment == JOB_MAYOR) ? "" : " ([assignment])"]"
 		update_appearance(UPDATE_ICON)
 	else
 		..()

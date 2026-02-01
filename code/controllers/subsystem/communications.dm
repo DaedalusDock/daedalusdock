@@ -18,7 +18,7 @@ SUBSYSTEM_DEF(communications)
 	else
 		return FALSE
 
-/datum/controller/subsystem/communications/proc/make_announcement(mob/living/user, is_silicon, input, syndicate, list/players, sender_name = JOB_CAPTAIN)
+/datum/controller/subsystem/communications/proc/make_announcement(mob/living/user, is_silicon, input, syndicate, list/players, sender_name = JOB_MAYOR)
 	if(!can_announce(user, is_silicon))
 		return FALSE
 

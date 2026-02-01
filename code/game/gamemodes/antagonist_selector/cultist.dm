@@ -1,15 +1,15 @@
 /datum/antagonist_selector/cultist
 	restricted_jobs = list(
 		JOB_AI,
-		JOB_CAPTAIN,
+		JOB_MAYOR,
 		JOB_CHAPLAIN,
 		JOB_CYBORG,
 		JOB_DETECTIVE,
 		JOB_HEAD_OF_PERSONNEL,
-		JOB_SECURITY_MARSHAL,
+		JOB_POLICE_CHIEF,
 		JOB_PRISONER,
-		JOB_SECURITY_OFFICER,
-		JOB_WARDEN,
+		JOB_POLICE_PATROLMAN,
+		JOB_POLICE_SERGEANT,
 	)
 
 	antag_datum = /datum/antagonist/cult

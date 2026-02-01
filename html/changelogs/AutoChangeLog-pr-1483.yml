@@ -1,0 +1,7 @@
+author: Kapu1178
+delete-after: true
+changes:
+  - bugfix: AI has full access to computer4 files.
+  - bugfix: You can no longer duplicate iron using computer frames.
+  - bugfix: Computer frames properly delete upon deconstruction.
+  - tweak: Removed the AI camera light text.

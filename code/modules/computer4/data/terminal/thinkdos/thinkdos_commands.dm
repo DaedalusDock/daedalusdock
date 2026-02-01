@@ -583,7 +583,7 @@
 
 /datum/shell_command/thinkdos/login/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	if(usr?.has_unlimited_silicon_privilege)
-		system.login("AIUSR", "Colony Intelligence")
+		system.login("AIUSR", "Colony Intelligence", SSid_access.get_access_for_group(/datum/access_group/all))
 		return
 
 	var/obj/item/peripheral/card_reader/reader = system.get_computer().get_peripheral(PERIPHERAL_TYPE_CARD_READER)

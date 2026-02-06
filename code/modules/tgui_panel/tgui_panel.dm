@@ -53,6 +53,7 @@
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/libre_baskerville))
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/jost))
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/yrsa))
+	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/ibm_vga9x16))
 	window.send_asset(get_asset_datum(/datum/asset/spritesheet/chat))
 	window.send_asset(get_asset_datum(/datum/asset/simple/namespaced/chat_icons))
 

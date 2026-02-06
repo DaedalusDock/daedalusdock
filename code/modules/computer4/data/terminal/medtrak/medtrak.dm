@@ -51,7 +51,7 @@
 	medical_records = SSdatacore.library[DATACORE_RECORDS_MEDICAL]
 	var/datum/c4_file/folder/log_dir = system.get_log_folder()
 	if(!log_dir)
-		system.println("<b>Error:</b> Unable to locate logging directory.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] Unable to locate logging directory.")
 
 	var/datum/c4_file/text/record_log = log_dir.get_file("medtrak_logs")
 	if(!istype(record_log))
@@ -59,7 +59,7 @@
 		log_file.set_name("medtrak_logs")
 		if(!log_dir.try_add_file(log_file))
 			qdel(log_file)
-			system.println("<b>Error: Unable to write log file.")
+			system.println("[ANSI_WRAP_BOLD("Error:")] Unable to write log file.")
 
 	write_log("[system.current_user.registered_name] accessed the records database.")
 
@@ -123,7 +123,7 @@
 					return TRUE
 
 				if(!(input_num in 1 to length(medical_records.records)))
-					system.println("<b>Error:</b> Array index out of bounds.")
+					system.println("[ANSI_WRAP_BOLD("Error:")] Array index out of bounds.")
 					return TRUE
 
 				var/datum/data/record/R = medical_records.records[input_num]
@@ -157,12 +157,15 @@
 /// Prints the home menu options
 /datum/c4_file/terminal_program/medtrak/proc/home_text()
 	var/title_text = list(
-		@(eol)"<pre style='margin: 0px'> __  __              _    _____                    _</pre>"eol,
-		@(eol)"<pre style='margin: 0px'>|  \/  |   ___    __| |  |_   _|    _ _   __ _    | |__</pre>"eol,
-		@(eol)"<pre style='margin: 0px'>| |\/| |  / -_)  / _` |    | |     | '_| / _` |   | / /</pre>"eol,
-		@(eol)"<pre style='margin: 0px'>|_|__|_|  \___|  \__,_|   _|_|_   _|_|_  \__,_|   |_\_\</pre>"eol,
-		@(eol)"<pre style='margin: 0px'>_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|</pre>"eol,
-		@(eol)"<pre style='margin: 0px'> `-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'</pre>"eol,
+		"[ANSI_FG_CYAN]",
+		@(eol) __  __              _    _____                    _    eol,"\n",
+		@(eol)|  \/  |   ___    __| |  |_   _|    _ _   __ _    | |__ eol,"\n",
+		@(eol)| |\/| |  / -_)  / _` |    | |     | '_| / _` |   | / / eol,"\n",
+		@(eol)|_|__|_|  \___|  \__,_|   _|_|_   _|_|_  \__,_|   |_\_\ eol,"\n",
+		"[ANSI_FG_WHITE]",
+		@(eol)_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|eol,"\n",
+		@(eol) `-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'eol,"\n",
+		"[ANSI_FG_RESET]",
 	).Join("")
 	current_menu = MEDTRAK_MENU_HOME
 
@@ -173,7 +176,7 @@
 		"(2) Record Search",
 		"(0) Quit",
 	)
-	get_os().println(jointext(out, "<br>"))
+	get_os().println(jointext(out, "\n"))
 
 /datum/c4_file/terminal_program/medtrak/proc/await_input(text, datum/callback/on_input)
 	var/datum/c4_file/terminal_program/operating_system/thinkdos/system = get_os()
@@ -196,7 +199,7 @@
 	system.clear_screen(TRUE)
 
 	if(!length(medical_records.records))
-		system.println("<b>Error:</b> No records found in database.<br>Enter 'back' to return.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] No records found in database.\nEnter 'back' to return.")
 		return
 
 	var/list/out = list()
@@ -206,10 +209,10 @@
 
 	for(var/i in 1 to length(medical_records.records))
 		var/datum/data/record/R = medical_records.records[i]
-		out +="<b>\[[fit_with_zeros("[i]", zeros)]\]</b>[R.fields[DATACORE_ID]]: [R.fields[DATACORE_NAME]]"
+		out +="[ANSI_WRAP_BOLD("\[[fit_with_zeros("[i]", zeros)]\]")][R.fields[DATACORE_ID]]: [R.fields[DATACORE_NAME]]"
 
-	out += "<br>(#) View record | (new) New record | (back) Return to home"
-	system.println(jointext(out, "<br>"))
+	out += "\n(#) View record | (new) New record | (back) Return to home"
+	system.println(jointext(out, "\n"))
 
 /datum/c4_file/terminal_program/medtrak/proc/view_record(datum/data/record/R)
 	if(isnull(R))
@@ -223,7 +226,7 @@
 
 	var/list/fields = current_record.fields
 	var/list/out = list(
-		"<b>Record Data:</b>",
+		"[ANSI_WRAP_BOLD("Record Data:")]",
 		"\[01\] Name: [fields[DATACORE_NAME]] | ID: [fields[DATACORE_ID]]",
 		"\[02\] Sex: [fields[DATACORE_GENDER]]",
 		"\[03\] Age: [fields[DATACORE_AGE]]",
@@ -236,11 +239,11 @@
 		"\[10\] Physical Status: [fields[DATACORE_PHYSICAL_HEALTH]]",
 		"\[11\] Mental Status: [fields[DATACORE_MENTAL_HEALTH]]",
 		"\[12\] Notes: [fields[DATACORE_NOTES]]",
-		"<br>Enter field number to edit a field",
+		"\nEnter field number to edit a field",
 		"(C) Comments | (R) Refresh | (D) Delete | (P) Print | (0) Return to index"
 	)
 
-	get_os().println(jointext(out, "<br>"))
+	get_os().println(jointext(out, "\n"))
 
 /datum/c4_file/terminal_program/medtrak/proc/record_input_num(number)
 	switch(number)
@@ -264,19 +267,19 @@
 			await_input("Enter new Allergies (Max Length: [MAX_MESSAGE_LEN])", CALLBACK(src, PROC_REF(edit_allergies)))
 		if(10)
 			await_input(
-				{"Edit Physical Status<br>
-				\[1\] [PHYSHEALTH_OK]<br>
-				\[2\] [PHYSHEALTH_CARE]<br>
+				{"Edit Physical Status\n
+				\[1\] [PHYSHEALTH_OK]\n
+				\[2\] [PHYSHEALTH_CARE]\n
 				\[3\] [PHYSHEALTH_DECEASED]
 				"},
 				CALLBACK(src, PROC_REF(edit_physical_health))
 			)
 		if(11)
 			await_input(
-				{"Edit Mental Status<br>
-				\[1\] [MENHEALTH_OK]<br>
-				\[2\] [MENHEALTH_WATCH]<br>
-				\[3\] [MENHEALTH_UNSTABLE]<br>
+				{"Edit Mental Status\n
+				\[1\] [MENHEALTH_OK]\n
+				\[2\] [MENHEALTH_WATCH]\n
+				\[3\] [MENHEALTH_UNSTABLE]\n
 				\[4\] [MENHEALTH_INSANE]
 				"},
 				CALLBACK(src, PROC_REF(edit_mental_health))
@@ -301,6 +304,6 @@
 			count++
 			out += "\[[fit_with_zeros("[count]", 2)]\] [comment]"
 
-		system.println(jointext(out, "<br>"))
+		system.println(jointext(out, "\n"))
 
 	system.println("(N) New comment  | (0) Return to record")

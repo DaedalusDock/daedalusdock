@@ -109,7 +109,7 @@
 
 
 	var/obj/machinery/computer4/computer = get_computer()
-	computer.text_buffer += "[text]<br>"
+	computer.text_buffer += "[text]\n"
 	if(update_ui)
 		SStgui.update_uis(computer)
 	return TRUE

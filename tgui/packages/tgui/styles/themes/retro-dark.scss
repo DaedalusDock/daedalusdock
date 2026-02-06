@@ -66,4 +66,17 @@ $lightorange: #fda751;
     '../layouts/TitleBar.scss',
     $with: ('background-color': color.scale($darkorange, $whiteness: +10%))
   );
+
+  // Fancy-ANSI Control Variables
+
+  // Alt Fonts
+  --ansi-font-1: 'Consolas';
+  // --ansi-font-2
+  // --ansi-font-3
+  // --ansi-font-4
+  // --ansi-font-5
+  // --ansi-font-6
+  // --ansi-font-7
+  // --ansi-font-8
+  // --ansi-font-9
 }

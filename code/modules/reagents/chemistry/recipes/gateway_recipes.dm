@@ -3,6 +3,10 @@
 	results = list(/datum/reagent/acetone = 3)
 	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/fuel = 1, /datum/reagent/oxygen = 1)
 
+	overheat_temp = 650
+	optimal_temp = 380
+	required_temp = 178 // Acetone freezes around here
+
 /datum/chemical_reaction/oil
 	results = list(/datum/reagent/fuel/oil = 3)
 	required_reagents = list(/datum/reagent/fuel = 1, /datum/reagent/hydrogen = 1, /datum/reagent/carbon = 1)

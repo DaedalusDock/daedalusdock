@@ -176,7 +176,7 @@
 			var/oldMloc = M.loc
 			forceMove(oldMloc)
 			M.forceMove(oldloc)
-			M.update_offsets()
+			M.update_offsets(TRUE)
 
 			now_pushing = FALSE
 			return TRUE

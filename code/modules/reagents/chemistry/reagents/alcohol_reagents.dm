@@ -15,8 +15,7 @@
 
 	touch_met = 5
 	ingest_met = 0.2
-	burning_temperature = 2193//ethanol burns at 1970C (at it's peak)
-	burning_volume = 0.1
+	boiling_point = 2193 //ethanol burns at 1970C (at it's peak)
 	var/boozepwr = 65 //Higher numbers equal higher hardness, higher hardness equals more intense alcohol poisoning
 	var/toxicity = 1
 

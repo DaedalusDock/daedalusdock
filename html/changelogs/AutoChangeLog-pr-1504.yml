@@ -1,0 +1,8 @@
+author: Gboster-0
+delete-after: true
+changes:
+  - qol: pipes and atmos components have better visual clarity and consistency between
+      them (Ported PR by Ghilker)
+  - bugfix: fixed gas meters displaying below layer manifolds (Ported PR by Ghilker)
+  - refactor: Audited atmos coloring code - atmos pipes no longer color weirdly (Ported
+      PR by SmArtKar)

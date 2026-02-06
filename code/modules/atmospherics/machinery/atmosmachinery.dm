@@ -31,7 +31,7 @@ TYPEINFO_DEF(/obj/machinery/atmospherics)
 	///Bitflag of the initialized directions (NORTH | SOUTH | EAST | WEST)
 	var/initialize_directions = NONE
 	///The color of the pipe
-	var/pipe_color = COLOR_VERY_LIGHT_GRAY
+	var/pipe_color = ATMOS_COLOR_OMNI
 	///What layer the pipe is in (from 1 to 5, default 3)
 	var/piping_layer = PIPING_LAYER_DEFAULT
 	///The flags of the pipe/component (PIPING_ALL_LAYER | PIPING_ONE_PER_TURF | PIPING_DEFAULT_LAYER_ONLY | PIPING_CARDINAL_AUTONORMALIZE)
@@ -221,8 +221,8 @@ TYPEINFO_DEF(/obj/machinery/atmospherics)
 	update_appearance()
 
 /obj/machinery/atmospherics/update_icon()
-	layer = initial(layer) + piping_layer / 1000
-	return ..()
+	. = ..()
+	update_layer()
 
 /**
  * Check if a node can actually exists by connecting to another machine
@@ -307,7 +307,7 @@ TYPEINFO_DEF(/obj/machinery/atmospherics)
  * * obj/machinery/atmospherics/target - the machinery we want to connect to
  */
 /obj/machinery/atmospherics/proc/check_connectable_color(obj/machinery/atmospherics/target)
-	if(lowertext(target.pipe_color) == lowertext(pipe_color) || ((target.pipe_flags | pipe_flags) & PIPING_ALL_COLORS) || lowertext(target.pipe_color) == lowertext(COLOR_VERY_LIGHT_GRAY) || lowertext(pipe_color) == lowertext(COLOR_VERY_LIGHT_GRAY))
+	if(lowertext(target.pipe_color) == lowertext(pipe_color) || ((target.pipe_flags | pipe_flags) & PIPING_ALL_COLORS) || lowertext(target.pipe_color) == lowertext(ATMOS_COLOR_OMNI) || lowertext(pipe_color) == lowertext(ATMOS_COLOR_OMNI))
 		return TRUE
 	return FALSE
 
@@ -469,7 +469,7 @@ TYPEINFO_DEF(/obj/machinery/atmospherics)
  * * piping_layer - the piping_layer the device is in, used inside PIPING_LAYER_SHIFT
  * * trinary - if TRUE we also use PIPING_FORWARD_SHIFT on layer 1 and 5 for trinary devices (filters and mixers)
  */
-/obj/machinery/atmospherics/proc/get_pipe_image(iconfile, iconstate, direction, color = COLOR_VERY_LIGHT_GRAY, piping_layer = 3, trinary = FALSE)
+/obj/machinery/atmospherics/proc/get_pipe_image(iconfile, iconstate, direction, color = ATMOS_COLOR_OMNI, piping_layer = 3, trinary = FALSE)
 	var/image/pipe_overlay = image(iconfile, iconstate, dir = direction)
 	pipe_overlay.color = color
 	PIPING_LAYER_SHIFT(pipe_overlay, piping_layer)
@@ -592,7 +592,7 @@ TYPEINFO_DEF(/obj/machinery/atmospherics)
  * Update the layer in which the pipe/device is in, that way pipes have consistent layer depending on piping_layer
  */
 /obj/machinery/atmospherics/proc/update_layer()
-	layer = initial(layer) + (piping_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_LCHANGE + (GLOB.pipe_colors_ordered[pipe_color] * 0.01)
+	return
 
 /**
  * Called by the RPD.dm pre_attack(), overriden by pipes.dm

@@ -3,6 +3,7 @@
 
 /obj/machinery/atmospherics/components
 	hide = FALSE
+	layer = GAS_PUMP_LAYER
 	///Is the component welded?
 	var/welded = FALSE
 	///Should the component should show the pipe underneath it?
@@ -69,14 +70,14 @@
 			continue
 		var/obj/machinery/atmospherics/node = nodes[i]
 		var/node_dir = get_dir(src, node)
-		var/mutable_appearance/pipe_appearance = mutable_appearance('icons/obj/atmospherics/pipes/pipe_underlays.dmi', "intact_[node_dir]_[underlay_pipe_layer]")
-		pipe_appearance.color = node.pipe_color
+		var/mutable_appearance/pipe_appearance = mutable_appearance('icons/obj/atmospherics/pipes/pipe_underlays.dmi', "intact_[node_dir]_[underlay_pipe_layer]", appearance_flags = RESET_COLOR|KEEP_APART)
+		pipe_appearance.color = (node.pipe_color == ATMOS_COLOR_OMNI || istype(node, /obj/machinery/atmospherics/pipe/color_adapter)) ? pipe_color : node.pipe_color
 		underlays += pipe_appearance
 		connected |= node_dir
 
 	for(var/direction in GLOB.cardinals)
 		if((initialize_directions & direction) && !(connected & direction))
-			var/mutable_appearance/pipe_appearance = mutable_appearance('icons/obj/atmospherics/pipes/pipe_underlays.dmi', "exposed_[direction]_[underlay_pipe_layer]")
+			var/mutable_appearance/pipe_appearance = mutable_appearance('icons/obj/atmospherics/pipes/pipe_underlays.dmi', "exposed_[direction]_[underlay_pipe_layer]", appearance_flags = RESET_COLOR|KEEP_APART)
 			pipe_appearance.color = pipe_color
 			underlays += pipe_appearance
 
@@ -245,3 +246,6 @@
 	SHOULD_CALL_PARENT(FALSE) //This entire tree currently sucks. It can handle itself.
 	//TODO: MAKE IT NOT SUCK. MAYBE.
 	. = ..()
+
+/obj/machinery/atmospherics/components/update_layer()
+	layer = initial(layer) + (piping_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_LCHANGE + (GLOB.pipe_colors_ordered[pipe_color] * 0.001)

@@ -156,3 +156,6 @@
 	. = ..()
 	if(anchored)
 		return FALSE
+
+/obj/machinery/atmospherics/pipe/update_layer()
+	layer = initial(layer) + (piping_layer - PIPING_LAYER_DEFAULT) * PIPING_LAYER_LCHANGE + (GLOB.pipe_colors_ordered[pipe_color] * 0.0001)

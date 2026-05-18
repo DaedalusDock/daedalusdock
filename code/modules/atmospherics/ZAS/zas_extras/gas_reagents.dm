@@ -8,6 +8,9 @@
 	taste_description = "sweetness"
 	chemical_flags = REAGENT_NO_RANDOM_RECIPE
 
+	boiling_point = 165
+	dew_point = 165 * 0.9
+
 /datum/reagent/carbon_monoxide
 	name = "Carbon Monoxide"
 	description = "A dangerous carbon comubstion byproduct."

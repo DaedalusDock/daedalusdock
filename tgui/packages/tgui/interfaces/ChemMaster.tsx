@@ -1,3 +1,5 @@
+import { BooleanLike } from 'common/react';
+
 import { useBackend, useSharedState } from '../backend';
 import {
   AnimatedNumber,
@@ -11,21 +13,59 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
+type AnalysisVariables = {
+  addicD: string;
+  color: string;
+  description: string;
+  metaRate: string;
+  name: string;
+  overD: string;
+  state: string;
+};
+
+type ChemMasterData = {
+  analyzeVars: AnalysisVariables;
+  screen: string;
+};
+
 export const ChemMaster = (props) => {
-  const { data } = useBackend();
-  const { screen } = data;
+  const { data } = useBackend<ChemMasterData>();
+  const { analyzeVars, screen } = data;
   return (
     <Window width={465} height={550}>
       <Window.Content scrollable>
-        {(screen === 'analyze' && <AnalysisResults />) || <ChemMasterContent />}
+        {(screen === 'analyze' && (
+          <AnalysisResults analyzeVars={analyzeVars} />
+        )) || <ChemMasterContent />}
       </Window.Content>
     </Window>
   );
 };
 
+type Chemical = {
+  id: string;
+  name: string;
+  volume: number;
+};
+
+type ChemMasterContentData = {
+  analyzeVars: AnalysisVariables;
+  beakerContents: Chemical[];
+  beakerCurrentVolume?: number;
+  beakerMaxVolume?: number;
+  bufferContents: Chemical[];
+  isBeakerLoaded: BooleanLike;
+  isPillBottleLoaded: BooleanLike;
+  mode: BooleanLike;
+  pillBottleCurrentAmount: number;
+  pillBottleMaxAmount: number;
+  screen: string;
+};
+
 const ChemMasterContent = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<ChemMasterContentData>();
   const {
+    analyzeVars,
     screen,
     beakerContents = [],
     bufferContents = [],
@@ -37,7 +77,7 @@ const ChemMasterContent = (props) => {
     pillBottleMaxAmount,
   } = data;
   if (screen === 'analyze') {
-    return <AnalysisResults />;
+    return <AnalysisResults analyzeVars={analyzeVars} />;
   }
   return (
     <>
@@ -234,14 +274,39 @@ const PackagingControlsItem = (props) => {
   );
 };
 
+type CondiStyle = {
+  className: string;
+  id: string;
+  title: string;
+};
+
+type PillStyle = {
+  className: string;
+  id: string;
+};
+
+type PatchStyle = {
+  class_name: string;
+  style: string;
+};
+
+type PackagingData = {
+  autoCondiStyle: string;
+  chosenCondiStyle: string;
+  chosenPillStyle: string;
+  condi: BooleanLike;
+  condiStyles: CondiStyle[];
+  patch_style: string;
+  patch_styles: PatchStyle[];
+  pillStyles: PillStyle[];
+};
+
 const PackagingControls = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<PackagingData>();
   const [pillAmount, setPillAmount] = useSharedState('pillAmount', 1);
   const [patchAmount, setPatchAmount] = useSharedState('patchAmount', 1);
   const [bottleAmount, setBottleAmount] = useSharedState('bottleAmount', 1);
-  // PARIAH EDIT ADDITION
   const [vialAmount, setVialAmount] = useSharedState('vialAmount', 1);
-  // PARIAH EDIT END
   const [packAmount, setPackAmount] = useSharedState('packAmount', 1);
   const {
     condi,
@@ -421,9 +486,13 @@ const PackagingControls = (props) => {
   );
 };
 
-const AnalysisResults = (props) => {
+type AnalysisProps = {
+  analyzeVars: AnalysisVariables;
+};
+
+const AnalysisResults = (props: AnalysisProps) => {
   const { act, data } = useBackend();
-  const { analyzeVars } = data;
+  const { analyzeVars } = props;
   return (
     <Section
       title="Analysis Results"
@@ -442,7 +511,6 @@ const AnalysisResults = (props) => {
       <LabeledList>
         <LabeledList.Item label="Name">{analyzeVars.name}</LabeledList.Item>
         <LabeledList.Item label="State">{analyzeVars.state}</LabeledList.Item>
-        <LabeledList.Item label="pH">{analyzeVars.ph}</LabeledList.Item>
         <LabeledList.Item label="Color">
           <ColorBox color={analyzeVars.color} mr={1} />
           {analyzeVars.color}

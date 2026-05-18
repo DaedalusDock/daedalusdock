@@ -1,28 +1,51 @@
 
-/datum/chemical_reaction/inaprovaline
-	results = list(/datum/reagent/medicine/inaprovaline = 3)
-	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/carbon = 1, /datum/reagent/consumable/sugar = 1, /datum/reagent/phenol = 1)
-
-/datum/chemical_reaction/dylovene
-	results = list(/datum/reagent/medicine/dylovene = 3)
-	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/potassium = 1, /datum/reagent/ammonia = 1)
-
+//
+// Brute chems
+//
 /datum/chemical_reaction/bicaridine
 	results = list(/datum/reagent/medicine/bicaridine = 2)
-	required_reagents = list(/datum/reagent/phosphorus = 1, /datum/reagent/carbon = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(
+		/datum/reagent/phosphorus = 1,
+		/datum/reagent/carbon = 1,
+		/datum/reagent/acetone = 1 // da solvant
+	)
+
+	requirement_consumption_modifiers = alist(
+		/datum/reagent/acetone = alist(
+			1 = 20,
+			0.5 = 80
+		),
+	)
 
 /datum/chemical_reaction/meralyne
 	results = list(/datum/reagent/medicine/meralyne = 2)
-	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/epinephrine = 1, /datum/reagent/acetone = 1)
+	required_reagents = list(
+		/datum/reagent/medicine/bicaridine = 1,
+		/datum/reagent/medicine/epinephrine = 1,
+		/datum/reagent/acetone = 1 // da solvant
+	)
 	inhibitors = list(/datum/reagent/consumable/sugar = 1) // Messes up with inaprovaline
 
 /datum/chemical_reaction/meralyne/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, step_volume_added)
 	. = ..()
 	explode_fire_vortex(holder, equilibrium, 2, 2, "overheat", TRUE)
 
+/datum/chemical_reaction/styptic_powder
+	results = list(/datum/reagent/medicine/styptic_powder = 2)
+	required_reagents = list(
+		/datum/reagent/aluminium = 1,
+		/datum/reagent/hydrogen = 1,
+		/datum/reagent/oxygen = 1,
+		/datum/reagent/medicine/bicaridine = 1,
+	)
+	mix_message = "The solution yields an astringent powder."
+
+//
+// Burn chems
+//
 /datum/chemical_reaction/kelotane
-	results = list(/datum/reagent/medicine/kelotane = 2)
-	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/carbon = 1)
+	results = list(/datum/reagent/medicine/kelotane = 3)
+	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/silicon = 1, /datum/reagent/carbon = 1)
 	is_cold_recipe = TRUE
 	optimal_temp = (-50 CELSIUS) - 50
 	required_temp = -50 CELSIUS
@@ -40,15 +63,128 @@
 	. = ..()
 	explode_fire_vortex(holder, equilibrium, 2, 2, "overheat", TRUE)
 
+/datum/chemical_reaction/silver_sulfadiazine
+	results = list(
+		/datum/reagent/medicine/silver_sulfadiazine = 5,
+		/datum/reagent/silicon = 1, // The silicon from the kelotane gets left over.
+	)
+	// 	C10H9AgN4O2S is the chemical compound for silver sulf in real life. we conveniently have all of these chemicals, so let's replicate it here
+	required_reagents = list(
+		/datum/reagent/medicine/kelotane = 1, // Kelotane brings the carbon
+		/datum/reagent/ammonia = 1, // Ammonia brings the hydrogen and nitrogen
+		/datum/reagent/silver = 1,
+		/datum/reagent/oxygen = 1,
+		/datum/reagent/sulfur = 1
+	)
+	mix_message = "A strong and cloying odor begins to bubble from the mixture."
+
+//
+// Tox chems
+//
+/datum/chemical_reaction/dylovene
+	results = list(/datum/reagent/medicine/dylovene = 3)
+	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/potassium = 1, /datum/reagent/ammonia = 1)
+
+/datum/chemical_reaction/ipecac
+	results = list(/datum/reagent/medicine/ipecac = 2)
+	required_reagents = list(
+		/datum/reagent/glycerol = 1,
+		/datum/reagent/consumable/ethanol = 1,
+		/datum/reagent/medicine/dylovene = 1
+	)
+
+/datum/chemical_reaction/charcoal
+	results = list(/datum/reagent/medicine/activated_charcoal = 3)
+	required_reagents = list(/datum/reagent/ash = 1, /datum/reagent/consumable/salt = 1)
+	mix_message = "The mixture yields a fine black powder."
+	mix_sound = 'sound/effects/fuse.ogg'
+
+/datum/chemical_reaction/antihol
+	results = list(/datum/reagent/medicine/antihol = 2)
+	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/activated_charcoal = 1)
+	mix_message = "A minty and refreshing smell drifts from the effervescent mixture."
+
+//
+// Oxy chems
+//
 /datum/chemical_reaction/dexalin
 	results = list(/datum/reagent/medicine/dexalin = 1)
 	required_reagents = list(/datum/reagent/acetone = 2, /datum/reagent/toxin/plasma = 0.1)
 	inhibitors = list(/datum/reagent/water = 1) // Messes with cryox
 	thermic_constant = 20 // Harder to ignite plasma
 
+//
+// Pain chems
+//
+/datum/chemical_reaction/tramadol
+	results = list(/datum/reagent/medicine/tramadol = 3)
+	required_reagents = list(
+		/datum/reagent/medicine/epinephrine = 1,
+		/datum/reagent/consumable/ethanol = 1,
+		/datum/reagent/acetone = 1,
+	)
+
+/datum/chemical_reaction/oxycodone
+	results = list(/datum/reagent/medicine/tramadol/oxycodone = 1)
+	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/tramadol = 1)
+	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
+
+/datum/chemical_reaction/morphine
+	results = list(/datum/reagent/medicine/morphine = 2)
+	required_reagents = list(/datum/reagent/carbon = 2, /datum/reagent/hydrogen = 2, /datum/reagent/consumable/ethanol = 1, /datum/reagent/oxygen = 1)
+	required_temp = 480
+
+//
+// Organ chems
+//
+// Brain
+/datum/chemical_reaction/alkysine
+	results = list(/datum/reagent/medicine/alkysine = 2)
+	required_reagents = list(/datum/reagent/toxin/acid/hydrochloric = 1, /datum/reagent/ammonia = 1, /datum/reagent/medicine/dylovene = 1)
+	reaction_flags = REACTION_INSTANT
+
+/datum/chemical_reaction/alkysine/on_reaction(datum/reagents/holder, datum/equilibrium/reaction, created_volume)
+	. = ..()
+	kapuchem_smoke(
+		holder,
+		reaction,
+		list(/datum/reagent/ammonia = round(created_volume, CHEMICAL_VOLUME_ROUNDING)),
+		clamp(created_volume / 5, 0, 3), // For every 10 units, smoke is 1 tile.
+	)
+
+// General
+/datum/chemical_reaction/peridaxon
+	results = list(/datum/reagent/medicine/peridaxon = 2)
+	required_reagents = list(/datum/reagent/medicine/bicaridine = 2, /datum/reagent/medicine/clonexadone = 2)
+	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
+
+// Eyes
+/datum/chemical_reaction/imidazoline
+	results = list(/datum/reagent/medicine/imidazoline = 2)
+	required_reagents = list(/datum/reagent/carbon = 1, /datum/reagent/phosphorus = 1, /datum/reagent/medicine/dylovene = 1)
+
+// Ears
+/datum/chemical_reaction/inacusiate
+	results = list(/datum/reagent/medicine/inacusiate = 2)
+	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/carbon = 1, /datum/reagent/medicine/dylovene = 1)
+	mix_message = "The mixture sputters loudly and becomes a light grey color."
+	required_temp = 300
+	optimal_temp = 400
+	overheat_temp = 500
+	temp_exponent_factor = 0.35
+	thermic_constant = 20
+	base_reaction_rate = 3
+
+//
+// Other chems
+//
 /datum/chemical_reaction/tricordrazine
 	results = list(/datum/reagent/medicine/tricordrazine = 5)
 	required_reagents = list(/datum/reagent/medicine/bicaridine = 1, /datum/reagent/medicine/kelotane = 1, /datum/reagent/medicine/dylovene = 1)
+
+/datum/chemical_reaction/inaprovaline
+	results = list(/datum/reagent/medicine/inaprovaline = 3)
+	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/carbon = 1, /datum/reagent/consumable/sugar = 1, /datum/reagent/phenol = 1)
 
 /datum/chemical_reaction/zedaphen
 	results = list(/datum/reagent/medicine/zedaphen = 3)
@@ -82,14 +218,6 @@
 	results = list(/datum/reagent/medicine/hyperzine = 3)
 	required_reagents = list(/datum/reagent/consumable/sugar = 1, /datum/reagent/phosphorus = 1, /datum/reagent/sulfur = 1)
 
-/datum/chemical_reaction/tramadol
-	results = list(/datum/reagent/medicine/tramadol = 3)
-	required_reagents = list(/datum/reagent/medicine/epinephrine = 1, /datum/reagent/consumable/ethanol = 1, /datum/reagent/acetone = 1)
-
-/datum/chemical_reaction/oxycodone
-	results = list(/datum/reagent/medicine/tramadol/oxycodone = 1)
-	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/tramadol = 1)
-	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
 
 /datum/chemical_reaction/spaceacillin
 	results = list(/datum/reagent/medicine/spaceacillin = 2)
@@ -101,24 +229,6 @@
 	required_temp = 30 CELSIUS
 	optimal_temp = 80 CELSIUS
 	overheat_temp = 130 CELSIUS
-
-/datum/chemical_reaction/alkysine
-	results = list(/datum/reagent/medicine/alkysine = 2)
-	required_reagents = list(/datum/reagent/toxin/acid/hydrochloric = 1, /datum/reagent/ammonia = 1, /datum/reagent/medicine/dylovene = 1)
-
-/datum/chemical_reaction/morphine
-	results = list(/datum/reagent/medicine/morphine = 2)
-	required_reagents = list(/datum/reagent/carbon = 2, /datum/reagent/hydrogen = 2, /datum/reagent/consumable/ethanol = 1, /datum/reagent/oxygen = 1)
-	required_temp = 480
-
-/datum/chemical_reaction/imidazoline
-	results = list(/datum/reagent/medicine/imidazoline = 2)
-	required_reagents = list(/datum/reagent/carbon = 1, /datum/reagent/phosphorus = 1, /datum/reagent/medicine/dylovene = 1)
-
-/datum/chemical_reaction/peridaxon
-	results = list(/datum/reagent/medicine/peridaxon = 2)
-	required_reagents = list(/datum/reagent/medicine/bicaridine = 2, /datum/reagent/medicine/clonexadone = 2)
-	required_catalysts = list(/datum/reagent/toxin/plasma = 5)
 
 /datum/chemical_reaction/leporazine
 	results = list(/datum/reagent/medicine/leporazine = 2)
@@ -142,7 +252,7 @@
 	overheat_temp = 500
 	temp_exponent_factor = 0.1
 	thermic_constant = -0.25
-	rate_up_lim = 15
+	base_reaction_rate = 15
 
 /datum/chemical_reaction/ephedrine/overheated(datum/reagents/holder, datum/equilibrium/equilibrium, vol_added)
 	default_explode(holder, equilibrium.reacted_vol, 0, 25)
@@ -167,70 +277,44 @@
 
 /datum/chemical_reaction/atropine
 	results = list(/datum/reagent/medicine/atropine = 4)
-	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/diethylamine = 1, /datum/reagent/acetone = 1, /datum/reagent/phenol = 1, /datum/reagent/toxin/acid = 1)
+	required_reagents = list(
+		/datum/reagent/consumable/ethanol = 1,
+		/datum/reagent/diethylamine = 1,
+		/datum/reagent/acetone = 1,
+		/datum/reagent/phenol = 1,
+		/datum/reagent/toxin/acid = 1
+	)
 	mix_message = "A horrid smell like something died drifts from the mixture."
 
 /datum/chemical_reaction/chlorpromazine
 	results = list(/datum/reagent/medicine/chlorpromazine = 2)
 	required_reagents = list(/datum/reagent/cryptobiolin = 1, /datum/reagent/medicine/haloperidol = 1, /datum/reagent/chlorine = 1)
 
-/datum/chemical_reaction/inacusiate
-	results = list(/datum/reagent/medicine/inacusiate = 2)
-	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/carbon = 1, /datum/reagent/medicine/dylovene = 1)
-	mix_message = "The mixture sputters loudly and becomes a light grey color."
-	required_temp = 300
-	optimal_temp = 400
-	overheat_temp = 500
-	temp_exponent_factor = 0.35
-	thermic_constant = 20
-	rate_up_lim = 3
-
-/datum/chemical_reaction/ipecac
-	results = list(/datum/reagent/medicine/ipecac = 2)
-	required_reagents = list(/datum/reagent/glycerol = 1, /datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/dylovene = 1)
-
-/datum/chemical_reaction/charcoal
-	results = list(/datum/reagent/medicine/activated_charcoal = 3)
-	required_reagents = list(/datum/reagent/ash = 1, /datum/reagent/consumable/salt = 1)
-	mix_message = "The mixture yields a fine black powder."
-	mix_sound = 'sound/effects/fuse.ogg'
-
-/datum/chemical_reaction/antihol
-	results = list(/datum/reagent/medicine/antihol = 2)
-	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/activated_charcoal = 1)
-	mix_message = "A minty and refreshing smell drifts from the effervescent mixture."
-
 /datum/chemical_reaction/diphenhydramine
 	results = list(/datum/reagent/medicine/diphenhydramine = 4)
 	// Chlorine is a good enough substitute for bromine right?
-	required_reagents = list(/datum/reagent/fuel/oil = 1, /datum/reagent/carbon = 1, /datum/reagent/chlorine = 1, /datum/reagent/diethylamine = 1, /datum/reagent/consumable/ethanol = 1)
+	required_reagents = list(
+		/datum/reagent/fuel/oil = 1,
+		/datum/reagent/carbon = 1,
+		/datum/reagent/chlorine = 1,
+		/datum/reagent/diethylamine = 1,
+		/datum/reagent/consumable/ethanol = 1
+	)
 	mix_message = "The mixture fizzes gently."
-
-/datum/chemical_reaction/styptic_powder
-	results = list(/datum/reagent/medicine/styptic_powder = 2)
-	required_reagents = list(
-		/datum/reagent/aluminium = 1,
-		/datum/reagent/hydrogen = 1,
-		/datum/reagent/oxygen = 1,
-		/datum/reagent/medicine/bicaridine = 1,
-	)
-	mix_message = "The solution yields an astringent powder."
-
-/datum/chemical_reaction/silver_sulfadiazine
-	results = list(
-		/datum/reagent/medicine/silver_sulfadiazine = 5,
-		/datum/reagent/silicon = 1, // The silicon from the kelotane gets left over.
-	)
-	// 	C10H9AgN4O2S is the chemical compound for silver sulf in real life. we conveniently have all of these chemicals, so let's replicate it here
-	required_reagents = list(
-		/datum/reagent/medicine/kelotane = 1, // Kelotane brings the carbon
-		/datum/reagent/ammonia = 1, // Ammonia brings the hydrogen and nitrogen
-		/datum/reagent/silver = 1,
-		/datum/reagent/oxygen = 1,
-		/datum/reagent/sulfur = 1
-	)
-	mix_message = "A strong and cloying odor begins to bubble from the mixture."
 
 /datum/chemical_reaction/sterilizine
 	results = list(/datum/reagent/space_cleaner/sterilizine = 3)
 	required_reagents = list(/datum/reagent/consumable/ethanol = 1, /datum/reagent/medicine/dylovene = 1, /datum/reagent/toxin/acid/hydrochloric = 1)
+
+/datum/chemical_reaction/shmowder
+	results = list(/datum/reagent/medicine/shmowder = 1)
+	required_reagents = list(
+		/datum/reagent/medicine/bicaridine = 1,
+		/datum/reagent/medicine/meralyne = 1,
+		/datum/reagent/medicine/kelotane = 1,
+		/datum/reagent/medicine/dermaline = 1,
+		/datum/reagent/medicine/dylovene = 1,
+		/datum/reagent/medicine/dexalin = 1,
+		/datum/reagent/medicine/saline_glucose = 1,
+		/datum/reagent/medicine/peridaxon = 1
+	)

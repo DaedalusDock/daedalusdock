@@ -15,6 +15,10 @@ TYPEINFO_DEF(/obj/item/retractor)
 	tool_behaviour = TOOL_RETRACTOR
 	toolspeed = 1
 
+/obj/item/retractor/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("retractor", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"By the will of Minerva, may your hands hold steady and mind stay clear. Malkave 7:4\" ")
+
 /obj/item/retractor/augment
 	desc = "Micro-mechanical manipulator for retracting stuff."
 	toolspeed = 0.5
@@ -39,6 +43,10 @@ TYPEINFO_DEF(/obj/item/hemostat)
 	tool_behaviour = TOOL_HEMOSTAT
 	toolspeed = 1
 
+/obj/item/hemostat/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("hemostat", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"Thou shall witness the Twilight one day, but that shall not be this day\" ")
+
 /obj/item/hemostat/augment
 	desc = "Tiny servos power a pair of pincers to stop bleeding."
 	toolspeed = 0.5
@@ -62,6 +70,10 @@ TYPEINFO_DEF(/obj/item/cautery)
 	attack_verb_simple = list("burn")
 	tool_behaviour = TOOL_CAUTERY
 	toolspeed = 1
+
+/obj/item/cautery/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("cautery", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"Burn with the pride of Sol\" ")
 
 /obj/item/cautery/ignition_effect(atom/ignitable_atom, mob/user)
 	. = span_notice("[user] touches the end of [src] to \the [ignitable_atom], igniting it with a puff of smoke.")
@@ -136,6 +148,10 @@ TYPEINFO_DEF(/obj/item/surgicaldrill)
 	. = ..()
 	AddElement(/datum/element/eyestab)
 
+/obj/item/surgicaldrill/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("surgical drill", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"When one does the impossible and sees the invisible, only then shall they undergo Ephemeration\" ")
+
 /obj/item/surgicaldrill/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] rams [src] into [user.p_their()] chest! It looks like [user.p_theyre()] trying to commit suicide!"))
 	addtimer(CALLBACK(user, TYPE_PROC_REF(/mob/living/carbon, gib), null, null, TRUE, TRUE), 25)
@@ -185,6 +201,10 @@ TYPEINFO_DEF(/obj/item/scalpel)
 	AddComponent(/datum/component/butchering, 80 * toolspeed, 100, 0)
 	AddElement(/datum/element/eyestab)
 
+/obj/item/scalpel/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("scalpel", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"The sword of the poet is the pen, The sword of the Practitioner is the Word. Regenisis 1:9\"")
+
 /obj/item/scalpel/augment
 	desc = "Ultra-sharp blade attached directly to your bone for extra-accuracy."
 	toolspeed = 0.5
@@ -226,6 +246,10 @@ TYPEINFO_DEF(/obj/item/circular_saw)
 /obj/item/circular_saw/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/butchering, 40 * toolspeed, 100, 5, 'sound/weapons/circsawhit.ogg') //saws are very accurate and fast at butchering
+
+/obj/item/circular_saw/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("circular saw", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"Minerva bless this blade and let it cut trough all that stands in its way.\" ")
 
 /obj/item/circular_saw/augment
 	desc = "A small but very fast spinning saw. It rips and tears until it is done."
@@ -404,6 +428,11 @@ TYPEINFO_DEF(/obj/item/shears)
 	sleep(timer)
 	return BRUTELOSS
 
+/obj/item/shears/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("shears", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"For all that enters The Continuum, needs to exit The Continuum.\" ")
+
+
 TYPEINFO_DEF(/obj/item/bonesetter)
 	default_materials = list(/datum/material/iron=5000, /datum/material/glass=2500)
 
@@ -425,6 +454,11 @@ TYPEINFO_DEF(/obj/item/bonesetter)
 TYPEINFO_DEF(/obj/item/blood_filter)
 	default_materials = list(/datum/material/iron=2000, /datum/material/glass=1500, /datum/material/silver=500)
 
+/obj/item/bonesetter/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("bone setter", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"The best offerings to Minerva are those of dry bones. -Aetheric Proverb\" ")
+
+
 /obj/item/blood_filter
 	name = "blood filter"
 	desc = "For filtering the blood."
@@ -440,6 +474,11 @@ TYPEINFO_DEF(/obj/item/blood_filter)
 	toolspeed = 1
 	/// Assoc list of chem ids to names, used for deciding which chems to filter when used for surgery
 	var/list/whitelist = list()
+
+/obj/item/blood_filter/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("blood filter", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"When one's blood is dried out, they must be ready what is next. Malkave 2:9\" ")
+
 
 /obj/item/blood_filter/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -484,3 +523,7 @@ TYPEINFO_DEF(/obj/item/blood_filter)
 	force = 0
 	throwforce = 1.0
 	w_class = WEIGHT_CLASS_SMALL
+
+/obj/item/fixovein/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+	. = ..()
+	user.disco_made_easy("vascular_recoupler", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"Synthesis and Antithesis are cyclical, for all is one and One is All. -Regenisis 1:6\" ")

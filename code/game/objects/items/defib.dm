@@ -362,6 +362,9 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 		return
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
 
+	. = ..()
+	user.disco_made_easy("defibrillator", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"Minerva Screams in thunder, it whispers in lightning. -Aetheric Proverb\"")
+
 /obj/item/shockpaddles/attack_self(mob/user, modifiers)
 	. = ..()
 	if(.)

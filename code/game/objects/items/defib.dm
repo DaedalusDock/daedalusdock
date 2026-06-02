@@ -362,9 +362,9 @@ TYPEINFO_DEF(/obj/item/defibrillator)
 		return
 	RegisterSignal(user, COMSIG_MOVABLE_MOVED, PROC_REF(check_range))
 
-/obj/item/shockpaddles/disco_flavor(mob/living/carbon/human/user, nearby=TRUE, is_station_level)
+/obj/item/shockpaddles/examine(mob/user)
 	. = ..()
-	user.disco_made_easy("defibrillator", 13,skill_path = /datum/rpg_skill/forensics,  success_text = "Engraved you see written \"Minerva Screams in thunder, it whispers in lightning. -Aetheric Proverb\"")
+	. += user.disco_made_easy("defibrillator", 13,skill_path = /datum/rpg_skill/forensics, is_examine=TRUE,  success_text = "Engraved you see written \"Minerva Screams in thunder, it whispers in lightning. -Aetheric Proverb\"")
 
 /obj/item/shockpaddles/attack_self(mob/user, modifiers)
 	. = ..()

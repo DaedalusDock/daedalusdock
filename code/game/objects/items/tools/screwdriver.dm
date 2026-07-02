@@ -50,6 +50,10 @@ TYPEINFO_DEF(/obj/item/screwdriver)
 		"yellow" = "#ffa500"
 	)
 
+/obj/item/screwdriver/examine(mob/user)
+	. = ..()
+	. += user.disco_made_easy("screw_eye", 8, /datum/rpg_skill/bloodsport, success_text = "Small. Inconspicuous. Shaped just right to gouge someone's eye out.") // clues you in to the "eyestab" element
+
 /obj/item/screwdriver/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is stabbing [src] into [user.p_their()] [pick("temple", "heart")]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return(BRUTELOSS)

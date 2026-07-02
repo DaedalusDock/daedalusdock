@@ -228,7 +228,7 @@ TYPEINFO_DEF(/obj/item/weldingtool)
 				update_appearance()
 				START_PROCESSING(SSobj, src)
 			else
-				to_chat(user, span_notice("The [src] fails to ignite."))
+				to_chat(user, span_notice("[src] fails to ignite."))
 				playsound(loc, dud_sound, 50, TRUE)
 				switched_off(user)
 		else
@@ -397,7 +397,7 @@ TYPEINFO_DEF(/obj/item/weldingtool/experimental)
 
 /obj/item/weldingtool/experimental/examine(mob/user)
 	. = ..()
-	. += user.disco_made_easy("exp_welder", 13, skill_path = /datum/rpg_skill/fourteen_eyes, trait_succeed=TRAIT_ENGINEER, success_text = "Despite Daedalus Industries's numerous claims that it's \"less harmful to the eyes\", the arc generated is still painfully blinding.")
+	. += user.disco_made_easy("exp_welder", 13, skill_path = /datum/rpg_skill/fourteen_eyes, is_examine=TRUE, trait_succeed=TRAIT_ENGINEER, success_text = "Despite Daedalus Industries's numerous claims that it's \"less harmful to the eyes\", the arc generated is still painfully blinding.")
 
 
 #undef WELDER_FUEL_BURN_INTERVAL

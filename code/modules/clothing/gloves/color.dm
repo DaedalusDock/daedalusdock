@@ -14,6 +14,11 @@
 	cut_type = /obj/item/clothing/gloves/cut
 	supports_variations_flags = CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+/obj/item/clothing/gloves/color/yellow/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	user.disco_made_easy("glove_fibers", 12, skill_path = /datum/rpg_skill/forensics, success_text = "\"This airlock has grey jumpsuit and insulated glove fibers on it...\"") //reference to the detective toy
+	user.disco_made_easy("precious_insuls", 11, skill_path = /datum/rpg_skill/fourteen_eyes, trait_succeed=TRAIT_ENGINEER, success_text = "Following a shortage in synthetic rubber after the Little Bang, \"insuls\" have become a scarce sight in the Shrouded Sector, much to the chagrin of technicians (who need them for work with live wires) and troublemakers (who need them for hacking).")
+
 /obj/item/clothing/gloves/color/yellow/heavy
 	name = "ceramic-lined insulated gloves"
 	desc = "A cheaper make of the standard insulated gloves, using internal ceramic lining to make up for the sub-par rubber material. The extra weight makes them more bulky to use."

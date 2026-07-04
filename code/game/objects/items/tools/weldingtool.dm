@@ -217,7 +217,11 @@ TYPEINFO_DEF(/obj/item/weldingtool)
 		return
 	set_welding(!welding)
 	if(welding)
+		#ifndef UNIT_TESTS
 		var/datum/roll_result/result = user.stat_roll(11, /datum/rpg_skill/fine_motor) //might have to give it a few tries
+		#else
+		var/datum/roll_result/result = GLOB.success_roll
+		#endif
 		if(get_fuel() >= 1)
 			if(result.outcome >= SUCCESS)
 				to_chat(user, span_notice("You switch [src] on."))

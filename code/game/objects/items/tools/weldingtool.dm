@@ -228,7 +228,7 @@ TYPEINFO_DEF(/obj/item/weldingtool)
 				update_appearance()
 				START_PROCESSING(SSobj, src)
 			else
-				to_chat(user, span_notice("\The [src] fails to ignite."))
+				to_chat(user, span_notice("[src] fails to ignite."))
 				playsound(loc, dud_sound, 50, TRUE)
 				switched_off(user)
 		else

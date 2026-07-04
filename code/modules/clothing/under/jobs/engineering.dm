@@ -41,7 +41,7 @@ TYPEINFO_DEF(/obj/item/clothing/under/rank/engineering/chief_engineer)
 
 /obj/item/clothing/under/rank/engineering/atmospheric_technician/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/disco_clothing, "atmos_paranoia", 8, /datum/rpg_skill/electric_body, failure_text = "You become hyper-aware of what you're breathing. Something in the air...")
+	AddComponent(/datum/component/disco_clothing, "atmos_paranoia", 8, /datum/rpg_skill/electric_body, failure_text = "Something tickles your nose.")
 
 /obj/item/clothing/under/rank/engineering/atmospheric_technician/skirt
 	name = "atmospheric technician's jumpskirt"

@@ -47,7 +47,7 @@ TYPEINFO_DEF(/obj/item/storage/toolbox)
 
 /obj/item/storage/toolbox/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
 	. = ..()
-	user.disco_made_easy("toolboxing", 8, skill_path = /datum/rpg_skill/bloodsport, success_text = "Swing, swing, swing until the spaceman turns horizontal.")
+	user.disco_made_easy("toolboxing", 13, skill_path = /datum/rpg_skill/theatre, success_text = "Swing, swing, swing until the spaceman turns horizontal.")
 
 /obj/item/storage/toolbox/emergency
 	name = "emergency toolbox"

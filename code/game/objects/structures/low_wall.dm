@@ -42,6 +42,7 @@ TYPEINFO_DEF(/obj/structure/low_wall)
 			T.regenerate_ao()
 
 	AddElement(/datum/element/climbable)
+	AddElement(/datum/element/elevation, pixel_shift = 12)
 	set_material(plating_material, FALSE)
 
 /obj/structure/low_wall/ex_act(severity)

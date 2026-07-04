@@ -1006,28 +1006,15 @@
 
 	return data
 
-//PARIAH EDIT ADDITION
-#define MOB_FACE_DIRECTION_DELAY 1
-
-// facing verbs
-/**
- * Returns true if a mob can turn to face things
- *
- * Conditions:
- * * client.last_turn > world.time
- * * not dead or unconcious
- * * not anchored
- * * no transform not set
- * * we are not restrained
- */
+/// Returns true if a mob can turn to face things
 /mob/proc/canface()
-	if(world.time < client.last_turn)
-		return FALSE
-	if(stat >= UNCONSCIOUS)
+	if(stat > CONSCIOUS)
 		return FALSE
 	if(anchored)
 		return FALSE
 	if(notransform)
+		return FALSE
+	if(buckled)
 		return FALSE
 	if(HAS_TRAIT(src, TRAIT_ARMS_RESTRAINED))
 		return FALSE
@@ -1050,7 +1037,6 @@
 	if(!canface())
 		return FALSE
 	setDir(EAST)
-	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
 	return TRUE
 
 ///Hidden verb to turn west
@@ -1059,7 +1045,6 @@
 	if(!canface())
 		return FALSE
 	setDir(WEST)
-	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
 	return TRUE
 
 ///Hidden verb to turn north
@@ -1068,7 +1053,6 @@
 	if(!canface())
 		return FALSE
 	setDir(NORTH)
-	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
 	return TRUE
 
 ///Hidden verb to turn south
@@ -1077,7 +1061,6 @@
 	if(!canface())
 		return FALSE
 	setDir(SOUTH)
-	client.last_turn = world.time + MOB_FACE_DIRECTION_DELAY
 	return TRUE
 //PARIAH EDIT END
 

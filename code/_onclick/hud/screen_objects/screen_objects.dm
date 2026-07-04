@@ -190,6 +190,9 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen)
 /atom/movable/screen/language_menu/ghost
 	screen_loc = ui_ghost_language_menu
 
+/atom/movable/screen/language_menu/ai
+	screen_loc = ui_ai_language_menu
+
 /atom/movable/screen/inventory
 	/// The identifier for the slot. It has nothing to do with ID cards.
 	var/slot_id

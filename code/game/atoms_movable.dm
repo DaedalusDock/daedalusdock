@@ -1315,6 +1315,13 @@
 */
 /atom/movable/proc/keybind_face_direction(direction)
 	setDir(direction)
+	return TRUE
+
+/mob/keybind_face_direction(direction)
+	if(!canface())
+		return FALSE
+	return ..()
+
 
 /**
  * Show a message to this mob (visual or audible)

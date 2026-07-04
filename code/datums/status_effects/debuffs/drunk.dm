@@ -12,6 +12,7 @@
  */
 /datum/status_effect/inebriated
 	id = "drunk"
+	alert_type = null
 	tick_interval = 2 SECONDS
 	status_type = STATUS_EFFECT_REPLACE
 	/// The level of drunkness we are currently at.

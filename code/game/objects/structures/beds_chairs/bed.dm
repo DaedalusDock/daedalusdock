@@ -113,7 +113,7 @@
 	set_density(TRUE)
 	icon_state = "up"
 	//Push them up from the normal lying position
-	M.pixel_y = M.base_pixel_y
+	M.add_offsets(type, y_add = base_pixel_y)
 
 /obj/structure/bed/roller/Moved(atom/old_loc, movement_dir, forced, list/old_locs, momentum_change = TRUE)
 	. = ..()
@@ -125,7 +125,7 @@
 	set_density(FALSE)
 	icon_state = "down"
 	//Set them back down to the normal lying position
-	M.pixel_y = M.base_pixel_y + M.body_position_pixel_y_offset
+	M.remove_offsets(type)
 
 
 /obj/item/roller
@@ -252,12 +252,12 @@
 
 /obj/structure/bed/double/post_buckle_mob(mob/living/target)
 	. = ..()
-	if(buckled_mobs.len > 1 && !goldilocks) //Push the second buckled mob a bit higher from the normal lying position
-		target.pixel_y = target.base_pixel_y + 6
+	if(buckled_mobs.len > 1 && !goldilocks) // Push the second buckled mob a bit higher from the normal lying position
+		target.add_offsets("goldilocks", y_add = 6)
 		goldilocks = target
 
 /obj/structure/bed/double/post_unbuckle_mob(mob/living/target)
 	. = ..()
-	target.pixel_y = target.base_pixel_y + target.body_position_pixel_y_offset
 	if(target == goldilocks)
+		target.remove_offsets("goldilocks")
 		goldilocks = null

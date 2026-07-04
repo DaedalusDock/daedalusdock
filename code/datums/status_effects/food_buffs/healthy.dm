@@ -1,4 +1,5 @@
 /datum/status_effect/food/healthy
+	abstract_type = /datum/status_effect/food/healthy
 
 /datum/status_effect/food/healthy/on_apply()
 	. = ..()

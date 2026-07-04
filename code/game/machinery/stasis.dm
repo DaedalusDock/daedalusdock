@@ -23,6 +23,7 @@
 	. = ..()
 	mattress_on = new(icon, mattress_state, BELOW_OBJ_LAYER, dir, alpha = 0)
 	add_viscontents(mattress_on)
+	AddElement(/datum/element/elevation, pixel_shift = 6)
 
 /obj/machinery/stasis/Destroy()
 	QDEL_NULL(mattress_on)

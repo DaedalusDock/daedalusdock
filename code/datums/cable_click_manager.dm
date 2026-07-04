@@ -128,8 +128,7 @@
 		clear_state()
 		return
 
-	if(user.canface())
-		user.face_atom(T)
+	user.face_atom(T)
 
 	if(!tracked_turf)
 		position_1 = grid_cell

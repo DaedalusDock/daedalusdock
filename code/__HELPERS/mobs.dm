@@ -6,6 +6,35 @@
 /// Two mobs one is facing a person, but the other is perpendicular
 #define FACING_INIT_FACING_TARGET_TARGET_FACING_PERPENDICULAR 3 //Do I win the most informative but also most stupid define award?
 
+/**
+ * Causes the passed atom / image to appear floating,
+ * playing a simple animation where they move up and down by 2 pixels (looping)
+ *
+ * In most cases you should NOT call this manually, instead use [/datum/element/movetype_handler]!
+ * This is just so you can apply the animation to things which can be animated but are not movables (like images)
+ */
+#define DO_FLOATING_ANIM(target) \
+	z_animate(target, pixel_y = 2, time = 1 SECONDS, loop = -1, flags = ANIMATION_RELATIVE); \
+	z_animate(target, pixel_y = -2, time = 1 SECONDS, flags = ANIMATION_RELATIVE|ANIMATION_CONTINUE)
+
+/**
+ * Stops the passed atom / image from appearing floating
+ *
+ * In most cases you should NOT call this manually, instead use [/datum/element/movetype_handler]!
+ * This is just so you can apply the animation to things which can be animated but are not movables (like images)
+ */
+#define STOP_FLOATING_ANIM(target) \
+	var/__final_pixel_y = 0; \
+	if(ismovable(target)) { \
+		var/atom/movable/__movable_target = target; \
+		__final_pixel_y += __movable_target.base_pixel_y; \
+	}; \
+	if(isliving(target)) { \
+		var/mob/living/__living_target = target; \
+		__final_pixel_y += __living_target.has_offset(pixel = PIXEL_Y_OFFSET); \
+	}; \
+	z_animate(target, pixel_y = __final_pixel_y, time = 1 SECONDS)
+
 /proc/random_blood_type()
 	RETURN_TYPE(/datum/blood)
 	var/datum/blood/path = pick(\

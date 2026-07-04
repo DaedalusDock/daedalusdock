@@ -6,7 +6,7 @@
 
 /datum/status_effect/in_love
 	id = "in_love"
-	duration = -1
+	duration = STATUS_EFFECT_PERMANENT
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/in_love
 	var/hearts
@@ -43,6 +43,7 @@
 
 /datum/status_effect/bounty
 	id = "bounty"
+	alert_type = null
 	status_type = STATUS_EFFECT_UNIQUE
 	var/mob/living/rewarded
 
@@ -90,8 +91,8 @@
 // holdup is for the person aiming
 /datum/status_effect/holdup
 	id = "holdup"
-	duration = -1
-	tick_interval = -1
+	duration = STATUS_EFFECT_PERMANENT
+	tick_interval = STATUS_EFFECT_NO_TICK
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/holdup
 
@@ -116,8 +117,8 @@
 // this status effect is used to negotiate the high-fiving capabilities of all concerned parties
 /datum/status_effect/offering
 	id = "offering"
-	duration = -1
-	tick_interval = -1
+	duration = STATUS_EFFECT_PERMANENT
+	tick_interval = STATUS_EFFECT_NO_TICK
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = null
 	/// The people who were offered this item at the start
@@ -214,13 +215,14 @@
 /datum/status_effect/caltropped
 	id = "caltropped"
 	duration = 1 SECONDS
-	tick_interval = INFINITY
+	tick_interval = STATUS_EFFECT_NO_TICK
 	status_type = STATUS_EFFECT_REFRESH
 	alert_type = null
 
 ///Makes the mob luminescent for the duration of the effect.
 /datum/status_effect/tinlux_light
 	id = "tinea_luxor_light"
+	alert_type = null
 	processing_speed = STATUS_EFFECT_NORMAL_PROCESS
 	var/obj/effect/dummy/lighting_obj/moblight/mob_light_obj
 

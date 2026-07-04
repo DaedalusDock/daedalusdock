@@ -39,7 +39,8 @@
 			to_chat(target, span_revennotice("You feel as if you are being watched."))
 		return
 	log_combat(src, target, "started to harvest")
-	face_atom(target)
+
+	face_atom(target, TRUE)
 	draining = TRUE
 	essence_drained += rand(15, 20)
 	to_chat(src, span_revennotice("You search for the soul of [target]."))

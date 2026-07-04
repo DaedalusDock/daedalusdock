@@ -1,6 +1,6 @@
 /datum/status_effect/woozy
 	id = "woozy"
-	tick_interval = -1
+	tick_interval = STATUS_EFFECT_PERMANENT
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/woozy
 
@@ -16,7 +16,7 @@
 
 /datum/status_effect/high_blood_pressure
 	id = "high_blood_pressure"
-	tick_interval = -1
+	tick_interval = STATUS_EFFECT_PERMANENT
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/high_blood_pressure
 
@@ -39,7 +39,7 @@
 
 /datum/status_effect/seizure
 	id = "seizure"
-	tick_interval = -1
+	tick_interval = STATUS_EFFECT_PERMANENT
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = /atom/movable/screen/alert/status_effect/seizure
 

@@ -69,6 +69,7 @@
 	verbs -= /obj/structure/table/verb/verbflip
 	verbs += /obj/structure/table/proc/verbunflip
 
+	RemoveElement(/datum/element/elevation, pixel_shift = 12)
 	update_icon()
 
 /obj/structure/table/proc/unflip(user, skip_delay)
@@ -92,7 +93,7 @@
 
 	smoothing_flags = initial(smoothing_flags)
 	update_icon()
-
+	AddElement(/datum/element/elevation, pixel_shift = 12)
 	return TRUE
 
 /obj/structure/table/proc/straight_table_check(direction)

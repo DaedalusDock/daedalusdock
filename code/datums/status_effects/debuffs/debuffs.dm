@@ -1,7 +1,9 @@
 //Largely negative status effects go here, even if they have small benificial effects
 //STUN EFFECTS
 /datum/status_effect/incapacitating
-	tick_interval = 0
+	abstract_type = /datum/status_effect/incapacitating
+	tick_interval = 0.2 SECONDS
+	processing_speed = STATUS_EFFECT_PRIORITY
 	status_type = STATUS_EFFECT_REPLACE
 	alert_type = null
 	var/needs_update_stat = FALSE
@@ -125,10 +127,9 @@
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
 	return ..()
 
-/datum/status_effect/incapacitating/unconscious/tick()
+/datum/status_effect/incapacitating/unconscious/tick(delta_time, times_fired)
 	if(owner.stamina.loss)
-		owner.stamina.adjust(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
-
+		owner.stamina.adjust(3 * delta_time)
 
 //SLEEPING
 /datum/status_effect/incapacitating/sleeping
@@ -142,9 +143,11 @@
 	if(!.)
 		return
 
-	if(!HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
+	if(HAS_TRAIT(owner, TRAIT_SLEEPIMMUNE))
+		tick_interval = STATUS_EFFECT_NO_TICK
+	else
 		ADD_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
-		tick_interval = -1
+
 
 	if(owner.mind)
 		COOLDOWN_START(owner.mind, dream_cooldown, 5 SECONDS) // You need to sleep for atleast 5 seconds to begin dreaming.
@@ -164,7 +167,7 @@
 /datum/status_effect/incapacitating/sleeping/proc/on_owner_insomniac(mob/living/source)
 	SIGNAL_HANDLER
 	REMOVE_TRAIT(owner, TRAIT_KNOCKEDOUT, TRAIT_STATUS_EFFECT(id))
-	tick_interval = -1
+	tick_interval = STATUS_EFFECT_NO_TICK
 
 ///If the mob has the TRAIT_SLEEPIMMUNE but somehow looses it we make him sleep and restart the tick()
 /datum/status_effect/incapacitating/sleeping/proc/on_owner_sleepy(mob/living/source)
@@ -206,7 +209,7 @@
 //STASIS
 /datum/status_effect/grouped/hard_stasis
 	id = "stasis"
-	duration = -1
+	duration = STATUS_EFFECT_PERMANENT
 	alert_type = /atom/movable/screen/alert/status_effect/stasis
 	var/last_dead_time
 
@@ -260,7 +263,7 @@
 /datum/status_effect/pacify
 	id = "pacify"
 	status_type = STATUS_EFFECT_REPLACE
-	tick_interval = 1
+	tick_interval = STATUS_EFFECT_NO_TICK
 	duration = 100
 	alert_type = null
 
@@ -278,7 +281,7 @@
 
 /datum/status_effect/his_wrath //does minor damage over time unless holding His Grace
 	id = "his_wrath"
-	duration = -1
+	duration = STATUS_EFFECT_PERMANENT
 	tick_interval = 4
 	alert_type = /atom/movable/screen/alert/status_effect/his_wrath
 
@@ -298,7 +301,7 @@
 
 /datum/status_effect/cultghost //is a cult ghost and can't use manifest runes
 	id = "cult_ghost"
-	duration = -1
+	duration = STATUS_EFFECT_PERMANENT
 	alert_type = null
 
 /datum/status_effect/cultghost/on_apply()
@@ -531,7 +534,7 @@
 	id = "neck_slice"
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = null
-	duration = -1
+	duration = STATUS_EFFECT_PERMANENT
 
 /datum/status_effect/neck_slice/tick()
 
@@ -645,7 +648,7 @@
 /datum/status_effect/gonbola_pacify
 	id = "gonbolaPacify"
 	status_type = STATUS_EFFECT_MULTIPLE
-	tick_interval = -1
+	tick_interval = STATUS_EFFECT_PERMANENT
 	alert_type = null
 
 /datum/status_effect/gonbola_pacify/on_apply()
@@ -844,7 +847,7 @@
 	id = "go_away"
 	duration = 100
 	status_type = STATUS_EFFECT_REPLACE
-	tick_interval = 1
+	tick_interval = STATUS_EFFECT_AUTO_TICK
 	alert_type = /atom/movable/screen/alert/status_effect/go_away
 	var/direction
 
@@ -867,16 +870,16 @@
 	id = "fake_virus"
 	duration = 1800//3 minutes
 	status_type = STATUS_EFFECT_REPLACE
-	tick_interval = 1
+	tick_interval = STATUS_EFFECT_AUTO_TICK
 	alert_type = null
 	var/msg_stage = 0//so you dont get the most intense messages immediately
 
-/datum/status_effect/fake_virus/tick()
+/datum/status_effect/fake_virus/tick(delta_time)
 	var/fake_msg = ""
 	var/fake_emote = ""
 	switch(msg_stage)
 		if(0 to 300)
-			if(prob(1))
+			if(DT_PROB(1, delta_time))
 				fake_msg = pick(
 				span_warning(pick("Your head hurts.", "Your head pounds.")),
 				span_warning(pick("You're having difficulty breathing.", "Your breathing becomes heavy.")),
@@ -885,7 +888,7 @@
 				span_warning(pick("Your head hurts.", "Your mind blanks for a moment.")),
 				span_warning(pick("Your throat hurts.", "You clear your throat.")))
 		if(301 to 600)
-			if(prob(2))
+			if(DT_PROB(2, delta_time))
 				fake_msg = pick(
 				span_warning(pick("Your head hurts a lot.", "Your head pounds incessantly.")),
 				span_warning(pick("Your windpipe feels like a straw.", "Your breathing becomes tremendously difficult.")),
@@ -976,6 +979,7 @@
 
 /datum/status_effect/cloudstruck
 	id = "cloudstruck"
+	alert_type = null
 	status_type = STATUS_EFFECT_REPLACE
 	duration = 3 SECONDS
 	on_remove_on_mob_delete = TRUE
@@ -1113,7 +1117,7 @@
 /datum/status_effect/ghoul
 	id = "ghoul"
 	status_type = STATUS_EFFECT_UNIQUE
-	duration = -1
+	duration = STATUS_EFFECT_PERMANENT
 	alert_type = /atom/movable/screen/alert/status_effect/ghoul
 	/// The new max health value set for the ghoul, if supplied
 	var/new_max_health
@@ -1272,9 +1276,8 @@
 /datum/status_effect/monkey_retardation
 	id = "monkey_retardation"
 	alert_type = null
-	duration = -1
+	duration = STATUS_EFFECT_PERMANENT
 	status_type = STATUS_EFFECT_UNIQUE
 
 /datum/status_effect/monkey_retardation/nextmove_modifier()
 	return 2
-

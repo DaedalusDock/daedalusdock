@@ -4,7 +4,7 @@
 /datum/hud/ai/initialize_screens()
 	. = ..()
 
-	add_screen_object(/atom/movable/screen/language_menu{screen_loc = ui_ai_language_menu}, HUDKEY_MOB_LANGUAGE_MENU, HUDGROUP_STATIC_INVENTORY)
+	add_screen_object(/atom/movable/screen/language_menu/ai, HUDKEY_MOB_LANGUAGE_MENU, HUDGROUP_STATIC_INVENTORY)
 	add_screen_object(/atom/movable/screen/ai/aicore, HUDKEY_AI_AICORE, HUDGROUP_STATIC_INVENTORY)
 	add_screen_object(/atom/movable/screen/ai/camera_list, HUDKEY_AI_CAMERA_LIST, HUDGROUP_STATIC_INVENTORY)
 	add_screen_object(/atom/movable/screen/ai/camera_track, HUDKEY_AI_CAMERA_TRACK, HUDGROUP_STATIC_INVENTORY)

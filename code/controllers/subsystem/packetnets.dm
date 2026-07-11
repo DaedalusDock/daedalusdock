@@ -387,7 +387,7 @@ SUBSYSTEM_DEF(packets)
 	var/rendered = virt.compose_message(virt, language, message, frequency, spans)
 
 	for(var/obj/item/radio/radio as anything in receive)
-		SEND_SIGNAL(radio, COMSIG_RADIO_RECEIVE, virt.source, message, frequency, data)
+		SEND_SIGNAL(radio, COMSIG_RADIO_RECEIVE, virt, message, frequency, data)
 		for(var/atom/movable/hearer as anything in receive[radio])
 			if(!hearer)
 				stack_trace("null found in the hearers list returned by the spatial grid. this is bad")
@@ -413,12 +413,12 @@ SUBSYSTEM_DEF(packets)
 	var/lang_name = data["language"]
 	var/log_text = "\[[get_radio_name(frequency)]\] [spans_part]\"[message]\" (language: [lang_name])"
 
-	var/mob/source_mob = virt.source
+	var/mob/source_mob = virt.speaker_weakref.resolve()
 
 	if(ismob(source_mob))
 		source_mob.log_message(log_text, LOG_TELECOMMS)
 	else
-		log_telecomms("[virt.source] [log_text] [loc_name(get_turf(virt.source))]")
+		log_telecomms("[source_mob] [log_text] [loc_name(get_turf(source_mob))]")
 
 	QDEL_IN(virt, 50)  // Make extra sure the virtualspeaker gets qdeleted
 

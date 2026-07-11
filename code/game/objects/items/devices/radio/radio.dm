@@ -319,7 +319,8 @@ TYPEINFO_DEF(/obj/item/radio)
 			return
 
 	// Determine the identity information which will be attached to the signal.
-	var/atom/movable/virtualspeaker/speaker = new(null, talking_movable, src)
+	var/atom/movable/virtualspeaker/speaker = new(null, talking_movable, src.anonymize)
+	speaker.baked_saymod = talking_movable.say_mod(message, message_mods, language)
 
 	// Construct the signal
 	var/list/broadcast_levels = broadcast_z_override || list(get_step(src, 0)?.z)

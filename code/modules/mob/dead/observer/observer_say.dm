@@ -52,12 +52,13 @@
 	var/atom/movable/to_follow = speaker
 	if(radio_freq)
 		var/atom/movable/virtualspeaker/V = speaker
+		var/atom/movable/resolved_speaker = V.speaker_weakref.resolve()
 
-		if(isAI(V.source))
-			var/mob/living/silicon/ai/S = V.source
+		if(isAI(resolved_speaker))
+			var/mob/living/silicon/ai/S = resolved_speaker
 			to_follow = S.eyeobj
 		else
-			to_follow = V.source
+			to_follow = resolved_speaker
 
 	var/link = FOLLOW_LINK(src, to_follow)
 

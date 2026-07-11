@@ -59,6 +59,8 @@
 
 #define MODE_NO_QUOTE "no_quote"
 
+#define MODE_AI_OVER_RADIO "ai_radio_effects"
+
 //Spans. Robot speech, italics, etc. Applied in compose_message().
 #define SPAN_ROBOT "robot"
 #define SPAN_YELL "yell"

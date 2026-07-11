@@ -1,3 +1,5 @@
+#define PACKET_COLOR(freq) packet_colors[freq] ||= "#[copytext(md5(ref(freq)), 1, 7)]"
+
 SUBSYSTEM_DEF(packets)
 	name = "Packets"
 	wait = 0
@@ -56,6 +58,13 @@ SUBSYSTEM_DEF(packets)
 
 	/// A virtual radio to send radio messages without a physical radio. Yeah it's cringe, sue me.
 	var/obj/item/radio/virtual_radio
+
+	/// Colors for the packet visualizer hud.
+	VAR_PROTECTED/packet_colors = list()
+	/// Every mob that can see packets.
+	var/list/mob/packet_viewers = list()
+	/// Mobs that can see diagnostic huds. They may be uncliented, so they aren't always in packet_viewers.
+	var/list/mob/diagnostic_hud_users = list()
 
 /// Generates a unique (at time of read) ID for an atom, It just plays silly with the ref.
 /// Pass the target atom in as arg[1]
@@ -241,9 +250,8 @@ SUBSYSTEM_DEF(packets)
 	//If checking range, find the source turf
 	var/source = packet.author?.resolve()
 
-	var/turf/start_point
+	var/turf/start_point = get_turf(source)
 	if(packet.range)
-		start_point = get_turf(source)
 		if(!start_point)
 			return
 
@@ -253,6 +261,8 @@ SUBSYSTEM_DEF(packets)
 			return
 
 	var/datum/radio_frequency/freq = packet.frequency_datum
+	var/list/packet_images = length(packet_viewers) ? list() : null
+
 	//Send the data
 	for(var/current_filter in packet.filter_list)
 		if(isnull(freq.devices[current_filter]))
@@ -264,8 +274,8 @@ SUBSYSTEM_DEF(packets)
 				freq.devices[current_filter] -= device_ref
 				continue
 
+			var/turf/end_point = get_turf(device)
 			if(packet.range)
-				var/turf/end_point = get_turf(device)
 				if(!end_point)
 					continue
 
@@ -274,14 +284,49 @@ SUBSYSTEM_DEF(packets)
 
 			device.receive_signal(packet)
 
+			if(packet_images)
+				packet_images += visualize_packet(start_point, end_point)
+
+	if(length(packet_images))
+		send_packet_visuals(packet_images, PACKET_COLOR(freq))
+
+/datum/controller/subsystem/packets/proc/visualize_packet(turf/source, turf/destination, color = "#FFFFFF")
+	if(!source || !destination || source.z != destination.z)
+		return null
+
+	. = list(
+		draw_line(source, destination, src_offset_y = 4, dest_offset_y = 4),
+		draw_line(destination, source, TRUE, src_offset_y = 4, dest_offset_y = 4)
+	)
+
+/datum/controller/subsystem/packets/proc/send_packet_visuals(list/images, color)
+	set waitfor = FALSE
+	list_clear_nulls(images)
+	for(var/image/img as anything in images)
+		img.color = color
+		img.alpha = 0
+		img.plane = HUD_PLANE
+		animate(img, alpha = 30, time = 0.1 SECOND, easing = SINE_EASING | EASE_IN)
+		animate(alpha = 50, time = 0.9 SECOND, easing = SINE_EASING | EASE_OUT)
+		animate(alpha = 0, time = 1 SECONDS, easing = SINE_EASING)
+
+	for(var/mob/viewer in packet_viewers)
+		viewer.client?.images += images
+
+	var/list/who_has_seen = packet_viewers.Copy()
+	sleep(2 SECONDS)
+	for(var/mob/viewer in who_has_seen)
+		viewer.client?.images -= images
+
 /// Do Spatial Grid handling for IRPS, Atmos Radio group.
 /// These are separate to save just that little bit more overhead.
 /datum/controller/subsystem/packets/proc/_irps_spatialgrid_atmos(datum/signal/packet, datum/source, turf/start_point)
 	PRIVATE_PROC(TRUE) //Touch this and I eat your legs.
 
 	var/datum/radio_frequency/freq = packet.frequency_datum
-	//Send the data
+	var/list/packet_images = length(packet_viewers) ? list() : null
 
+	//Send the data
 	var/list/spatial_grid_results = SSspatial_grid.orthogonal_range_search(start_point, SPATIAL_GRID_CONTENTS_TYPE_RADIO_ATMOS, packet.range)
 
 	for(var/obj/listener as anything in spatial_grid_results - source)
@@ -295,7 +340,13 @@ SUBSYSTEM_DEF(packets)
 			continue
 		if((get_dist(start_point, listener) > packet.range))
 			continue
+
 		listener.receive_signal(packet)
+		if(packet_images)
+			packet_images += visualize_packet(start_point, get_turf(listener))
+
+	if(length(packet_images))
+		send_packet_visuals(packet_images, PACKET_COLOR(freq))
 
 /// Do Spatial Grid handling for IRPS, Non-Atmos Radio group.
 /// These are separate to save just that little bit more overhead.
@@ -303,30 +354,39 @@ SUBSYSTEM_DEF(packets)
 	PRIVATE_PROC(TRUE) //Touch this and I eat your arms.
 
 	var/datum/radio_frequency/freq = packet.frequency_datum
-	//Send the data
+	var/list/packet_images = length(packet_viewers) ? list() : null
 
+	//Send the data
 	var/list/spatial_grid_results = SSspatial_grid.orthogonal_range_search(start_point, SPATIAL_GRID_CONTENTS_TYPE_RADIO_NONATMOS, packet.range)
 
 	for(var/obj/listener as anything in spatial_grid_results - source)
 		var/found = FALSE
+
 		for(var/filter in packet.filter_list)
 		//This is safe because to be in a radio list, an object MUST already have a weakref.
 			if(listener.weak_reference in freq.devices[filter])
 				found = TRUE
 				break
+
 		if(!found)
 			continue
+
 		if((get_dist(start_point, listener) > packet.range))
 			continue
-		listener.receive_signal(packet)
 
+		listener.receive_signal(packet)
+		if(packet_images)
+			packet_images += visualize_packet(start_point, get_turf(listener))
+
+	if(length(packet_images))
+		send_packet_visuals(packet_images, PACKET_COLOR(freq))
 
 /datum/controller/subsystem/packets/proc/ImmediateSubspaceVocalSend(datum/signal/subspace/vocal/packet)
 	// Perform final composition steps on the message.
-	var/message = copytext_char(packet.data["message"], 1, MAX_BROADCAST_LEN)
+	var/message = copytext_char(packet.data[PKT_PAYLOAD]["message"], 1, MAX_BROADCAST_LEN)
 	if(!message)
 		return
-	var/compression = packet.data["compression"]
+	var/compression = packet.data[PKT_PAYLOAD]["compression"]
 	if(compression > 0)
 		message = Gibberish(message, compression >= 30)
 
@@ -382,8 +442,8 @@ SUBSYSTEM_DEF(packets)
 
 	// Render the message and have everybody hear it.
 	// Always call this on the virtualspeaker to avoid issues.
-	var/spans = data["spans"]
-	var/list/message_mods = data["mods"]
+	var/spans = data[PKT_PAYLOAD]["spans"]
+	var/list/message_mods = data[PKT_PAYLOAD]["mods"]
 	var/rendered = virt.compose_message(virt, language, message, frequency, spans)
 
 	for(var/obj/item/radio/radio as anything in receive)
@@ -519,3 +579,31 @@ SUBSYSTEM_DEF(packets)
 	virtual_radio.name = speaker_name
 	virtual_radio.broadcast_z_override = levels
 	virtual_radio.talk_into(virtual_radio, message, channels)
+
+/datum/controller/subsystem/packets/proc/add_packet_viewer(mob/M)
+	diagnostic_hud_users += M
+	RegisterSignal(M, COMSIG_MOB_LOGOUT, PROC_REF(on_packet_viewer_logout))
+	RegisterSignal(M, COMSIG_MOB_LOGIN, PROC_REF(on_packet_viewer_login))
+	RegisterSignal(M, COMSIG_PARENT_QDELETING, PROC_REF(on_packet_viewer_del))
+
+	if(M.client)
+		packet_viewers += M
+
+/datum/controller/subsystem/packets/proc/remove_packet_viewer(mob/M)
+	diagnostic_hud_users -= M
+	packet_viewers -= M
+	UnregisterSignal(M, list(COMSIG_MOB_LOGIN, COMSIG_MOB_LOGOUT, COMSIG_PARENT_QDELETING))
+
+/datum/controller/subsystem/packets/proc/on_packet_viewer_login(mob/source)
+	SIGNAL_HANDLER
+	packet_viewers |= source
+
+/datum/controller/subsystem/packets/proc/on_packet_viewer_logout(mob/source)
+	SIGNAL_HANDLER
+	packet_viewers -= source
+
+/datum/controller/subsystem/packets/proc/on_packet_viewer_del(datum/source)
+	SIGNAL_HANDLER
+	remove_packet_viewer(source)
+
+#undef PACKET_COLOR

@@ -29,7 +29,7 @@
 	var/message = "[stationtime2text("hh:mm")] | [jointext(arguments, " ")]"
 	var/pager_class = valid_arg_options[options["network"]]
 
-	var/datum/signal/signal = new(src, list(PACKET_ARG_PAGER_CLASS = pager_class, PACKET_ARG_PAGER_MESSAGE = message))
+	var/datum/signal/signal = new(src, packetv2(net_class = pager_class, payload = list(PACKET_ARG_PAGER_MESSAGE = message)))
 	adapter.deferred_post_signal(signal, RADIO_PAGER_MESSAGE, rand(3, 10) SECONDS)
 	system.println("Sent!")
 

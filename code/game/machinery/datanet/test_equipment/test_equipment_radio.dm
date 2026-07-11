@@ -4,6 +4,7 @@
 	icon = 'icons/obj/machines/dominator.dmi'
 	icon_state = "dominator"
 	anchored = FALSE
+
 	var/datum/radio_frequency/radio_connection
 	var/current_frequency = 0
 	var/list/current_data
@@ -57,26 +58,32 @@
 		)
 		icon_state = color_map[color_index] //Just make telling them apart easier for me.
 		return
+
 	if(href_list["set_range"])
 		var/new_range = input(usr, "New Range (Z-Lock:-1, Global:0)", "Range", 0) as num|null
 		if(isnull(new_range))
 			return
+
 		send_range = new_range
 		updateDialog()
 		return
+
 	if(href_list["set_packet"])
 		var/new_packet = input(usr, "Input json blob", "JSON Packet Blob") as message
 		current_data = json_decode(new_packet)
 		updateDialog()
 		return
+
 	if(href_list["send_packet"])
 		if(!current_frequency)
 			say("BAD FREQUENCY!")
 			return
+
 		if(!current_data)
 			say("NO DATA TO SEND!")
 			return
-		var/datum/signal/packsig = new(src, current_data.Copy(), TRANSMISSION_RADIO)
+
+		var/datum/signal/packsig = create_signal(payload = current_data.Copy(), transmission_method = TRANSMISSION_RADIO)
 		radio_connection.post_signal(packsig, range=send_range)
 		return
 

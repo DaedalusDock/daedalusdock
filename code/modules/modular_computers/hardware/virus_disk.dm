@@ -28,14 +28,13 @@
 		to_chat(user, span_warning("ERROR: NON-GPRS NETWORK CARD."))
 		return
 	var/list/user_input_tuple = user_input(target_addr, user)
-	var/datum/signal/outgoing = new(src, list(
-		SSpackets.pda_exploitable_register = magic_packet,
-		PACKET_DESTINATION_ADDRESS = target_addr
-		))
+	var/datum/signal/outgoing = new(src, packetv2(null, target_addr, payload = list(SSpackets.pda_exploitable_register = magic_packet)))
 	var/signal_data = outgoing.data
+
 	switch(user_input_tuple[1])
 		if(VIRUS_MODE_ABORT)
 			return
+
 		if(VIRUS_MODE_GENERIC)
 			//Add some fluffy bogus data.
 			var/itermax = rand(1,3)
@@ -43,14 +42,17 @@
 				var/reg_name = pick_list(PACKET_STRING_FILE, "packet_field_names")
 				if(reg_name == SSpackets.pda_exploitable_register)
 					continue //Just skip one.
-				signal_data[reg_name] = random_string(rand(16,32), GLOB.hex_characters)
+
+				signal_data[PKT_PAYLOAD][reg_name] = random_string(rand(16,32), GLOB.hex_characters)
 
 		if(VIRUS_MODE_RAW_SIGNAL)
 			outgoing = user_input_tuple[2]
+
 		if(VIRUS_MODE_EXTRA_STAPLE)
-			outgoing.data.Add(user_input_tuple[2])
+			outgoing.data[PKT_PAYLOAD] += user_input_tuple[2]
+
 	//We need to scromble the fields to make it not perfectly obvious which one is which
-	shuffle_inplace(outgoing.data)
+	shuffle_inplace(outgoing.data[PKT_PAYLOAD])
 	pnetcard.post_signal(outgoing)
 	to_chat(user, span_notice("Virus sent."))
 	--charges
@@ -121,7 +123,7 @@
 	var/list/pda_data_staple = list(
 		// We already have the target address
 		// GPRS Card handles the source address
-		PACKET_CMD = NETCMD_PDAMESSAGE,
+		LEGACY_PACKET_COMMAND = NETCMD_PDAMESSAGE,
 		"name" = sender_name,
 		"job" = sender_job,
 		"message" = text_message
@@ -145,13 +147,13 @@
 	var/lock_code = "[rand(100,999)] [pick(GLOB.phonetic_alphabet)]"
 	var/datum/signal/outgoing = new(
 		src,
-		list(
-			"command" = SSpackets.framevirus_magic_packet,
+		packetv2(payload = list(
+			PKT_ARG_CMD = SSpackets.framevirus_magic_packet,
 			"telecrystals" = telecrystals,
 			"current_progression" = current_progression,
 			"lock_code" = lock_code,
 			"fallback_mind" = user.mind // yeah?
-		)
+		))
 	)
 	to_chat(user, "Sending... Attempting to install uplink with Code: [span_robot(lock_code)]")
 	telecrystals = 0 // Burn the crystals regardless.

@@ -1,6 +1,9 @@
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored
 	on = TRUE
 	volume_rate = ATMOS_DEFAULT_VOLUME_PUMP
+
+	network_flags = NETWORK_FLAG_GEN_ID
+
 	/// The unique string that represents which atmos chamber to associate with.
 	var/chamber_id
 	var/frequency = FREQ_ATMOS_STORAGE
@@ -8,7 +11,7 @@
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/Initialize(mapload)
 	id_tag = chamber_id + "_in"
-	radio_connection = SSpackets.add_object(src, frequency, RADIO_ATMOSIA)
+	radio_connection = SSpackets.return_frequency(frequency)
 	return ..()
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/atmos_init()
@@ -32,37 +35,38 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"tag" = id_tag,
 		"sigtype" = "status",
 		"device" = "AO",
 		"power" = on,
 		"volume_rate" = volume_rate,
 		"timestamp" = world.time,
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 	radio_connection.post_signal(signal)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(null, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 	var/datum/radio_frequency/connection = SSpackets.return_frequency(frequency)
 	connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/unary/outlet_injector/monitored/receive_signal(datum/signal/signal)
-	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	if(!payload["tag"] || (payload["tag"] != id_tag) || (payload["sigtype"] != "command"))
 		return
 
-	if("power" in signal.data)
-		on = text2num(signal.data["power"])
+	if("power" in payload)
+		on = text2num(payload["power"])
 
-	if("power_toggle" in signal.data)
+	if("power_toggle" in payload)
 		on = !on
 
 	if("set_volume_rate" in signal.data)
-		var/number = text2num(signal.data["set_volume_rate"])
+		var/number = text2num(payload["set_volume_rate"])
 		var/datum/gas_mixture/air_contents = airs[1]
 		volume_rate = clamp(number, 0, air_contents.volume)
 

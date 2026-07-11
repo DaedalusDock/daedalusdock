@@ -110,6 +110,9 @@
 /// This has a runtime memory and perf cost.
 // #define DEBUG_PATHFINDING
 
+/// Uncomment this to sanitize packet network operations and find potential malformed packets.
+// #define DEBUG_PACKETS
+
 /// Set this value to FALSE to test job requirements working.
 #define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
 
@@ -220,6 +223,7 @@
 //Test at full capacity, the extra cost doesn't matter
 #define TIMER_DEBUG
 #define BYPASS_JOB_LIMITS_WHEN_DEBUGGING (TRUE)
+#define DEBUG_PACKETS
 #endif
 
 #ifdef TGS

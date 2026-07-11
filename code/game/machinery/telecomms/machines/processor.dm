@@ -20,15 +20,16 @@
 	if(!is_freq_listening(signal))
 		return
 
+	var/list/payload = signal.data[PKT_PAYLOAD]
 	if (!process_mode)
-		signal.data["compression"] = 100 // even more compressed signal
+		payload["compression"] = 100 // even more compressed signal
 	else if (signal.data["compression"])
-		signal.data["compression"] = 0 // uncompress subspace signal
+		payload["compression"] = 0 // uncompress subspace signal
 
 	if(istype(machine_from, /obj/machinery/telecomms/bus))
 		relay_direct_information(signal, machine_from) // send the signal back to the machine
 	else // no bus detected - send the signal to servers instead
-		signal.data["slow"] += rand(5, 10) // slow the signal down
+		payload["slow"] += rand(5, 10) // slow the signal down
 		relay_information(signal, signal.server_type)
 
 //Preset Processors

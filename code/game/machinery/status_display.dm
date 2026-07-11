@@ -342,7 +342,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 
 /obj/machinery/status_display/evac/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(FALSE) //Not properly networked yet.
-	switch(signal.data["command"])
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	switch(payload[PKT_ARG_CMD])
 		if("blank")
 			current_mode = SD_BLANK
 			update_appearance()
@@ -351,10 +352,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 			set_messages("", "")
 		if("message")
 			current_mode = SD_MESSAGE
-			set_messages(signal.data["msg1"] || "", signal.data["msg2"] || "")
+			set_messages(payload["msg1"] || "", payload["msg2"] || "")
 		if("alert")
 			current_mode = SD_PICTURE
-			last_picture = signal.data["picture_state"]
+			last_picture = payload["picture_state"]
 			set_picture(last_picture)
 		if("friendcomputer")
 			friendc = !friendc
@@ -570,16 +571,15 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 		return
 
 	var/command_value = command_map[command.value]
-	var/datum/signal/status_signal = new(src, list("command" = command_value))
+	var/datum/signal/status_signal = new(src, packetv2(payload = list(PKT_ARG_CMD = command_value)))
 	switch(command_value)
 		if("message")
-			status_signal.data["msg1"] = message1.value
-			status_signal.data["msg2"] = message2.value
+			status_signal.data[PKT_PAYLOAD]["msg1"] = message1.value
+			status_signal.data[PKT_PAYLOAD]["msg2"] = message2.value
 		if("alert")
-			status_signal.data["picture_state"] = picture_map[picture.value]
+			status_signal.data[PKT_PAYLOAD]["picture_state"] = picture_map[picture.value]
 
 	INVOKE_ASYNC(connected_display, TYPE_PROC_REF(/datum, receive_signal), status_signal)
-	//connected_display.receive_signal(status_signal)
 
 #undef CHARS_PER_LINE
 #undef FONT_SIZE

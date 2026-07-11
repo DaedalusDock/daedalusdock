@@ -24,6 +24,7 @@
 /obj/machinery/embedded_controller
 	var/datum/computer/file/embedded_program/program
 
+	network_flags = NETWORK_FLAG_GEN_ID
 	name = "embedded controller"
 	density = FALSE
 

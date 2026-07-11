@@ -90,10 +90,13 @@
 /datum/computer_file/program/messenger/proc/process_signal(datum/signal/signal)
 	if(!signal)
 		CRASH("Messenger program attempted to process null signal??")
+
 	var/list/signal_data = signal.data
 	if(!signal_data)
 		return
-	var/signal_command = signal_data[PACKET_CMD]
+
+	var/list/signal_payload = signal.data[PKT_PAYLOAD]
+	var/signal_command = signal_payload[PKT_ARG_CMD]
 	//Network ID verification is "hardware accelerated" (AKA: Done for us by the card)
 
 	var/rigged = FALSE//are we going to explode?
@@ -104,7 +107,7 @@
 	// ESPECIALLY THIS FUCKER RIGHT HERE vvvv
 	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.detomatix_magic_packet)
 		//This one falls through to standard PDA behaviour, so we need to be checked first.
-		if(signal_data[PACKET_DESTINATION_ADDRESS] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
+		if(signal_data[PKT_HEAD_DEST_ADDRESS] == netcard_cache.hardware_id)//No broadcast bombings, fuck off.
 			//Calculate our "difficulty"
 			var/difficulty
 			var/obj/item/computer_hardware/hard_drive/role/our_jobdisk = computer.all_components[MC_HDD_JOB]
@@ -112,9 +115,10 @@
 				difficulty += bit_count(our_jobdisk & (DISK_MED | DISK_SEC | DISK_POWER | DISK_MANIFEST))
 				if(our_jobdisk.disk_flags & DISK_MANIFEST)
 					difficulty++ //if cartridge has manifest access it has extra snowflake difficulty
+
 			if(!((SEND_SIGNAL(computer, COMSIG_TABLET_CHECK_DETONATE) & COMPONENT_TABLET_NO_DETONATE) || prob(difficulty * 15)))
 				rigged = TRUE //Cool, we're allowed to blow up. Really glad this whole check wasn't for nothing.
-				var/trait_timer_key = signal_data[PACKET_SOURCE_ADDRESS]
+				var/trait_timer_key = signal_data[PKT_HEAD_SOURCE_ADDRESS]
 				ADD_TRAIT(computer, TRAIT_PDA_CAN_EXPLODE, trait_timer_key)
 				ADD_TRAIT(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key)
 				addtimer(TRAIT_CALLBACK_REMOVE(computer, TRAIT_PDA_MESSAGE_MENU_RIGGED, trait_timer_key), 10 SECONDS)
@@ -122,31 +126,31 @@
 
 	if(signal_command == NETCMD_PDAMESSAGE)
 		log_message(
-			signal_data["name"] || "#UNK",
-			signal_data["job"] || "#UNK",
-			html_decode("\"[signal_data["message"]]\"") || "#ERROR_MISSING_FIELD",
+			signal_payload["name"] || "#UNK",
+			signal_payload["job"] || "#UNK",
+			html_decode("\"[signal_payload["message"]]\"") || "#ERROR_MISSING_FIELD",
 			FALSE,
-			signal_data["automated"] || FALSE,
-			signal_data[PACKET_SOURCE_ADDRESS] || null
+			signal_payload["automated"] || FALSE,
+			signal_payload[PKT_HEAD_SOURCE_ADDRESS] || null
 			)
 
 		if(ringer_status)
 			computer.ring(ringtone)
 
 		if(computer.hardware_flag == PROGRAM_TABLET) //We need to render the extraneous bullshit to chat.
-			show_in_chat(signal_data, rigged)
+			show_in_chat(signal_payload, rigged)
 		return
 
-	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.clownvirus_magic_packet)
+	if(signal_payload[SSpackets.pda_exploitable_register] == SSpackets.clownvirus_magic_packet)
 		computer.honkamnt = rand(15, 25)
 		return
 
-	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.mimevirus_magic_packet)
+	if(signal_payload[SSpackets.pda_exploitable_register] == SSpackets.mimevirus_magic_packet)
 		ringer_status = FALSE
 		ringtone = ""
 		return
 
-	if(signal_data[SSpackets.pda_exploitable_register] == SSpackets.framevirus_magic_packet)
+	if(signal_payload[SSpackets.pda_exploitable_register] == SSpackets.framevirus_magic_packet)
 		if(computer.hardware_flag != PROGRAM_TABLET)
 			return //If it's not a PDA, too bad!
 		if(!(signal.has_magic_data & MAGIC_DATA_MUST_OBFUSCATE))
@@ -164,18 +168,18 @@
 					break
 			if(!target_mind)
 				if(!length(backup_players))
-					target_mind = signal_data["fallback_mind"] //yea...
+					target_mind = signal_payload["fallback_mind"] //yea...
 				else
 					target_mind = pick(backup_players)
-			hidden_uplink = computer.AddComponent(/datum/component/uplink, target_mind, enabled = TRUE, starting_tc = signal_data["telecrystals"], has_progression = TRUE)
+			hidden_uplink = computer.AddComponent(/datum/component/uplink, target_mind, enabled = TRUE, starting_tc = signal_payload["telecrystals"], has_progression = TRUE)
 			hidden_uplink.uplink_handler.has_objectives = TRUE
 			hidden_uplink.uplink_handler.owner = target_mind
 			hidden_uplink.uplink_handler.can_take_objectives = FALSE
-			hidden_uplink.uplink_handler.progression_points = min(SStraitor.current_global_progression, signal_data["current_progression"])
+			hidden_uplink.uplink_handler.progression_points = min(SStraitor.current_global_progression, signal_payload["current_progression"])
 			hidden_uplink.uplink_handler.generate_objectives()
 			SStraitor.register_uplink_handler(hidden_uplink.uplink_handler)
 		else
-			hidden_uplink.add_telecrystals(signal_data["telecrystals"])
+			hidden_uplink.add_telecrystals(signal_payload["telecrystals"])
 		//Unlock it regardless of if we created it or not.
 		hidden_uplink.locked = FALSE
 		hidden_uplink.active = TRUE
@@ -189,7 +193,7 @@
 		L = get(holder.holder, /mob/living/silicon)
 
 	if(L && L.stat == CONSCIOUS)
-		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PACKET_SOURCE_ADDRESS]]'>Reply</a>)"
+		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PKT_HEAD_SOURCE_ADDRESS]]'>Reply</a>)"
 		var/hrefstart
 		var/hrefend
 		var/job_string = signal_data["job"] ? " ([signal_data["job"]])" : ""
@@ -197,7 +201,7 @@
 			hrefstart = "<a href='?src=[REF(L)];track=[html_encode(signal_data["name"])]'>"
 			hrefend = "</a>"
 
-		if(signal_data[PACKET_SOURCE_ADDRESS] == null)
+		if(signal_data[PKT_HEAD_SOURCE_ADDRESS] == null)
 			reply = "\[#ERRNOADDR\]"
 
 		if(signal_data["automated"])
@@ -268,15 +272,19 @@
 	// Send the signal
 	var/datum/signal/pda_message = new(
 		src,
-		list(
-			PACKET_CMD = NETCMD_PDAMESSAGE,
-			"name" = fake_name || computer.saved_identification,
-			"job" = fake_job || computer.saved_job,
-			"message" = html_decode(message),
-			PACKET_DESTINATION_ADDRESS = target_address
+		packetv2(
+			null,
+			target_address,
+			payload = list(
+				PKT_ARG_CMD = NETCMD_PDAMESSAGE,
+				"name" = fake_name || computer.saved_identification,
+				"job" = fake_job || computer.saved_job,
+				"message" = html_decode(message),
+			)
 		),
 		logging_data = user
 	)
+
 	netcard_cache.post_signal(pda_message)
 	// Log it in our logs
 	log_message(fake_name || computer.saved_identification,fake_job || computer.saved_job,html_decode(message),TRUE,FALSE,target_address)
@@ -353,10 +361,10 @@
 			pnetcard.known_pdas = list() //Flush.
 			if(!istype(pnetcard)) //This catches nulls too, so...
 				to_chat(usr, span_warning("Radio missing or bad driver!"))
-			var/datum/signal/ping_sig = new(src, list(
-				PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
-				"pda_scan" = "true"
-			))
+			var/datum/signal/ping_sig = new(
+				src,
+				packetv2(null, NET_ADDRESS_PING, payload = list("pda_scan" = "true")),
+			)
 			pnetcard.post_signal(ping_sig)
 			// The UI update loop from the computer will handle the scan refresh.
 			return(UI_UPDATE)

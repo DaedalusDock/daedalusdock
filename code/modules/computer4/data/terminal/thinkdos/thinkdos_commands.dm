@@ -593,7 +593,7 @@
 
 	var/datum/signal/login_packet = reader.scan_card()
 	if(istype(login_packet))
-		system.login(login_packet.data["name"], login_packet.data["job"], login_packet.data["access"])
+		system.login(login_packet.data[PKT_PAYLOAD]["name"], login_packet.data[PKT_PAYLOAD]["job"], login_packet.data[PKT_PAYLOAD]["access"])
 
 	else if(login_packet == "nocard")
 		system.print_error("[ANSI_WRAP_BOLD("Error:")] No ID card inserted.")

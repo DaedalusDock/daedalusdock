@@ -223,8 +223,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 		return
 
 	for(var/next_addr in targets)
-		var/datum/signal/outgoing = create_signal(next_addr, list(
-			PACKET_CMD = NETCMD_PDAMESSAGE,
+		var/datum/signal/outgoing = create_signal(next_addr, payload = list(
+			PKT_ARG_CMD = NETCMD_PDAMESSAGE,
 			"name" = "Automated Announcement System",
 			"job" = "Security Department Update",
 			"message" = "Officer [officer.real_name] has been assigned to your department, [department].",
@@ -243,8 +243,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 			if(!istype(rfcard))
 				break //No RF card to send to.
 			var/message = "You have been fined [fine_amount] marks for '[cite_message]'. Fines may be paid at security."
-			var/datum/signal/outgoing = create_signal(rfcard.hardware_id, list(
-				PACKET_CMD = NETCMD_PDAMESSAGE,
+			var/datum/signal/outgoing = create_signal(rfcard.hardware_id, payload = list(
+				PKT_ARG_CMD = NETCMD_PDAMESSAGE,
 				"name" = "Automated Announcement System",
 				"job" = "Security Citation",
 				"message" = message,
@@ -256,8 +256,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 /// A helper proc for sending an announcement to PDAs. Takes a list of hardware IDs as targets
 /obj/machinery/announcement_system/proc/mass_pda_message(list/recipients, message, reason)
 	for(var/next_addr in recipients)
-		var/datum/signal/outgoing = create_signal(next_addr, list(
-			PACKET_CMD = NETCMD_PDAMESSAGE,
+		var/datum/signal/outgoing = create_signal(next_addr, payload = list(
+			PKT_ARG_CMD = NETCMD_PDAMESSAGE,
 			"name" = "Automated Announcement System",
 			"job" = reason,
 			"message" = message,
@@ -269,8 +269,8 @@ GLOBAL_LIST_EMPTY(announcement_systems)
 
 /// A helper proc for sending an announcement to a single PDA.
 /obj/machinery/announcement_system/proc/pda_message(recipient, message, reason)
-	var/datum/signal/outgoing = create_signal(recipient, list(
-		PACKET_CMD = NETCMD_PDAMESSAGE,
+	var/datum/signal/outgoing = create_signal(recipient, payload = list(
+		PKT_ARG_CMD = NETCMD_PDAMESSAGE,
 		"name" = "Automated Announcement System",
 		"job" = reason,
 		"message" = message,

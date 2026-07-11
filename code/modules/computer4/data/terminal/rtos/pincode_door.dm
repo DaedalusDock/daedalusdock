@@ -383,34 +383,36 @@
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/send_slave_update()
 	var/datum/signal/signal = new(
 		src,
-		list(
+		packetv2(payload = list(
 			"tag" = tag_slave,
-			PACKET_CMD = NETCMD_UPDATE_DATA,
+			PKT_ARG_CMD = NETCMD_UPDATE_DATA,
 			PACKET_ARG_TEXTBUFFER = list2params(print_history),
 			PACKET_ARG_DISPLAY = display_icon,
 			PACKET_ARG_LEDS = display_indicators
-		)
+		))
 	)
 	post_signal(signal)
 
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/handle_packet(datum/signal/packet)
-	var/list/data = packet.data
-	if(!data["tag"])
+	var/list/payload = packet.data[PKT_PAYLOAD]
+	if(!payload["tag"])
 		return //what
-	if(tag_slave && (data["tag"] == tag_slave))
-		switch(data[PACKET_CMD])
+
+	if(tag_slave && (payload["tag"] == tag_slave))
+		switch(payload[PKT_ARG_CMD])
 			if("key")
-				std_in(copytext(data["key"],1,2)) //Only one char, sorry.
+				std_in(copytext(payload["key"],1,2)) //Only one char, sorry.
 			if(NETCMD_UPDATE_REQUEST)
 				send_slave_update()
 		return
-	if((data["tag"] == tag_target) && data["timestamp"])
+
+	if((payload["tag"] == tag_target) && payload["timestamp"])
 		//State update from airlock
-		airlock_state = packet.data["door_status"]
-		airlock_bolt_state = packet.data["lock_status"]
+		airlock_state = payload["door_status"]
+		airlock_bolt_state = payload["lock_status"]
 		return
 
-	if(tag_request_exit && (data["tag"] == tag_request_exit) && (current_state == STATE_AWAIT_PIN))
+	if(tag_request_exit && (payload["tag"] == tag_request_exit) && (current_state == STATE_AWAIT_PIN))
 		switch(current_state)
 			if(STATE_AWAIT_PIN)
 				pin_accepted()
@@ -420,9 +422,6 @@
 				return
 			else
 				fault("BAD MODE??")
-
-
-
 
 /// Send airlock control packet. Also updates expected states.
 /datum/c4_file/terminal_program/operating_system/rtos/pincode_door/proc/control_airlock(airlock_command)
@@ -434,7 +433,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PACKET_CMD = "secure_open"
+					LEGACY_PACKET_COMMAND = "secure_open"
 				)
 			)
 			expected_airlock_state = "open"
@@ -443,7 +442,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PACKET_CMD = "secure_close"
+					LEGACY_PACKET_COMMAND = "secure_close"
 				)
 			)
 			expected_airlock_state = "closed"
@@ -452,7 +451,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PACKET_CMD = "status"
+					LEGACY_PACKET_COMMAND = "status"
 				)
 			)
 		if(AC_COMMAND_BOLT)
@@ -460,7 +459,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PACKET_CMD = "lock"
+					LEGACY_PACKET_COMMAND = "lock"
 				)
 			)
 			expected_bolt_state = "locked"
@@ -469,7 +468,7 @@
 				src,
 				list(
 					"tag" = tag_target,
-					PACKET_CMD = "unlock"
+					LEGACY_PACKET_COMMAND = "unlock"
 				)
 			)
 			expected_bolt_state = "unlocked"

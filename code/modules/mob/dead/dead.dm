@@ -15,6 +15,7 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 	add_to_mob_list()
 
 	prepare_huds()
+	register_init_signals()
 
 	if(length(CONFIG_GET(keyed_list/cross_server)))
 		add_verb(src, /mob/dead/proc/server_hop)

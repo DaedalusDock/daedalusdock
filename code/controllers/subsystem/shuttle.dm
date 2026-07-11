@@ -343,7 +343,7 @@ SUBSYSTEM_DEF(shuttle)
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(src, list("command" = "update")) // Start processing shuttle-mode displays to display the timer
+	var/datum/signal/status_signal = new(src, packetv2(payload = list("command" = "update"))) // Start processing shuttle-mode displays to display the timer
 	frequency.post_signal(status_signal)
 
 	var/area/A = get_area(user)

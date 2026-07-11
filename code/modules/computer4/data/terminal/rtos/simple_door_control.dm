@@ -74,22 +74,23 @@
 /datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/proc/update_netstate(datum/signal/packet)
 	//make sure it's updating it's status.
 	// I should probably modify the protocol but it's 5am. suck me.
-	if((packet.data["tag"] != id_tag) && (packet.data["timestamp"]))
+	var/list/payload = packet.data[PKT_PAYLOAD]
+	if((payload["tag"] != id_tag) && (payload["timestamp"]))
 		return
 
 	// We're gonna blindly trust this, We'll validate it someday. Maybe.
-	doorbolt_state = packet.data["lock_status"]
-	dooropen_state = packet.data["door_status"]
+	doorbolt_state = payload["lock_status"]
+	dooropen_state = payload["door_status"]
 
 	redraw_status()
 
 /datum/c4_file/terminal_program/operating_system/rtos/simple_door_control/proc/probe_airlock_status()
 	var/datum/signal/signal = new(
 		src,
-		list(
+		packetv2(payload = list(
 			"tag" = id_tag,
-			PACKET_CMD = "update" //Doesn't matter.
-		)
+			PKT_ARG_CMD = "update" //Doesn't matter.
+		))
 	)
 	post_signal(signal, RADIO_AIRLOCK)
 
@@ -100,18 +101,18 @@
 		if("*") //Toggle Lock
 			signal = new(
 				src,
-				list(
+				packetv2(payload = list(
 					"tag" = id_tag,
-					PACKET_CMD = (doorbolt_state == "locked") ? "unlock" : "lock"
-				)
+					LEGACY_PACKET_COMMAND = (doorbolt_state == "locked") ? "unlock" : "lock"
+				))
 			)
 		if("#") //Toggle Open
 			signal = new(
 				src,
-				list(
+				packetv2(payload = list(
 					"tag" = id_tag,
-					PACKET_CMD = (dooropen_state == "closed") ? "open" : "close"
-				)
+					LEGACY_PACKET_COMMAND = (dooropen_state == "closed") ? "open" : "close"
+				))
 			)
 		else //Just probe the airlock to update state.
 			probe_airlock_status()

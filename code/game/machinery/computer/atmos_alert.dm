@@ -5,6 +5,9 @@
 	icon_screen = "alert:0"
 	icon_keyboard = "atmos_key"
 	light_color = LIGHT_COLOR_CYAN
+
+	network_flags = NETWORK_FLAG_GEN_ID
+
 	var/list/priority_alarms = list()
 	var/list/minor_alarms = list()
 	var/receive_frequency = FREQ_ATMOS_ALARMS
@@ -66,8 +69,9 @@
 	if(!signal)
 		return
 
-	var/zone = signal.data["zone"]
-	var/severity = signal.data["alert"]
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	var/zone = payload["zone"]
+	var/severity = payload["alert"]
 
 	if(!zone || !severity)
 		return

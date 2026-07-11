@@ -3,7 +3,6 @@
 	stamina = new(src)
 	stats = new(src)
 
-	register_init_signals()
 	if(unique_name)
 		give_unique_name()
 

@@ -19,6 +19,7 @@
 	construction_type = /obj/item/pipe/directional
 	pipe_state = "volumepump"
 	vent_movement = NONE
+	network_flags = NETWORK_FLAG_GEN_ID
 
 	power_rating = 15000
 
@@ -110,13 +111,13 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"tag" = id,
 		"device" = "APV",
 		"power" = on,
 		"transfer_rate" = transfer_rate,
 		"sigtype" = "status"
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 	radio_connection.post_signal(signal)
 
 /obj/machinery/atmospherics/components/binary/volume_pump/ui_interact(mob/user, datum/tgui/ui)
@@ -162,24 +163,25 @@
 	update_appearance()
 
 /obj/machinery/atmospherics/components/binary/volume_pump/receive_signal(datum/signal/signal)
-	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	if(!is_operational || !payload["tag"] || (payload["tag"] != id) || (payload["sigtype"]!="command"))
 		return
 
-	if("status" in signal.data)
+	if("status" in payload)
 		broadcast_status()
 		return //do not update_appearance
 
 	var/old_on = on //for logging
 
-	if("power" in signal.data)
-		set_on(text2num(signal.data["power"]))
+	if("power" in payload)
+		set_on(text2num(payload["power"]))
 
-	if("power_toggle" in signal.data)
+	if("power_toggle" in payload)
 		set_on(!on)
 
-	if("set_transfer_rate" in signal.data)
+	if("set_transfer_rate" in payload)
 		var/datum/gas_mixture/air1 = airs[1]
-		transfer_rate = clamp(text2num(signal.data["set_transfer_rate"]),0,air1.volume)
+		transfer_rate = clamp(text2num(payload["set_transfer_rate"]),0,air1.volume)
 
 	if(on != old_on)
 		investigate_log("was turned [on ? "on" : "off"] by a remote signal", INVESTIGATE_ATMOS)

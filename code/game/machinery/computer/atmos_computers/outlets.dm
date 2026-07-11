@@ -9,26 +9,21 @@
 	id_tag = chamber_id + "_out"
 	return ..()
 
-/obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/Destroy()
-	SSpackets.remove_object(src, frequency)
-	return ..()
-
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/on_deconstruction()
 	. = ..()
 	broadcast_destruction(src.frequency)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/set_frequency(new_frequency)
-	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(new_frequency)
-		radio_connection = SSpackets.add_object(src, new_frequency, RADIO_ATMOSIA)
+		radio_connection = SSpackets.return_frequency(new_frequency)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(null, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 	var/datum/radio_frequency/connection = SSpackets.return_frequency(frequency)
 	connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
@@ -148,14 +143,14 @@
 	SSpackets.remove_object(src, frequency)
 	frequency = new_frequency
 	if(new_frequency)
-		radio_connection = SSpackets.add_object(src, new_frequency, RADIO_ATMOSIA)
+		radio_connection = SSpackets.return_frequency(new_frequency)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume/siphon/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(null, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 	var/datum/radio_frequency/connection = SSpackets.return_frequency(frequency)
 	connection.post_signal(signal, filter = RADIO_ATMOSIA)
 

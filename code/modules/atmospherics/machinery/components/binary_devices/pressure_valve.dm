@@ -10,6 +10,8 @@
 	construction_type = /obj/item/pipe/directional
 	pipe_state = "pvalve"
 	use_power = NO_POWER_USE
+	network_flags = NETWORK_FLAG_GEN_ID
+
 	///Amount of pressure needed before the valve for it to open
 	var/target_pressure = ONE_ATMOSPHERE
 	///Frequency for radio signaling
@@ -109,13 +111,13 @@
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"tag" = id,
 		"device" = "AGP",
 		"power" = on,
 		"target_output" = target_pressure,
 		"sigtype" = "status"
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/relaymove(mob/living/user, direction)
@@ -171,23 +173,24 @@
 		set_frequency(frequency)
 
 /obj/machinery/atmospherics/components/binary/pressure_valve/receive_signal(datum/signal/signal)
-	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	if(!is_operational || !payload["tag"] || (payload["tag"] != id) || (payload["sigtype"]!="command"))
 		return
 
-	if("status" in signal.data)
+	if("status" in payload)
 		broadcast_status()
 		return
 
 	var/old_on = on //for logging
 
-	if("power" in signal.data)
-		on = text2num(signal.data["power"])
+	if("power" in payload)
+		on = text2num(payload["power"])
 
-	if("power_toggle" in signal.data)
+	if("power_toggle" in payload)
 		on = !on
 
-	if("set_output_pressure" in signal.data)
-		target_pressure = clamp(text2num(signal.data["set_output_pressure"]),0,ONE_ATMOSPHERE*100)
+	if("set_output_pressure" in payload)
+		target_pressure = clamp(text2num(payload["set_output_pressure"]),0,ONE_ATMOSPHERE*100)
 
 	if(on != old_on)
 		investigate_log("was turned [on ? "on" : "off"] by a remote signal", INVESTIGATE_ATMOS)

@@ -11,6 +11,8 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 	circuit = /obj/item/circuitboard/computer/atmos_control
 	light_color = LIGHT_COLOR_CYAN
 
+	network_flags = NETWORK_FLAG_GEN_ID
+
 	var/frequency = FREQ_ATMOS_STORAGE
 	var/datum/radio_frequency/radio_connection
 
@@ -49,9 +51,10 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 	if(!signal)
 		return
 
+	var/list/payload = signal.data[PKT_PAYLOAD]
 	/// The tag of the signal data should be the id_tag var of the atmos object. Format is chamber_role.
 	/// Where chamber is the chamber name and role is one of "sensor", "in", and "out".
-	var/list/tag_data = splittext(signal.data["tag"], "_")
+	var/list/tag_data = splittext(payload["tag"], "_")
 
 	if(length(tag_data) < 2)
 		return
@@ -70,10 +73,10 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 		else
 			return
 
-	if(signal.data["sigtype"] == "status")
+	if(payload["sigtype"] == "status")
 		info_list[tag_data[1]] = signal.data
 
-	if(signal.data["sigtype"] == "destroyed")
+	if(payload["sigtype"] == "destroyed")
 		info_list[tag_data[1]] = null
 
 /obj/machinery/computer/atmos_control/proc/set_frequency(new_frequency)
@@ -115,9 +118,12 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 	// Ask things around us to update.
 	// Due to how signal datums work this is unoptimized but as long as our freq isnt terribly populated we should be fine.
 	// Also, we dont need to prompt sensors and meters since they already broadcast every process_atmos().
-	var/datum/signal/update_request = new(src, list("sigtype" = "command", "user" = usr, "status" = TRUE ,"tag" = "[new_id]_in"))
+	var/datum/signal/update_request = create_signal(payload = list("sigtype" = "command", "status" = TRUE ,"tag" = "[new_id]_in"), transmission_method = TRANSMISSION_RADIO)
+	update_request.logging_data = list("user_keyname" = key_name(usr))
 	radio_connection.post_signal(update_request, filter = RADIO_ATMOSIA)
-	update_request = new(src, list("sigtype" = "command", "user" = usr, "status" = TRUE ,"tag" = "[new_id]_out"))
+
+	update_request = create_signal(payload = list("sigtype" = "command", "status" = TRUE ,"tag" = "[new_id]_out"), transmission_method = TRANSMISSION_RADIO)
+	update_request.logging_data = list("user_keyname" = key_name(usr))
 	radio_connection.post_signal(update_request, filter = RADIO_ATMOSIA)
 
 	return TRUE
@@ -163,34 +169,45 @@ GLOBAL_LIST_EMPTY(atmos_air_controllers)
 	if(. || !radio_connection || !(control || reconnecting))
 		return
 
-	var/datum/signal/signal = new(src, list("sigtype" = "command", "user" = usr))
+	var/datum/signal/signal = new(src, packetv2(payload = list("sigtype" = "command")))
+	signal.logging_data = list("user_keyname" = key_name(usr))
 	switch(action)
 		if("reconnect")
 			return reconnect(usr)
+
 		if("toggle_input")
 			if(!(params["chamber"] in atmos_chambers))
 				return FALSE
-			signal.data += list("tag" = params["chamber"] + "_in", "power_toggle" = TRUE)
+
+			signal.data[PKT_PAYLOAD] += list("tag" = params["chamber"] + "_in", "power_toggle" = TRUE)
+
 		if("toggle_output")
 			if(!(params["chamber"] in atmos_chambers))
 				return FALSE
-			signal.data += list("tag" = params["chamber"] + "_out", "power_toggle" = TRUE)
+
+			signal.data[PKT_PAYLOAD] += list("tag" = params["chamber"] + "_out", "power_toggle" = TRUE)
+
 		if("adjust_input")
 			if(!(params["chamber"] in atmos_chambers))
 				return FALSE
+
 			var/target = text2num(params["rate"])
 			if(isnull(target))
 				return FALSE
+
 			target = clamp(target, 0, ATMOS_DEFAULT_VOLUME_PUMP)
-			signal.data += list("tag" = params["chamber"] + "_in", "set_volume_rate" = target)
+			signal.data[PKT_PAYLOAD] += list("tag" = params["chamber"] + "_in", "set_volume_rate" = target)
+
 		if("adjust_output")
 			if(!(params["chamber"] in atmos_chambers))
 				return FALSE
+
 			var/target = text2num(params["rate"])
 			if(isnull(target))
 				return FALSE
+
 			target = clamp(target, 0, MAX_PUMP_PRESSURE)
-			signal.data += list("tag" = params["chamber"] + "_out", "set_internal_pressure" = target)
+			signal.data[PKT_PAYLOAD] += list("tag" = params["chamber"] + "_out", "set_internal_pressure" = target)
 
 	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 	return TRUE

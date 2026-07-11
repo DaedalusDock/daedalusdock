@@ -30,6 +30,10 @@
 	mob_size = MOB_SIZE_LARGE
 	radio = /obj/item/radio/headset/silicon/ai
 	can_buckle_to = FALSE
+
+	/// Network ID for the AI. Mob receiving signals. How funny.
+	var/net_id
+
 	var/battery = 200 //emergency power if the AI's APC is off
 	var/list/network = list("ss13")
 	var/obj/machinery/camera/current
@@ -121,6 +125,8 @@
 	if(!target_ai) //If there is no player/brain inside.
 		new/obj/structure/ai_core/deactivated(loc) //New empty terminal.
 		return INITIALIZE_HINT_QDEL //Delete AI.
+
+	net_id = SSpackets.generate_net_id(src)
 
 	ADD_TRAIT(src, TRAIT_NO_TELEPORT, AI_ANCHOR_TRAIT)
 	status_flags &= ~CANPUSH //AI starts anchored, so dont push it

@@ -4,6 +4,7 @@
 	icon_screen = "supply"
 	circuit = /obj/item/circuitboard/computer/cargo
 	light_color = COLOR_BRIGHT_ORANGE
+	network_flags = NETWORK_FLAG_GEN_ID
 
 	///Can the supply console send the shuttle back and forth? Used in the UI backend.
 	var/can_send = TRUE
@@ -335,5 +336,5 @@
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(src, list("command" = command))
+	var/datum/signal/status_signal = create_signal(payload = list(PKT_ARG_CMD = command), transmission_method = TRANSMISSION_RADIO)
 	frequency.post_signal(status_signal)

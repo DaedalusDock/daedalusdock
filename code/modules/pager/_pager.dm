@@ -59,10 +59,10 @@
 		user.visible_message(span_notice("[user] flips the receiver switch on [src]."), vision_distance = 2)
 
 /obj/item/pager/receive_signal(datum/signal/signal)
-	if(signal.data[PACKET_ARG_PAGER_CLASS] != pager_class)
+	if(signal.data[PKT_PAYLOAD][PACKET_ARG_PAGER_CLASS] != pager_class)
 		return
 
-	var/message = signal.data[PACKET_ARG_PAGER_MESSAGE]
+	var/message = signal.data[PKT_PAYLOAD][PACKET_ARG_PAGER_MESSAGE]
 	recent_messages.Insert(1, message)
 	if(length(recent_messages) > 5)
 		recent_messages.len = 5

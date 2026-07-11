@@ -75,12 +75,16 @@
 /mob/Initialize(mapload)
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_MOB_CREATED, src)
 	add_to_mob_list()
+
 	if(stat == DEAD)
 		add_to_dead_mob_list()
 	else
 		add_to_alive_mob_list()
+
 	set_focus(src)
 	prepare_huds()
+	register_init_signals()
+
 	for(var/v in GLOB.active_alternate_appearances)
 		if(!v)
 			continue

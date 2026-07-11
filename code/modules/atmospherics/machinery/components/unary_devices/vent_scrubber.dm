@@ -18,6 +18,7 @@
 	pipe_state = "scrubber"
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 	processing_flags = NONE
+	network_flags = NETWORK_FLAG_GEN_ID
 
 	power_rating = 30000
 
@@ -43,9 +44,9 @@
 	var/can_hibernate = TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Initialize()
-	if(!id_tag)
-		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
+	if(!id_tag)
+		id_tag = net_id
 	SET_TRACKING(__TYPE__)
 	for(var/to_filter in filter_types)
 		if(istext(to_filter))
@@ -155,7 +156,7 @@
 	for(var/gas_id in ASSORTED_GASES)
 		f_types += list(list("gas_id" = gas_id, "gas_name" = gas_id, "enabled" = (gas_id in filter_types)))
 
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"tag" = id_tag,
 		"frequency" = frequency,
 		"device" = "VS",
@@ -165,7 +166,7 @@
 		"quicksucc" = quicksucc,
 		"filter_types" = f_types,
 		"sigtype" = "status"
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 
 	var/area/scrub_area = get_area(src)
 	if(!GLOB.air_scrub_names[id_tag])
@@ -250,10 +251,11 @@
 		return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/receive_signal(datum/signal/signal)
-	if(!is_operational || !signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	if(!is_operational || !payload["tag"] || (payload["tag"] != id_tag) || (payload["sigtype"]!="command"))
 		return
 
-	if("status" in signal.data)
+	if("status" in payload)
 		broadcast_status()
 		return //do not update_appearance
 
@@ -263,32 +265,30 @@
 	var/old_scrubbing = scrubbing
 	var/old_filter_length = length(filter_types)
 
-	var/atom/signal_sender = signal.data["user"]
-
-	if("power" in signal.data)
-		on = text2num(signal.data["power"])
-	if("power_toggle" in signal.data)
+	if("power" in payload)
+		on = text2num(payload["power"])
+	if("power_toggle" in payload)
 		on = !on
 
-	if("quicksucc" in signal.data)
-		quicksucc = text2num(signal.data["quicksucc"])
-	if("toggle_quicksucc" in signal.data)
+	if("quicksucc" in payload)
+		quicksucc = text2num(payload["quicksucc"])
+	if("toggle_quicksucc" in payload)
 		quicksucc = !quicksucc
 
-	if("scrubbing" in signal.data)
-		scrubbing = text2num(signal.data["scrubbing"])
-	if("toggle_scrubbing" in signal.data)
+	if("scrubbing" in payload)
+		scrubbing = text2num(payload["scrubbing"])
+	if("toggle_scrubbing" in payload)
 		scrubbing = !scrubbing
 
 	if(scrubbing != old_scrubbing)
-		investigate_log(" was toggled to [scrubbing ? "scrubbing" : "siphon"] mode by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
+		investigate_log(" was toggled to [scrubbing ? "scrubbing" : "siphon"] mode by [signal.logging_data?["user_keyname"]]",INVESTIGATE_ATMOS)
 
-	if("toggle_filter" in signal.data)
-		toggle_filters(signal.data["toggle_filter"])
+	if("toggle_filter" in payload)
+		toggle_filters(payload["toggle_filter"])
 
-	if("set_filters" in signal.data)
+	if("set_filters" in payload)
 		filter_types = list()
-		add_filters(signal.data["set_filters"])
+		add_filters(payload["set_filters"])
 
 	broadcast_status()
 	update_appearance()

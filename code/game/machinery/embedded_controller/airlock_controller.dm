@@ -18,28 +18,29 @@
 	var/sensor_pressure = null
 
 /datum/computer/file/embedded_program/airlock_controller/receive_signal(datum/signal/signal)
-	var/receive_tag = signal.data["tag"]
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	var/receive_tag = payload["tag"]
 	if(!receive_tag)
 		return
 
 	if(receive_tag==sensor_tag)
-		if(signal.data["pressure"])
-			sensor_pressure = text2num(signal.data["pressure"])
+		if(payload["pressure"])
+			sensor_pressure = text2num(payload["pressure"])
 
 	else if(receive_tag==exterior_door_tag)
-		memory["exterior_status"] = signal.data["door_status"]
+		memory["exterior_status"] = payload["door_status"]
 
 	else if(receive_tag==interior_door_tag)
-		memory["interior_status"] = signal.data["door_status"]
+		memory["interior_status"] = payload["door_status"]
 
 	else if(receive_tag==airpump_tag)
-		if(signal.data["power"])
-			memory["pump_status"] = signal.data["direction"]
+		if(payload["power"])
+			memory["pump_status"] = payload["direction"]
 		else
 			memory["pump_status"] = "off"
 
 	else if(receive_tag==id_tag)
-		switch(signal.data["command"])
+		switch(payload[PKT_ARG_CMD])
 			if("cycle")
 				if(state < AIRLOCK_STATE_CLOSED)
 					target_state = AIRLOCK_STATE_OUTOPEN
@@ -68,17 +69,10 @@
 						state = AIRLOCK_STATE_CLOSED
 						process_again = 1
 					else
-						post_signal(new /datum/signal(src, list(
-							"tag" = interior_door_tag,
-							"command" = "secure_close"
-						)))
+						post_signal(new /datum/signal(src, packetv2(payload = list(PKT_ARG_CMD = "secure_close", "tag" = interior_door_tag))))
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(src, list(
-							"tag" = airpump_tag,
-							"power" = 0,
-							"sigtype" = "command"
-						)))
+						post_signal(new /datum/signal(src, packetv2(payload = list("sigtype" = "command", "tag" = airpump_tag, "power" = 0))))
 
 			if(AIRLOCK_STATE_PRESSURIZE)
 				if(target_state == AIRLOCK_STATE_INOPEN)
@@ -87,19 +81,17 @@
 							state = AIRLOCK_STATE_INOPEN
 							process_again = 1
 						else
-							post_signal(new /datum/signal(src, list(
-								"tag" = interior_door_tag,
-								"command" = "secure_open"
-							)))
+							post_signal(new /datum/signal(src, packetv2(payload = list(PKT_ARG_CMD = "secure_open", "tag" = interior_door_tag))))
 					else
-						var/datum/signal/signal = new(src, list(
+						var/datum/signal/signal = new(src, packetv2(payload = list(
 							"tag" = airpump_tag,
 							"sigtype" = "command"
-						))
+						)))
 						if(memory["pump_status"] == "siphon")
-							signal.data["stabilize"] = 1
+							signal.data[PKT_PAYLOAD]["stabilize"] = 1
 						else if(memory["pump_status"] != "release")
-							signal.data["power"] = 1
+							signal.data[PKT_PAYLOAD]["power"] = 1
+
 						post_signal(signal)
 				else
 					state = AIRLOCK_STATE_CLOSED
@@ -111,27 +103,18 @@
 						state = AIRLOCK_STATE_DEPRESSURIZE
 						process_again = 1
 					else
-						post_signal(new /datum/signal(src, list(
-							"tag" = interior_door_tag,
-							"command" = "secure_close"
-						)))
+						post_signal(new /datum/signal(src, packetv2(payload = list(PKT_ARG_CMD = "secure_close", "tag" = interior_door_tag))))
+
 				else if(target_state == AIRLOCK_STATE_INOPEN)
 					if(memory["exterior_status"] == "closed")
 						state = AIRLOCK_STATE_PRESSURIZE
 						process_again = 1
 					else
-						post_signal(new /datum/signal(src, list(
-							"tag" = exterior_door_tag,
-							"command" = "secure_close"
-						)))
+						post_signal(new /datum/signal(src, packetv2(payload = list(PKT_ARG_CMD = "secure_open", "tag" = exterior_door_tag))))
 
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(src, list(
-							"tag" = airpump_tag,
-							"power" = 0,
-							"sigtype" = "command"
-						)))
+						post_signal(new /datum/signal(src, packetv2(payload = list("sigtype" = "command", "tag" = airpump_tag, "power" = 0))))
 
 			if(AIRLOCK_STATE_DEPRESSURIZE)
 				var/target_pressure = ONE_ATMOSPHERE*0.05
@@ -143,25 +126,24 @@
 						if(memory["exterior_status"] == "open")
 							state = AIRLOCK_STATE_OUTOPEN
 						else
-							post_signal(new /datum/signal(src, list(
-								"tag" = exterior_door_tag,
-								"command" = "secure_open"
-							)))
+							post_signal(new /datum/signal(src, packetv2(payload = list(PKT_ARG_CMD = "secure_open", "tag" = exterior_door_tag))))
 					else
 						state = AIRLOCK_STATE_CLOSED
 						process_again = 1
+
 				else if((target_state != AIRLOCK_STATE_OUTOPEN) && !sanitize_external)
 					state = AIRLOCK_STATE_CLOSED
 					process_again = 1
+
 				else
-					var/datum/signal/signal = new(src, list(
+					var/datum/signal/signal = new(src, packetv2(payload = list(
 						"tag" = airpump_tag,
 						"sigtype" = "command"
-					))
+					)))
 					if(memory["pump_status"] == "release")
-						signal.data["purge"] = 1
+						signal.data[PKT_PAYLOAD]["purge"] = 1
 					else if(memory["pump_status"] != "siphon")
-						signal.data["power"] = 1
+						signal.data[PKT_PAYLOAD]["power"] = 1
 					post_signal(signal)
 
 			if(AIRLOCK_STATE_OUTOPEN) //state 2
@@ -174,17 +156,10 @@
 							state = AIRLOCK_STATE_CLOSED
 							process_again = 1
 					else
-						post_signal(new /datum/signal(src, list(
-							"tag" = exterior_door_tag,
-							"command" = "secure_close"
-						)))
+						post_signal(new /datum/signal(src, packetv2(payload = list(PKT_ARG_CMD = "secure_close", "tag" = exterior_door_tag))))
 				else
 					if(memory["pump_status"] != "off")
-						post_signal(new /datum/signal(src, list(
-							"tag" = airpump_tag,
-							"power" = 0,
-							"sigtype" = "command"
-						)))
+						post_signal(new /datum/signal(src, packetv2(payload = list("sigtype" = "command", "tag" = airpump_tag, "power" = 0))))
 
 	memory["sensor_pressure"] = sensor_pressure
 	memory["processing"] = state != target_state

@@ -27,19 +27,38 @@
 #define NETCLASS_MESSAGE_SERVER "WNET_MSGSRV"
 #define NETCLASS_BUTTON "WNET_BUTTON"
 #define NETCLASS_ADAPTER "WNET_BUTTON"
+#define NETCLASS_AIRLOCK "PNET_AIRLOCK"
+
+// Atmos equipment netclasses
+#define NETCLASS_PIPE_METER "PNET_PIPE_METER"
 
 // Packet fields
 // not honestly thrilled with having these be defines but kapu wants it that way
 // I believe every coder is empowered with a right to footgun by our lord Dennis Ritchie
 
+//* HEADER FIELDS *//
+/// The version of the packet.
+#define PKT_HEAD_VERSION "version"
 /// Source (sender) address of a packet
-#define PACKET_SOURCE_ADDRESS "s_addr"
+#define PKT_HEAD_SOURCE_ADDRESS "s_addr"
 /// Destination (receiver) address of a packet
-#define PACKET_DESTINATION_ADDRESS "d_addr"
-/// Command (type) of a packet
-#define PACKET_CMD "command"
+#define PKT_HEAD_DEST_ADDRESS "d_addr"
 /// Network Class of a device, used as part of ping replies.
-#define PACKET_NETCLASS "netclass"
+#define PKT_HEAD_NETCLASS "netclass"
+
+#define PKT_HEAD_SOURCE_PORT "sourceport"
+#define PKT_HEAD_DEST_PORT "destport"
+
+#define PKT_HEAD_PROTOCOL "proto"
+	#define PKT_PROTOCOL_PDP "pdp"
+	/// The generic protocol that isn't really a protocol.
+	#define PKT_PROTOCOL_VEIP "very_easily_interpreted_protocol"
+
+#define PKT_PAYLOAD "payload"
+
+//* PAYLOAD FIELDS*//
+/// Command (type) of a packet
+#define PKT_ARG_CMD "command"
 
 // Pagers
 /// Packet arg for pager types
@@ -93,7 +112,7 @@
 
 /// Packet contains volatile data where storing it may cause GC issues.
 /// This means references to atoms, non-trivial datums like virtualspeakers, etc.
-#define MAGIC_DATA_MUST_DISCARD (1<<0)
+#define MAGIC_DATA_TRANSIENT (1<<0)
 
 /// Packet contains data that players should never be able to see *DIRECTLY*.
 /// Re-Interpretation is allowed, This is specifically for arbitrary packet capture applications where raw fields are accessible.
@@ -104,3 +123,6 @@
 #define MAGIC_DATA_INVIOLABLE ALL
 
 #define PACKET_STRING_FILE "packetnet.json"
+
+/// Helper for boilerplate, checks if a packet was bound for the given atom.
+#define PACKET_IS_FOR_US(packet, us) (packet.data[PKT_HEAD_DEST_ADDRESS] == us.network_id)

@@ -137,16 +137,17 @@ TYPEINFO_DEF(/obj/machinery/blackbox_recorder)
 // Handle RC Messages. I'll packetize these eventually I swear
 /obj/machinery/telecomms/message_server/receive_information(datum/signal/subspace/messaging/signal, obj/machinery/telecomms/machine_from)
 	// can't log non-message signals
-	if(!istype(signal) || !signal.data["message"] || !on || calibrating)
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	if(!istype(signal) || !payload["message"] || !on || calibrating)
 		return
 
 	// log the signal
 	if(istype(signal, /datum/signal/subspace/messaging/rc))
-		var/datum/data_rc_msg/msg = new(signal.data["rec_dpt"], signal.data["send_dpt"], signal.data["message"], signal.data["stamped"], signal.data["verified"], signal.data["priority"])
+		var/datum/data_rc_msg/msg = new(payload["rec_dpt"], payload["send_dpt"], payload["message"], payload["stamped"], payload["verified"], payload["priority"])
 		signal.logged = msg
-		if(signal.data["send_dpt"]) // don't log messages not from a department but allow them to work
+		if(payload["send_dpt"]) // don't log messages not from a department but allow them to work
 			rc_msgs += msg
-	signal.data["reject"] = FALSE
+	payload["reject"] = FALSE
 
 	// pass it along to either the hub or the broadcaster
 	if(!relay_information(signal, /obj/machinery/telecomms/hub))
@@ -158,9 +159,9 @@ TYPEINFO_DEF(/obj/machinery/blackbox_recorder)
 	if(calibrating) // If we're calibrating, just return, the fancy part of us isn't ready yet.
 		return
 	var/list/sig_data = signal.data //cachemere sweater
-	switch(signal.data[PACKET_CMD])
+	switch(signal.data[PKT_PAYLOAD][PKT_ARG_CMD])
 		if(NETCMD_PDAMESSAGE)
-			var/datum/data_pda_message/log_unit = new(sig_data[PACKET_DESTINATION_ADDRESS], sig_data[PACKET_SOURCE_ADDRESS], sig_data["message"])
+			var/datum/data_pda_message/log_unit = new(sig_data[PKT_HEAD_DEST_ADDRESS], sig_data[PKT_HEAD_SOURCE_ADDRESS], sig_data[PKT_PAYLOAD]["message"])
 			pda_msgs += log_unit
 			return RECEIVE_SIGNAL_FINISHED
 		else
@@ -170,8 +171,10 @@ TYPEINFO_DEF(/obj/machinery/blackbox_recorder)
 /obj/machinery/telecomms/message_server/post_signal(datum/signal/sending_signal, preserve_s_addr)
 	if(isnull(sending_signal)) //nullcheck for sanic speed
 		return //You need a pipe and something to send down it, though.
+
 	if(!preserve_s_addr)
-		sending_signal.data[PACKET_SOURCE_ADDRESS] = src.net_id
+		sending_signal.data[PKT_HEAD_SOURCE_ADDRESS] = src.net_id
+
 	sending_signal.transmission_method = TRANSMISSION_RADIO
 	sending_signal.author = WEAKREF(src) // Override the sending signal author.
 
@@ -195,11 +198,13 @@ TYPEINFO_DEF(/obj/machinery/blackbox_recorder)
 	if(!T)
 		CRASH("Uh oh, no source turf!")
 	levels = list(T.z)
-	if(!("reject" in data))
-		data["reject"] = TRUE
 
-/datum/signal/subspace/messaging/copy()
-	var/datum/signal/subspace/messaging/copy = new type(author.resolve(), data.Copy())
+	if(!("reject" in data[PKT_PAYLOAD]))
+		data[PKT_PAYLOAD]["reject"] = TRUE
+
+/datum/signal/subspace/messaging/Copy()
+	var/datum/signal/subspace/messaging/copy = new type(author.resolve())
+	copy.data = DeepCopyData()
 	copy.original = src
 	copy.levels = levels
 	return copy
@@ -208,10 +213,12 @@ TYPEINFO_DEF(/obj/machinery/blackbox_recorder)
 /datum/signal/subspace/messaging/rc/broadcast()
 	if (!logged)  // Like /pda, only if logged
 		return
-	var/rec_dpt = ckey(data["rec_dpt"])
+
+	var/list/payload = data[PKT_PAYLOAD]
+	var/rec_dpt = ckey(payload["rec_dpt"])
 	for (var/obj/machinery/requests_console/Console as anything in INSTANCES_OF(/obj/machinery/requests_console))
-		if(ckey(Console.department) == rec_dpt || (data["ore_update"] && Console.receive_ore_updates))
-			Console.createmessage(data["sender"], data["send_dpt"], data["message"], data["verified"], data["stamped"], data["priority"], data["notify_freq"])
+		if(ckey(Console.department) == rec_dpt || (payload["ore_update"] && Console.receive_ore_updates))
+			Console.createmessage(payload["sender"], payload["send_dpt"], payload["message"], payload["verified"], payload["stamped"], payload["priority"], payload["notify_freq"])
 
 // Log datums stored by the message server.
 /datum/data_pda_message

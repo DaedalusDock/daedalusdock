@@ -69,9 +69,9 @@
 
 	var/datum/signal/signal = new(null)
 	if (active)
-		signal.data["command"] = "alert"
-		signal.data["picture_state"] = "radiation"
+		signal.data[PKT_PAYLOAD][PKT_ARG_CMD] = "alert"
+		signal.data[PKT_PAYLOAD]["picture_state"] = "radiation"
 	else
-		signal.data["command"] = "shuttle"
+		signal.data[PKT_PAYLOAD][PKT_ARG_CMD] = "shuttle"
 
 	frequency.post_signal(signal)

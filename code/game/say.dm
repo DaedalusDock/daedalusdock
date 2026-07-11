@@ -157,6 +157,7 @@ And the base of the send_speech() proc, which is the core of saycode.
 		return verb_say
 
 /atom/movable/proc/say_quote(input, list/spans=list(speech_span), list/message_mods = list(), datum/language/language)
+	SHOULD_NOT_OVERRIDE(TRUE) // Needs to be stable so Virtual Speakers can safely impersonate all atoms.
 	if(!input)
 		input = "..."
 
@@ -189,6 +190,9 @@ And the base of the send_speech() proc, which is the core of saycode.
 
 /// Scans the input sentence for speech emphasis modifiers, notably |italics|, +bold+, and _underline_
 /atom/movable/proc/say_emphasis(input)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(!allow_speech_emphasis)
+		return input
 	return default_encode_emphasis(input)
 
 #undef ENCODE_HTML_EMPHASIS
@@ -261,6 +265,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 /atom/movable/virtualspeaker/Initialize(mapload, atom/movable/M, anonymize)
 	. = ..()
 	speaker_weakref = WEAKREF(M)
+	allow_speech_emphasis = M.allow_speech_emphasis
 	if(istype(M))
 		name = anonymize ? "Unknown" : M.GetVoice()
 		verb_say = M.verb_say

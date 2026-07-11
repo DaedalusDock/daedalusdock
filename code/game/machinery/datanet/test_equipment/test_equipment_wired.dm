@@ -19,11 +19,6 @@
 		return
 	transmission_terminal.post_signal(create_signal(NET_ADDRESS_PING, list()))
 
-
-/obj/machinery/test_equipment/wired/say_emphasis(input)
-	//Fuck off and don't decorate debug text
-	return input
-
 /obj/machinery/test_equipment/wired/proc/reconnect_dataterm()
 	var/new_transmission_terminal = locate(/obj/machinery/power/data_terminal) in get_turf(src)
 	if(transmission_terminal == new_transmission_terminal)

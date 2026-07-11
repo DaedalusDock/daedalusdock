@@ -17,6 +17,7 @@
 	return !CONFIG_GET(flag/silent_ai)
 
 /mob/living/silicon/ai/radio(message, list/message_mods = list(), list/spans, language)
+	message_mods[MODE_AI_OVER_RADIO] = TRUE
 	if(incapacitated())
 		return FALSE
 	if(!radio_enabled) //AI cannot speak if radio is disabled (via intellicard) or depowered.

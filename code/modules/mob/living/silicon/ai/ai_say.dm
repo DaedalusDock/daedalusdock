@@ -4,14 +4,17 @@
 	return ..()
 
 /mob/living/silicon/ai/compose_track_href(atom/movable/speaker, namepart)
-	var/atom/movable/M = astype(speaker,/atom/movable/virtualspeaker)?.speaker_weakref.resolve()
+	var/atom/movable/virtualspeaker/virt = astype(speaker)
+	var/atom/movable/M = virt ? virt.speaker_weakref.resolve() : speaker
 	if(M)
 		return "<a href='?src=[REF(src)];track=[html_encode(namepart)]'>"
 	return ""
 
 /mob/living/silicon/ai/compose_job(atom/movable/speaker, message_langs, raw_message, radio_freq)
+	var/atom/movable/virtualspeaker/virt = astype(speaker)
+	var/atom/movable/M = virt ? virt.speaker_weakref.resolve() : speaker
 	//Also includes the </a> for AI hrefs, for convenience.
-	return "[radio_freq ? " (" + speaker.GetJob() + ")" : ""]" + "[astype(speaker,/atom/movable/virtualspeaker)?.speaker_weakref.resolve() ? "</a>" : ""]"
+	return "[radio_freq ? " (" + speaker.GetJob() + ")" : ""]" + "[speaker ? "</a>" : ""]"
 
 /mob/living/silicon/ai/IsVocal()
 	return !CONFIG_GET(flag/silent_ai)

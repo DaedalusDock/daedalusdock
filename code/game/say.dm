@@ -298,7 +298,4 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 /atom/movable/virtualspeaker/say_mod(input, list/message_mods, datum/language/language)
 	// Working off the logic that if you're baking the saymod
 	// it's not going to be dangerously reused, we can just... Return a baked mod if we have one.
-	if(!baked_saymod)
-		return ..()
-	else
-		return baked_saymod
+	return baked_saymod || ..()

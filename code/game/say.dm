@@ -265,13 +265,13 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 /atom/movable/virtualspeaker/Initialize(mapload, atom/movable/M, anonymize)
 	. = ..()
 	speaker_weakref = WEAKREF(M)
-	allow_speech_emphasis = M.allow_speech_emphasis
 	if(istype(M))
 		name = anonymize ? "Unknown" : M.GetVoice()
 		verb_say = M.verb_say
 		verb_ask = M.verb_ask
 		verb_exclaim = M.verb_exclaim
 		verb_yell = M.verb_yell
+		allow_speech_emphasis = M.allow_speech_emphasis
 
 	// The mob's job identity
 	if(ishuman(M))

@@ -285,7 +285,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// This is on_life() but for when the owner is dead or outside of a mob. Bad name.
 /obj/item/organ/proc/on_death(delta_time, times_fired)
-	if(organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD) || HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))
+	if(organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD|ORGAN_MUMMIFIED) || HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))
 		return
 
 	set_germ_level(germ_level + rand(1,3))
@@ -665,7 +665,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 		. += tag ? "<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
 
-	if (HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))
+	if (organ_flags & ORGAN_MUMMIFIED)
 		. += tag ? "<span style='font-weight: bold; color:#e8c640'>Mummified</span>" : "Mummified"
 	return
 

@@ -26,16 +26,16 @@
 
 /obj/effect/aether_rune/preserve/succeed_invoke(mob/living/carbon/human/target_mob)
 	for(var/obj/item/organ/O in target_mob.processing_organs)
-		if(O.organ_flags & ORGAN_SYNTHETIC || istype(O, /obj/item/organ/brain) || HAS_TRAIT(O, TRAIT_ORGAN_FROZEN))
+		if(O.organ_flags & (ORGAN_SYNTHETIC|ORGAN_MUMMIFIED) || istype(O, /obj/item/organ/brain))
 			continue
 
 		O.set_max_health(round(O.get_max_health() * 0.75))
 		O.set_germ_level(0)
-		ADD_TRAIT(O, TRAIT_ORGAN_FROZEN, MIRACLE_TRAIT)
+		O.organ_flags |= ORGAN_MUMMIFIED
 		O.name = "mummified [O.name]"
 		O.add_atom_colour(COLOR_YELLOW, FIXED_COLOUR_PRIORITY)
 	target_mob.add_splatter_floor(get_turf(target_mob))
-	target_mob.adjustBloodVolume(-target_mob.blood_volume)
+	target_mob.setBloodVolume(0)
 	return ..()
 
 /obj/effect/aether_rune/preserve/invoke_failure_effects(datum/ritual_failure/failure_reason, failure_source)
@@ -43,7 +43,7 @@
 		if(/datum/ritual_failure/target_mob_moved, /datum/ritual_failure/target_mob_getup)
 			switch(rand(1,10))
 				if(1)
-					rip_out_target_heart()
+					huskify(failure_source)
 				if(2 to 10)
 					rip_out_organs(failure_source)
 		else
@@ -71,3 +71,5 @@
 		var/turf/target_turf = get_random_perimeter_turf(src, 3)
 		picked_organ.throw_at(target_turf, rand(1,3), 1)
 
+/obj/effect/aether_rune/preserve/proc/huskify(mob/living/carbon/human/victim)
+	victim.become_husk(MIRACLE_TRAIT)

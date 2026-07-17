@@ -7,6 +7,7 @@
 #define ORGAN_SYNTHETIC_EMP (1<<5) //Synthetic organ affected by an EMP. Deteriorates over time.
 #define ORGAN_UNREMOVABLE (1<<6) //Can't be removed using surgery
 #define ORGAN_CUT_AWAY (1<<7) //! The organ is not attached to the parent.
+#define ORGAN_MUMMIFIED (1<<8) //! The organ has been mummified by the preservation ritual.
 
 // check_damage_threshold return values
 #define ORGAN_NOW_FAILING 6

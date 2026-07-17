@@ -419,6 +419,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	maxHealth = FLOOR(new_max, 1)
 	damage = min(damage, maxHealth)
 
+/obj/item/organ/proc/get_max_health()
+	return maxHealth
+
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage
 /obj/item/organ/proc/applyOrganDamage(damage_amount, maximum = maxHealth, silent, updating_health = TRUE, cause_of_death = "Organ failure") //use for damaging effects
 	if(!damage_amount || cosmetic_only) //Micro-optimization.
@@ -661,6 +664,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	else if (damage > low_threshold)
 		. += tag ? "<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
+
+	if (HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))
+		. += tag ? "<span style='font-weight: bold; color:#e8c640'>Mummified</span>" : "Mummified"
 	return
 
 /// Used for the fix_organ surgery, lops off some of the maxHealth if the organ was very damaged.

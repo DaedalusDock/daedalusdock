@@ -25,5 +25,8 @@
 /// List of reagent containers to put blood into.
 #define RUNE_BB_EXANGUINATE_CONTAINERS "exanguinate_containers"
 
+// Preservation rune
+#define RUNE_BB_PRESERVE_PARTS "preserve_parts"
+
 #define RUNE_INVOKING_IDLE 0
 #define RUNE_INVOKING_ACTIVE 1

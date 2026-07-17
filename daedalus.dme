@@ -2222,6 +2222,7 @@
 #include "code\modules\aether\runes\exanguinate_rune.dm"
 #include "code\modules\aether\runes\exchange_rune.dm"
 #include "code\modules\aether\runes\heal_rune.dm"
+#include "code\modules\aether\runes\preservation_rune.dm"
 #include "code\modules\aether\runes\revival_rune.dm"
 #include "code\modules\aether\spells\showstopper.dm"
 #include "code\modules\aether\spells\vanishing_act.dm"

@@ -579,6 +579,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen)
 	icon_state = "[base_icon_state][user.resting ? 0 : null]"
 	return ..()
 
+/atom/movable/screen/wield
 	name = "wield"
 	icon = 'icons/hud/screen_midnight.dmi'
 	icon_state = "act_wield"

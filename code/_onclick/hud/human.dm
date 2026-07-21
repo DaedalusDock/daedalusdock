@@ -11,6 +11,7 @@
 	add_screen_object(/atom/movable/screen/human/equip, HUDKEY_HUMAN_EQUIP_ITEM, HUDGROUP_STATIC_INVENTORY, ui_style)
 	add_screen_object(/atom/movable/screen/mov_intent, HUDKEY_MOB_MOVE_INTENT, HUDGROUP_STATIC_INVENTORY, ui_style)
 	add_screen_object(/atom/movable/screen/rest, HUDKEY_MOB_REST, HUDGROUP_STATIC_INVENTORY, ui_style)
+	add_screen_object(/atom/movable/screen/wield, HUDKEY_MOB_WIELD, HUDGROUP_STATIC_INVENTORY, ui_style)
 	add_screen_object(/atom/movable/screen/pull/human, HUDKEY_MOB_PULL, HUDGROUP_STATIC_INVENTORY, ui_style)
 	add_screen_object(/atom/movable/screen/zone_sel, HUDKEY_MOB_ZONE_SELECTOR, HUDGROUP_STATIC_INVENTORY, ui_style)
 	add_screen_object(/atom/movable/screen/progbar_container, HUDKEY_MOB_USE_TIMER, HUDGROUP_STATIC_INVENTORY)

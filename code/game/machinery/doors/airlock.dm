@@ -195,8 +195,8 @@
 		damage_deflection = AIRLOCK_DAMAGE_DEFLECTION_R
 
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.add_atom_to_hud(src)
 	diag_hud_set_electrified()
 
 	RegisterSignal(src, COMSIG_MACHINERY_BROKEN, PROC_REF(on_break))
@@ -315,8 +315,8 @@
 			D.removeMe(src)
 	QDEL_NULL(note)
 	QDEL_NULL(seal)
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_atom_from_hud(src)
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.remove_atom_from_hud(src)
 	return ..()
 
 /obj/machinery/door/airlock/handle_atom_del(atom/A)

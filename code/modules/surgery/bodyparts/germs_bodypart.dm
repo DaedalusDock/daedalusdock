@@ -22,7 +22,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		set_germ_level(0)
 		return
 
-	if(owner.bodytemperature > TCRYO)	//cryo stops germs from moving and doing their bad stuffs
+	if(owner.bodytemperature > TCRYO || HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))	//cryo stops germs from moving and doing their bad stuffs
 		// Syncing germ levels with external wounds
 		handle_germ_sync()
 
@@ -127,5 +127,5 @@ Note that amputating the affected organ does in fact remove the infection from t
 			update_disabled()
 
 		set_germ_level(germ_level + 1)
-		if(owner.adjustToxLoss(1, FALSE, cause_of_death = "Necrosis"))
-			return BODYPART_LIFE_UPDATE_HEALTH
+		owner.adjustToxLoss(1, FALSE, cause_of_death = "Necrosis")
+		return BODYPART_LIFE_UPDATE_HEALTH

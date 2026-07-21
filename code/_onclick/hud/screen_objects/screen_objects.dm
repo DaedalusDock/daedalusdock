@@ -579,6 +579,25 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen)
 	icon_state = "[base_icon_state][user.resting ? 0 : null]"
 	return ..()
 
+	name = "wield"
+	icon = 'icons/hud/screen_midnight.dmi'
+	icon_state = "act_wield"
+	screen_loc = ui_above_movement
+
+/atom/movable/screen/wield/Click()
+	. = ..()
+	if(.)
+		return FALSE
+	var/mob/living/carbon/human/H = usr
+	var/obj/item/I = H.get_active_held_item()
+	if(!I)
+		return
+
+	if(I.wielded)
+		I.unwield(H)
+	else
+		return I.wield(H)
+
 /atom/movable/screen/storage
 	name = "storage"
 	icon_state = "block"

@@ -25,3 +25,9 @@
   ToasterBan:
   - rscadd: The Mummification Ritual, something the Augur can do to create un-rotting
       organs
+2026-07-22:
+  Kapu1178:
+  - tweak: Mechanics that freeze organs now also freeze bodyparts.
+  - bugfix: Some sources of damage correctly update health state.
+  ToasterBan:
+  - rscadd: Added a wield button to the UI

@@ -1,5 +1,0 @@
-author: Kapu1178
-delete-after: true
-changes:
-  - tweak: Mechanics that freeze organs now also freeze bodyparts.
-  - bugfix: Some sources of damage correctly update health state.

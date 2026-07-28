@@ -133,7 +133,7 @@ SUBSYSTEM_DEF(ambience)
 		return
 
 	//Station ambience is dependant on a functioning and charged APC.
-	if(!is_mining_level(ambience_tracked_area.z) && ((!ambience_tracked_area.apc || !ambience_tracked_area.apc.operating || !ambience_tracked_area.apc.cell?.charge && ambience_tracked_area.requires_power)))
+	if(!is_mining_level(ambience_tracked_area.z) && ambience_tracked_area.requires_power && !(ambience_tracked_area.apc?.operating || ambience_tracked_area.apc.cell?.charge))
 		SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_BUZZ))
 		client.playing_ambience = null
 		return

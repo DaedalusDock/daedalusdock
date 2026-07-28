@@ -252,5 +252,15 @@ The areas used here are STRICTLY on the CC Z level.
 /area/centcom/theatre
 	name = "Mind's Eye Theatre"
 
-	#warn todo
-	ambientsounds = list()
+	ambientsounds = list(
+		'goon/sounds/ambience/Timeship_Glitchy1.ogg',
+		'goon/sounds/ambience/Timeship_Glitchy2.ogg',
+		'goon/sounds/ambience/Timeship_Glitchy3.ogg',
+	)
+
+	min_ambience_cooldown = 70 SECONDS
+	max_ambience_cooldown = 160 SECONDS
+
+	ambient_buzz = 'sound/ambience/VoidsEmbrace.ogg'
+	ambient_buzz_vol = 100
+

@@ -2238,7 +2238,7 @@
 /area/centcom/central_command_areas/armory)
 "gx" = (
 /obj/structure/stairs/east,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "gy" = (
 /obj/machinery/shower{
@@ -2893,7 +2893,7 @@
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/prison)
 "iq" = (
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "ir" = (
 /turf/closed/indestructible/fakeglass,
@@ -4218,7 +4218,7 @@
 "ma" = (
 /obj/structure/low_wall/wood,
 /obj/structure/curtain/cloth/fancy/closed,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "mb" = (
 /obj/effect/turf_decal/siding/thinplating_new/dark{
@@ -4739,7 +4739,7 @@
 /area/centcom/syndicate_mothership/control)
 "nx" = (
 /obj/structure/trash_can,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "nz" = (
 /turf/closed/indestructible/opsglass,
@@ -5445,7 +5445,7 @@
 /area/centcom/central_command_areas/prison)
 "pn" = (
 /obj/effect/landmark/ghost_theatre,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "pp" = (
 /obj/effect/turf_decal/stripes/box,
@@ -7004,7 +7004,7 @@
 /obj/structure/low_wall/wood,
 /obj/structure/curtain/cloth/fancy/closed,
 /obj/machinery/light/small/directional/north,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "uc" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
@@ -7953,7 +7953,7 @@
 /area/centcom/tdome/observation)
 "wS" = (
 /obj/structure/stairs/west,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "wU" = (
 /obj/structure/extinguisher_cabinet/directional/south,
@@ -10334,7 +10334,7 @@
 /obj/item/kirbyplants{
 	icon_state = "plant-22"
 	},
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "DA" = (
 /obj/structure/chair/sofa/bench/left{
@@ -11297,7 +11297,7 @@
 /area/centcom/wizard_station)
 "Gs" = (
 /obj/machinery/light/small/directional/south,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "Gt" = (
 /obj/effect/turf_decal/siding/wood{
@@ -12205,7 +12205,7 @@
 /area/centcom/syndicate_mothership/control)
 "Jn" = (
 /obj/structure/low_wall/wood,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "Jo" = (
 /obj/machinery/door/airlock/centcom{
@@ -12379,7 +12379,7 @@
 "JP" = (
 /obj/effect/landmark/ghost_theatre_sleeper,
 /obj/structure/chair/stool/wood,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "JS" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
@@ -13407,7 +13407,7 @@
 "Nk" = (
 /obj/structure/low_wall/wood,
 /obj/machinery/light/floor/has_bulb,
-/turf/open/floor/wood/airless,
+/turf/open/floor/wood/unsimulated,
 /area/centcom/theatre)
 "Nl" = (
 /obj/machinery/light/directional/south,

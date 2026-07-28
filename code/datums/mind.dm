@@ -1020,6 +1020,7 @@
 	RegisterSignal(current, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 	RegisterSignal(current, COMSIG_MOB_LOGOUT, PROC_REF(on_logout))
 
+	ADD_TRAIT(current, TRAIT_CANNOT_DREAM, "visiting_the_theatre")
 	/// Force them to be asleep for a given duration.
 	if(forced_visit_time)
 		ADD_TRAIT(current, TRAIT_KNOCKEDOUT, "visiting_the_theatre")
@@ -1046,6 +1047,7 @@
 	UnregisterSignal(current, list(COMSIG_MOB_RESET_PERSPECTIVE, COMSIG_MOB_STATCHANGE))
 
 	REMOVE_TRAIT(current, TRAIT_KNOCKEDOUT, "visiting_the_theatre")
+	REMOVE_TRAIT(current, TRAIT_CANNOT_DREAM, "visiting_the_theatre")
 	QDEL_NULL(simulacrum)
 
 	SEND_SOUND(current.client, sound(null, channel = CHANNEL_LOBBYMUSIC))

@@ -125,7 +125,8 @@
 
 	// Visit the theatre after being asleep for 30 seconds
 	if(!visited_the_theatre && (world.time - time_added >= 30 SECONDS))
-		owner.mind.visit_the_theatre(10 SECONDS)
+		if(prob(10)) // only a 10% chance per time being asleep.
+			owner.mind.visit_the_theatre(10 SECONDS)
 		visited_the_theatre = TRUE
 
 /datum/status_effect/incapacitating/unconscious/should_expire()

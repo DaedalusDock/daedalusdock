@@ -117,12 +117,16 @@
 	id = "unconscious"
 	needs_update_stat = TRUE
 
+	var/visited_the_theatre = FALSE
+
 /datum/status_effect/incapacitating/unconscious/tick(delta_time, times_fired)
 	if(owner.stamina.loss)
 		owner.stamina.adjust(3 * delta_time)
 
-	if(world.time - time_added >= 10 SECONDS && owner.mind && !owner.mind?.in_the_theatre)
-		owner.mind.visit_the_theatre()
+	// Visit the theatre after being asleep for 30 seconds
+	if(!visited_the_theatre && (world.time - time_added >= 30 SECONDS))
+		owner.mind.visit_the_theatre(10 SECONDS)
+		visited_the_theatre = TRUE
 
 /datum/status_effect/incapacitating/unconscious/should_expire()
 	return !HAS_TRAIT(owner, TRAIT_KNOCKEDOUT)

@@ -985,7 +985,7 @@
 	to_chat(current.client, "<div class='examine_block roundstartNotifications'>[jointext(divs, "<hr>")]</div>")
 
 /// Sends the character to the Mind's Eye Theatre (name pending).
-/datum/mind/proc/visit_the_theatre()
+/datum/mind/proc/visit_the_theatre(forced_visit_time)
 	if(in_the_theatre)
 		return
 
@@ -1020,14 +1020,19 @@
 	RegisterSignal(current, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
 	RegisterSignal(current, COMSIG_MOB_LOGOUT, PROC_REF(on_logout))
 
-	ADD_TRAIT(current, TRAIT_KNOCKEDOUT, "visiting_the_theatre")
-	theatre_timer_id = addtimer(CALLBACK(src, PROC_REF(exit_the_theatre)), 30 SECONDS, TIMER_DELETE_ME|TIMER_STOPPABLE)
+	/// Force them to be asleep for a given duration.
+	if(forced_visit_time)
+		ADD_TRAIT(current, TRAIT_KNOCKEDOUT, "visiting_the_theatre")
+		theatre_timer_id = addtimer(CALLBACK(src, PROC_REF(theatre_forced_visit_end)), forced_visit_time, TIMER_DELETE_ME|TIMER_STOPPABLE)
 
 	var/datum/media/media = pick_safe(SSmedia.get_track_pool(MEDIA_TAG_SPIRIT_THEATRE))
 	if(media)
 		var/sound/S = sound(media.path, repeat = TRUE, channel = CHANNEL_LOBBYMUSIC)
 		SEND_SOUND(current.client, S)
 	return TRUE
+
+/datum/mind/proc/theatre_forced_visit_end()
+	REMOVE_TRAIT(current, TRAIT_KNOCKEDOUT, "visiting_the_theatre")
 
 /datum/mind/proc/exit_the_theatre()
 	if(!in_the_theatre)
@@ -1061,7 +1066,7 @@
 /datum/mind/proc/on_stat_change(mob/source, new_stat, old_stat)
 	SIGNAL_HANDLER
 
-	if(new_stat != CONSCIOUS)
+	if(new_stat != UNCONSCIOUS)
 		exit_the_theatre()
 
 /// Called when the owner logs out whilst in the theatre

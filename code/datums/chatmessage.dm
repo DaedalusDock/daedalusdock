@@ -300,9 +300,9 @@
 
 	// Check for virtual speakers (aka hearing a message through a radio)
 	if (istype(speaker, /atom/movable/virtualspeaker))
-		var/atom/movable/virtualspeaker/v = speaker
-		speaker = v.source
 		spans |= "virtual-speaker"
+		if(!sound_loc)
+			return //Just quietly return if the sound has no associated location (Radio, etc.)
 
 	// Ignore sounds that originate from our person (such as radios we are carrying)
 	//if (sound_loc?.speaker_location() == src && speaker == src) //Kapu Note: Correct this later.

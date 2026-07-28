@@ -47,17 +47,21 @@
 	SHOULD_CALL_PARENT(FALSE) //We *ARE* the signal poster.
 	if(!powernet) //Did we somehow receive a signal without a powernet?
 		return //*shrug*
+
 	if(signal.transmission_method != TRANSMISSION_WIRE)
 		CRASH("Data terminal received a non-wire data packet")
-	if(connected_machine)
+
+	if(connected_machine?.is_operational)
 		connected_machine.receive_wireline_signal(signal, src)
 
 /obj/machinery/power/data_terminal/post_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(FALSE) //We *ARE* the signal poster.
 	if(!powernet || !signal)
 		return //What do you expect me to transmit on, the fucking air?
+
 	if(signal.author.resolve() != connected_machine)
 		CRASH("Data terminal was told to pass a signal from something other than it's master machine?")
+
 	signal.transmission_method = TRANSMISSION_WIRE
 	//Fuck you, we're the author now bitch.
 	signal.author = WEAKREF(src)

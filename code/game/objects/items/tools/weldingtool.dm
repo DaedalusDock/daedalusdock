@@ -41,6 +41,7 @@ TYPEINFO_DEF(/obj/item/weldingtool)
 	var/burned_fuel_for = 0 //when fuel was last removed
 	var/acti_sound = 'sound/items/welderactivate.ogg'
 	var/deac_sound = 'sound/items/welderdeactivate.ogg'
+	var/dud_sound = 'sound/items/welderdud.ogg'
 
 /obj/item/weldingtool/Initialize(mapload)
 	. = ..()
@@ -210,20 +211,30 @@ TYPEINFO_DEF(/obj/item/weldingtool)
 	return TRUE
 
 //Switches the welder on
-/obj/item/weldingtool/proc/switched_on(mob/user)
+/obj/item/weldingtool/proc/switched_on(mob/living/user)
 	if(!status)
 		to_chat(user, span_warning("[src] can't be turned on while unsecured!"))
 		return
 	set_welding(!welding)
 	if(welding)
+		#ifndef UNIT_TESTS
+		var/datum/roll_result/result = user.stat_roll(11, /datum/rpg_skill/fine_motor) //might have to give it a few tries
+		#else
+		var/datum/roll_result/result = GLOB.success_roll
+		#endif
 		if(get_fuel() >= 1)
-			to_chat(user, span_notice("You switch [src] on."))
-			playsound(loc, acti_sound, 50, TRUE)
-			force = 15
-			damtype = BURN
-			hitsound = 'sound/items/welder.ogg'
-			update_appearance()
-			START_PROCESSING(SSobj, src)
+			if(result.outcome >= SUCCESS)
+				to_chat(user, span_notice("You switch [src] on."))
+				playsound(loc, acti_sound, 50, TRUE)
+				force = 15
+				damtype = BURN
+				hitsound = 'sound/items/welder.ogg'
+				update_appearance()
+				START_PROCESSING(SSobj, src)
+			else
+				to_chat(user, span_notice("[src] fails to ignite."))
+				playsound(loc, dud_sound, 50, TRUE)
+				switched_off(user)
 		else
 			to_chat(user, span_warning("You need more fuel!"))
 			switched_off(user)
@@ -387,5 +398,10 @@ TYPEINFO_DEF(/obj/item/weldingtool/experimental)
 	if(get_fuel() < max_fuel && nextrefueltick < world.time)
 		nextrefueltick = world.time + 10
 		reagents.add_reagent(/datum/reagent/fuel, 1)
+
+/obj/item/weldingtool/experimental/examine(mob/user)
+	. = ..()
+	. += user.disco_made_easy("exp_welder", 13, skill_path = /datum/rpg_skill/fourteen_eyes, is_examine=TRUE, trait_succeed = TRAIT_ENGINEER, success_text = "Despite Daedalus Industries's numerous claims that it's \"less harmful to the eyes\", the arc generated is still painfully blinding.")
+
 
 #undef WELDER_FUEL_BURN_INTERVAL

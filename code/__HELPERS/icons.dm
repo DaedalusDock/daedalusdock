@@ -1198,3 +1198,21 @@ GLOBAL_LIST_EMPTY(transformation_animation_objects)
 			UNLINT(local.Insert(masked_icon, "[BP.body_zone]_[state]"))
 
 	fcopy(local, "data/saved_icons.dmi")
+
+/// Create an image that is a line between two points. Like Beam() but all one image.
+/proc/draw_line(turf/source, turf/destination, reverse = FALSE, icon_state = "data", src_offset_x, src_offset_y, dest_offset_x, dest_offset_y) as /image
+	var/dx = ((destination.x * world.icon_size) + dest_offset_x) - ((source.x * world.icon_size) + src_offset_x)
+	var/dy = ((destination.y * world.icon_size) + dest_offset_y) - ((source.y * world.icon_size) + src_offset_y)
+	var/distance = sqrt(dx*dx + dy*dy)
+	var/angle = -arctan(dx, dy)
+	var/icon_width = 64
+
+	var/image/I = image('goon/icons/lines2.dmi', loc = source, icon_state = icon_state)
+
+	var/scale = distance / icon_width
+	var/rotation = (reverse ? 180 : 0) + angle
+	var/translation_x = (reverse ? -1 : 1) * distance / 2
+	var/nudge_x = src_offset_x - icon_width / 4
+
+	I.transform = UNLINT(I.transform.Scale(scale, 1).Translate(translation_x, 0).Turn(rotation).Translate(nudge_x, src_offset_y))
+	return I

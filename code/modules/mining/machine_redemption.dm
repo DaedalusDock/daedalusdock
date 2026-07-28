@@ -125,13 +125,13 @@
 	if(!has_minerals)
 		return
 
-	var/datum/signal/subspace/messaging/rc/signal = new(src, list(
+	var/datum/signal/subspace/messaging/rc/signal = new(src, packetv2(payload = list(
 		"ore_update" = TRUE,
 		"sender" = "Ore Redemption Machine",
 		"message" = msg,
 		"verified" = "<font color='green'><b>Verified by Ore Redemption Machine</b></font>",
 		"priority" = REQ_NORMAL_MESSAGE_PRIORITY
-	))
+	)))
 	signal.send_to_receivers()
 
 /obj/machinery/mineral/ore_redemption/pickup_item(datum/source, atom/movable/target, direction)

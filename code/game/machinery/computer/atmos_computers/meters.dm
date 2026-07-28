@@ -1,44 +1,49 @@
 /obj/machinery/meter/monitored
+	net_class = NETCLASS_PIPE_METER
+	network_flags = NETWORK_FLAG_GEN_ID
+
+	connection_frequency = FREQ_ATMOS_STORAGE
+
 	/// The unique string that represents which atmos chamber to associate with.
 	var/chamber_id
 
-	var/frequency = FREQ_ATMOS_STORAGE
-	var/datum/radio_frequency/radio_connection
-
 /obj/machinery/meter/monitored/Initialize()
 	id_tag = chamber_id + "_sensor"
-	radio_connection = SSpackets.add_object(src, frequency, RADIO_ATMOSIA)
 	return ..()
 
 /obj/machinery/meter/monitored/Destroy()
-	SSpackets.remove_object(src, frequency)
+	radio_connection = null
 	return ..()
 
 /obj/machinery/meter/monitored/on_deconstruction()
 	. = ..()
-	broadcast_destruction(src.frequency)
+	broadcast_destruction()
 
-/obj/machinery/meter/monitored/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(null, list(
-		"sigtype" = "destroyed",
-		"tag" = id_tag,
-		"timestamp" = world.time,
-	))
-	var/datum/radio_frequency/connection = SSpackets.return_frequency(frequency)
-	connection.post_signal(signal, filter = RADIO_ATMOSIA)
+/obj/machinery/meter/monitored/proc/broadcast_destruction()
+	var/datum/signal/signal = create_signal(
+		payload = list(
+			"sigtype" = "destroyed",
+			"tag" = id_tag,
+			"timestamp" = world.time,
+		),
+		transmission_method = TRANSMISSION_RADIO
+	)
+
+	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/meter/monitored/process_atmos()
 	. = ..()
 	if(!radio_connection)
 		return
 
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = create_signal(null, payload = list(
 		"tag" = id_tag,
 		"device" = "AM",
 		"sigtype" = "status",
 		"timestamp" = world.time,
 		"gasmix" = gas_mixture_parser(target.unsafe_return_air()),
-	))
+	), transmission_method = TRANSMISSION_RADIO)
+
 	radio_connection.post_signal(signal)
 
 /obj/machinery/meter/monitored/layer2

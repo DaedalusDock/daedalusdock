@@ -289,7 +289,7 @@
 ///called from base of /obj/item/radio/proc/set_frequency(): (list/args)
 #define COMSIG_RADIO_NEW_FREQUENCY "radio_new_frequency"
 #define COMSIG_RADIO_NEW_MESSAGE "radio_new_message"
-///called during SSpacketnets/proc/ImmediateSubspaceVocalSend(): (speaker, message, freq_num, data)
+///called during SSpacketnets/proc/ImmediateSubspaceVocalSend(): (virtualspeaker, message, freq_num, data)
 #define COMSIG_RADIO_RECEIVE "radio_receive"
 // /obj/item/pen signals
 ///called after rotation in /obj/item/pen/attack_self(): (rotation, mob/living/carbon/user)

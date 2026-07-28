@@ -126,26 +126,6 @@
 		if(objective)
 			objective.completed = TRUE
 
-//COMMUNICATIONS CONSOLE//
-/obj/machinery/computer/communications/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/ninja_suit, mob/living/carbon/human/ninja, obj/item/clothing/gloves/space_ninja/ninja_gloves)
-	if(!ninja_suit || !ninja || !ninja_gloves)
-		return INVALID_DRAIN
-	if(ninja_gloves.communication_console_hack_success)
-		return
-	if(machine_stat & (NOPOWER|BROKEN))
-		return
-	AI_notify_hack()
-	if(!do_after(ninja, src, 30 SECONDS))
-		return
-	hack_console(ninja)
-	ninja_gloves.communication_console_hack_success = TRUE
-	var/datum/antagonist/ninja/ninja_antag = ninja.mind.has_antag_datum(/datum/antagonist/ninja)
-	if(!ninja_antag)
-		return
-	var/datum/objective/terror_message/objective = locate() in ninja_antag.objectives
-	if(objective)
-		objective.completed = TRUE
-
 //AIRLOCK//
 /obj/machinery/door/airlock/ninjadrain_act(obj/item/clothing/suit/space/space_ninja/ninja_suit, mob/living/carbon/human/ninja, obj/item/clothing/gloves/space_ninja/ninja_gloves)
 	if(!ninja_suit || !ninja || !ninja_gloves)

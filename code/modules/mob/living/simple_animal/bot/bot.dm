@@ -135,8 +135,10 @@
 
 	//Adds bot to the diagnostic HUD system
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.add_atom_to_hud(src)
+
 	diag_hud_set_bothealth()
 	diag_hud_set_botstat()
 	diag_hud_set_botmode()
@@ -145,18 +147,23 @@
 	if(!isnull(data_hud_type))
 		var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
 		datahud.show_to(src)
+
 	if(path_hud)
 		path_hud.add_atom_to_hud(src)
 		path_hud.show_to(src)
-
 
 /mob/living/simple_animal/bot/Destroy()
 	if(path_hud)
 		QDEL_NULL(path_hud)
 		path_hud = null
+
 	GLOB.bots_list -= src
 	if(paicard)
 		ejectpai()
+
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.remove_atom_from_hud(src)
+
 	QDEL_NULL(internal_radio)
 	QDEL_NULL(access_card)
 	ignore_list = null

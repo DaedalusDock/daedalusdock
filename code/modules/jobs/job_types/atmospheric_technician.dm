@@ -23,6 +23,7 @@
 	paycheck_department = ACCOUNT_ENG
 
 	liver_traits = list(TRAIT_ENGINEER_METABOLISM)
+	mind_traits = list(TRAIT_ENGINEER)
 
 	departments_list = list(
 		/datum/job_department/engineering,

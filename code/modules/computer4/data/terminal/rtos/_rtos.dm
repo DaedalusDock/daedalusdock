@@ -188,7 +188,7 @@
 	if(packet == "nocard")
 		return FALSE //No card inserted.
 
-	var/access_string = packet.data["access"]
+	var/access_string = packet.data[PKT_PAYLOAD]["access"]
 	var/list/access_list = text2access(access_string)
 
 	return check_access(access_list)

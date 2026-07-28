@@ -20,7 +20,7 @@ TYPEINFO_DEF(/obj/item/clothing/under/rank/engineering/chief_engineer)
 
 /obj/item/clothing/under/rank/engineering/chief_engineer/Initialize(mapload)
 	. = ..()
-	AddComponent(/datum/component/disco_clothing, "chief_engineer_parent_examine", 8, success_text = "The Daedalus Industries Chief Engineer, or so their suit says. The company was required to \"accelerate the careers\" of many of its less skilled staff to fill new-found openings after the Little Bang.")
+	AddComponent(/datum/component/disco_clothing, "chief_engineer_parent_examine", 8, trait_succeed = TRAIT_ENGINEER, success_text = "The Daedalus Industries Chief Engineer, or so their suit says. The company was required to \"accelerate the careers\" of many of its less skilled staff to fill new-found openings after the Little Bang.")
 
 /obj/item/clothing/under/rank/engineering/chief_engineer/skirt
 	name = "chief engineer's jumpskirt"
@@ -39,6 +39,10 @@ TYPEINFO_DEF(/obj/item/clothing/under/rank/engineering/chief_engineer)
 	inhand_icon_state = "atmos_suit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
 
+/obj/item/clothing/under/rank/engineering/atmospheric_technician/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/disco_clothing, "atmos_paranoia", 8, /datum/rpg_skill/electric_body, failure_text = "Something tickles your nose.")
+
 /obj/item/clothing/under/rank/engineering/atmospheric_technician/skirt
 	name = "atmospheric technician's jumpskirt"
 	desc = "It's a jumpskirt worn by atmospheric technicians. Made from fire resistant materials."
@@ -55,6 +59,10 @@ TYPEINFO_DEF(/obj/item/clothing/under/rank/engineering/chief_engineer)
 	icon_state = "engine"
 	inhand_icon_state = "engi_suit"
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION | CLOTHING_TESHARI_VARIATION | CLOTHING_VOX_VARIATION
+
+/obj/item/clothing/under/rank/engineering/engineer/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/disco_clothing, "engineer_examine", 10, trait_succeed = TRAIT_ENGINEER, success_text = "The rank-and-file of Daedalus Industries. The engineer training course is infamously short; the company expects on-the-job experience to fill the (often many) gaps in their knowledge.")
 
 /obj/item/clothing/under/rank/engineering/engineer/hazard
 	name = "engineer's hazard jumpsuit"

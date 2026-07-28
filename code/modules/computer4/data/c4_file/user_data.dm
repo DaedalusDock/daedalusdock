@@ -16,3 +16,7 @@
 	clone.assignment = assignment
 	clone.access = access.Copy()
 	return clone
+
+/// Returns the "auth" field of a packet.
+/datum/c4_file/user/proc/get_auth()
+	return access2text(access)

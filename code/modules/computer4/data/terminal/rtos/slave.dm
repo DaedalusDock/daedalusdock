@@ -23,10 +23,10 @@
 
 	var/datum/signal/signal = new(
 		src,
-		list(
+		packetv2(payload = list(
 			"tag" = id_tag,
-			PACKET_CMD = NETCMD_UPDATE_REQUEST,
-		)
+			PKT_ARG_CMD = NETCMD_UPDATE_REQUEST,
+		))
 	)
 	post_signal(signal)
 
@@ -38,29 +38,29 @@
 		handle_cardscan(packet)
 
 /datum/c4_file/terminal_program/operating_system/rtos/slave/proc/handle_packet(datum/signal/packet)
-	var/list/fields = packet.data
+	var/list/payload = packet.data[PKT_PAYLOAD]
 
-	if(fields[PACKET_CMD] != NETCMD_UPDATE_DATA)
+	if(payload[PKT_ARG_CMD] != NETCMD_UPDATE_DATA)
 		return
 
 	var/redraw_screen = FALSE
 	var/update_visuals = FALSE
 
-	if(fields[PACKET_ARG_TEXTBUFFER])
+	if(payload[PACKET_ARG_TEXTBUFFER])
 		var/list/tmp_history
-		tmp_history = params2list(fields[PACKET_ARG_TEXTBUFFER])
+		tmp_history = params2list(payload[PACKET_ARG_TEXTBUFFER])
 		tmp_history.Cut(4)
 		print_history = list()
 		for(var/row in tmp_history)
 			print_history += html_encode(row)
 		redraw_screen = TRUE
 
-	var/new_leds = fields[PACKET_ARG_LEDS]
+	var/new_leds = payload[PACKET_ARG_LEDS]
 	if(!isnull(new_leds) && text2num(new_leds))
 		display_indicators = new_leds
 		update_visuals = TRUE
 
-	var/new_display = fields[PACKET_ARG_DISPLAY]
+	var/new_display = payload[PACKET_ARG_DISPLAY]
 	if(istext(new_display))
 		display_icon = new_display
 		update_visuals = TRUE
@@ -74,21 +74,21 @@
 /datum/c4_file/terminal_program/operating_system/rtos/slave/proc/handle_cardscan(datum/signal/packet)
 	var/datum/signal/signal = new(
 		src,
-		list(
+		packetv2(payload = list(
 			"tag" = id_tag,
-			PACKET_CMD = NETCMD_ECSLAVE_ACCESS,
+			PKT_ARG_CMD = NETCMD_ECSLAVE_ACCESS,
 			"packet" = list2params(packet.data)
-		)
+		))
 	)
 	post_signal(signal)
 
 /datum/c4_file/terminal_program/operating_system/rtos/slave/std_in(text)
 	var/datum/signal/signal = new(
 		src,
-		list(
+		packetv2(payload = list(
 			"tag" = id_tag,
-			PACKET_CMD = "key",
+			PKT_ARG_CMD = "key",
 			"key" = text
-		)
+		))
 	)
 	post_signal(signal)

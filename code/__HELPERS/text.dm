@@ -1219,7 +1219,7 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 	return "[num2text(0, len_diff, 10)][text]"
 
 /// Prepends the string with the given character until the specified length is met.
-/proc/fit_with(text, length, char = " ", append = FALSE)
+/proc/pad_text(text, length, char = " ", append = FALSE)
 	var/delta = length - length_char(text)
 	var/list/characters = new /list(max(delta + 1, 0))
 	if(append)

@@ -21,28 +21,29 @@ GLOBAL_VAR_INIT(message_delay, 0) // To make sure restarting the recentmessages 
 	// Don't broadcast rejected signals
 	if(!istype(signal))
 		return
-	if(signal.data["reject"])
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	if(payload["reject"])
 		return
-	if(!signal.data["message"])
+	if(!payload["message"])
 		return
 
 	// Prevents massive radio spam
 	signal.mark_done()
 	var/datum/signal/subspace/original = signal.original
-	if(original && ("compression" in signal.data))
-		original.data["compression"] = signal.data["compression"]
+	if(original && ("compression" in payload[PKT_PAYLOAD]))
+		original.data[PKT_PAYLOAD]["compression"] = payload["compression"]
 
 	var/turf/T = get_turf(src)
 	if (T)
 		signal.levels |= T.z
 
-	var/signal_message = "[signal.frequency]:[signal.data["message"]]:[signal.data["name"]]"
+	var/signal_message = "[signal.frequency]:[payload["message"]]:[payload["name"]]"
 	if(signal_message in GLOB.recentmessages)
 		return
 	GLOB.recentmessages.Add(signal_message)
 
-	if(signal.data["slow"] > 0)
-		sleep(signal.data["slow"]) // simulate the network lag if necessary
+	if(payload["slow"] > 0)
+		sleep(payload["slow"]) // simulate the network lag if necessary
 
 	signal.broadcast()
 

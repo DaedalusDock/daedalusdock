@@ -71,11 +71,16 @@
 	if(!inserted_card)
 		return "nocard"
 
-	var/list/data = list(
-		"name" = inserted_card.registered_name,
-		"job" = inserted_card.assignment,
-		"access" = access2text(inserted_card.GetAccess())
+	var/datum/signal/packet = new(
+		src,
+		packetv2(
+			payload = list(
+				"name" = inserted_card.registered_name,
+				"job" = inserted_card.assignment,
+				"access" = access2text(inserted_card.GetAccess())
+			)
+		),
+		TRANSMISSION_WIRE
 	)
-	var/datum/signal/packet = new(src, data, TRANSMISSION_WIRE)
 	deferred_peripheral_input(PERIPHERAL_CMD_SCAN_CARD, packet, 0.4 SECONDS)
 	return packet

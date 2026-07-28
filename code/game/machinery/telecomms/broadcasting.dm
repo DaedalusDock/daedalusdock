@@ -64,8 +64,9 @@
 
 /datum/signal/subspace/New(data)
 	src.data = data || list()
+	src.data[PKT_PAYLOAD] ||= list()
 
-/datum/signal/subspace/proc/copy()
+/datum/signal/subspace/Copy()
 	var/datum/signal/subspace/copy = new
 	copy.original = src
 	copy.author = author
@@ -73,13 +74,13 @@
 	copy.frequency = frequency
 	copy.server_type = server_type
 	copy.transmission_method = transmission_method
-	copy.data = data.Copy()
+	copy.data = DeepCopyData()
 	return copy
 
 /datum/signal/subspace/proc/mark_done()
 	var/datum/signal/subspace/current = src
 	while (current)
-		current.data["done"] = TRUE
+		current.data[PKT_PAYLOAD]["done"] = TRUE
 		current = current.original
 
 /datum/signal/subspace/proc/send_to_receivers()
@@ -112,7 +113,7 @@
 	src.frequency = frequency
 	src.language = language
 	virt = speaker
-	data = list(
+	data = list(PKT_PAYLOAD = list(
 		"name" = speaker.name,
 		"job" = speaker.job,
 		"message" = message,
@@ -120,13 +121,13 @@
 		"language" = language.name,
 		"spans" = spans,
 		"mods" = message_mods
-	)
+	))
 	src.levels = levels
 
-/datum/signal/subspace/vocal/copy()
+/datum/signal/subspace/vocal/Copy()
 	var/datum/signal/subspace/vocal/copy = new(author, frequency, virt, language)
 	copy.original = src
-	copy.data = data.Copy()
+	copy.data = DeepCopyData()
 	copy.levels = levels.Copy()
 	return copy
 

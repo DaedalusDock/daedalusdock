@@ -86,10 +86,7 @@
 
 	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
 
-	if(!frequency)
-		return
-
-	var/datum/signal/status_signal = new(null, list("command" = "friendcomputer"))
+	var/datum/signal/status_signal = new(user, packetv2(astype(user, /mob/living/silicon/ai).net_id, payload = list(PKT_ARG_CMD = "friendcomputer")))
 	frequency.post_signal(status_signal)
 
 /datum/emote/ai/emotion_display/blue_glow

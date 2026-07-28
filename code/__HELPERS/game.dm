@@ -26,7 +26,7 @@
 	while(index <= length(processing_list))
 		var/atom/object_to_check = processing_list[index]
 
-		if(istype(object_to_check, /obj/item/organ))
+		if(isorgan(object_to_check) || isbodypart(object_to_check))
 			if(freeze)
 				ADD_TRAIT(object_to_check, TRAIT_ORGAN_FROZEN, ref(containing_object))
 			else
@@ -39,6 +39,12 @@
 					ADD_TRAIT(organ, TRAIT_ORGAN_FROZEN, ref(containing_object))
 				else
 					REMOVE_TRAIT(organ, TRAIT_ORGAN_FROZEN, ref(containing_object))
+
+			for(var/obj/item/bodypart/part in mob_to_check.bodyparts)
+				if(freeze)
+					ADD_TRAIT(part, TRAIT_ORGAN_FROZEN, ref(containing_object))
+				else
+					REMOVE_TRAIT(part, TRAIT_ORGAN_FROZEN, ref(containing_object))
 
 		for(var/atom/contained_to_check in object_to_check) //objects held within other objects are added to the processing list
 			if(!processed_list[contained_to_check])

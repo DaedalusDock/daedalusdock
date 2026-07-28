@@ -285,7 +285,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 
 /// This is on_life() but for when the owner is dead or outside of a mob. Bad name.
 /obj/item/organ/proc/on_death(delta_time, times_fired)
-	if(organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD) || HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))
+	if(organ_flags & (ORGAN_SYNTHETIC|ORGAN_DEAD|ORGAN_MUMMIFIED) || HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))
 		return
 
 	set_germ_level(germ_level + rand(1,3))
@@ -418,6 +418,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 /obj/item/organ/proc/set_max_health(new_max)
 	maxHealth = FLOOR(new_max, 1)
 	damage = min(damage, maxHealth)
+
+/obj/item/organ/proc/get_max_health()
+	return maxHealth
 
 ///Adjusts an organ's damage by the amount "damage_amount", up to a maximum amount, which is by default max damage
 /obj/item/organ/proc/applyOrganDamage(damage_amount, maximum = maxHealth, silent, updating_health = TRUE, cause_of_death = "Organ failure") //use for damaging effects
@@ -661,6 +664,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	else if (damage > low_threshold)
 		. += tag ? "<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
+
+	if (organ_flags & ORGAN_MUMMIFIED)
+		. += tag ? "<span style='font-weight: bold; color:#e8c640'>Mummified</span>" : "Mummified"
 	return
 
 /// Used for the fix_organ surgery, lops off some of the maxHealth if the organ was very damaged.

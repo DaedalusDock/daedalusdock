@@ -63,15 +63,14 @@
 	status_alarm(FALSE)
 
 /datum/weather/rad_storm/proc/status_alarm(active) //Makes the status displays show the radiation warning for those who missed the announcement.
-	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
-	if(!frequency)
-		return
-
-	var/datum/signal/signal = new(null)
+	var/list/payload = list()
 	if (active)
-		signal.data["command"] = "alert"
-		signal.data["picture_state"] = "radiation"
+		payload[PKT_ARG_CMD] =  NET_COMMAND_STATDISPLAY_SET
+		payload[PKT_ARG_STATDISPLAY_MODE] = "alert"
+		payload[PKT_ARG_STATDISPLAY_PICTURE] = "radiation"
 	else
-		signal.data["command"] = "shuttle"
+		payload[PKT_ARG_CMD] =  NET_COMMAND_STATDISPLAY_SET
+		payload[PKT_ARG_STATDISPLAY_MODE] = "shuttle"
 
-	frequency.post_signal(signal)
+	var/datum/signal/signal = new(null, packetv2(payload = payload))
+	comms_dish_relay_packet(signal)

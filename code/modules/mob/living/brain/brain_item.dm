@@ -305,7 +305,7 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 60 : 100
 			if(!past_damage_threshold(6) && prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
+				applyOrganDamage(BRAIN_DECAY_RATE, cause_of_death = "Hypoxemia")
 
 			if(owner.stat == CONSCIOUS && prob(15))
 				log_health(owner, "Passed out due to poor blood oxygenation, random chance.")
@@ -316,9 +316,9 @@
 			owner.blur_eyes(6)
 			damprob = CHEM_EFFECT_MAGNITUDE(owner, CE_STABLE) ? 80 : 100
 			if(prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
+				applyOrganDamage(BRAIN_DECAY_RATE, cause_of_death = "Hypoxemia")
 			if(prob(damprob))
-				applyOrganDamage(BRAIN_DECAY_RATE, updating_health = FALSE, cause_of_death = "Hypoxemia")
+				applyOrganDamage(BRAIN_DECAY_RATE, cause_of_death = "Hypoxemia")
 	. = ..()
 
 /obj/item/organ/brain/check_damage_thresholds(mob/M)

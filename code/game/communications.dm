@@ -170,7 +170,9 @@ GLOBAL_LIST_EMPTY(freq2icon)
 	var/list/filter_list
 
 	///Admin logging
-	var/logging_data
+	var/list/logging_data
+	/// The ckey responsible for the packet's creation
+	var/logging_ckey
 
 	///Does this packet contain anything but standard data?
 	///Anything that captures packets should either generate garbage data or discard these packets.
@@ -184,15 +186,29 @@ GLOBAL_LIST_EMPTY(freq2icon)
 	if(islist(author))
 		stack_trace("Something is using the old signal/New() argument order!")
 		src.data = author
+
 	src.data = data || list()
+	if(!islist(data[PKT_PAYLOAD]))
+		data[PKT_PAYLOAD] = list()
+
 	src.transmission_method = transmission_method
 	src.logging_data = logging_data
 
 /// Returns a copy of this signal.
 /datum/signal/proc/Copy()
-	var/datum/signal/clone = new type(author, data.Copy(), transmission_method, logging_data)
+	var/list/cloned_data = DeepCopyData()
+	var/datum/signal/clone = new type(author, cloned_data, transmission_method, logging_data)
+	if(logging_data)
+		clone.logging_data = logging_data
 	clone.passed_bridges = src.passed_bridges?.Copy()
 	return clone
+
+/// Returns a copy of the data field with it's own reference to the payload field. DOES NOT COPY DEEPER THAN THAT!
+/datum/signal/proc/DeepCopyData()
+	var/list/cloned_data = data.Copy()
+	if(cloned_data[PKT_HEAD_VERSION] >= 2)
+		cloned_data[PKT_PAYLOAD] = astype(data[PKT_PAYLOAD], /list)?.Copy()
+	return cloned_data
 
 /// Check if this signal has passed a bridge, if not, add the bridge's refid to the passed bridge list.
 /// FALSE - first pass, TRUE - second+pass, panic.

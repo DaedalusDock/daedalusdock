@@ -4,19 +4,25 @@
 	return ..()
 
 /mob/living/silicon/ai/compose_track_href(atom/movable/speaker, namepart)
-	var/mob/M = speaker.GetSource()
+	var/atom/movable/virtualspeaker/virt = astype(speaker)
+	var/atom/movable/M = virt ? virt.speaker_weakref.resolve() : speaker
 	if(M)
 		return "<a href='?src=[REF(src)];track=[html_encode(namepart)]'>"
 	return ""
 
 /mob/living/silicon/ai/compose_job(atom/movable/speaker, message_langs, raw_message, radio_freq)
 	//Also includes the </a> for AI hrefs, for convenience.
-	return "[radio_freq ? " (" + speaker.GetJob() + ")" : ""]" + "[speaker.GetSource() ? "</a>" : ""]"
+	var/atom/movable/real_speaker = speaker
+	if(istype(real_speaker, /atom/movable/virtualspeaker))
+		real_speaker = astype(real_speaker, /atom/movable/virtualspeaker).speaker_weakref.resolve()
+
+	return "[radio_freq ? " (" + speaker.GetJob() + ")" : ""]" + "[real_speaker ? "</a>" : ""]"
 
 /mob/living/silicon/ai/IsVocal()
 	return !CONFIG_GET(flag/silent_ai)
 
 /mob/living/silicon/ai/radio(message, list/message_mods = list(), list/spans, language)
+	message_mods[MODE_AI_OVER_RADIO] = TRUE
 	if(incapacitated())
 		return FALSE
 	if(!radio_enabled) //AI cannot speak if radio is disabled (via intellicard) or depowered.

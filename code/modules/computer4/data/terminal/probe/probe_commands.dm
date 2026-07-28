@@ -1,5 +1,5 @@
 /datum/shell_command/probe_cmd/ping
-	aliases = list("ping, p")
+	aliases = list("ping", "p")
 
 /datum/shell_command/probe_cmd/ping/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/datum/c4_file/terminal_program/probe/probe = program
@@ -13,7 +13,7 @@
 		system.println("Pinging '[format_frequency(adapter.frequency)]'...")
 
 /datum/shell_command/probe_cmd/view
-	aliases = list("view, v")
+	aliases = list("view", "v")
 
 /datum/shell_command/probe_cmd/view/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/datum/c4_file/terminal_program/probe/probe = program

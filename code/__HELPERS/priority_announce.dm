@@ -12,7 +12,7 @@
  * * players (list or null) The players we're sending to. If null, send to all players.
  * * override_sound (sound or null) A sound datum to play instead of the usual sound.
  */
-/proc/priority_announce(text = "", super_title = "Colony Announcement", sub_title = "", sound_type = ANNOUNCER_DEFAULT, send_to_newscaster = FALSE, do_not_modify = FALSE, list/players, sound/override_sound = TRUE)
+/proc/priority_announce(text = "", super_title = "Colony Announcement", sub_title = "", sound_type = ANNOUNCER_DEFAULT, send_to_newscaster = FALSE, do_not_modify = FALSE, list/players, sound/override_sound)
 	if(!text)
 		return
 

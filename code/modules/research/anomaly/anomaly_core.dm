@@ -12,7 +12,7 @@
 /obj/item/assembly/signaler/anomaly/receive_signal(datum/signal/signal)
 	if(!signal)
 		return FALSE
-	if(signal.data["code"] != code)
+	if(signal.data[PKT_PAYLOAD]["code"] != code)
 		return FALSE
 	if(suicider)
 		manual_suicide(suicider)

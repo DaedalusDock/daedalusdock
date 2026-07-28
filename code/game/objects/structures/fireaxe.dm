@@ -189,3 +189,11 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fireaxecabinet, 32)
 		open = !open
 		update_appearance()
 		return
+
+/obj/structure/fireaxecabinet/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	if(fireaxe)
+		if(!open && !broken)
+			user.disco_made_easy("axe_lust", 14, skill_path = /datum/rpg_skill/bloodsport, success_text = "You feel a sudden and pressing need to acquire that wicked instrument of violence trapped behind that glass.")
+		else
+			user.disco_made_easy("axe_lust2", 10, skill_path = /datum/rpg_skill/knuckle_down, failure_text = "Grab it. Grab the axe. You're so close, and you want it very badly.") //they should invent a kind of axe that doesnt talk to you

@@ -144,22 +144,21 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/keycard_auth, 26)
 
 GLOBAL_VAR_INIT(emergency_access, FALSE)
 /proc/make_maint_all_access()
-	for(var/area/station/maintenance/A in GLOB.areas)
-		for(var/turf/in_area as anything in A.get_contained_turfs())
-			for(var/obj/machinery/door/airlock/D in in_area)
-				D.emergency = TRUE
-				D.update_icon(ALL, 0)
+	for(var/obj/machinery/door/airlock/airlock in INSTANCES_OF(/obj/machinery/door))
+		if(istype(get_area(airlock),  /area/station/maintenance))
+			airlock.emergency = TRUE
+			airlock.update_icon(ALL, 0)
 
 	priority_announce("Access restrictions on maintenance and external airlocks have been lifted.", sub_title = "Colony-wide emergency declared.", sound_type = ANNOUNCER_ALERT)
 	GLOB.emergency_access = TRUE
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "enabled"))
 
 /proc/revoke_maint_all_access()
-	for(var/area/station/maintenance/A in GLOB.areas)
-		for(var/turf/in_area as anything in A.get_contained_turfs())
-			for(var/obj/machinery/door/airlock/D in in_area)
-				D.emergency = FALSE
-				D.update_icon(ALL, 0)
+	for(var/obj/machinery/door/airlock/airlock in INSTANCES_OF(/obj/machinery/door))
+		if(istype(get_area(airlock), /area/station/maintenance))
+			airlock.emergency = TRUE
+			airlock.update_icon(ALL, 0)
+
 	priority_announce("Access restrictions in maintenance areas have been restored.", sub_title = "Station-wide emergency rescinded.")
 	GLOB.emergency_access = FALSE
 	SSblackbox.record_feedback("nested tally", "keycard_auths", 1, list("emergency maintenance access", "disabled"))

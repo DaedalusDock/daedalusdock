@@ -4340,6 +4340,15 @@
 	},
 /turf/open/floor/iron/dark,
 /area/station/security/brig)
+"bxM" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/cable/yellow{
+	icon_state = "2"
+	},
+/obj/machinery/power/data_terminal,
+/obj/machinery/communications_dish,
+/turf/open/space,
+/area/space/nearstation)
 "bxP" = (
 /obj/structure/closet/secure_closet{
 	name = "secure weapons locker";
@@ -4769,7 +4778,7 @@
 /obj/effect/mapping_helpers/airlock/locked,
 /obj/machinery/door/airlock/virology{
 	name = "Virology Exterior Airlock";
-	frequency = 1449;
+	connection_frequency = 1449;
 	id_tag = "virology_airlock_exterior";
 	autoclose = 0
 	},
@@ -14355,7 +14364,7 @@
 /obj/effect/mapping_helpers/airlock/locked,
 /obj/machinery/door/airlock/virology{
 	name = "Virology Interior Airlock";
-	frequency = 1449;
+	connection_frequency = 1449;
 	id_tag = "virology_airlock_interior";
 	autoclose = 0
 	},
@@ -28900,18 +28909,11 @@
 /area/station/security/brig)
 "kqD" = (
 /obj/structure/window/reinforced/spawner/east,
-/obj/item/paper_bin{
-	pixel_x = -2;
-	pixel_y = 8
-	},
 /obj/structure/table/glass,
-/obj/item/folder/blue{
-	pixel_y = 2
+/obj/machinery/computer/security/wooden_tv{
+	pixel_x = 1;
+	pixel_y = 6
 	},
-/obj/item/folder/blue{
-	pixel_y = 2
-	},
-/obj/item/pen,
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "kqM" = (
@@ -32388,17 +32390,19 @@
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/turret_protected/aisat_interior)
 "lzb" = (
-/obj/item/folder/red{
-	pixel_y = 3
-	},
 /obj/machinery/light/directional/east,
 /obj/structure/table/glass,
-/obj/item/folder/red{
-	pixel_y = 3
-	},
 /obj/effect/turf_decal/tile/red/half/contrasted{
 	dir = 4
 	},
+/obj/item/paper_bin{
+	pixel_x = -2;
+	pixel_y = 8
+	},
+/obj/item/folder/red{
+	pixel_y = 3
+	},
+/obj/item/pen,
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "lzc" = (
@@ -45149,6 +45153,27 @@
 /obj/structure/chair/pew/right,
 /turf/open/floor/iron/chapel,
 /area/station/service/chapel)
+"qbM" = (
+/obj/effect/spawner/structure/window/reinforced/prepainted/daedalus,
+/obj/machinery/door/poddoor/preopen{
+	name = "bridge blast door";
+	id = "bridge blast"
+	},
+/obj/effect/mapping_helpers/paint_wall/bridge,
+/obj/structure/cable/yellow{
+	icon_state = "2"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "10"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "6"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "3"
+	},
+/turf/open/floor/plating,
+/area/station/command/bridge)
 "qbO" = (
 /obj/effect/turf_decal/stripes/line{
 	dir = 1
@@ -48132,11 +48157,11 @@
 /turf/open/floor/wood,
 /area/station/command/corporate_showroom)
 "reo" = (
-/obj/machinery/computer/security/wooden_tv{
-	pixel_x = 1;
-	pixel_y = 6
+/obj/machinery/power/data_terminal,
+/obj/machinery/computer4/management/superintendent,
+/obj/structure/cable/yellow{
+	icon_state = "1"
 	},
-/obj/structure/table/glass,
 /turf/open/floor/iron/dark,
 /area/station/command/bridge)
 "reF" = (
@@ -95856,8 +95881,8 @@ xYC
 kpo
 lrL
 oyT
-aaf
-wBa
+bxM
+qbM
 cIu
 qkM
 ctp
@@ -96118,7 +96143,7 @@ wSU
 guV
 vhF
 bnW
-quv
+qCy
 reo
 vjs
 gEp

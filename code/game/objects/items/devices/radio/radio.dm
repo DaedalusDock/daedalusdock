@@ -319,7 +319,8 @@ TYPEINFO_DEF(/obj/item/radio)
 			return
 
 	// Determine the identity information which will be attached to the signal.
-	var/atom/movable/virtualspeaker/speaker = new(null, talking_movable, src)
+	var/atom/movable/virtualspeaker/speaker = new(null, talking_movable, src.anonymize)
+	speaker.baked_saymod = talking_movable.say_mod(message, message_mods, language)
 
 	// Construct the signal
 	var/list/broadcast_levels = broadcast_z_override || list(get_step(src, 0)?.z)
@@ -327,7 +328,7 @@ TYPEINFO_DEF(/obj/item/radio)
 
 	// Independent radios, on the CentCom frequency, reach all independent radios
 	if (independent && (freq == FREQ_CENTCOM))
-		signal.data["compression"] = 0
+		signal.data[PKT_PAYLOAD]["compression"] = 0
 		signal.transmission_method = TRANSMISSION_SUPERSPACE
 		signal.levels = list(0)
 		signal.broadcast()
@@ -349,11 +350,11 @@ TYPEINFO_DEF(/obj/item/radio)
 	if(!T)
 		return
 
-	if (signal.data["done"] && (T.z in signal.levels))
+	if (signal.data[PKT_PAYLOAD]["done"] && (T.z in signal.levels))
 		return
 
 	// Okay, the signal was never processed, send a mundane broadcast.
-	signal.data["compression"] = 0
+	signal.data[PKT_PAYLOAD]["compression"] = 0
 	signal.transmission_method = TRANSMISSION_RADIO
 	signal.levels = list(T.z)
 	signal.broadcast()

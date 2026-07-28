@@ -15,6 +15,8 @@ TYPEINFO_DEF(/obj/machinery/computer)
 	light_outer_range = 2
 	light_power = 0.8
 
+	net_class = NETCLASS_COMPUTER
+
 	var/icon_keyboard = "generic_key"
 	var/icon_screen = "generic"
 	var/time_to_screwdrive = 20

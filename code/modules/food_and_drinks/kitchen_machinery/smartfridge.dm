@@ -435,7 +435,7 @@
 	. = ..()
 	if(!.) //if the item loads, clear can_decompose
 		return
-	if(isorgan(O))
+	if(isorgan(O) || isbodypart(O))
 		ADD_TRAIT(O, TRAIT_ORGAN_FROZEN, ref(src))
 
 /obj/machinery/smartfridge/organ/RefreshParts()
@@ -450,7 +450,7 @@
 
 /obj/machinery/smartfridge/organ/Exited(atom/movable/gone, direction)
 	. = ..()
-	if(isorgan(gone))
+	if(isorgan(gone) || isbodypart(gone))
 		REMOVE_TRAIT(gone, TRAIT_ORGAN_FROZEN, ref(src))
 
 // -----------------------------

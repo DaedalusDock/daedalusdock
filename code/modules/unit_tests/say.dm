@@ -109,7 +109,7 @@
 
 	speaker_radio_heard_message = TRUE
 
-/datum/unit_test/speech/proc/handle_radio_speech(datum/source, atom/movable/speaker, message, freq_num, list/data)
+/datum/unit_test/speech/proc/handle_radio_speech(datum/source, atom/movable/virtualspeaker/speaker, message, freq_num, list/data)
 	SIGNAL_HANDLER
 
 	listener_radio_received_message = TRUE

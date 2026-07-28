@@ -82,6 +82,8 @@
 	var/verb_sing = "sings"
 	var/verb_yell = "yells"
 	var/speech_span
+	/// Does this speaker trigger speech emphasis processing?
+	var/allow_speech_emphasis = TRUE
 
 	/// The list of factions this atom belongs to
 	var/list/faction

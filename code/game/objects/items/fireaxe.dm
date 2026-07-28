@@ -47,6 +47,10 @@ TYPEINFO_DEF(/obj/item/fireaxe)
 		var/obj/structure/W = target
 		W.atom_destruction("fireaxe")
 
+/obj/item/fireaxe/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	user.disco_made_easy("the_axe", 11, skill_path = /datum/rpg_skill/bloodsport, success_text = "Finally! Now we can get to WORK. Hold on with both hands and CHOP CHOP CHOP!")
+
 /*
  * Bone Axe
  */

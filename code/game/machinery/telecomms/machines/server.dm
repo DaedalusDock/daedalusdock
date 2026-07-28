@@ -18,7 +18,8 @@
 
 /obj/machinery/telecomms/server/receive_information(datum/signal/subspace/vocal/signal, obj/machinery/telecomms/machine_from)
 	// can't log non-vocal signals
-	if(!istype(signal) || !signal.data["message"] || !is_freq_listening(signal))
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	if(!istype(signal) || !payload["message"] || !is_freq_listening(signal))
 		return
 
 	if(traffic > 0)
@@ -29,20 +30,20 @@
 		log_entries.Cut(1, 2)
 
 	var/datum/comm_log_entry/log = new
-	log.parameters["mobtype"] = signal.virt.source.type
-	log.parameters["name"] = signal.data["name"]
-	log.parameters["job"] = signal.data["job"]
-	log.parameters["message"] = signal.data["message"]
+	log.parameters["mobtype"] = signal.virt.speaker_weakref?.resolve()?.type || "NULL"
+	log.parameters["name"] = payload["name"]
+	log.parameters["job"] = payload["job"]
+	log.parameters["message"] = payload["message"]
 	log.parameters["language"] = signal.language
 
 	// If the signal is still compressed, make the log entry gibberish
-	var/compression = signal.data["compression"]
+	var/compression = payload["compression"]
 	if(compression > 0)
 		log.input_type = "Corrupt File"
 		var/replace_characters = compression >= 20 ? TRUE : FALSE
-		log.parameters["name"] = Gibberish(signal.data["name"], replace_characters)
-		log.parameters["job"] = Gibberish(signal.data["job"], replace_characters)
-		log.parameters["message"] = Gibberish(signal.data["message"], replace_characters)
+		log.parameters["name"] = Gibberish(payload["name"], replace_characters)
+		log.parameters["job"] = Gibberish(payload["job"], replace_characters)
+		log.parameters["message"] = Gibberish(payload["message"], replace_characters)
 
 	// Give the log a name and store it
 	var/identifier = num2text( rand(-1000,1000) + world.time )

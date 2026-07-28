@@ -151,24 +151,17 @@
 	set category = "Admin.Events"
 	set name = "Call Shuttle"
 
-	if(EMERGENCY_AT_LEAST_DOCKED)
-		return
-
 	if(!check_rights(R_ADMIN))
 		return
+
 
 	var/confirm = tgui_alert(usr, "You sure?", "Confirm", list("Yes", "Yes (No Recall)", "No"))
 	switch(confirm)
 		if(null, "No")
 			return
-		if("Yes (No Recall)")
-			SSshuttle.admin_emergency_no_recall = TRUE
-			SSshuttle.emergency.mode = SHUTTLE_IDLE
 
-	SSshuttle.emergency.request()
+	SSshuttle.adminRequestEvac(usr, confirm == "Yes (No Recall)")
 	SSblackbox.record_feedback("tally", "admin_verb", 1, "Call Shuttle") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-	log_admin("[key_name(usr)] admin-called the emergency shuttle.")
-	message_admins(span_adminnotice("[key_name_admin(usr)] admin-called the emergency shuttle[confirm == "Yes (No Recall)" ? " (non-recallable)" : ""]."))
 	return
 
 /client/proc/admin_cancel_shuttle()

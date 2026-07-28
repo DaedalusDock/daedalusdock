@@ -19,7 +19,8 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 	integrity_failure = 0.5
 	zmm_flags = ZMM_MANGLE_PLANES
 
-	network_flags = NETWORK_FLAG_USE_DATATERMINAL // Does not get a net ID
+	network_flags = NETWORK_FLAG_USE_DATATERMINAL
+	net_class = NETCLASS_COMPUTER
 
 	light_inner_range = 0.1
 	light_outer_range = 2
@@ -254,6 +255,13 @@ TYPEINFO_DEF(/obj/machinery/computer4)
 
 	for(var/datum/c4_file/terminal_program/program as anything in operating_system?.processing_programs)
 		program.peripheral_input(invoker, command, packet)
+
+/obj/machinery/computer4/receive_wireline_signal(datum/signal/signal, obj/machinery/power/packet_source)
+	for(var/datum/c4_file/terminal_program/program as anything in operating_system?.processing_programs)
+		if(program.receive_wireline_signal(signal, packet_source) == RECEIVE_SIGNAL_FINISHED)
+			return RECEIVE_SIGNAL_FINISHED
+
+	return ..()
 
 /obj/machinery/computer4/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src)

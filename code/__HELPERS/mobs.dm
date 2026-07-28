@@ -528,18 +528,13 @@ GLOBAL_LIST_EMPTY(species_list)
 	return moblist
 
 ///returns a mob type controlled by a specified ckey
-/proc/get_mob_by_ckey(key)
-	if(!key)
+/proc/get_mob_by_ckey(ckey)
+	if(!ckey)
 		return
 
-	var/mob/pmob = GLOB.persistent_clients_by_ckey[key]?.mob
+	var/mob/pmob = GLOB.persistent_clients_by_ckey[ckey]?.mob
 	if(pmob)
 		return pmob
-
-	var/list/mobs = sort_mobs()
-	for(var/mob/mob in mobs)
-		if(mob.ckey == key)
-			return mob
 
 ///Return a string for the specified body zone. Should be used for parsing non-instantiated bodyparts, otherwise use [/obj/item/bodypart/var/plaintext_zone]
 /proc/parse_zone(zone)

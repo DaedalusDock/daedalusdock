@@ -62,3 +62,6 @@
 /datum/c4_file/terminal_program/proc/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
 	return
 
+/// Called by computers to forward packets from a netjack. Should probably be on OS but oh well.
+/datum/c4_file/terminal_program/proc/receive_wireline_signal(datum/signal/packet, obj/machinery/power/packet_source)
+	return

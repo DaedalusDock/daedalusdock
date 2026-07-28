@@ -6923,7 +6923,7 @@
 /obj/structure/window/reinforced,
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/on{
 	dir = 8;
-	frequency = 1442;
+	connection_frequency = 1442;
 	id_tag = "syndie_lavaland_n2_out";
 	internal_pressure_bound = 5066;
 	name = "Nitrogen Out"
@@ -7285,7 +7285,7 @@
 	},
 /obj/machinery/atmospherics/components/unary/vent_pump/siphon/on{
 	dir = 8;
-	frequency = 1442;
+	connection_frequency = 1442;
 	id_tag = "syndie_lavaland_o2_out";
 	internal_pressure_bound = 5066;
 	name = "Oxygen Out"

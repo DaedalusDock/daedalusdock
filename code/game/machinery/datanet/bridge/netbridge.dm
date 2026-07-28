@@ -165,9 +165,11 @@
 /obj/machinery/netbridge/receive_wireline_signal(datum/signal/signal, obj/machinery/power/packet_source)
 	if(!terminal || !netjack || loop_alarm || !is_operational)
 		return //No point, or we've tripped the safety.
+
 	if(signal.check_bridge(src)) //Have we already seen this signal?
 		loop_alarm()
 		return
+
 	// Clone and rewrite the signal author.
 	var/datum/signal/signal_to_forward = signal.Copy()
 	signal_to_forward.author = WEAKREF(src)

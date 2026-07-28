@@ -358,7 +358,11 @@
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/service/hydroponics)
 "asL" = (
-/obj/machinery/computer4/management{
+/obj/machinery/power/data_terminal,
+/obj/structure/cable/yellow{
+	icon_state = "128"
+	},
+/obj/machinery/computer4/management/superintendent{
 	dir = 8
 	},
 /turf/open/floor/carpet/royalblue,
@@ -4412,6 +4416,13 @@
 /obj/machinery/firealarm/directional/north,
 /turf/open/floor/iron/iron_half,
 /area/station/cargo/storage)
+"eEV" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/turf/open/space/basic,
+/area/space)
 "eFg" = (
 /obj/structure/cable/yellow{
 	icon_state = "12"
@@ -8685,6 +8696,13 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /turf/open/floor/wood,
 /area/station/service/library)
+"iKJ" = (
+/obj/structure/lattice/catwalk,
+/obj/structure/cable/yellow{
+	icon_state = "12"
+	},
+/turf/open/space/basic,
+/area/space/nearstation)
 "iKL" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/tank_holder/extinguisher,
@@ -11293,6 +11311,9 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "12"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "24"
 	},
 /turf/open/floor/carpet/royalblue,
 /area/station/command/bridge)
@@ -16286,7 +16307,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/virology{
 	name = "Virology Interior Airlock";
-	frequency = 1449;
+	connection_frequency = 1449;
 	id_tag = "virology_airlock_interior";
 	autoclose = 0
 	},
@@ -17906,6 +17927,15 @@
 	},
 /turf/open/floor/plating,
 /area/station/maintenance/port/aft)
+"rOz" = (
+/obj/machinery/communications_dish,
+/obj/structure/lattice/catwalk,
+/obj/structure/cable/yellow{
+	icon_state = "8"
+	},
+/obj/machinery/power/data_terminal,
+/turf/open/space/basic,
+/area/space)
 "rPA" = (
 /obj/structure/overfloor_catwalk/iron_dark,
 /obj/structure/cable/yellow{
@@ -21654,7 +21684,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
 /obj/machinery/door/airlock/virology{
 	name = "Virology Exterior Airlock";
-	frequency = 1449;
+	connection_frequency = 1449;
 	id_tag = "virology_airlock_exterior";
 	autoclose = 0
 	},
@@ -22408,6 +22438,9 @@
 	},
 /obj/structure/cable/yellow{
 	icon_state = "8"
+	},
+/obj/structure/cable/yellow{
+	icon_state = "12"
 	},
 /obj/effect/spawner/structure/window/reinforced/grille,
 /turf/open/floor/plating,
@@ -69876,7 +69909,7 @@ vOe
 bmw
 gDJ
 gDJ
-gDJ
+iKJ
 gDJ
 gDJ
 bmw
@@ -70133,7 +70166,7 @@ vOe
 jxy
 vOe
 vOe
-vOe
+eEV
 vOe
 vOe
 jxy
@@ -70390,7 +70423,7 @@ vOe
 bmw
 vOe
 vOe
-vOe
+rOz
 vOe
 vOe
 bmw

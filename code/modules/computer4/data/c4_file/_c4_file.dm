@@ -68,8 +68,7 @@
 	return "[drive.title]:/[jointext(out, "/")]"
 
 /// Returns the computer this file is in, if any.
-/datum/c4_file/proc/get_computer()
-	RETURN_TYPE(/obj/machinery/computer4)
+/datum/c4_file/proc/get_computer() as /obj/machinery/computer4
 	return drive?.computer
 
 /// Sanitize a file name.

@@ -21,7 +21,7 @@
 	net_class = NETCLASS_DP_VENT_PUMP
 
 	connection_frequency = FREQ_ATMOS_CONTROL
-	default_connection_frequency_inbound_filter = RADIO_TO_AIRALARM
+	default_connection_frequency_inbound_filter = RADIO_FROM_AIRALARM
 
 	hide = TRUE
 	initial_volume = ATMOS_DEFAULT_VOLUME_PUMP
@@ -157,12 +157,12 @@
 		update_appearance(UPDATE_NAME)
 		GLOB.air_vent_names[id_tag] = name
 
-	vent_area.air_vent_info[id_tag] = signal.data
+	vent_area.air_vent_info[id_tag] = astype(signal.data[PKT_PAYLOAD], /list).Copy()
 	radio_connection.post_signal(signal, filter = radio_filter_out)
 
 /obj/machinery/atmospherics/components/binary/dp_vent_pump/atmos_init()
-	default_connection_frequency_inbound_filter = connection_frequency ==FREQ_ATMOS_CONTROL?(RADIO_FROM_AIRALARM):null
-	radio_filter_out = connection_frequency ==FREQ_ATMOS_CONTROL?(RADIO_TO_AIRALARM):null
+	default_connection_frequency_inbound_filter = connection_frequency ==FREQ_ATMOS_CONTROL ? RADIO_FROM_AIRALARM :null
+	radio_filter_out = connection_frequency ==FREQ_ATMOS_CONTROL ? RADIO_TO_AIRALARM :null
 	// Refreshes the filter on the inbound connection.
 	if(connection_frequency)
 		set_connection_frequency(connection_frequency, filter = default_connection_frequency_inbound_filter)

@@ -23,7 +23,7 @@
 		return
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
-		if(S.max_duration != -1STATUS_EFFECT_PERMANENT)
+		if(S.max_duration != STATUS_EFFECT_PERMANENT)
 			S.duration = clamp(amount, S.duration, S.max_duration)
 		else
 			S.duration = max(amount, S.duration)

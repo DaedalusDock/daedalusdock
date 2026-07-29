@@ -129,7 +129,8 @@
 	if(duration == STATUS_EFFECT_PERMANENT)
 		return
 
-	ASSERT(duration >= 0)
+	if(duration < 0)
+		CRASH("Status effect tried to expire with a duration of [duration]")
 
 	if(duration <= 0 && should_expire())
 		qdel(src)

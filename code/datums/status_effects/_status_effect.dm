@@ -131,6 +131,8 @@
 
 	if(duration < 0)
 		stack_trace("Status effect tried to expire with a duration of [duration], deleting and warning!")
+		qdel(src)
+		return TRUE
 
 	if(duration <= 0 && should_expire())
 		qdel(src)

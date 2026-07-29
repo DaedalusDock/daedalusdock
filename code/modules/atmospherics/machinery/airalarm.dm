@@ -502,12 +502,14 @@ TYPEINFO_DEF(/obj/machinery/airalarm)
 	else
 		return FALSE
 
-/obj/machinery/airalarm/proc/send_signal(target, list/command, atom/user)//sends signal 'command' to 'target'. Returns 0 if no radio connection, 1 otherwise
+/obj/machinery/airalarm/proc/send_signal(target, list/payload, atom/user)//sends signal 'command' to 'target'. Returns 0 if no radio connection, 1 otherwise
 	if(!radio_connection)
 		return FALSE
 
-	var/datum/signal/signal = create_signal(payload = list("tag" = "target", "sigtype" = "command"), transmission_method = TRANSMISSION_RADIO)
+	var/datum/signal/signal = create_signal(payload = list("tag" = target, "sigtype" = "command"), transmission_method = TRANSMISSION_RADIO)
 	signal.logging_data = list("user_keyname" = key_name(usr))
+	signal.data[PKT_PAYLOAD] += payload
+
 	radio_connection.post_signal(signal, RADIO_FROM_AIRALARM)
 	return TRUE
 

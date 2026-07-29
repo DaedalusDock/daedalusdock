@@ -164,7 +164,7 @@
 		update_appearance(UPDATE_NAME)
 		GLOB.air_scrub_names[id_tag] = name
 
-	scrub_area.air_scrub_info[id_tag] = signal.data
+	scrub_area.air_scrub_info[id_tag] = astype(signal.data[PKT_PAYLOAD], /list).Copy()
 
 	radio_connection.post_signal(signal, radio_filter_out)
 

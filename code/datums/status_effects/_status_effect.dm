@@ -203,9 +203,8 @@
 	if(duration == STATUS_EFFECT_PERMANENT) // Infinite duration
 		return FALSE
 
-	duration -= (seconds SECONDS)
-	if(duration <= 0)
-		qdel(src)
+	duration = max(duration - (seconds SECONDS), 0)
+	if(consider_expiring())
 		return TRUE
 
 	return FALSE

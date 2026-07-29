@@ -141,6 +141,10 @@
 	name = "parallax whitifier plane master"
 	plane = PLANE_SPACE
 
+/atom/movable/screen/plane_master/zmimic
+	name = "zmimic plane master"
+	plane = ZMIMIC_MAX_PLANE
+
 /atom/movable/screen/plane_master/pipecrawl
 	name = "pipecrawl plane master"
 	plane = PIPECRAWL_IMAGES_PLANE

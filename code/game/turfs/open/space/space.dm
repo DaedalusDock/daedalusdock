@@ -63,6 +63,9 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 		overlays += global.fullbright_overlay
 		luminosity = TRUE
 
+	if (z_flags & Z_MIMIC_BELOW)
+		setup_zmimic(mapload)
+
 	return INITIALIZE_HINT_NORMAL
 
 /proc/make_space_appearances()
@@ -229,7 +232,7 @@ GLOBAL_REAL_VAR(space_appearances) = make_space_appearances()
 	icon = 'icons/turf/floors.dmi'
 	icon_state = "invisible"
 	z_flags = Z_ATMOS_IN_DOWN | Z_ATMOS_IN_UP | Z_ATMOS_OUT_DOWN | Z_ATMOS_OUT_UP | Z_MIMIC_BELOW | Z_MIMIC_OVERWRITE | Z_MIMIC_NO_AO
-
+	z_eventually_space = FALSE
 
 /turf/open/space/CanZPass(atom/movable/A, direction, z_move_flags)
 	if(z == A.z) //moving FROM this turf

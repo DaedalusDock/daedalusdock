@@ -19,13 +19,14 @@
 
 /turf/update_above()
 	if (TURF_IS_MIMICKING(above))
-		above.update_mimic()
+		return above.update_mimic()
 
 /turf/proc/update_mimic()
 	if(z_flags & Z_MIMIC_BELOW)
 		z_queued += 1
 		// This adds duplicates for a reason. Do not change this unless you understand how ZM queues work.
 		SSzcopy.queued_turfs += src
+		return TRUE
 
 /// Enables Z-mimic for a turf that didn't already have it enabled.
 /turf/proc/enable_zmimic(additional_flags = 0)

@@ -2,9 +2,6 @@
  *! Here be dragons.
  */
 
-#define ZMIMIC_MAX_PLANE -70
-
-#define ZMIMIC_MAX_DEPTH 10	//! The maximum depth of a single contiguous z-stack. Exceeding this will emit a warning and result in broken layering in the lower levels of that stack.
 #define SHADOWER_DARKENING_FACTOR 0.6	//! The multiplication factor for openturf shadower darkness. Lighting will be multiplied by this.
 #define SHADOWER_DARKENING_COLOR "#999999"	//! The above, but as an RGB string for lighting-less turfs.
 #define READ_BASETURF(T) (islist(T.baseturfs) ? T.baseturfs[length(T.baseturfs)] : T.baseturfs)
@@ -276,8 +273,8 @@ SUBSYSTEM_DEF(zcopy)
 		if (below_turf.z_eventually_space)
 			T.z_eventually_space = TRUE
 			// This does not work due to the way TG handles space parallax and render plates.
-			// if ((below_turf.z_flags & Z_MIMIC_OVERWRITE) || isspaceturf(below_turf))
-			// 	t_target = PLANE_SPACE
+			if ((below_turf.z_flags & Z_MIMIC_OVERWRITE) || isspaceturf(below_turf))
+				t_target = PLANE_SPACE
 
 		var/list/underlay_copy
 		if (T.z_flags & Z_MIMIC_OVERWRITE)

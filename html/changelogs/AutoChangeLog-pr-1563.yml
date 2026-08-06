@@ -1,0 +1,4 @@
+author: Kapu1178, Lohikar
+delete-after: true
+changes:
+  - bugfix: On our zero multi-z maps, space renders more* correctly.

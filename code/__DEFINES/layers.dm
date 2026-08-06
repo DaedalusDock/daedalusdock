@@ -11,10 +11,10 @@
 #define PLANE_SPACE -95
 #define PLANE_SPACE_PARALLAX -90
 
-/*
-Z-Mimic uses planes -70 through -80, defined elsewhere.
-Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
-*/
+
+#define ZMIMIC_MAX_PLANE -70
+
+#define ZMIMIC_MAX_DEPTH 10	//! The maximum depth of a single contiguous z-stack. Exceeding this will emit a warning and result in broken layering in the lower levels of that stack.
 
 #define HEAT_PLANE -12
 #define HEAT_RENDER_TARGET "*HEAT_RENDER_TARGET"
@@ -226,3 +226,24 @@ Specifically: ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
 ///Plane master controller keys
 #define PLANE_MASTERS_GAME "plane_masters_game"
 #define PLANE_MASTERS_COLORBLIND "plane_masters_colorblind"
+
+/proc/generate_planemasters(datum/hud/owner, exclude_blackness = TRUE)
+	var/list/types = subtypesof(/atom/movable/screen/plane_master)
+	types -= /atom/movable/screen/plane_master/zmimic
+	if(exclude_blackness)
+		types -= /atom/movable/screen/plane_master/blackness
+
+	. = list()
+
+	for(var/atom/movable/screen/plane_master/path as anything in types)
+		if(isabstract(path))
+			continue
+
+		. += new path(null, owner)
+
+	for(var/i in ZMIMIC_MAX_PLANE to (ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH) step -1)
+		var/atom/movable/screen/plane_master/zmimic/mimic_plane = new /atom/movable/screen/plane_master/zmimic(null, owner)
+		mimic_plane.name = "[mimic_plane.name] [i]"
+		mimic_plane.plane = i
+		. += mimic_plane
+

@@ -279,7 +279,7 @@ TYPEINFO_DEF(/atom)
 		atom_integrity = max_integrity
 
 	// Not typeinfo() for speed reasons. Hot ass code!
-	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[type] ||= new __typeinfo_path
+	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[__typeinfo_path] ||= new __typeinfo_path
 
 	// apply materials properly from the default_materials value in typeinfo
 	// This MUST come after atom_integrity is set above, as if old materials get removed,

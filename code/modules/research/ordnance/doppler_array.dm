@@ -94,7 +94,7 @@
 /obj/machinery/doppler_array/proc/sense_explosion(datum/source, turf/epicenter, devastation_range, heavy_impact_range, light_impact_range,
 			took, orig_dev_range, orig_heavy_range, orig_light_range, explosion_cause, explosion_index)
 	SIGNAL_HANDLER
-	var/list/fetched_reaction_results = list()
+	var/alist/fetched_reaction_results = list()
 
 	if(istype(explosion_cause, /obj/item/tank))
 		var/obj/item/tank/exploding_tank = explosion_cause

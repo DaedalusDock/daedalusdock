@@ -22,7 +22,7 @@
 	pipe_state = "uvent"
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 
-	network_flags = NETWORK_FLAG_GEN_ID
+	network_flags = NETWORK_FLAG_GEN_ID | NETWORK_FLAG_JOIN_FREQUENCY
 	net_class = NETCLASS_VENT_PUMP
 
 	power_rating = 30000
@@ -188,7 +188,7 @@
 		update_appearance(UPDATE_NAME)
 		GLOB.air_vent_names[id_tag] = name
 
-	vent_area.air_vent_info[id_tag] = signal.data
+	vent_area.air_vent_info[id_tag] = astype(signal.data[PKT_PAYLOAD], /list).Copy()
 
 	radio_connection.post_signal(signal, radio_filter_out)
 
@@ -202,7 +202,7 @@
 
 /obj/machinery/atmospherics/components/unary/vent_pump/atmos_init()
 	//some vents work his own spesial way
-	default_connection_frequency_inbound_filter = connection_frequency == FREQ_ATMOS_CONTROL ? (RADIO_FROM_AIRALARM):null
+	default_connection_frequency_inbound_filter = connection_frequency == FREQ_ATMOS_CONTROL ? (RADIO_FROM_AIRALARM) : null
 	radio_filter_out = connection_frequency == FREQ_ATMOS_CONTROL ? (RADIO_TO_AIRALARM) : null
 
 	// Refreshes the inbound radio filter

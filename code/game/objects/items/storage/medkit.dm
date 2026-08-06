@@ -548,26 +548,24 @@
 
 /obj/item/storage/organbox/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
-	if(isinternalorgan(arrived))
-		var/obj/item/organ/int_organ = arrived
-		ADD_TRAIT(int_organ, TRAIT_ORGAN_FROZEN, ref(src))
+	if(isorgan(arrived))
+		ADD_TRAIT(arrived, TRAIT_ORGAN_FROZEN, ref(src))
 		return
 
-	if(istype(arrived, /obj/item/bodypart))
-		var/obj/item/bodypart/B = arrived
-		for(var/obj/item/organ/int_organ in B.contents)
+	if(isbodypart(arrived))
+		ADD_TRAIT(arrived, TRAIT_ORGAN_FROZEN, ref(src))
+		for(var/obj/item/organ/int_organ in arrived.contents)
 			ADD_TRAIT(int_organ, TRAIT_ORGAN_FROZEN, ref(src))
 
 /obj/item/storage/organbox/Exited(atom/movable/gone, direction)
 	. = ..()
-	if(isinternalorgan(gone))
-		var/obj/item/organ/int_organ = gone
-		REMOVE_TRAIT(int_organ, TRAIT_ORGAN_FROZEN, ref(src))
+	if(isorgan(gone))
+		REMOVE_TRAIT(gone, TRAIT_ORGAN_FROZEN, ref(src))
 		return
 
-	if(istype(gone, /obj/item/bodypart))
-		var/obj/item/bodypart/B = gone
-		for(var/obj/item/organ/int_organ in B.contents)
+	if(isbodypart(gone))
+		REMOVE_TRAIT(gone, TRAIT_ORGAN_FROZEN, ref(src))
+		for(var/obj/item/organ/int_organ in gone.contents)
 			REMOVE_TRAIT(int_organ, TRAIT_ORGAN_FROZEN, ref(src))
 
 /obj/item/storage/organbox/suicide_act(mob/living/carbon/user)

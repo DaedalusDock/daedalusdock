@@ -34,8 +34,8 @@
 /obj/machinery/launchpad/Initialize(mapload)
 	. = ..()
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.add_atom_to_hud(src)
 
 	var/image/holder = hud_list[DIAG_LAUNCHPAD_HUD]
 	var/mutable_appearance/MA = new /mutable_appearance()
@@ -48,8 +48,8 @@
 	update_indicator()
 
 /obj/machinery/launchpad/Destroy()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_atom_from_hud(src)
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.remove_atom_from_hud(src)
 	return ..()
 
 /obj/machinery/launchpad/examine(mob/user)

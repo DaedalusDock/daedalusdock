@@ -734,8 +734,7 @@ DEFINE_INTERACTABLE(/obj/item)
 	if(.)
 		return
 
-	if(user.try_slapcraft(src, tool))
-		return ITEM_INTERACT_SUCCESS
+	return user.try_slapcraft(src, tool)
 
 /obj/item/proc/GetDeconstructableContents()
 	return get_all_contents() - src

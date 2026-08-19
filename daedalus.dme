@@ -1708,7 +1708,6 @@
 #include "code\game\objects\items\puzzle_pieces.dm"
 #include "code\game\objects\items\RCD.dm"
 #include "code\game\objects\items\religion.dm"
-#include "code\game\objects\items\rope.dm"
 #include "code\game\objects\items\RPD.dm"
 #include "code\game\objects\items\RSF.dm"
 #include "code\game\objects\items\scrolls.dm"

@@ -34,6 +34,9 @@
 	// Can this assembly be taken apart before it's finished?
 	var/can_disassemble = TRUE
 
+	/// Set to TRUE to delete all of the crafting components when the recipe is complete instead of moving them into the result.
+	var/destroy_components_on_completion = FALSE
+
 	/// Should we print text when we finish? Mostly used to de-bloat chat.
 	var/show_finish_text = FALSE
 
@@ -192,8 +195,9 @@
 	// Move items which wanted to go to the resulted item into it. Only supports for the first created item.
 	var/atom/movable/first_item = results[1]
 
-	for(var/obj/item/item as anything in assembly.items_to_place_in_result)
-		item.forceMove(first_item)
+	if(!destroy_components_on_completion)
+		for(var/obj/item/item as anything in assembly.items_to_place_in_result)
+			item.forceMove(first_item)
 
 	for(var/obj/item/item as anything in (results - assembly.items_to_place_in_result))
 		assembly.finished_items += item
@@ -240,7 +244,6 @@
 /// Behaviour after the item is created, and before the slapcrafting assembly is disposed.
 /// Here you can move the components into the item if you wish, or do other stuff with them.
 /datum/slapcraft_recipe/proc/after_create_items(list/items_list, obj/item/slapcraft_assembly/assembly)
-	return
 
 /// Here is the proc to get rid of the assembly, should one want to override it to handle that differently.
 /datum/slapcraft_recipe/proc/dispose_assembly(obj/item/slapcraft_assembly/assembly)

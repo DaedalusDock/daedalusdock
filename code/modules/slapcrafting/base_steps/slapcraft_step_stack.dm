@@ -192,3 +192,33 @@
 	start_msg_self = "You begin attaching a wooden plank  to the %TARGET%."
 	finish_msg = "%USER% attaches a wooden plank to the %TARGET%."
 	finish_msg_self = "You attach a wooden plank to the %TARGET%."
+
+/// Cloth stack
+/datum/slapcraft_step/stack/cloth
+	desc = "Add a cloth sheet to the assembly."
+	todo_desc = "You could add a cloth sheet..."
+	item_types = list(/obj/item/stack/sheet/cloth)
+	amount = 1
+
+	start_msg = "%USER% begins attaching some cloth to the %TARGET%."
+	start_msg_self = "You begin inserting some cloth to the %TARGET%."
+	finish_msg = "%USER% attaches some cloth to the %TARGET%."
+	finish_msg_self = "You attach some cloth to the %TARGET%."
+
+/datum/slapcraft_step/stack/cloth/five
+	desc = "Add 5 cloth sheets to the assembly."
+	todo_desc = "You could add 5 cloth sheets..."
+	item_types = list(/obj/item/stack/sheet/cloth)
+	amount = 5
+
+	start_msg = "%USER% begins attaching some cloth to the %TARGET%."
+	start_msg_self = "You begin inserting some cloth to the %TARGET%."
+	finish_msg = "%USER% attaches some cloth to the %TARGET%."
+	finish_msg_self = "You attach some cloth to the %TARGET%."
+
+/// Used for crafting rope.
+/datum/slapcraft_step/stack/cloth/rope
+	start_msg = "%USER% begins tying some cloth together."
+	start_msg_self = "%USER% begins tying some cloth together."
+	finish_msg = "%USER% ties some cloth together."
+	finish_msg_self = "%USER% ties some cloth together."

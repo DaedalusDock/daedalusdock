@@ -109,3 +109,9 @@
 /// Disambiguation go BRRRR
 /datum/slapcraft_step/item/flashlight/again
 
+/datum/slapcraft_step/item/rope
+	desc = "Attach some rope."
+	item_types = list(/obj/item/rope)
+
+	finish_msg = "%USER% attaches rope to the %TARGET%."
+	finish_msg_self = "You attach rope to the %TARGET%."

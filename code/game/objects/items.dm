@@ -729,10 +729,13 @@ DEFINE_INTERACTABLE(/obj/item)
 			R.activate_module(src)
 			R.hud_used.update_robot_modules_display()
 
-/obj/item/attackby(obj/item/item, mob/living/user, params)
-	if(user?.try_slapcraft(src, item))
-		return TRUE
-	return ..()
+/obj/item/base_item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	. = ..()
+	if(.)
+		return
+
+	if(user.try_slapcraft(src, tool))
+		return ITEM_INTERACT_SUCCESS
 
 /obj/item/proc/GetDeconstructableContents()
 	return get_all_contents() - src

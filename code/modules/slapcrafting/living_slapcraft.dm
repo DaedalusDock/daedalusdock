@@ -8,7 +8,7 @@
 	// We need to find a recipe where the first item corresponds to the first step
 	// ..and the second item corresponds to the second step
 	var/list/available_recipes = slapcraft_recipes_for_type(first_item.type)
-	if(!available_recipes)
+	if(!length(available_recipes))
 		return FALSE
 
 	var/list/recipes = list()

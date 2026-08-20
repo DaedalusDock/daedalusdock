@@ -7,7 +7,7 @@
 @use '../functions.scss' as *;
 
 $color: #ffffff !default;
-$background-color: #1a1e24 !default;
+$background-color: base.$color-bg !default;
 $border-radius: base.$border-radius !default;
 $tooltip-blur: none;
 

@@ -8,8 +8,8 @@
 
 @use '~tgui/styles/colors.scss';
 @use '~tgui/styles/base.scss' with (
-  $color-bg: #1a1e24,
-  $color-bg-section: color.adjust(#1a1e24),
+  $color-bg: #0b0b0b,
+  $color-bg-section: color.adjust(#0b0b0b),
   $color-bg-grad-spread: 0%
 );
 

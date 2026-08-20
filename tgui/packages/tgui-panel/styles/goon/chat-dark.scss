@@ -10,6 +10,7 @@
 */
 
 $default-text-color: #cac5a5;
+$title-text-color: rgb(209, 214, 192);
 
 @font-face {
   font-family: 'Sans Condensed Black';
@@ -1148,13 +1149,13 @@ em {
 
   > h2 {
     font-size: 2rem;
-    color: #dfdfcf;
+    color: $title-text-color;
   }
 }
 
 .priorityAnnounceBody {
   font-size: 1.5rem;
-  color: #dfdfcf;
+  color: $title-text-color;
 }
 
 // Roundstart notifications
@@ -1170,14 +1171,14 @@ em {
 
     > h1 {
       font-size: 2rem;
-      color: rgb(209, 214, 192);
+      color: $title-text-color;
       padding: 0px;
     }
 
     > h2 {
       font-size: 1rem;
       font-style: italic;
-      color: rgb(209, 214, 192);
+      color: $title-text-color;
       padding-bottom: 8px;
     }
   }

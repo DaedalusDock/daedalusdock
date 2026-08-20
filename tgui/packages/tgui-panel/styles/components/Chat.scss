@@ -10,6 +10,7 @@
 
 $text-color: #cac5a5 !default;
 $color-bg-section: base.$color-bg-section !default;
+$highlight-color: #12ffa050 !default;
 
 /*
   The PNGs, SVGs, and their implementation within the .Chat class are licensed under the Apache License 2.0.
@@ -121,6 +122,10 @@ $right-size: max(1.2vw, 1em);
 
 .ChatMessage {
   word-wrap: break-word;
+
+  &::selection {
+    background-color: $highlight-color;
+  }
 }
 
 .ChatMessage--highlighted {
@@ -135,7 +140,7 @@ $right-size: max(1.2vw, 1em);
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(255, 221, 68, 0.1);
+    background-color: $highlight-color;
     // Make this click-through since this is an overlay
     pointer-events: none;
   }

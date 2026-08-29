@@ -1,0 +1,5 @@
+/obj/machinery/computer/aifixer : @DELETE
+/obj/item/circuitboard/computer/aifixer : @DELETE
+/obj/item/aicard : @DELETE
+/obj/item/aicard/@SUBTYPES : @DELETE
+/obj/item/mod/ai_minicard : @DELETE

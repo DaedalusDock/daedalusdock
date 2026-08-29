@@ -59,7 +59,6 @@ H A R L I E
 H E L P eR
 H E R B I E
 Hadaly
-HAL 9000
 Huey
 Irona
 Ironhide
@@ -89,7 +88,6 @@ Norby
 OMM 0910
 Optimus
 Orange v 3 5
-Project 2501
 PTO
 R I C 2 0
 R2-D2
@@ -112,13 +110,9 @@ Soundwave
 Speedy
 Super 17
 Surgeon General Kraken
-T-1000
-T-800
-T-850
 Terminus
 THX 1138
 Tidy
-Tik-Tok
 Tobor
 Trurl
 TWA
@@ -129,7 +123,6 @@ V I N CENT
 Voltes V
 W1k1
 Wikipedia
-Windows 3 1
 X-5
 XERXES
 XR

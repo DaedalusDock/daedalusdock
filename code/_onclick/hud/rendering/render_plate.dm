@@ -24,6 +24,7 @@
  * remember that once planes are unified on a render plate you cant change the layering of them!
  */
 /atom/movable/screen/plane_master/rendering_plate
+	abstract_type = /atom/movable/screen/plane_master/rendering_plate
 	name = "default rendering plate"
 
 

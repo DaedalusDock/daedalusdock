@@ -37,14 +37,6 @@
 #define FAILED_UNFASTEN 1
 #define SUCCESSFUL_UNFASTEN 2
 
-//ai core defines
-#define EMPTY_CORE 0
-#define CIRCUIT_CORE 1
-#define SCREWED_CORE 2
-#define CABLED_CORE 3
-#define GLASS_CORE 4
-#define AI_READY_CORE 5
-
 //Construction defines for the pinion airlock
 #define GEAR_SECURE 1
 #define GEAR_LOOSE 2

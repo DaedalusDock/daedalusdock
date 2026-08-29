@@ -92,6 +92,11 @@ INITIALIZE_IMMEDIATE(/atom/movable/plane_master_controller)
 		LIGHTING_PLANE_ADDITIVE,
 	)
 
+/atom/movable/plane_master_controller/game/Initialize(mapload, datum/hud/hud)
+	. = ..()
+	for(var/plane in ZMIMIC_MAX_PLANE to ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
+		controlled_planes += plane
+
 /// Controller of all planes we're ok with changing with colorblind logic
 /atom/movable/plane_master_controller/colorblind
 	name = PLANE_MASTERS_COLORBLIND
@@ -115,4 +120,10 @@ INITIALIZE_IMMEDIATE(/atom/movable/plane_master_controller)
 		HUD_PLANE,
 		ABOVE_HUD_PLANE,
 	)
+
+/atom/movable/plane_master_controller/colorblind/Initialize(mapload, datum/hud/hud)
+	. = ..()
+	for(var/plane in ZMIMIC_MAX_PLANE to ZMIMIC_MAX_PLANE - ZMIMIC_MAX_DEPTH)
+		controlled_planes += plane
+
 

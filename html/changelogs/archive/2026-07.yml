@@ -31,3 +31,6 @@
   - bugfix: Some sources of damage correctly update health state.
   ToasterBan:
   - rscadd: Added a wield button to the UI
+2026-07-30:
+  Kapu1178:
+  - bugfix: Air Alarms can configure vent pumps again.

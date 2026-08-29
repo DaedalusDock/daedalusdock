@@ -179,18 +179,36 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 		return name_gen.Generate()
 
 /mob/dead/proc/set_ghost_appearance(mob/living/to_copy)
-	var/mutable_appearance/appearance = to_copy?.mind?.body_appearance || to_copy
+	cut_viscontents()
+	overlays.Cut()
 
+	if(isAI(to_copy)) // Yay I love hacks
+		icon = null
+		icon_state = null
+		alpha = 127
+
+		var/obj/effect/overlay/holder = new
+		holder.vis_flags = VIS_INHERIT_ID | VIS_INHERIT_LAYER | VIS_INHERIT_PLANE
+		holder.icon = /obj/effect/overlay/ai_holder::icon
+		holder.icon_state = /obj/effect/overlay/ai_holder::icon_state
+		holder.pixel_x = -32
+		holder.pixel_y = -32
+		holder.overlays += image(/obj/effect/overlay/ai_holder::icon, "oldai-static")
+		holder.overlays += image(/obj/effect/overlay/ai_holder::icon, "oldai-faceoverlay")
+		add_viscontents(holder)
+		return
+
+	var/mutable_appearance/appearance = to_copy?.mind?.body_appearance || to_copy
 	if(!appearance || !appearance.icon)
 		icon = initial(icon)
 		icon_state = "ghost"
 		alpha = 255
-		overlays.Cut()
 	else
 		icon = appearance.icon
 		icon_state = appearance.icon_state
 		overlays = appearance.overlays
 		alpha = 127
+
 
 /mob/dead/verb/reenter_corpse()
 	set category = "Ghost"

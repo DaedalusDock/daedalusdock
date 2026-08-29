@@ -15,8 +15,8 @@
 	owner = newowner
 	assigned_map = "mech_view_[REF(owner)]"
 	set_position(1, 1)
-	for(var/plane_master_type in subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/blackness)
-		var/atom/movable/screen/plane_master/plane_master = new plane_master_type()
+
+	for(var/atom/movable/screen/plane_master/plane_master as anything in generate_planemasters())
 		plane_master.screen_loc = "[assigned_map]:CENTER"
 		plane_masters += plane_master
 

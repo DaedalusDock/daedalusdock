@@ -48,7 +48,6 @@
 /obj/effect/spawner/random/techstorage/rnd_all
 	name = "RnD circuit board spawner"
 	loot = list(
-		/obj/item/circuitboard/computer/aifixer,
 		/obj/item/circuitboard/machine/fabricator/omni,
 		/obj/item/circuitboard/machine/circuit_imprinter,
 		/obj/item/circuitboard/computer/teleporter,

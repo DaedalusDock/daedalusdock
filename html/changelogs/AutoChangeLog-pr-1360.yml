@@ -1,0 +1,10 @@
+author: Kapu1178, Aphtonites
+delete-after: true
+changes:
+  - imageadd: New AI sprites from Aphtonites, originally for Goonstation.
+  - rscadd: Station AI now has a death animation.
+  - bugfix: Fixed cases where you could not re-enter your corpse while intended to
+      be able to.
+  - rscdel: Removed Intellicards and related mechanics.
+  - rscdel: Triple AI.
+  - rscdel: AI face preference.

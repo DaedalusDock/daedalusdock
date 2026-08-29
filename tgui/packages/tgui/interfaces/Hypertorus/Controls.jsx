@@ -1,5 +1,3 @@
-import { Tooltip } from 'tgui-core/components';
-
 import { useBackend } from '../../backend';
 import {
   Box,
@@ -10,6 +8,7 @@ import {
   LabeledList,
   NumberInput,
   Section,
+  Tooltip,
 } from '../../components';
 import { getGasLabel } from '../../constants';
 import { HelpDummy, HoverHelp } from './helpers';

@@ -45,6 +45,10 @@ TYPEINFO_DEF(/obj/item/storage/toolbox)
 	user.visible_message(span_suicide("[user] robusts [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (BRUTELOSS)
 
+/obj/item/storage/toolbox/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	user.disco_made_easy("toolboxing", 13, skill_path = /datum/rpg_skill/theatre, success_text = "Swing, swing, swing until the spaceman turns horizontal.")
+
 /obj/item/storage/toolbox/emergency
 	name = "emergency toolbox"
 	icon_state = "red"

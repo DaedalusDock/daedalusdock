@@ -8,7 +8,8 @@
 			to_chat(M, message)
 
 /datum/status_effect/stat_mod
-	tick_interval = -1
+	abstract_type = /datum/status_effect/stat_mod
+	tick_interval = STATUS_EFFECT_PERMANENT
 	status_type = STATUS_EFFECT_MULTIPLE
 	alert_type = null
 
@@ -30,7 +31,8 @@
 	owner.stats.remove_stat_modifier(stat_path, source)
 
 /datum/status_effect/skill_mod
-	tick_interval = -1
+	abstract_type = /datum/status_effect/skill_mod
+	tick_interval = STATUS_EFFECT_NO_TICK
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = null
 

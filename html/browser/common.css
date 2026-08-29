@@ -623,7 +623,10 @@ span.color_holder_box {
 
 /* Highlights the element on hover. For use with onClick events. */
 .highlighter:hover {
-	/*background-color: #f0c400 !important;*/
+	background-color: #aa8136 !important;
+}
+
+.highlighter-on {
 	background-color: #aa8136 !important;
 }
 

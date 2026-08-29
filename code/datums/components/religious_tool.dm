@@ -101,7 +101,7 @@
 	var/atom/atom_parent = parent
 	data["toolname"] = atom_parent.name
 	data["can_select_sect"] = (operation_flags & RELIGION_TOOL_SECTSELECT)
-	data["can_invoke_rite"] = (operation_flags & RELIGION_TOOL_INVOKE)
+	data["check_for_errors_rite"] = (operation_flags & RELIGION_TOOL_INVOKE)
 	data["can_sacrifice_item"] = (operation_flags & RELIGION_TOOL_SACRIFICE)
 	return data
 

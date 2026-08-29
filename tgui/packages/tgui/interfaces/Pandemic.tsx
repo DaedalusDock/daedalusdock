@@ -1,7 +1,6 @@
-import { Tooltip } from 'tgui-core/components';
-
 import { BooleanLike } from '../../common/react';
 import { useBackend, useLocalState } from '../backend';
+import { Tooltip } from '../components';
 import {
   Box,
   Button,

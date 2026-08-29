@@ -248,10 +248,7 @@
 	var/frequency_to_set
 
 /obj/effect/mapping_helpers/airlock/frequency/payload(obj/machinery/door/airlock/airlock)
-	if(airlock.frequency)
-		log_mapping("[src] at [AREACOORD(src)] tried to set frequency for the [airlock] but it's already set!")
-	else
-		airlock.set_frequency(frequency_to_set)
+	airlock.set_connection_frequency(frequency_to_set)
 
 /obj/effect/mapping_helpers/airlock/frequency/airlock_control
 	frequency_to_set = FREQ_AIRLOCK_CONTROL
@@ -529,9 +526,8 @@ INITIALIZE_IMMEDIATE(/obj/effect/mapping_helpers/no_lava)
 		for (var/part in h.processing_organs) //randomly remove organs from each body, set those we keep to be in stasis
 			if (prob(40))
 				qdel(part)
-			else
-				var/obj/item/organ/O = part
-				O.organ_flags |= ORGAN_FROZEN
+
+		toggle_organ_freeze(j, TRUE)
 		j.update_appearance()
 	qdel(src)
 

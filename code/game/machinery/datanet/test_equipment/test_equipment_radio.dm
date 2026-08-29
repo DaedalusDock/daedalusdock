@@ -4,20 +4,17 @@
 	icon = 'icons/obj/machines/dominator.dmi'
 	icon_state = "dominator"
 	anchored = FALSE
-	var/datum/radio_frequency/radio_connection
-	var/current_frequency = 0
+
+	network_flags = NETWORK_FLAG_GEN_ID | NETWORK_FLAG_JOIN_FREQUENCY
+
 	var/list/current_data
 	var/send_range = 0
-
-/obj/machinery/test_equipment/radio/say_emphasis(input)
-	//Fuck off and don't decorate debug text
-	return input
 
 /obj/machinery/test_equipment/radio/ui_interact(mob/user, datum/tgui/ui)
 	. = ..()
 	var/datum/browser/popup = new(usr, "dte_radio", "Radio Test Equipment", 400, 600)
 	var/dat = {"
-		<A href='?src=[REF(src)];set_freq=1'>[format_frequency(current_frequency)]</a>
+		<A href='?src=[REF(src)];set_freq=1'>[format_frequency(radio_connection.frequency)]</a>
 		<A href='?src=[REF(src)];set_range=1'>Range:[format_range(send_range)]</a>
 		<A href='?src=[REF(src)];set_packet=1'>Set Packet Data</a>
 		<A href='?src=[REF(src)];send_packet=1'>Send Packet</a><br>
@@ -39,19 +36,18 @@
 /obj/machinery/test_equipment/radio/Topic(href, href_list)
 	. = ..()
 	if(href_list["set_freq"])
-		var/new_freq = sanitize_frequency(input(usr, "Input 4 digit frequency (No dot)", "Frequency", current_frequency) as num, TRUE)
-		if(new_freq == current_frequency)
+		var/new_freq = sanitize_frequency(input(usr, "Input 4 digit frequency (No dot)", "Frequency", radio_connection?.frequency || 0) as num, TRUE)
+		if(new_freq == radio_connection.frequency)
 			return
-		if(current_frequency)//We start with a bad freq and no membership so just skip it.
-			SSpackets.remove_object(src, current_frequency)
-		current_frequency = new_freq
-		radio_connection = SSpackets.add_object(src, current_frequency)
+
+		set_connection_frequency(new_freq)
+
 		updateDialog()
-		if(current_frequency == FREQ_ATMOS_CONTROL)
+		if(radio_connection.frequency == FREQ_ATMOS_CONTROL)
 			icon_state = "dominator-Blue"
 			//You have special behaviour, you get a special color.
 			return
-		var/color_index = (current_frequency % 4)+1
+		var/color_index = (radio_connection.frequency % 4)+1
 		var/static/color_map = list(
 			"dominator-Red",
 			"dominator-Orange",
@@ -61,26 +57,32 @@
 		)
 		icon_state = color_map[color_index] //Just make telling them apart easier for me.
 		return
+
 	if(href_list["set_range"])
 		var/new_range = input(usr, "New Range (Z-Lock:-1, Global:0)", "Range", 0) as num|null
 		if(isnull(new_range))
 			return
+
 		send_range = new_range
 		updateDialog()
 		return
+
 	if(href_list["set_packet"])
 		var/new_packet = input(usr, "Input json blob", "JSON Packet Blob") as message
 		current_data = json_decode(new_packet)
 		updateDialog()
 		return
+
 	if(href_list["send_packet"])
-		if(!current_frequency)
+		if(!radio_connection)
 			say("BAD FREQUENCY!")
 			return
+
 		if(!current_data)
 			say("NO DATA TO SEND!")
 			return
-		var/datum/signal/packsig = new(src, current_data.Copy(), TRANSMISSION_RADIO)
+
+		var/datum/signal/packsig = create_signal(payload = current_data.Copy(), transmission_method = TRANSMISSION_RADIO)
 		radio_connection.post_signal(packsig, range=send_range)
 		return
 

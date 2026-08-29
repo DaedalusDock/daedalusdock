@@ -1,7 +1,7 @@
 import { toTitleCase } from 'common/string';
-import { Tooltip } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../backend';
+import { Tooltip } from '../components';
 import {
   Button,
   Collapsible,

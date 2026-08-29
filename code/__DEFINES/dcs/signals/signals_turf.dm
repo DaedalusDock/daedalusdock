@@ -27,3 +27,8 @@
 
 ///Called when turf no longer blocks light from passing through
 #define COMSIG_TURF_NO_LONGER_BLOCK_LIGHT "turf_no_longer_block_light"
+
+///From element/elevation/reset_elevation(): (list/values)
+#define COMSIG_TURF_RESET_ELEVATION "turf_reset_elevation"
+	#define ELEVATION_CURRENT_PIXEL_SHIFT 1
+	#define ELEVATION_MAX_PIXEL_SHIFT 2

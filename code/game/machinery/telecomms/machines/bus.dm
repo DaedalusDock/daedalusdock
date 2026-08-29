@@ -32,7 +32,7 @@
 			return
 
 		// failed to send to a processor, relay information anyway
-		signal.data["slow"] += rand(1, 5) // slow the signal down only slightly
+		signal.data[PKT_PAYLOAD]["slow"] += rand(1, 5) // slow the signal down only slightly
 
 	// Try sending it!
 	var/list/try_send = list(signal.server_type, /obj/machinery/telecomms/hub, /obj/machinery/telecomms/broadcaster)
@@ -40,7 +40,7 @@
 	var/i = 0
 	for(var/send in try_send)
 		if(i)
-			signal.data["slow"] += rand(0, 1) // slow the signal down only slightly
+			signal.data[PKT_PAYLOAD]["slow"] += rand(0, 1) // slow the signal down only slightly
 		i++
 		if(relay_information(signal, send))
 			break

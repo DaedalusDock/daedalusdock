@@ -2,7 +2,7 @@
 	id = "buckledtobed"
 	alert_type = null
 
-	duration = -1
+	duration = STATUS_EFFECT_PERMANENT
 
 	var/trying_to_sleep = FALSE
 	COOLDOWN_DECLARE(try_wakeup_cooldown)

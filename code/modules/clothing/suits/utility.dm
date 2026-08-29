@@ -170,3 +170,7 @@ TYPEINFO_DEF(/obj/item/clothing/suit/radiation)
 	. = ..()
 	if(!isinhands)
 		. += emissive_appearance(icon_file, "[icon_state]-emissive", alpha = 90)
+
+/obj/item/clothing/suit/radiation/examine(mob/user)
+	. = ..()
+	. += user.disco_made_easy("trash_man", 13, skill_path = /datum/rpg_skill/fourteen_eyes, is_examine=TRUE, trait_succeed = TRAIT_ENGINEER, success_text = "Made of 1% lead, 9% rubber, and 90% shaped polymers, Daedalus Industries employees often refer to this protective garment as 'the trashbag suit'.")

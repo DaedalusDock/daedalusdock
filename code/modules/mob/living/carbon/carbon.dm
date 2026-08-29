@@ -826,6 +826,7 @@
 	for(var/obj/item/organ/organ as anything in processing_organs)
 		organ.setOrganDamage(0)
 		organ.set_organ_dead(FALSE)
+		organ.set_germ_level(0)
 
 	for(var/thing in diseases)
 		var/datum/pathogen/D = thing

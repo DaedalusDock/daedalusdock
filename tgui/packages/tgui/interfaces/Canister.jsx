@@ -1,7 +1,7 @@
 import { toFixed } from 'common/math';
-import { Tooltip } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
+import { Tooltip } from '../components';
 import {
   Box,
   Button,

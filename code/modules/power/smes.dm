@@ -417,7 +417,7 @@
 	if(isnull(terminal) || isnull(sending_signal)) //nullcheck for sanic speed
 		return //You need a pipe and something to send down it, though.
 	if(!preserve_s_addr)
-		sending_signal.data["s_addr"] = src.net_id
+		sending_signal.data[PKT_HEAD_SOURCE_ADDRESS] = src.net_id
 	sending_signal.transmission_method = TRANSMISSION_WIRE
 	sending_signal.author = WEAKREF(src) // Override the sending signal author.
 	src.terminal.post_signal(sending_signal)

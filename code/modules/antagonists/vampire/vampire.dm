@@ -147,7 +147,7 @@
 		if(O.organ_flags & ORGAN_SYNTHETIC)
 			continue
 
-		O.germ_level = INFECTION_LEVEL_THREE
+		O.set_germ_level(INFECTION_LEVEL_THREE)
 		O.set_organ_dead(TRUE)
 
 	thirst_level.remove_points(INFINITY)

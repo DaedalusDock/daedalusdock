@@ -295,7 +295,7 @@ TYPEINFO_DEF(/obj/item/reagent_containers/syringe)
 		var/datum/pathogen/P = dirty_pathogens[disease_id]
 		H.try_contract_pathogen(P, make_copy = TRUE) // It's probably a good idea to not leave refs to an active disease in the syringe.
 
-	H.germ_level = max(H.germ_level, INFECTION_LEVEL_TWO)
+	H.set_germ_level(max(H.germ_level, INFECTION_LEVEL_TWO))
 
 /// Called when a human triggers the caltrop component, to infect the mob.
 /obj/item/reagent_containers/syringe/proc/on_caltrop_trigger(mob/living/carbon/human/H)

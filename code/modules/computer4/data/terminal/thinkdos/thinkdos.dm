@@ -169,7 +169,7 @@
 
 	login_user.registered_name = account_name
 	login_user.assignment = account_occupation
-	login_user.access = text2access(account_access)
+	login_user.access = islist(account_access) ? account_access : text2access(account_access)
 	set_current_user(login_user)
 
 	write_log("[ANSI_WRAP_BOLD("LOGIN")]: [account_name] | [account_occupation]")

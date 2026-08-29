@@ -990,11 +990,12 @@
 		// Gain confusion equal to about half the duration of our current dizziness
 		C.set_timed_status_effect(mob_dizziness / 2, /datum/status_effect/confusion)
 
-	if(current_cycle >= 12 && prob(8))
+	if(current_cycle >= 12 && prob(8) && C.stat == CONSCIOUS)
 		var/tox_message = pick("You feel your heart spasm in your chest.", "You feel faint.","You feel you need to catch your breath.","You feel a prickle of pain in your chest.")
 		to_chat(C, span_warning("[tox_message]"))
 
 	return TRUE
+
 /datum/reagent/toxin/leadacetate
 	name = "Lead Acetate"
 	description = "Used hundreds of years ago as a sweetener, before it was realized that it's incredibly poisonous."

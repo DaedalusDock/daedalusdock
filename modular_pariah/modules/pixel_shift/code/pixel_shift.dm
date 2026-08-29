@@ -1,6 +1,5 @@
 /mob
 	///Whether the mob is pixel shifted or not
-	var/is_shifted
 	var/shifting //If we are in the shifting setting.
 
 /datum/keybinding/mob/pixel_shift
@@ -31,35 +30,36 @@
 	return
 
 /mob/living/unpixel_shift()
-	if(is_shifted)
-		is_shifted = FALSE
-		pixel_x = body_position_pixel_x_offset + base_pixel_x
-		pixel_y = body_position_pixel_y_offset + base_pixel_y
-		UPDATE_OO_IF_PRESENT
+	remove_offsets(TRAIT_PIXEL_SHIFTED)
+	REMOVE_TRAIT(src, TRAIT_PIXEL_SHIFTED, INNATE_TRAIT)
 
 /mob/proc/pixel_shift(direction)
 	return
 
 /mob/living/pixel_shift(direction)
-	if(!canface())
+	if(stat > CONSCIOUS || notransform || incapacitated())
 		return FALSE
 
-	switch(direction)
-		if(NORTH)
-			if(pixel_y <= 16 + base_pixel_y)
-				pixel_y++
-				is_shifted = TRUE
-		if(EAST)
-			if(pixel_x <= 16 + base_pixel_x)
-				pixel_x++
-				is_shifted = TRUE
-		if(SOUTH)
-			if(pixel_y >= -16 + base_pixel_y)
-				pixel_y--
-				is_shifted = TRUE
-		if(WEST)
-			if(pixel_x >= -16 + base_pixel_x)
-				pixel_x--
-				is_shifted = TRUE
+	var/existing_y_offset = has_offset(TRAIT_PIXEL_SHIFTED, PIXEL_Y_OFFSET) || 0
+	var/existing_x_offset = has_offset(TRAIT_PIXEL_SHIFTED, PIXEL_X_OFFSET) || 0
 
-	UPDATE_OO_IF_PRESENT
+	if(direction & NORTH)
+		if(existing_y_offset < 16)
+			add_offsets(TRAIT_PIXEL_SHIFTED, y_add = clamp(existing_y_offset + 1, -16, 16))
+			ADD_TRAIT(src, TRAIT_PIXEL_SHIFTED, INNATE_TRAIT)
+
+	if(direction & EAST)
+		if(existing_x_offset < 16)
+			add_offsets(TRAIT_PIXEL_SHIFTED, x_add = clamp(existing_x_offset + 1, -16, 16))
+			ADD_TRAIT(src, TRAIT_PIXEL_SHIFTED, INNATE_TRAIT)
+
+	if(direction & SOUTH)
+		if(existing_y_offset > -16)
+			add_offsets(TRAIT_PIXEL_SHIFTED, y_add = clamp(existing_y_offset - 1, -16, 16))
+			ADD_TRAIT(src, TRAIT_PIXEL_SHIFTED, INNATE_TRAIT)
+
+	if(direction & WEST)
+		if(existing_x_offset < 16)
+			add_offsets(TRAIT_PIXEL_SHIFTED, x_add = clamp(existing_x_offset - 1, -16, 16))
+			ADD_TRAIT(src, TRAIT_PIXEL_SHIFTED, INNATE_TRAIT)
+

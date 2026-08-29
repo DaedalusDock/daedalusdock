@@ -32,8 +32,9 @@
 
 	var/list/options = list()
 	for(var/obj/effect/aether_rune/path as anything in subtypesof(/obj/effect/aether_rune))
-		options[initial(path.rune_type)] = path
+		options[initial(path.invocation_name)] = path
 
+	sort_list(options)
 	var/entry = tgui_input_list(user, "Select a new rune", "ritual chalk", options, rune_path)
 
 	if(!options[entry] || !user.is_holding(src))

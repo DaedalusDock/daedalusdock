@@ -305,8 +305,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		return
 
 	if(radio_freq && can_hear())
-		var/atom/movable/virtualspeaker/V = speaker
-		if(isAI(V.source))
+		if(message_mods[MODE_AI_OVER_RADIO])
 			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, 0, 0, pressure_affected = FALSE, use_reverb = FALSE)
 
 	// Message has a language, the language handles it.
@@ -321,7 +320,7 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 		var/avoid_highlight = FALSE
 		if(istype(speaker, /atom/movable/virtualspeaker))
 			var/atom/movable/virtualspeaker/virt = speaker
-			avoid_highlight = speaker == virt.source
+			avoid_highlight = IS_WEAKREF_OF(src, virt.speaker_weakref)
 		else
 			avoid_highlight = src == speaker
 

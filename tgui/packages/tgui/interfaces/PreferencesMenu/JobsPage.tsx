@@ -1,10 +1,9 @@
 import { sortBy } from 'common/collections';
 import { classes } from 'common/react';
 import { FC, ReactNode } from 'react';
-import { Tooltip } from 'tgui-core/components';
 
 import { useBackend } from '../../backend';
-import { Box, Button, Dropdown, Stack } from '../../components';
+import { Box, Button, Dropdown, Stack, Tooltip } from '../../components';
 import { logger } from '../../logging';
 import {
   createSetPreference,

@@ -397,7 +397,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 		if(oldorgan)
 			oldorgan.setOrganDamage(0)
-			oldorgan.germ_level = 0
+			oldorgan.set_germ_level(0)
+
 		else if(should_have && !(initial(neworgan.zone) in excluded_zones))
 			used_neworgan = TRUE
 			neworgan.Insert(C, TRUE, FALSE)
@@ -695,7 +696,7 @@ GLOBAL_LIST_EMPTY(features_by_species)
 /datum/species/proc/spec_life(mob/living/carbon/human/H, delta_time, times_fired)
 	// If you're dirty, your gloves will become dirty, too.
 	if(H.gloves && (H.germ_level > H.gloves.germ_level) && prob(10))
-		H.gloves.germ_level += 1
+		H.gloves.set_germ_level(H.gloves.germ_level + 1)
 
 /datum/species/proc/spec_death(gibbed, mob/living/carbon/human/H)
 	return

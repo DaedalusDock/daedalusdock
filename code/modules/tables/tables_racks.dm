@@ -53,6 +53,7 @@ TYPEINFO_DEF(/obj/structure/table)
 
 	AddElement(/datum/element/footstep_override, priority = STEP_SOUND_TABLE_PRIORITY)
 	AddElement(/datum/element/climbable)
+	AddElement(/datum/element/elevation, pixel_shift = 12)
 
 	var/static/list/loc_connections = list(
 		COMSIG_CARBON_DISARM_COLLIDE = PROC_REF(table_carbon),
@@ -930,6 +931,18 @@ TYPEINFO_DEF(/obj/structure/table/optable)
 	var/obj/machinery/vitals_monitor/connected_monitor
 	var/mob/living/carbon/human/patient = null
 
+/obj/structure/table/optable/Initialize(mapload, _buildstack)
+	. = ..()
+
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = PROC_REF(mark_patient),
+		COMSIG_ATOM_EXITED = PROC_REF(unmark_patient),
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
+
+	for (var/mob/living/carbon/potential_patient in loc)
+		mark_patient(potential_patient)
+
 /obj/structure/table/optable/examine(mob/user)
 	. = ..()
 	. += user.disco_made_easy("operating_table", 13, skill_path = /datum/rpg_skill/forensics, is_examine=TRUE,  success_text = "There is something engraved on the surface; \"Minerva's blessings to you, bless us. Twilight Mother blessings to you, bless us.\"")
@@ -946,8 +959,8 @@ TYPEINFO_DEF(/obj/structure/table/optable)
 	if(!iscarbon(dropping))
 		return ..()
 
-	if(dropping.loc == loc)
-		set_patient(dropping)
+	if(dropping.loc == loc && istype(dropping, /mob/living/carbon/human))
+		try_get_patient(dropping)
 	else
 		return ..()
 
@@ -959,31 +972,41 @@ TYPEINFO_DEF(/obj/structure/table/optable)
 /obj/structure/table/optable/tableplace(mob/living/user, mob/living/pushed_mob)
 	. = ..()
 	pushed_mob.set_resting(TRUE, TRUE)
-	get_patient()
+	try_get_patient(pushed_mob)
 
 /obj/structure/table/optable/tablepush(mob/living/user, mob/living/pushed_mob)
 	. = ..()
 	pushed_mob.set_resting(TRUE, TRUE)
-	get_patient()
+	try_get_patient(pushed_mob)
 
-/obj/structure/table/optable/proc/get_patient()
-	var/mob/living/carbon/M = locate(/mob/living/carbon) in loc
-	if(M)
-		if(M.body_position == LYING_DOWN)
-			set_patient(M)
-	else
-		set_patient(null)
+/obj/structure/table/optable/proc/try_get_patient(mob/living/carbon/human/priority_patient)
+	// We already have one, piss off.
+	if(istype(patient))
+		return
+
+	if(priority_patient?.loc == src && (priority_patient.body_position == LYING_DOWN))
+		set_patient(priority_patient)
+		return
+
+	for(var/mob/living/carbon/human/H in loc)
+		if(H.body_position == LYING_DOWN)
+			set_patient(H)
+			return
 
 /obj/structure/table/optable/proc/set_patient(new_patient)
 	if(patient)
 		REMOVE_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		UnregisterSignal(patient, COMSIG_PARENT_QDELETING)
+		patient.remove_offsets(type)
+
 	patient = new_patient
+
 	if(patient)
-		ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
-		patient.set_lying_angle(LYING_ANGLE_EAST)
 		patient.setDir(SOUTH)
+		patient.set_lying_angle(LYING_ANGLE_EAST)
+		ADD_TRAIT(patient, TRAIT_CANNOTFACE, OPTABLE_TRAIT)
 		RegisterSignal(patient, COMSIG_PARENT_QDELETING, PROC_REF(patient_deleted))
+		patient.add_offsets(type, y_add = -10)
 
 	if(connected_monitor)
 		connected_monitor.update_appearance(UPDATE_OVERLAYS)
@@ -992,13 +1015,35 @@ TYPEINFO_DEF(/obj/structure/table/optable)
 	SIGNAL_HANDLER
 	set_patient(null)
 
-/obj/structure/table/optable/proc/check_eligible_patient()
-	get_patient()
-	if(!patient)
-		return FALSE
-	if(ishuman(patient))
-		return TRUE
-	return FALSE
+/obj/structure/table/optable/proc/patient_body_position_change(mob/living/carbon/human/source)
+	SIGNAL_HANDLER
+
+	if(source != patient)
+		try_get_patient(source)
+	else
+		if(patient.body_position != LYING_DOWN)
+			set_patient(null)
+
+/// Any mob that enters our tile will be marked as a potential patient. They will be turned into a patient if they lie down.
+/obj/structure/table/optable/proc/mark_patient(datum/source, mob/living/carbon/human/potential_patient)
+	SIGNAL_HANDLER
+	if(!istype(potential_patient))
+		return
+
+	RegisterSignal(potential_patient, COMSIG_LIVING_SET_BODY_POSITION, PROC_REF(patient_body_position_change), TRUE)
+	try_get_patient(potential_patient) // In case the mob is already lying down before they entered.
+
+/// Unmark the potential patient.
+/obj/structure/table/optable/proc/unmark_patient(datum/source, mob/living/carbon/human/potential_patient)
+	SIGNAL_HANDLER
+	if(!istype(potential_patient))
+		return
+
+	if(potential_patient == patient)
+		set_patient(null)
+		try_get_patient()
+
+	UnregisterSignal(potential_patient, COMSIG_LIVING_SET_BODY_POSITION)
 
 /*
  * Racks

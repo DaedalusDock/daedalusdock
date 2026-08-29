@@ -30,6 +30,12 @@ $average: #f08f11 !default;
 $bad: #db2828 !default;
 $label: #7e90a7 !default;
 
+$stats-good: #03fca1 !default;
+$stats-good-shadow: 0 0 0.5em #5bb498 !default;
+
+$stats-bad: #b8046d !default;
+$stats-bad-shadow: 0 0 0.5em #b8044c !default;
+
 // Background and foreground color lightness ratios
 $bg-lightness: -15% !default;
 $fg-lightness: 10% !default;

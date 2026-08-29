@@ -1,5 +1,6 @@
 /// Reward for sanctifying corpses
 /datum/status_effect/skill_mod/sanctify_corpse
+	id = "sanctifycorpse"
 	duration = 20 MINUTES
 	status_type = STATUS_EFFECT_EXTEND
 
@@ -9,6 +10,7 @@
 
 /// Innate to the Private Investigator
 /datum/status_effect/skill_mod/detective
+	id = "detective"
 	duration = -1
 
 	skill_path = /datum/rpg_skill/forensics
@@ -17,6 +19,7 @@
 
 /// Innate to Acolytes
 /datum/status_effect/skill_mod/doctor
+	id = "doctor"
 	duration = -1
 
 	skill_path = /datum/rpg_skill/anatomy
@@ -24,10 +27,12 @@
 	source = "Experience"
 
 /datum/status_effect/skill_mod/doctor/augur
+	id = "augur"
 	modify_amt = 3
 
 /// Innate to the Augur
 /datum/status_effect/skill_mod/augur_eyes
+	id = "augureyes"
 	duration = -1
 
 	skill_path = /datum/rpg_skill/fourteen_eyes
@@ -36,6 +41,7 @@
 
 /// Innate to Engineers
 /datum/status_effect/skill_mod/engineer
+	id = "engineer"
 	duration = -1
 
 	skill_path = /datum/rpg_skill/fine_motor
@@ -43,10 +49,12 @@
 	source = "Experience"
 
 /datum/status_effect/skill_mod/engineer/chief
+	id = "chiefengineer"
 	modify_amt = 3
 
 /// Innate to security officers
 /datum/status_effect/skill_mod/security
+	id = "security"
 	duration = -1
 
 	skill_path = /datum/rpg_skill/bloodsport
@@ -55,12 +63,14 @@
 
 /// Innate to the security marshal
 /datum/status_effect/skill_mod/security_marshal
+	id = "securitymarshal"
 	skill_path = /datum/rpg_skill/knuckle_down
 	modify_amt = 3
 	source = "Tenure"
 
 // Weed
 /datum/status_effect/skill_mod/cannabis_eyes
+	id = "cannabiseyes"
 	duration = -1
 
 	skill_path = /datum/rpg_skill/fourteen_eyes
@@ -68,6 +78,7 @@
 	source = "Psychadelics"
 
 /datum/status_effect/skill_mod/cannabis_magic
+	id = "cannabis magic"
 	duration = -1
 
 	skill_path = /datum/rpg_skill/fourteen_eyes
@@ -75,6 +86,7 @@
 	source = "Psychadelics"
 
 /datum/status_effect/skill_mod/slip
+	id = "slippedandfell"
 	status_type = STATUS_EFFECT_REFRESH
 
 	duration = 5 MINUTES
@@ -85,6 +97,7 @@
 
 /// Given to entertainers, sometimes, when people laugh near them.
 /datum/status_effect/skill_mod/laugh
+	id = "madesomeonelaugh"
 	status_type = STATUS_EFFECT_REFRESH
 
 	duration = 10 MINUTES
@@ -94,7 +107,8 @@
 	source = "Made someone laugh"
 
 /datum/status_effect/skill_mod/hallucinating
-	duration = -1
+	id = "hallucinatingskillmod"
+	duration = STATUS_EFFECT_PERMANENT
 	status_type = STATUS_EFFECT_UNIQUE
 	skill_path = /datum/rpg_skill/fourteen_eyes
 	modify_amt = 2

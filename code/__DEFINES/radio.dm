@@ -73,7 +73,7 @@
 
 #define FREQ_HOLOGRID_SOLUTION 1433
 #define FREQ_STATUS_DISPLAYS 1435
-#define FREQ_ATMOS_ALARMS 1437  // air alarms <-> alert computers
+#define FREQ_ATMOS_ALARMS 1437  // air alarms -> alert computers
 #define FREQ_ATMOS_CONTROL 1439  // air alarms <-> vents and scrubbers
 
 #define MIN_FREQ 1441 // ------------------------------------------------------
@@ -102,6 +102,7 @@
 #define TRANSMISSION_SUPERSPACE 3  // reaches independent (CentCom) radios only
 
 // Filter types, used as an optimization to avoid unnecessary proc calls.
+// So, air alarms don't actually define receive_signal, and this is actually used by a subtype of airlock.
 #define RADIO_TO_AIRALARM "to_airalarm"
 #define RADIO_FROM_AIRALARM "from_airalarm"
 #define RADIO_SIGNALER "signaler"

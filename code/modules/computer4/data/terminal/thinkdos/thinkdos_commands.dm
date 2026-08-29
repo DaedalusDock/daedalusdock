@@ -1,6 +1,8 @@
 /datum/shell_command
 	/// Command names.
 	var/list/aliases
+	/// The access required to execute this command, if any.
+	var/list/req_access
 
 	/// How to use this command, usually printed by a "help" command.
 	var/help_text = "N/A"
@@ -10,12 +12,45 @@
 	if(!(lowertext(command_name) in aliases))
 		return FALSE
 
+	if(req_access && !length(system.current_user.access & req_access))
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] Access denied.")
+		return TRUE
+
 	exec(system, program, arguments, options)
 	return TRUE
 
 /// Execute the command.
 /datum/shell_command/proc/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	CRASH("Unimplimented run()")
+
+/// Boiler plate reducer for generating help commands.
+/datum/shell_command/proc/generate_help(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/commands)
+	var/list/output = list()
+	if(length(arguments))
+		var/found = FALSE
+		var/searching_for = jointext(arguments, "")
+		for(var/datum/shell_command/command_iter as anything in commands)
+			if(searching_for in command_iter.aliases)
+				found = TRUE
+				output += "Displaying information for '[command_iter.aliases[1]]':\n"
+				output += command_iter.help_text
+				break
+
+		if(!found)
+			system.println("This command is not supported by the help utility. To see a list of commands, type help.")
+			return
+
+	else
+		for(var/datum/shell_command/command_iter as anything in commands)
+			if(length(command_iter.aliases) == 1)
+				output += command_iter.aliases[1]
+				continue
+
+			output += "[command_iter.aliases[1]] ([jointext(command_iter.aliases.Copy(2), ", ")])"
+
+		sortTim(output, GLOBAL_PROC_REF(cmp_text_asc))
+		output.Insert(1, "Use help \[command\] to see specific information about a command.", "List of available commands:")
+	return output
 
 /datum/shell_command/thinkdos/help
 	aliases = list("help")
@@ -305,8 +340,8 @@
 		"Usage: 'delete \[options?\] \[path\]'",
 		"\nSee 'cd' for more information.",
 	)
-	help_list += "[fit_with("-f, --force", 20, " ", TRUE)]Overwrite any existing files in the destination location."
-	help_list += "[fit_with("-r, -R, --recursive", 20, " ", TRUE)]Allow deletion of folders."
+	help_list += "[pad_text("-f, --force", 20, " ", TRUE)]Overwrite any existing files in the destination location."
+	help_list += "[pad_text("-r, -R, --recursive", 20, " ", TRUE)]Allow deletion of folders."
 	help_text = jointext(help_list, "\n")
 
 /datum/shell_command/thinkdos/delete/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
@@ -504,9 +539,9 @@
 		"Manage background processes.",
 		"Usage: 'backprog \[argument 1\] \[argument 2?\]'",
 	)
-	help_list += "[fit_with("k, kill", 20, " ", TRUE)]Terminate a background process."
-	help_list += "[fit_with("s, switch", 20, " ", TRUE)]Focus a background process."
-	help_list += "[fit_with("v, view", 20, " ", TRUE)]Display background processes."
+	help_list += "[pad_text("k, kill", 20, " ", TRUE)]Terminate a background process."
+	help_list += "[pad_text("s, switch", 20, " ", TRUE)]Focus a background process."
+	help_list += "[pad_text("v, view", 20, " ", TRUE)]Display background processes."
 	help_text = jointext(help_list, "\n")
 
 /datum/shell_command/thinkdos/backprog/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
@@ -593,7 +628,7 @@
 
 	var/datum/signal/login_packet = reader.scan_card()
 	if(istype(login_packet))
-		system.login(login_packet.data["name"], login_packet.data["job"], login_packet.data["access"])
+		system.login(login_packet.data[PKT_PAYLOAD]["name"], login_packet.data[PKT_PAYLOAD]["job"], login_packet.data[PKT_PAYLOAD]["access"])
 
 	else if(login_packet == "nocard")
 		system.print_error("[ANSI_WRAP_BOLD("Error:")] No ID card inserted.")

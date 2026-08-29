@@ -6,14 +6,18 @@
 	/// When set initially / in on_creation, this is how long the status effect lasts in deciseconds.
 	/// While processing, this becomes the world.time when the status effect will expire.
 	/// -1 = infinite duration.
-	var/duration = -1
+	var/duration = STATUS_EFFECT_PERMANENT
 	/// The maximum duration this status effect can be.
 	/// -1 = No limit
-	var/max_duration =-1
-	/// When set initially / in on_creation, this is how long between [proc/tick] calls in deciseconds.
-	/// While processing, this becomes the world.time when the next tick will occur.
-	/// -1 = will stop processing, if duration is also unlimited (-1).
+	var/max_duration = STATUS_EFFECT_PERMANENT
+	/// This is how long between [proc/tick] calls in deciseconds.
+	/// This has to be a multiple of the [var/wait] of the subsystem this status effect is running on, which is based on [var/processing_speed].
+	/// Putting STATUS_EFFECT_NO_TICK here will stop [proc/tick] calls, and if [var/duration] is STATUS_EFFECT_PERMANENT, it stops processing entirely.
+	/// Putting STATUS_EFFECT_AUTO_TICK here will make every subsystem tick call [proc/tick], making the tick interval depend entirely on [var/processing_speed]
 	var/tick_interval = 1 SECONDS
+	/// The time until the next [proc/tick] call, gets set to [var/tick_interval] after every [proc/tick] call and decrements on every [proc/process] call.
+	var/time_until_next_tick
+
 	/// The mob affected by the status effect.
 	var/mob/living/owner
 	/// How many of the effect can be on one mob, and/or what happens when you try to add a duplicate.
@@ -43,25 +47,29 @@
 	if(owner)
 		LAZYADD(owner.status_effects, src)
 
-	if(duration != -1)
-		if(max_duration != -1)
-			duration = world.time + min(duration, max_duration)
-		else
-			duration = world.time + duration
-	tick_interval = world.time + tick_interval
+	if(duration == INFINITY)
+		// we will optionally allow INFINITY, because i imagine it'll be convenient in some places,
+		// but we'll still set it to -1 / STATUS_EFFECT_PERMANENT for proper unified handling
+		duration = STATUS_EFFECT_PERMANENT
+
+	if(tick_interval != STATUS_EFFECT_NO_TICK)
+		time_until_next_tick = tick_interval
 
 	if(alert_type)
 		var/atom/movable/screen/alert/status_effect/new_alert = owner.throw_alert(id, alert_type)
 		new_alert.attached_effect = src //so the alert can reference us, if it needs to
 		linked_alert = new_alert //so we can reference the alert, if we need to
 
-	if(duration > 0 || initial(tick_interval) > 0) //don't process if we don't care
+	if(duration != STATUS_EFFECT_PERMANENT || tick_interval != STATUS_EFFECT_NO_TICK) //don't process if we don't care
 		switch(processing_speed)
 			if(STATUS_EFFECT_FAST_PROCESS)
 				START_PROCESSING(SSfastprocess, src)
-			if (STATUS_EFFECT_NORMAL_PROCESS)
+			if(STATUS_EFFECT_NORMAL_PROCESS)
 				START_PROCESSING(SSprocessing, src)
+			if(STATUS_EFFECT_PRIORITY)
+				START_PROCESSING(SSpriority_effects, src)
 
+	SEND_SIGNAL(owner, COMSIG_LIVING_STATUS_APPLIED, src)
 	return TRUE
 
 /datum/status_effect/Destroy()
@@ -70,26 +78,47 @@
 			STOP_PROCESSING(SSfastprocess, src)
 		if (STATUS_EFFECT_NORMAL_PROCESS)
 			STOP_PROCESSING(SSprocessing, src)
+		if(STATUS_EFFECT_PRIORITY)
+			STOP_PROCESSING(SSpriority_effects, src)
+
 	if(owner)
 		linked_alert = null
 		owner.clear_alert(id)
 		LAZYREMOVE(owner.status_effects, src)
 		on_remove()
+		SEND_SIGNAL(owner, COMSIG_LIVING_STATUS_REMOVED, src)
 		owner = null
 	return ..()
 
-// Status effect process. Handles adjusting it's duration and ticks.
+// Status effect process. Handles adjusting its duration and ticks.
 // If you're adding processed effects, put them in [proc/tick]
-// instead of extending / overriding ththe process() proc.
-/datum/status_effect/process(delta_time, times_fired)
+// instead of extending / overriding the process() proc.
+/datum/status_effect/process(seconds_per_tick)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
 	if(QDELETED(owner))
 		qdel(src)
 		return
-	if(tick_interval < world.time)
-		tick(delta_time, times_fired)
-		tick_interval = world.time + initial(tick_interval)
-	if(duration != -1 && duration < world.time)
-		qdel(src)
+
+	if (duration != STATUS_EFFECT_PERMANENT)
+		duration = max(0, duration - (seconds_per_tick SECONDS)) // doing it first means its more up to date for ticks to read
+
+	if (tick_interval != STATUS_EFFECT_NO_TICK)
+		time_until_next_tick = max(0, time_until_next_tick - (seconds_per_tick SECONDS)) // same here
+
+	if(tick_interval == STATUS_EFFECT_AUTO_TICK)
+		tick(seconds_per_tick)
+	else if(tick_interval != STATUS_EFFECT_NO_TICK && time_until_next_tick <= 0)
+		time_until_next_tick = tick_interval // same here as well
+		tick(tick_interval / 10)
+
+	if(QDELING(src))
+		return // tick deleted us, no need to continue
+
+	if(duration != STATUS_EFFECT_PERMANENT)
+		if(duration <= 0)
+			qdel(src)
+			return
 
 /// Called whenever the effect is applied in on_created
 /// Returning FALSE will cause it to delete itself during creation instead.
@@ -130,10 +159,7 @@
 /// Called when a status effect of status_type STATUS_EFFECT_REFRESH
 /// has its duration refreshed in apply_status_effect - is passed New() args
 /datum/status_effect/proc/refresh(mob/living/parent, effect_path, ...)
-	var/original_duration = initial(duration)
-	if(original_duration == -1)
-		return
-	duration = world.time + original_duration
+	duration = initial(duration)
 
 /// Called when a status effect of status_type STATUS_EFFECT_EXTEND
 /// has its duration extended in apply_status_effect - is passed New() args
@@ -151,13 +177,14 @@
 /datum/status_effect/proc/nextmove_adjust()
 	return 0
 
-/// Remove [seconds] of duration from the status effect, qdeling / ending if we eclipse the current world time.
+/// Removes [seconds] of duration from the status effect.
+/// Returns whether or not the status effect was qdeleted due to running out of duration.
 /datum/status_effect/proc/remove_duration(seconds)
-	if(duration == -1) // Infinite duration
+	if(duration == STATUS_EFFECT_PERMANENT) // Infinite duration
 		return FALSE
 
-	duration -= seconds
-	if(duration <= world.time)
+	duration -= (seconds SECONDS)
+	if(duration <= 0)
 		qdel(src)
 		return TRUE
 

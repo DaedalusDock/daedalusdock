@@ -170,12 +170,12 @@
 
 /datum/reagent/space_cleaner/sterilizine/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
-	exposed_obj?.germ_level -= min(volume*20, exposed_obj.germ_level)
+	exposed_obj?.set_germ_level(exposed_obj.germ_level - min(reac_volume*20, exposed_obj.germ_level))
 
 /datum/reagent/space_cleaner/sterilizine/affect_touch(mob/living/carbon/C, removed)
 	. = ..()
 	if(C.germ_level < INFECTION_LEVEL_TWO) // rest and antibiotics is required to cure serious infections
-		C.germ_level -= min(removed*20, C.germ_level)
+		C.set_germ_level(C.germ_level - min(removed*20, C.germ_level))
 
 ///Used for clownery
 /datum/reagent/lube

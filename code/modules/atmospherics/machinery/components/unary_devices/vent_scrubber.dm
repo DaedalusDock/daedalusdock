@@ -19,6 +19,10 @@
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 	processing_flags = NONE
 
+	network_flags = NETWORK_FLAG_GEN_ID | NETWORK_FLAG_JOIN_FREQUENCY
+	net_class = NETCLASS_VENT_SCRUBBER
+	connection_frequency = FREQ_ATMOS_CONTROL
+
 	power_rating = 30000
 
 	///The mode of the scrubber (SCRUBBING or SIPHONING)
@@ -30,22 +34,16 @@
 	///A fast-siphon toggle, siphons at 3x speed for 3x the power cost.
 	var/quicksucc = FALSE
 
-	///Frequency id for connecting to the NTNet
-	var/frequency = FREQ_ATMOS_CONTROL
-	///Reference to the radio datum
-	var/datum/radio_frequency/radio_connection
 	///Radio connection to the air alarm
 	var/radio_filter_out
-	///Radio connection from the air alarm
-	var/radio_filter_in
 
 	///Whether or not this machine can fall asleep. Use a multitool to change.
 	var/can_hibernate = TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/Initialize()
-	if(!id_tag)
-		id_tag = SSpackets.generate_net_id(src)
 	. = ..()
+	if(!id_tag)
+		id_tag = net_id
 	SET_TRACKING(__TYPE__)
 	for(var/to_filter in filter_types)
 		if(istext(to_filter))
@@ -63,8 +61,6 @@
 		scrub_area.air_scrub_info -= id_tag
 		GLOB.air_scrub_names -= id_tag
 
-	SSpackets.remove_object(src,frequency)
-	radio_connection = null
 	SSairmachines.stop_processing_machine(src)
 	return ..()
 
@@ -142,11 +138,6 @@
 	else //scrubbing == SIPHONING
 		icon_state = "scrub_purge"
 
-/obj/machinery/atmospherics/components/unary/vent_scrubber/proc/set_frequency(new_frequency)
-	SSpackets.remove_object(src, frequency)
-	frequency = new_frequency
-	radio_connection = SSpackets.add_object(src, frequency, radio_filter_in)
-
 /obj/machinery/atmospherics/components/unary/vent_scrubber/proc/broadcast_status()
 	if(!radio_connection)
 		return FALSE
@@ -155,9 +146,9 @@
 	for(var/gas_id in ASSORTED_GASES)
 		f_types += list(list("gas_id" = gas_id, "gas_name" = gas_id, "enabled" = (gas_id in filter_types)))
 
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"tag" = id_tag,
-		"frequency" = frequency,
+		"frequency" = connection_frequency,
 		"device" = "VS",
 		"timestamp" = world.time,
 		"power" = on,
@@ -165,7 +156,7 @@
 		"quicksucc" = quicksucc,
 		"filter_types" = f_types,
 		"sigtype" = "status"
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 
 	var/area/scrub_area = get_area(src)
 	if(!GLOB.air_scrub_names[id_tag])
@@ -173,7 +164,7 @@
 		update_appearance(UPDATE_NAME)
 		GLOB.air_scrub_names[id_tag] = name
 
-	scrub_area.air_scrub_info[id_tag] = signal.data
+	scrub_area.air_scrub_info[id_tag] = astype(signal.data[PKT_PAYLOAD], /list).Copy()
 
 	radio_connection.post_signal(signal, radio_filter_out)
 
@@ -187,10 +178,12 @@
 	name = "\proper [scrub_area.name] [name] [id_tag]"
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/atmos_init()
-	radio_filter_in = frequency == initial(frequency) ? RADIO_FROM_AIRALARM : null
-	radio_filter_out = frequency == initial(frequency) ? RADIO_TO_AIRALARM : null
-	if(frequency)
-		set_frequency(frequency)
+	default_connection_frequency_inbound_filter = connection_frequency == FREQ_ATMOS_CONTROL ? RADIO_FROM_AIRALARM : null
+	radio_filter_out = connection_frequency == FREQ_ATMOS_CONTROL ? RADIO_TO_AIRALARM : null
+
+	// Refreshes the inbound radio filter
+	if(connection_frequency)
+		set_connection_frequency(connection_frequency, filter = default_connection_frequency_inbound_filter)
 	broadcast_status()
 	. = ..()
 
@@ -250,10 +243,11 @@
 		return TRUE
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/receive_signal(datum/signal/signal)
-	if(!is_operational || !signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	if(!is_operational || !payload["tag"] || (payload["tag"] != id_tag) || (payload["sigtype"]!="command"))
 		return
 
-	if("status" in signal.data)
+	if("status" in payload)
 		broadcast_status()
 		return //do not update_appearance
 
@@ -263,32 +257,30 @@
 	var/old_scrubbing = scrubbing
 	var/old_filter_length = length(filter_types)
 
-	var/atom/signal_sender = signal.data["user"]
-
-	if("power" in signal.data)
-		on = text2num(signal.data["power"])
-	if("power_toggle" in signal.data)
+	if("power" in payload)
+		on = text2num(payload["power"])
+	if("power_toggle" in payload)
 		on = !on
 
-	if("quicksucc" in signal.data)
-		quicksucc = text2num(signal.data["quicksucc"])
-	if("toggle_quicksucc" in signal.data)
+	if("quicksucc" in payload)
+		quicksucc = text2num(payload["quicksucc"])
+	if("toggle_quicksucc" in payload)
 		quicksucc = !quicksucc
 
-	if("scrubbing" in signal.data)
-		scrubbing = text2num(signal.data["scrubbing"])
-	if("toggle_scrubbing" in signal.data)
+	if("scrubbing" in payload)
+		scrubbing = text2num(payload["scrubbing"])
+	if("toggle_scrubbing" in payload)
 		scrubbing = !scrubbing
 
 	if(scrubbing != old_scrubbing)
-		investigate_log(" was toggled to [scrubbing ? "scrubbing" : "siphon"] mode by [key_name(signal_sender)]",INVESTIGATE_ATMOS)
+		investigate_log(" was toggled to [scrubbing ? "scrubbing" : "siphon"] mode by [signal.logging_data?["user_keyname"]]",INVESTIGATE_ATMOS)
 
-	if("toggle_filter" in signal.data)
-		toggle_filters(signal.data["toggle_filter"])
+	if("toggle_filter" in payload)
+		toggle_filters(payload["toggle_filter"])
 
-	if("set_filters" in signal.data)
+	if("set_filters" in payload)
 		filter_types = list()
-		add_filters(signal.data["set_filters"])
+		add_filters(payload["set_filters"])
 
 	broadcast_status()
 	update_appearance()

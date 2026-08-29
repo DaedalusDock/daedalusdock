@@ -295,3 +295,32 @@ TYPEINFO_DEF(/obj/item/tape)
 		1 MINUTES + 47 SECONDS,
 		1 MINUTES + 59 SECONDS,
 	)
+
+/obj/item/tape/engine
+	name = "Daedalus Industries instructional tape"
+	icon_state = "tape_yellow"
+	storedinfo = list(
+		"\[00:01\] Hello and welcome to the Daedalus Industries Engine Audio Experience.",
+		"\[00:07\] To begin setting up your nearest engine, first ensure you are wearing your PPE to protect against radiation.",
+		"\[00:14\] Step 1: Locate the pumps at the intakes of the thermo-electric generators and ensure they are powered on.",
+		"\[00:21\] Step 2: Close any loop ties that combine the hot and cold loops. We wouldn't want to \"cross the streams\" now would we?",
+		"\[00:28\] Step 3: Ensure the waste filter is correctly configured for your chosen coolant.",
+		"\[00:35\] Step 4: Stay with me now! Inject two canisters of coolant into each individual loop using the connector ports.",
+		"\[00:42\] Step 5: Configure the S.M.E.S units for power intake. Remember to throttle the output enough to ensure the unit charges continuously.",
+		"\[00:49\] And finally, energize the unit with no greater than seven blasts from the energizer beam.",
+		"\[00:56\] Thank you for listening to this instructional tape, and for more information, consult the operation manual located in the monitoring room.",
+		"\[01:03\] Daedalus Industries: Built to laaaaasss-",
+	)
+
+	timestamp = list(
+		1 SECONDS,
+		7 SECONDS,
+		14 SECONDS,
+		21 SECONDS,
+		28 SECONDS,
+		35 SECONDS,
+		42 SECONDS,
+		49 SECONDS,
+		56 SECONDS,
+		1 MINUTE + 3 SECONDS,
+	)

@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import { Tooltip } from 'tgui-core/components';
 
 import { useBackend, useLocalState } from '../../backend';
 import {
@@ -9,6 +8,7 @@ import {
   Input,
   LabeledList,
   Section,
+  Tooltip,
 } from '../../components';
 
 /**

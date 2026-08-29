@@ -52,17 +52,22 @@
 	radio_connection = SSpackets.add_object(src, new_frequency)
 
 /// Post a signal. Has safety checks, so calling this with a timer is OK.
-/obj/item/peripheral/network_card/wireless/proc/post_signal(datum/signal/packet, filter)
+/obj/item/peripheral/network_card/wireless/proc/post_signal(datum/signal/packet, filter, frequency)
 	if(!master_pc?.is_operational || !radio_connection)
 		return
 
-	packet.data[PACKET_SOURCE_ADDRESS] = network_id
+	packet.data[PKT_HEAD_SOURCE_ADDRESS] = network_id
 	// Rewrite the author so we don't get the packet we just sent back.
 	packet.author = WEAKREF(src)
-	radio_connection.post_signal(packet, filter)
 
-/obj/item/peripheral/network_card/wireless/proc/deferred_post_signal(datum/signal/packet, filter, time)
-	addtimer(CALLBACK(src, PROC_REF(post_signal), packet, filter), time)
+	var/datum/radio_frequency/used_freq = radio_connection
+	if(frequency)
+		used_freq = SSpackets.return_frequency(frequency)
+
+	used_freq?.post_signal(packet, filter)
+
+/obj/item/peripheral/network_card/wireless/proc/deferred_post_signal(datum/signal/packet, filter, frequency, time)
+	addtimer(CALLBACK(src, PROC_REF(post_signal), packet, filter, frequency), time)
 
 /obj/item/peripheral/network_card/wireless/receive_signal(datum/signal/signal)
 	if(!master_pc)
@@ -74,23 +79,25 @@
 	switch(listen_mode)
 		if(WIRELESS_FILTER_NETADDR)
 			// Isn't meant for us, but could be a ping
-			if(signal.data[PACKET_DESTINATION_ADDRESS] != network_id)
-				if(!signal.data[PACKET_SOURCE_ADDRESS] || (signal.data[PACKET_DESTINATION_ADDRESS] != NET_ADDRESS_PING))
+			if(signal.data[PKT_HEAD_DEST_ADDRESS] != network_id)
+				if(!signal.data[PKT_HEAD_SOURCE_ADDRESS] || (signal.data[PKT_HEAD_DEST_ADDRESS] != NET_ADDRESS_PING))
 					return // Is not a ping, bye bye!
 
-				var/list/data = list(
-					PACKET_SOURCE_ADDRESS = network_id,
-					PACKET_DESTINATION_ADDRESS = signal.data[PACKET_SOURCE_ADDRESS],
-					PACKET_CMD = NET_COMMAND_PING_REPLY,
-					PACKET_NETCLASS = NETCLASS_ADAPTER,
+				var/datum/signal/packet = new(src,
+					packetv2(
+						network_id,
+						signal.data[PKT_HEAD_SOURCE_ADDRESS],
+						net_class = NETCLASS_ADAPTER,
+						payload = list(PKT_ARG_CMD = NET_COMMAND_PING_REPLY),
+					),
+					TRANSMISSION_RADIO
 				)
-
-				var/datum/signal/packet = new(src, data, TRANSMISSION_RADIO)
 				addtimer(CALLBACK(src, PROC_REF(post_signal), packet), 1 SECOND)
 				return
+
 		if(WIRELESS_FILTER_ID_TAGS)
 			//Drop packets not in our ID tags list.
-			if(!(signal.data["tag"] in id_tags))
+			if(!(signal.data[PKT_PAYLOAD]["tag"] in id_tags))
 				return
 		/*
 		if(WIRELESS_FILTER_PROMISC)
@@ -107,11 +114,6 @@
 		return FALSE
 
 	COOLDOWN_START(src, ping_cooldown, 2 SECONDS)
-	var/list/data = list(
-		PACKET_SOURCE_ADDRESS = network_id,
-		PACKET_DESTINATION_ADDRESS = NET_ADDRESS_PING,
-	)
-
-	var/datum/signal/packet = new(src, data)
+	var/datum/signal/packet = new(src, packetv2(network_id, NET_ADDRESS_PING))
 	post_signal(packet)
 	return TRUE

@@ -1,6 +1,6 @@
 /datum/status_effect/noir
 	id = "noirmode"
-	tick_interval = -1
+	tick_interval = STATUS_EFFECT_PERMANENT
 
 	status_type = STATUS_EFFECT_UNIQUE
 	alert_type = null

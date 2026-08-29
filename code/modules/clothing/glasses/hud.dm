@@ -85,7 +85,7 @@
 
 /obj/item/clothing/glasses/hud/diagnostic
 	name = "diagnostic HUD"
-	desc = "A heads-up display capable of analyzing the integrity and status of robotics and exosuits."
+	desc = "A heads-up display capable of analyzing the integrity of robotics and displaying broadband radio signals."
 	icon_state = "diagnostichud"
 	hud_type = DATA_HUD_DIAGNOSTIC_BASIC
 	hud_trait = TRAIT_DIAGNOSTIC_HUD

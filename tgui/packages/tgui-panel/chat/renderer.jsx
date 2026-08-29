@@ -7,8 +7,9 @@
 import { EventEmitter } from 'common/events';
 import { classes } from 'common/react';
 import { createRoot } from 'react-dom/client';
+import { Tooltip } from 'tgui/components';
+import { SkillRollTooltip } from 'tgui/components/SkillRollTooltip';
 import { createLogger } from 'tgui/logging';
-import { Tooltip } from 'tgui-core/components';
 
 import {
   COMBINE_MAX_MESSAGES,
@@ -37,6 +38,7 @@ const SCROLL_TRACKING_TOLERANCE = 24;
 // List of injectable component names to the actual type
 export const TGUI_CHAT_COMPONENTS = {
   Tooltip,
+  SkillRollTooltip,
 };
 
 // List of injectable attibute names mapped to their proper prop
@@ -45,6 +47,16 @@ export const TGUI_CHAT_ATTRIBUTES_TO_PROPS = {
   position: 'position',
   content: 'content',
   innerhtml: 'innerhtml',
+  // SkillRollTooltip Props
+  chance: 'chance',
+  chancestring: 'chanceString',
+  dice: 'dice',
+  success: 'success',
+  modifier: 'modifier',
+  requirement: 'requirement',
+  roll: 'roll',
+  skillname: 'skillName',
+  text: 'text',
 };
 
 const findNearestScrollableParent = (startingNode) => {

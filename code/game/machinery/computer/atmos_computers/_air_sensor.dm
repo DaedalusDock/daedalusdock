@@ -6,10 +6,12 @@
 	icon_state = "gsensor1"
 	resistance_flags = FIRE_PROOF
 
+	network_flags = NETWORK_FLAG_GEN_ID
+	net_class = NETCLASS_GAS_SENSOR
+
 	var/on = TRUE
 
-	var/frequency = FREQ_ATMOS_STORAGE
-	var/datum/radio_frequency/radio_connection
+	connection_frequency = FREQ_ATMOS_STORAGE
 
 	/// The unique string that represents which atmos chamber to associate with.
 	var/chamber_id
@@ -17,23 +19,21 @@
 /obj/machinery/air_sensor/Initialize(mapload)
 	id_tag = chamber_id + "_sensor"
 	SSairmachines.start_processing_machine(src)
-	radio_connection = SSpackets.add_object(src, frequency, RADIO_ATMOSIA)
 	return ..()
 
 /obj/machinery/air_sensor/Destroy()
-	SSpackets.remove_object(src, frequency)
-	broadcast_destruction(frequency)
+	broadcast_destruction()
 	SSairmachines.stop_processing_machine(src)
 	return ..()
 
-/obj/machinery/air_sensor/proc/broadcast_destruction(frequency)
-	var/datum/signal/signal = new(null, list(
+/obj/machinery/air_sensor/proc/broadcast_destruction()
+	var/datum/signal/signal = create_signal(payload = list(
 		"sigtype" = "destroyed",
 		"tag" = id_tag,
 		"timestamp" = world.time,
-	))
-	var/datum/radio_frequency/connection = SSpackets.return_frequency(frequency)
-	connection.post_signal(signal, filter = RADIO_ATMOSIA)
+	), transmission_method = TRANSMISSION_RADIO)
+
+	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)
 
 /obj/machinery/air_sensor/update_icon_state()
 	icon_state = "gsensor[on]"
@@ -44,10 +44,10 @@
 		return
 
 	var/datum/gas_mixture/air_sample = unsafe_return_air()
-	var/datum/signal/signal = new(src, list(
+	var/datum/signal/signal = create_signal(payload = list(
 		"sigtype" = "status",
 		"tag" = id_tag,
 		"timestamp" = world.time,
 		"gasmix" = gas_mixture_parser(air_sample),
-	))
+	), transmission_method = TRANSMISSION_RADIO)
 	radio_connection.post_signal(signal, filter = RADIO_ATMOSIA)

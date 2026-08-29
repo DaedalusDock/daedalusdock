@@ -17,37 +17,38 @@
 /proc/cheap_hypotenuse(Ax, Ay, Bx, By)
 	return sqrt(abs(Ax - Bx) ** 2 + abs(Ay - By) ** 2) //A squared + B squared = C squared
 
-/** recursive_organ_check
- * inputs: first_object (object to start with)
- * outputs:
- * description: A pseudo-recursive loop based off of the recursive mob check, this check looks for any organs held
- *  within 'first_object', toggling their frozen flag. This check excludes items held within other safe organ
- *  storage units, so that only the lowest level of container dictates whether we do or don't decompose
- */
-/proc/recursive_organ_check(atom/first_object)
-
-	var/list/processing_list = list(first_object)
+/// Freezes or unfreezes organs inside of the containing object or within the contents of contained atoms. Only checks 1 layer deeper than containing_object.contents.
+/proc/toggle_organ_freeze(atom/containing_object, freeze = TRUE)
+	var/list/processing_list = list(containing_object)
 	var/list/processed_list = list()
 	var/index = 1
-	var/obj/item/organ/found_organ
 
 	while(index <= length(processing_list))
-
 		var/atom/object_to_check = processing_list[index]
 
-		if(istype(object_to_check, /obj/item/organ))
-			found_organ = object_to_check
-			found_organ.organ_flags ^= ORGAN_FROZEN
+		if(isorgan(object_to_check) || isbodypart(object_to_check))
+			if(freeze)
+				ADD_TRAIT(object_to_check, TRAIT_ORGAN_FROZEN, ref(containing_object))
+			else
+				REMOVE_TRAIT(object_to_check, TRAIT_ORGAN_FROZEN, ref(containing_object))
 
 		else if(istype(object_to_check, /mob/living/carbon))
 			var/mob/living/carbon/mob_to_check = object_to_check
-			for(var/organ in mob_to_check.processing_organs)
-				found_organ = organ
-				found_organ.organ_flags ^= ORGAN_FROZEN
+			for(var/obj/item/organ/organ in mob_to_check.processing_organs)
+				if(freeze)
+					ADD_TRAIT(organ, TRAIT_ORGAN_FROZEN, ref(containing_object))
+				else
+					REMOVE_TRAIT(organ, TRAIT_ORGAN_FROZEN, ref(containing_object))
 
-		for(var/atom/contained_to_check in object_to_check) //objects held within other objects are added to the processing list, unless that object is something that can hold organs safely
-			if(!processed_list[contained_to_check] && !istype(contained_to_check, /obj/structure/closet/crate/freezer) && !istype(contained_to_check, /obj/structure/closet/secure_closet/freezer))
-				processing_list+= contained_to_check
+			for(var/obj/item/bodypart/part in mob_to_check.bodyparts)
+				if(freeze)
+					ADD_TRAIT(part, TRAIT_ORGAN_FROZEN, ref(containing_object))
+				else
+					REMOVE_TRAIT(part, TRAIT_ORGAN_FROZEN, ref(containing_object))
+
+		for(var/atom/contained_to_check in object_to_check) //objects held within other objects are added to the processing list
+			if(!processed_list[contained_to_check])
+				processing_list += contained_to_check
 
 		index++
 		processed_list[object_to_check] = object_to_check

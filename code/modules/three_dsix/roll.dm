@@ -49,14 +49,20 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 /proc/roll_3d6(requirement = STATS_BASELINE_VALUE, modifier, crit_fail_modifier = -10, datum/rpg_skill/skill_type_used)
 	RETURN_TYPE(/datum/roll_result)
 
-	var/dice = roll("3d6")
-	var/dice_after_mod = dice + modifier
+	var/list/rolls = list()
+	var/sum = 0
+	for(var/i in 1 to 3)
+		var/roll = roll("1d6")
+		rolls += roll
+		sum += roll
+
+	var/dice_after_mod = sum + modifier
 	var/crit_fail = max((requirement + crit_fail_modifier), 4)
 	var/crit_success = min((requirement + 7), 17)
 
-	// if(dice >= requirement)
+	// if(sum >= requirement)
 	// 	var/list/out = list(
-	// 		"ROLL: [dice] ([modifier >= 0 ? "+[modifier]" : "-[modifier]"])",
+	// 		"ROLL: [sum] ([modifier >= 0 ? "+[modifier]" : "-[modifier]"])",
 	// 		"SUCCESS PROB: %[round(dice_probability(3, 6, requirement - modifier), 0.01)]",
 	// 		"CRIT SP: %[round(dice_probability(3, 6, crit_success), 0.01)]",
 	// 		"MOD: [modifier]",
@@ -71,7 +77,8 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	// 	to_chat(world, span_adminnotice(jointext(out, "")))
 
 	var/datum/roll_result/result = new()
-	result.roll = dice
+	result.roll = sum
+	result.dice_list = rolls
 	result.modifier = modifier
 	result.requirement = requirement
 	result.skill_type_used = skill_type_used
@@ -106,6 +113,8 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	/// Typepath of the skill used. Optional.
 	var/datum/rpg_skill/skill_type_used
 
+	/// The actual rolls from the dice.
+	var/list/dice_list
 	/// How many times this result was pulled from a result cache.
 	var/cache_reads = 0
 
@@ -113,7 +122,7 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	success_prob = round(dice_probability(3, 6, clamp(requirement - modifier, 0, 18)), 0.01)
 
 /datum/roll_result/proc/create_tooltip(body, body_only = FALSE)
-	if(!skill_type_used)
+	if(!skill_type_used || body_only)
 		if(outcome >= SUCCESS)
 			body = span_statsgood(body)
 		else
@@ -150,29 +159,8 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 		if(CRIT_FAILURE)
 			success = "Critical Failure"
 
-	var/finished_prob_string = "<span style='color: #bbbbad;font-style: italic'>\[[prob_string]: [success]\]</span>"
-	var/prefix
-	if(outcome >= SUCCESS)
-		prefix = "<span class='statsGood' style='text-shadow: inherit;'>[uppertext(initial(skill_type_used.name))]</span> "
-		body = span_statsgood(body)
-	else
-		prefix = "<span class='statsBad' style='text-shadow: inherit;'>[uppertext(initial(skill_type_used.name))]</span> "
-		body = span_statsbad(body)
-
-	var/modifier_string = ""
-	if(modifier != 0)
-		var/modifier_string_inner = modifier > 0 ? "+[modifier]" : "[modifier]"
-		var/modifier_class = (modifier >= 0) ? "statsGood" : "statsBad"
-		modifier_string = " (<span class='[modifier_class]' style='font-weight: bold;text-shadow: inherit;font-style: inherit'>[modifier_string_inner]</span>)"
-
-	var/result_class = (outcome >= SUCCESS) ? "statsGood" : "statsBad"
-	var/result_string = "Result: <span class='[result_class]' style='font-weight: bold;text-shadow: inherit;font-style: inherit'><b>[roll]</b></span>[modifier_string]"
-	var/tooltip_html = "[success_prob]% | [result_string] | Check: <b>[requirement]</b>"
-	var/seperator = "<span style='color: #bbbbad;font-style: italic'>: </span>"
-
-	if(body_only)
-		return body
-	return "[prefix]<span data-component=\"Tooltip\" data-innerhtml=\"[tooltip_html]\" class=\"tooltip\">[finished_prob_string]</span>[seperator][body]"
+	var/finished_prob_string = "\[[prob_string]: [success]\]"
+	return "<span data-component=\"SkillRollTooltip\" data-chance=\"[success_prob]\" data-chancestring=\"[finished_prob_string]\" data-success=\"$[outcome >= SUCCESS ? "true" : "false"]\" data-modifier=\"[modifier || 0]\" data-requirement=\"[requirement]\" data-roll=\"[roll]\" data-skillName=\"[uppertext(skill_type_used.name)]\" data-text=\"[body]\" data-dice=\"[jointext(dice_list, "-")]\"</span>"
 
 /// Play
 /datum/roll_result/proc/do_skill_sound(mob/user)
@@ -188,18 +176,21 @@ GLOBAL_DATUM_INIT(success_roll, /datum/roll_result/success, new)
 	success_prob = 100
 	roll = 18
 	requirement = 3
+	dice_list = list(6, 6, 6)
 
 /datum/roll_result/critical_success
 	outcome = CRIT_SUCCESS
 	success_prob = 100
 	roll = 18
 	requirement = 3
+	dice_list = list(6, 6, 6)
 
 /datum/roll_result/critical_failure
 	outcome = CRIT_FAILURE
 	success_prob = 0
-	roll = 1
+	roll = 3
 	requirement = 18
+	dice_list = list(1, 1, 1)
 
 /// Returns a number between 0 and 100 to roll the desired value when rolling the given dice.
 /proc/dice_probability(num, sides, desired)

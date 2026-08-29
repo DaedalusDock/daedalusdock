@@ -38,7 +38,7 @@
 	name = "vent controller"
 	density = FALSE
 
-	frequency = FREQ_ATMOS_CONTROL
+	connection_frequency = FREQ_ATMOS_CONTROL
 	power_channel = AREA_USAGE_ENVIRON
 
 	// Setup parameters only

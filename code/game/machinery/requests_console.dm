@@ -329,7 +329,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 			if("cargobay", "mining")
 				radio_freq = FREQ_SUPPLY
 
-		var/datum/signal/subspace/messaging/rc/signal = new(src, list(
+		var/datum/signal/subspace/messaging/rc/signal = new(src, packetv2(payload = list(
 			"sender" = department,
 			"rec_dpt" = to_department,
 			"send_dpt" = department,
@@ -338,10 +338,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 			"stamped" = msgStamped,
 			"priority" = priority,
 			"notify_freq" = radio_freq
-		))
+		)))
 		signal.send_to_receivers()
 
-		screen = signal.data["done"] ? REQ_SCREEN_SENT : REQ_SCREEN_ERR
+		screen = signal.data[PKT_PAYLOAD]["done"] ? REQ_SCREEN_SENT : REQ_SCREEN_ERR
 
 	//Handle screen switching
 	if(href_list["setScreen"])

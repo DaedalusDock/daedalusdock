@@ -29,7 +29,7 @@
 	var/mob/living/user = parent_rune.blackboard[RUNE_BB_INVOKER]
 
 	if(!user?.can_speak_vocal())
-		parent_rune.try_cancel_invoke(RUNE_FAIL_INVOKER_INCAP)
+		parent_rune.try_cancel_invoke(/datum/ritual_failure/invoker_incap)
 		return FALSE
 
 	if(phrase_time <= world.time && phrase_index <= length(parent_rune.invocation_phrases))
@@ -41,7 +41,7 @@
 		phrase_index++
 
 /datum/timed_action/aether_rune/on_cancel()
-	parent_rune.fail_invoke(parent_rune.blackboard[RUNE_BB_CANCEL_REASON], parent_rune.blackboard[RUNE_BB_CANCEL_SOURCE])
+	parent_rune.fail_invoke(parent_rune.blackboard[RUNE_BB_CANCEL_REASON], parent_rune.blackboard[RUNE_BB_CANCEL_SOURCE], TRUE)
 
 /datum/timed_action/aether_rune/on_success()
 	parent_rune.succeed_invoke(parent_rune.blackboard[RUNE_BB_TARGET_MOB])

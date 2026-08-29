@@ -83,7 +83,7 @@
 
 /obj/machinery/door/airlock/glass/incinerator
 	autoclose = FALSE
-	frequency = FREQ_AIRLOCK_CONTROL
+	connection_frequency = FREQ_AIRLOCK_CONTROL
 	heat_proof = TRUE
 	req_access = list(ACCESS_SYNDICATE)
 
@@ -118,7 +118,7 @@
 
 /obj/machinery/door/airlock/research/glass/incinerator
 	autoclose = FALSE
-	frequency = FREQ_AIRLOCK_CONTROL
+	connection_frequency = FREQ_AIRLOCK_CONTROL
 	heat_proof = TRUE
 	req_access = list(ACCESS_ORDNANCE)
 
@@ -310,7 +310,7 @@ TYPEINFO_DEF(/obj/machinery/door/airlock/plasma)
 
 /obj/machinery/door/airlock/public/glass/incinerator
 	autoclose = FALSE
-	frequency = FREQ_AIRLOCK_CONTROL
+	connection_frequency = FREQ_AIRLOCK_CONTROL
 	heat_proof = TRUE
 	req_one_access = list(ACCESS_ATMOSPHERICS, ACCESS_MAINT_TUNNELS)
 

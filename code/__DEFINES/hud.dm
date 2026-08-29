@@ -262,6 +262,7 @@
 #define HUDKEY_MOB_NUTRITION "mobnutrition"
 #define HUDKEY_MOB_RESIST "mobresist"
 #define HUDKEY_MOB_REST "mobrest"
+#define HUDKEY_MOB_WIELD "mobwield"
 #define HUDKEY_MOB_SPACESUIT "mobspacesuit"
 #define HUDKEY_MOB_STAMINA "mobstamina"
 #define HUDKEY_MOB_COMBO "mobcombo"

@@ -244,19 +244,14 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if(!IS_ORGANIC_LIMB(BP))
 		return
 
-	var/germ_level = user.germ_level
-	var/wearing_gloves = FALSE
-	if(user.gloves)
-		wearing_gloves = TRUE
-		germ_level = user.gloves.germ_level
+	var/germ_level = user.gloves ? user.gloves.germ_level : user.germ_level
 
 	germ_level = max(germ_level, BP.germ_level)
-	if(!wearing_gloves)
-		user.germ_level = germ_level
-	else
-		user.germ_level = germ_level
 
-	BP.germ_level = germ_level //as funny as scrubbing microbes out with clean gloves is - no.
+	if(!user.gloves)
+		user.set_germ_level(germ_level)
+
+	BP.set_germ_level(germ_level) //as funny as scrubbing microbes out with clean gloves is - no.
 
 /// Can a mob perform surgery with this item. Step is optional.
 /obj/item/proc/surgery_sanity_check(mob/living/carbon/target, mob/living/user, datum/surgery_step/step, target_zone)

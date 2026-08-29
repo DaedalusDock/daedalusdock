@@ -346,7 +346,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 /datum/antagonist/proc/roundend_report_article_column_header()
 	var/job_text
 	if(!is_unassigned_job(owner.assigned_role))
-		job_text = " the <span class='highlighter'>[owner.assigned_role.title]</span>"
+		job_text = " the <span class='highlighter-on'>[owner.assigned_role.title]</span>"
 
 	return {"
 
@@ -371,9 +371,9 @@ GLOBAL_LIST_EMPTY(antagonists)
 				break
 
 	if(!length(objectives) || objectives_complete)
-		column_body += "<div class='highlighter' style='font-size: 1.5em;'>The [name] succeeded in their goals.</div>"
+		column_body += "<div class='highlighter-on' style='font-size: 1.5em;'>The [name] succeeded in their goals.</div>"
 	else
-		column_body += "<div class='highlighter' style='font-size: 1.5em;'>The [name] has failed their goals.</div>"
+		column_body += "<div class='highlighter-on' style='font-size: 1.5em;'>The [name] has failed their goals.</div>"
 
 	return jointext(column_body, "")
 
@@ -407,7 +407,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 		sentences += "Reportedly, they were [seen] [doing_things] [sometime] [after][the_events]."
 
 		if(owner.current.real_name != owner.name)
-			var/name_str = "<span class='highlighter'>[owner.current.real_name]</span>"
+			var/name_str = "<span class='highlighter-on'>[owner.current.real_name]</span>"
 			sentences += pick(
 				"They are suspected of changing their identity to [name_str]>.",
 				"They have been spotted under the name [name_str]>.",

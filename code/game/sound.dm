@@ -117,7 +117,7 @@
 		var/turf/turf_loc = get_turf(src)
 
 		//sound volume falloff with distance
-		distance = get_dist(turf_loc, turf_source) * distance_multiplier
+		distance = get_dist_euclidean(turf_loc, turf_source) * distance_multiplier
 
 		if(max_distance && falloff_exponent) //If theres no max_distance we're not a 3D sound, so no falloff.
 			sound_to_use.volume -= CALCULATE_SOUND_VOLUME(vol, distance, max_distance, falloff_distance, falloff_exponent)

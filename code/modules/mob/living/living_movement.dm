@@ -135,7 +135,3 @@
 				to_chat(src, span_warning("Unbuckle from [buckled] first."))
 			return FALSE
 
-/mob/living/keybind_face_direction(direction)
-	if(stat != CONSCIOUS)
-		return
-	return ..()

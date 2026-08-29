@@ -279,7 +279,7 @@ TYPEINFO_DEF(/atom)
 		atom_integrity = max_integrity
 
 	// Not typeinfo() for speed reasons. Hot ass code!
-	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[type] ||= new __typeinfo_path
+	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[__typeinfo_path] ||= new __typeinfo_path
 
 	// apply materials properly from the default_materials value in typeinfo
 	// This MUST come after atom_integrity is set above, as if old materials get removed,
@@ -1524,6 +1524,7 @@ TYPEINFO_DEF(/atom)
  */
 /atom/Exited(atom/movable/gone, direction)
 	SEND_SIGNAL(src, COMSIG_ATOM_EXITED, gone, direction)
+	SEND_SIGNAL(gone, COMSIG_ATOM_EXITING, src, direction)
 
 ///Return atom temperature
 /atom/proc/return_temperature()

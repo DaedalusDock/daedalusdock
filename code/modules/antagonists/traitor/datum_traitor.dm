@@ -197,9 +197,9 @@
 		var/count = 1
 		for(var/datum/objective/objective in objectives)
 			if(objective.check_completion())
-				objectives_text += "<div><B>[objective.objective_name] #[count]</B>: [objective.explanation_text] <span class='highlighter'>(Completed)</span></div>"
+				objectives_text += "<div><B>[objective.objective_name] #[count]</B>: [objective.explanation_text] <span class='highlighter-on'>(Completed)</span></div>"
 			else
-				objectives_text += "<div><B>[objective.objective_name] #[count]</B>: [objective.explanation_text] <span class='highlighter'>(Failed)</span></div>"
+				objectives_text += "<div><B>[objective.objective_name] #[count]</B>: [objective.explanation_text] <span class='highlighter-on'>(Failed)</span></div>"
 				traitor_won = FALSE
 			count++
 
@@ -217,9 +217,9 @@
 	var/special_role_text = lowertext(name)
 
 	if(traitor_won)
-		result += "<div style='font-size: 1.5em;margin-top: 1em;'><span class='highlighter'>The [special_role_text] succeeded in their mission.</span></div>"
+		result += "<div style='font-size: 1.5em;margin-top: 1em;'><span class='highlighter-on'>The [special_role_text] succeeded in their mission.</span></div>"
 	else
-		result += "<div style='font-size: 1.5em;margin-top: 1em;'><span class='highlighter'>The [special_role_text] failed their mission.</span></div>"
+		result += "<div style='font-size: 1.5em;margin-top: 1em;'><span class='highlighter-on'>The [special_role_text] failed their mission.</span></div>"
 		SEND_SOUND(owner.current, sound('sound/ambience/ambifailure.ogg', channel = SSsounds.random_available_channel()))
 
 	return result.Join("")

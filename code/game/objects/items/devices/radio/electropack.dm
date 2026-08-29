@@ -60,8 +60,9 @@ TYPEINFO_DEF(/obj/item/electropack)
 		return ..()
 
 /obj/item/electropack/receive_signal(datum/signal/signal)
-	if(!signal || signal.data["code"] != code)
+	if(!signal || signal.data[PKT_PAYLOAD]["code"] != code)
 		return
+
 	if(isliving(loc) && on)
 		if(shock_cooldown)
 			return

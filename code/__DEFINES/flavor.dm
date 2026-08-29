@@ -1,4 +1,4 @@
-#define FLAVOR_CENTCOM_NAME "Daedalus Industries Sector Control"
+#define FLAVOR_CENTCOM_NAME "Sector Control"
 #define FLAVOR_CENTCOM_SHORT "SecCon"
 
 #define FLAVOR_ANANKE_STATION "Ananke Research Station 12"

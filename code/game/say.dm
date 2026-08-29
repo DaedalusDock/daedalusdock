@@ -33,8 +33,7 @@ And the base of the send_speech() proc, which is the core of saycode.
 			O.Hear(arglist(args))
 
 	if(client && radio_freq)
-		var/atom/movable/virtualspeaker/V = speaker
-		if(isAI(V.source))
+		if(message_mods[MODE_AI_OVER_RADIO])
 			playsound_local(get_turf(src), 'goon/sounds/radio_ai.ogg', 170, 1, 0, 0, pressure_affected = FALSE, use_reverb = FALSE)
 
 /atom/movable/proc/can_speak()
@@ -113,7 +112,7 @@ And the base of the send_speech() proc, which is the core of saycode.
 	var/ai_job_display = compose_job(speaker, message_language, translated_message, radio_freq)
 	//AI smiley face :)
 	var/ai_snowflake
-	if(radio_freq && isAI(speaker.GetSource()))
+	if(radio_freq && message_mods[MODE_AI_OVER_RADIO])
 		ai_snowflake = RADIO_TAG("ai.png")
 
 	//Message
@@ -158,6 +157,7 @@ And the base of the send_speech() proc, which is the core of saycode.
 		return verb_say
 
 /atom/movable/proc/say_quote(input, list/spans=list(speech_span), list/message_mods = list(), datum/language/language)
+	SHOULD_NOT_OVERRIDE(TRUE) // Needs to be stable so Virtual Speakers can safely impersonate all atoms.
 	if(!input)
 		input = "..."
 
@@ -190,6 +190,9 @@ And the base of the send_speech() proc, which is the core of saycode.
 
 /// Scans the input sentence for speech emphasis modifiers, notably |italics|, +bold+, and _underline_
 /atom/movable/proc/say_emphasis(input)
+	SHOULD_NOT_OVERRIDE(TRUE)
+	if(!allow_speech_emphasis)
+		return input
 	return default_encode_emphasis(input)
 
 #undef ENCODE_HTML_EMPHASIS
@@ -197,7 +200,7 @@ And the base of the send_speech() proc, which is the core of saycode.
 /// Processes a spoken message's language based on if the hearer can understand it.
 /atom/movable/proc/translate_speech(atom/movable/speaker, datum/language/language, raw_message, list/spans, list/message_mods = list(), quote = FALSE)
 	SHOULD_NOT_OVERRIDE(TRUE)
-	var/atom/movable/source = speaker.GetSource() || speaker //is the speaker virtual
+	var/atom/movable/source = speaker
 
 	// Understands the language?
 	if(has_language(language))
@@ -249,29 +252,26 @@ And the base of the send_speech() proc, which is the core of saycode.
 
 /atom/movable/proc/GetJob() //Get a job, you lazy butte
 
-/atom/movable/proc/GetSource()
-
-/atom/movable/proc/GetRadio()
-
 //VIRTUALSPEAKERS
 /atom/movable/virtualspeaker
 	var/job
-	var/atom/movable/source
-	var/obj/item/radio/radio
+	var/datum/weakref/speaker_weakref
 	///goon speech sound voice type
 	var/voice_type = ""
+	/// Pre-baked say_mod value
+	var/baked_saymod
 
 INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
-/atom/movable/virtualspeaker/Initialize(mapload, atom/movable/M, _radio)
+/atom/movable/virtualspeaker/Initialize(mapload, atom/movable/M, anonymize)
 	. = ..()
-	radio = _radio
-	source = M
+	speaker_weakref = WEAKREF(M)
 	if(istype(M))
-		name = radio?.anonymize ? "Unknown" : M.GetVoice()
+		name = anonymize ? "Unknown" : M.GetVoice()
 		verb_say = M.verb_say
 		verb_ask = M.verb_ask
 		verb_exclaim = M.verb_exclaim
 		verb_yell = M.verb_yell
+		allow_speech_emphasis = M.allow_speech_emphasis
 
 	// The mob's job identity
 	if(ishuman(M))
@@ -300,8 +300,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/virtualspeaker)
 /atom/movable/virtualspeaker/GetJob()
 	return job
 
-/atom/movable/virtualspeaker/GetSource()
-	return source
-
-/atom/movable/virtualspeaker/GetRadio()
-	return radio
+/atom/movable/virtualspeaker/say_mod(input, list/message_mods, datum/language/language)
+	// Working off the logic that if you're baking the saymod
+	// it's not going to be dangerously reused, we can just... Return a baked mod if we have one.
+	return baked_saymod || ..()

@@ -89,7 +89,7 @@
 		src.absorption_capacity = absorption_capacity
 
 	// Not typeinfo() for speed reasons. Hot ass code!
-	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[type] ||= new __typeinfo_path
+	var/datum/typeinfo/atom/typeinfo = __typeinfo_cache[__typeinfo_path] ||= new __typeinfo_path
 
 	if(LAZYLEN(mat_override))
 		set_mats_per_unit(mat_override, mat_amt)

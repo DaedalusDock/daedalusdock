@@ -32,7 +32,7 @@
 
 /obj/machinery/telephone
 	name = "phone - UNINITIALIZED"
-	desc = "It's a phone. You pick it up, select from the list of other phones, and scream at the other person. The voice quality isn't all that great."
+	desc = "A telephone, the optimal device for screaming at people further than 50 meters."
 	icon = 'goon/icons/obj/phones.dmi'
 	icon_state = "phone"
 
@@ -58,6 +58,9 @@
 	var/datum/looping_sound/telephone/ring/outgoing/outring_loop
 	COOLDOWN_DECLARE(scan_cooldown)
 
+	/// A payload added to ping responses.
+	var/list/ping_reply_payload
+
 /obj/machinery/telephone/Initialize(mapload)
 	//These need to be above the supercall for color reasons
 	handset = new(src)
@@ -74,14 +77,35 @@
 /obj/machinery/telephone/LateInitialize()
 	. = ..()
 	if(!friendly_name)
-		friendly_name = get_area(src)
-		friendly_name = format_text(friendly_name:name) //~
-	recalculate_name()
+		friendly_name = format_text(astype(get_area(src), /area).name)
+	update_appearance(UPDATE_NAME)
 
-///Recalculate our name.
-/obj/machinery/telephone/proc/recalculate_name()
-	ping_addition = list("user_id"=friendly_name) //Preload this so we can staple this to the ping packet.
+/obj/machinery/telephone/examine(mob/user)
+	. = ..()
+	if(!isliving(user))
+		return
+
+	. += user.disco_made_easy("phone_examine", 11, is_examine = TRUE, success_text = "Stamped into the metal lies the old insignia of Rae Communications Limited.")
+
+/obj/machinery/telephone/disco_flavor(mob/living/carbon/human/user, nearby, is_station_level)
+	. = ..()
+	if(!nearby)
+		return
+
+	if(user.disco_made_easy("phone_ring", 16, success_text = "The phone begins to ring."))
+		user.playsound_local(src, 'goon/sounds/phone/ring_incoming.ogg', 20, FALSE)
+
+/obj/machinery/telephone/create_ping_reply(datum/signal/ping_signal)
+	var/datum/signal/reply = ..()
+	var/list/payload = reply?.data[PKT_PAYLOAD]
+	if(payload)
+		payload += ping_reply_payload.Copy()
+	return reply
+
+/obj/machinery/telephone/update_name(updates)
+	ping_reply_payload = list("user_id"=friendly_name)
 	name = "phone - [friendly_name][placard_name ? " - [placard_name]" : null]"
+	return ..()
 
 /obj/machinery/telephone/Destroy()
 	if(!QDELETED(handset))
@@ -181,7 +205,7 @@
 			if(!new_friendly_name)
 				return ITEM_INTERACT_SUCCESS
 			friendly_name = new_friendly_name
-			recalculate_name()
+			update_appearance(UPDATE_NAME)
 
 		if("Set Placard")
 			var/new_placard_name = input(user, "New Placard?", "Re-writing [placard_name]", placard_name) as null|text
@@ -231,27 +255,31 @@
 	if(. == RECEIVE_SIGNAL_FINISHED)//Handled by default.
 		return
 	//Ping response handled in parent.
-	switch(signal.data[PACKET_CMD])
+	switch(signal.data[PKT_PAYLOAD][PKT_ARG_CMD])
 		if(NET_COMMAND_PING_REPLY)//Add new phone to database
-			if(signal.data[PACKET_NETCLASS] == NETCLASS_P2P_PHONE) //Another phone!
-				discovered_phones[signal.data[PACKET_SOURCE_ADDRESS]]=signal.data["user_id"]
+			if(signal.data[PKT_HEAD_NETCLASS] == NETCLASS_P2P_PHONE) //Another phone!
+				discovered_phones[signal.data[PKT_HEAD_SOURCE_ADDRESS]]=signal.data[PKT_PAYLOAD]["user_id"]
 				return RECEIVE_SIGNAL_FINISHED
+
 		if("tel_ring")//Incoming ring
 			if(active_caller || handset_state == HANDSET_OFFHOOK)//We're either calling, or about to call, Just tell them to fuck off.
-				post_signal(create_signal(signal.data[PACKET_SOURCE_ADDRESS],list(PACKET_CMD="tel_busy"))) //Busy signal, Reject call.
+				post_signal(create_signal(signal.data[PKT_HEAD_SOURCE_ADDRESS], list(PKT_ARG_CMD="tel_busy"))) //Busy signal, Reject call.
 				return RECEIVE_SIGNAL_FINISHED
-			receive_call(list(signal.data[PACKET_SOURCE_ADDRESS],signal.data["caller_id"]))
+			receive_call(list(signal.data[PKT_HEAD_SOURCE_ADDRESS],signal.data[PKT_PAYLOAD]["caller_id"]))
 			return RECEIVE_SIGNAL_FINISHED
+
 		if("tel_ready")//Remote side pickup
-			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PKT_HEAD_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				call_connected()
 				return RECEIVE_SIGNAL_FINISHED
+
 		if("tel_busy")//Answering station busy
-			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PKT_HEAD_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				fuck_off_im_busy()
 				return RECEIVE_SIGNAL_FINISHED
+
 		if("tel_hup")//Remote side hangup
-			if(active_caller && signal.data[PACKET_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PKT_HEAD_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				switch(state)
 					if(STATE_ANSWER)
 						drop_call()// Call never connected, just reset.
@@ -259,10 +287,12 @@
 						call_dropped()
 					else
 						return RECEIVE_SIGNAL_FINISHED// This makes no sense.
+
 		if("tel_voicedata")
-			if(active_caller && signal.data["s_addr"] == active_caller[CALLER_NETID])// Ensure the packet is sensible
+			if(active_caller && signal.data[PKT_HEAD_SOURCE_ADDRESS] == active_caller[CALLER_NETID])// Ensure the packet is sensible
 				if(state != STATE_CONNECTED)
 					return RECEIVE_SIGNAL_FINISHED//No.
+
 				handset.handle_voicedata(signal)
 				return RECEIVE_SIGNAL_FINISHED
 
@@ -277,7 +307,7 @@
 		return //Who? Or more likely: HREF fuckery.
 	active_caller = list(target_phone, discovered_phones[target_phone])
 	state = STATE_ORIGINATE
-	post_signal(create_signal(target_phone, list("command"="tel_ring","caller_id"=friendly_name)))
+	post_signal(create_signal(target_phone, list(PKT_ARG_CMD = "tel_ring","caller_id" = friendly_name)))
 	outring_loop.start()
 	update_icon()
 
@@ -298,7 +328,7 @@
 		CRASH("Tried to accept a call on a phone that wasn't in STATE_ANSWER")
 	//Handset in-hand, icon's already updated by grabbing the handset...
 	ring_loop.stop()
-	post_signal(create_signal(active_caller[CALLER_NETID], list("command"="tel_ready"))) //Inform originator we're ready.
+	post_signal(create_signal(active_caller[CALLER_NETID], list(PKT_ARG_CMD = "tel_ready"))) //Inform originator we're ready.
 	state = STATE_CONNECTED
 	update_icon()
 
@@ -317,7 +347,7 @@
 /obj/machinery/telephone/proc/drop_call()
 	switch(state)
 		if(STATE_CONNECTED,STATE_ORIGINATE) //Handset down, Reset equipment.
-			post_signal(create_signal(active_caller[CALLER_NETID], list("command"="tel_hup")))
+			post_signal(create_signal(active_caller[CALLER_NETID], list(PKT_ARG_CMD = "tel_hup")))
 			outring_loop.stop()
 		if(STATE_ANSWER) // WE got hanged up on, It's cleaner to put it here than use call_dropped
 			ring_loop.stop()
@@ -586,16 +616,24 @@
 
 
 	//Bundle up what we care about.
-	var/datum/signal/v_signal = new(src, null, TRANSMISSION_WIRE)
+	var/datum/signal/v_signal = new(
+		src,
+		packetv2(
+			null,
+			callstation.active_caller[CALLER_NETID],
+			payload = list(
+				"command" = "tel_voicedata",
+				"virtualspeaker" = v_speaker, //This is a REAL REFERENCE. Packet MUST be discarded.
+				"message" = message,
+				"spans" = spans,
+				"language" = language,
+				"message_mods" = message_mods,
+			)
+		),
+		TRANSMISSION_WIRE
+	)
+
 	v_signal.has_magic_data = MAGIC_DATA_INVIOLABLE //We're sending a virtual speaker. This packet MUST be discarded.
-	v_signal.data[PACKET_SOURCE_ADDRESS] = null  //(Set by post_signal), Just setting it to null means it's always first in the list.
-	v_signal.data[PACKET_DESTINATION_ADDRESS] = callstation.active_caller[CALLER_NETID]
-	v_signal.data["command"] = "tel_voicedata"
-	v_signal.data["virtualspeaker"] = v_speaker //This is a REAL REFERENCE. Packet MUST be discarded.
-	v_signal.data["message"] = message
-	v_signal.data["spans"] = spans
-	v_signal.data["language"] = language
-	v_signal.data["message_mods"] = message_mods
 
 	//Send it off to the next phone.
 	callstation.post_signal(v_signal)
@@ -606,14 +644,14 @@
 /obj/item/p2p_phone_handset/proc/handle_voicedata(datum/signal/v_signal)
 	if(!v_signal)
 		CRASH("Handset was asked to handle a packet that didn't exist.")
-	//cache for sanic speed :3
-	var/list/v_sig_data = v_signal.data
+
+	var/list/payload = v_signal.data[PKT_PAYLOAD]
 	var/list/radio_bullshit_override = list("span"="radio", "name"=callstation.active_caller[CALLER_NAME])
 
-	var/atom/movable/virtualspeaker/admission_of_defeat = v_sig_data["virtualspeaker"]
+	var/atom/movable/virtualspeaker/admission_of_defeat = payload["virtualspeaker"]
 	var/sound/funnysound
 	if(admission_of_defeat.voice_type)
-		var/funnysound_index = copytext_char(v_sig_data["message"], -1)
+		var/funnysound_index = copytext_char(payload["message"], -1)
 		switch(funnysound_index)
 			if("?")
 				funnysound = voice_type2sound[admission_of_defeat.voice_type]["?"]
@@ -624,13 +662,13 @@
 
 
 	playsound(src, funnysound || 'modular_pariah/modules/radiosound/sound/radio/syndie.ogg', funnysound ? 300 : 30, TRUE, SHORT_RANGE_SOUND_EXTRARANGE, falloff_exponent = 0)
-	var/rendered = compose_message(v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"])
+	var/rendered = compose_message(payload["virtualspeaker"], payload["language"], payload["message"], radio_bullshit_override, payload["spans"], payload["message_mods"])
 	for(var/atom/movable/hearing_movable as anything in get_hearers_in_view(2, src)-src)
 		if(!hearing_movable)//theoretically this should use as anything because it shouldnt be able to get nulls but there are reports that it does.
 			stack_trace("somehow theres a null returned from get_hearers_in_view() in send_speech!")
 			continue
 
-		hearing_movable.Hear(rendered, v_sig_data["virtualspeaker"], v_sig_data["language"], v_sig_data["message"], radio_bullshit_override, v_sig_data["spans"], v_sig_data["message_mods"], speaker_location(), message_range = INFINITY)
+		hearing_movable.Hear(rendered, payload["virtualspeaker"], payload["language"], payload["message"], radio_bullshit_override, payload["spans"], payload["message_mods"], speaker_location(), message_range = INFINITY)
 
 
 #undef STATE_WAITING

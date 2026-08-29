@@ -1,6 +1,5 @@
 import { BooleanLike, classes } from 'common/react';
 import { Component } from 'react';
-import { Tooltip } from 'tgui-core/components';
 
 import {
   Box,
@@ -11,6 +10,7 @@ import {
   NoticeBox,
   Section,
   Stack,
+  Tooltip,
 } from '../../components';
 import {
   calculateProgression,

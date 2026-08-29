@@ -13,8 +13,6 @@
 
 /datum/c4_file/terminal_program/probe/execute(datum/c4_file/terminal_program/operating_system/thinkdos/system, cmdline)
 	. = ..()
-	if(!.)
-		return
 
 	//If we have a cmdline, skip the printline.
 
@@ -50,11 +48,11 @@
 	if(!packet)
 		return
 
-	if(!packet.data[PACKET_NETCLASS] || !packet.data[PACKET_SOURCE_ADDRESS] || (packet.data[PACKET_CMD] != NET_COMMAND_PING_REPLY))
+	if(!packet.data[PKT_HEAD_NETCLASS] || !packet.data[PKT_HEAD_SOURCE_ADDRESS] || (packet.data[PKT_PAYLOAD][PKT_ARG_CMD] != NET_COMMAND_PING_REPLY))
 		return
 
-	var/reply_netclass = packet.data[PACKET_NETCLASS]
-	var/reply_id = packet.data[PACKET_SOURCE_ADDRESS]
+	var/reply_netclass = packet.data[PKT_HEAD_NETCLASS]
+	var/reply_id = packet.data[PKT_HEAD_SOURCE_ADDRESS]
 
 	ping_replies[reply_id] = reply_netclass
 	get_os().println("\[[reply_netclass]\]-TYPE: [reply_id]")

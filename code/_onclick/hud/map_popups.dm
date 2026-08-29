@@ -74,8 +74,7 @@
 	assigned_map = map_key || "byondui_[ref(src)]"
 	set_position(1, 1)
 
-	for (var/plane_master_type in subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/blackness)
-		var/atom/movable/screen/plane_master/plane_master = new plane_master_type()
+	for(var/atom/movable/screen/plane_master/plane_master as anything in generate_planemasters())
 		plane_master.assigned_map = assigned_map
 		if(plane_master.blend_mode_override)
 			plane_master.blend_mode = plane_master.blend_mode_override

@@ -24,6 +24,8 @@ TYPEINFO_DEF(/obj/machinery/atmospherics)
 	max_integrity = 200
 	obj_flags = CAN_BE_HIT
 
+	default_connection_frequency_inbound_filter = RADIO_ATMOSIA
+
 	var/power_rating
 
 	///Check if the object can be unwrenched

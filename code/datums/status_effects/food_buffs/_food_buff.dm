@@ -1,4 +1,5 @@
 /datum/status_effect/food
+	abstract_type = /datum/status_effect/food
 	max_duration = 30 MINUTES
 	tick_interval = 2 SECONDS
 	alert_type = null

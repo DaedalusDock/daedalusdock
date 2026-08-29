@@ -3,15 +3,14 @@
 	stamina = new(src)
 	stats = new(src)
 
-	register_init_signals()
 	if(unique_name)
 		give_unique_name()
 
 	var/datum/atom_hud/data/human/medical/advanced/medhud = GLOB.huds[DATA_HUD_MEDICAL_ADVANCED]
 	medhud.add_atom_to_hud(src)
 
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.add_atom_to_hud(src)
 
 	faction += "[REF(src)]"
 	GLOB.mob_living_list += src
@@ -536,7 +535,7 @@
 		setDir(pick(NORTH, SOUTH)) // We are and look helpless.
 
 	if(rotate_on_lying)
-		body_position_pixel_y_offset = PIXEL_Y_OFFSET_LYING
+		add_offsets(LYING_DOWN_TRAIT, y_add = PIXEL_Y_OFFSET_LYING)
 
 	playsound(loc, 'goon/sounds/body_thud.ogg', ishuman(src) ? 40 : 15, 1, 0.3)
 	throw_alert("lying_down", /atom/movable/screen/alert/lying_down)
@@ -551,13 +550,9 @@
 	REMOVE_TRAIT(src, TRAIT_UI_BLOCKED, LYING_DOWN_TRAIT)
 	REMOVE_TRAIT(src, TRAIT_PULL_BLOCKED, LYING_DOWN_TRAIT)
 
-	body_position_pixel_y_offset = get_pixel_y_offset_standing(current_size)
+	remove_offsets(LYING_DOWN_TRAIT)
 
 	clear_alert("lying_down")
-
-/// Returns what the body_position_pixel_y_offset should be if the current size were `value`
-/mob/living/proc/get_pixel_y_offset_standing(size)
-	return (size-1) * get_icon_height() * 0.5
 
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
@@ -2007,14 +2002,16 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 		return
 	if((new_value == LYING_DOWN) && !(mobility_flags & MOBILITY_LIEDOWN))
 		return
+
 	. = body_position
 	body_position = new_value
-	SEND_SIGNAL(src, COMSIG_LIVING_SET_BODY_POSITION)
+
 	if(new_value == LYING_DOWN) // From standing to lying down.
 		on_lying_down()
 	else // From lying down to standing up.
 		on_standing_up()
 
+	SEND_SIGNAL(src, COMSIG_LIVING_SET_BODY_POSITION)
 	UPDATE_OO_IF_PRESENT
 
 

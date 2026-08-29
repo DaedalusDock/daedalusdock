@@ -119,7 +119,7 @@
 		threshold_drop_effect()
 
 	if(stacks_added > 0)
-		tick_interval += delay_before_decay //refreshes time until decay
+		time_until_next_tick += delay_before_decay // refreshes time until decay
 
 	stacks = min(stacks, max_stacks)
 	update_overlay()

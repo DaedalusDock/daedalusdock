@@ -90,7 +90,9 @@
 	SHOULD_CALL_PARENT(FALSE) //We *ARE* the signal poster.
 	if(!powernet) //Did we somehow receive a signal without a powernet?
 		return //*shrug*
+
 	if(signal.transmission_method != TRANSMISSION_WIRE)
 		CRASH("Data-enabled terminal received a non-wire data packet")
-	if(master && master.network_flags) //if the master has no network flags at all, don't pass it along.
+
+	if(master?.network_flags && master.is_operational) //if the master has no network flags at all, don't pass it along.
 		master.receive_wireline_signal(signal, src)

@@ -11,7 +11,7 @@
 /mob/living/proc/AmountStun() //How many deciseconds remain in our stun
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
-		return S.duration - world.time
+		return S.duration
 	return 0
 
 /mob/living/proc/Stun(amount, ignore_canstun = FALSE) //Can't go below remaining duration
@@ -23,10 +23,10 @@
 		return
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
-		if(S.max_duration != -1)
-			S.duration = clamp(world.time + amount, S.duration, world.time + S.max_duration)
+		if(S.max_duration != -1STATUS_EFFECT_PERMANENT)
+			S.duration = clamp(amount, S.duration, S.max_duration)
 		else
-			S.duration = max(world.time + amount, S.duration)
+			S.duration = max(amount, S.duration)
 	else if(amount > 0)
 		S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
@@ -45,9 +45,9 @@
 			return
 		if(S)
 			if(S.max_duration != -1)
-				S.duration = min(world.time + amount, world.time + S.max_duration)
+				S.duration = min(amount, S.max_duration)
 			else
-				S.duration = world.time + amount
+				S.duration = amount
 		else
 			S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
@@ -62,7 +62,7 @@
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
 		if(S.max_duration != -1)
-			S.duration = min(S.duration + amount, world.time + S.max_duration)
+			S.duration = min(amount, S.max_duration)
 		else
 			S.duration += amount
 	else if(amount > 0)
@@ -76,7 +76,7 @@
 /mob/living/proc/AmountKnockdown() //How many deciseconds remain in our knockdown
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(K)
-		return K.duration - world.time
+		return K.duration
 	return 0
 
 /mob/living/proc/Knockdown(amount, ignore_canstun = FALSE) //Can't go below remaining duration
@@ -89,9 +89,9 @@
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(K)
 		if(K.max_duration != -1)
-			K.duration = clamp(world.time + amount, K.duration, world.time + K.max_duration)
+			K.duration = clamp(amount, K.duration, K.max_duration)
 		else
-			K.duration = max(world.time + amount, K.duration)
+			K.duration = max(amount, K.duration)
 	else if(amount > 0)
 		K = apply_status_effect(/datum/status_effect/incapacitating/knockdown, amount)
 	return K
@@ -110,9 +110,9 @@
 			return
 		if(K)
 			if(K.max_duration != -1)
-				K.duration = min(world.time + amount, world.time + K.max_duration)
+				K.duration = min(amount, K.max_duration)
 			else
-				K.duration = world.time + amount
+				K.duration = amount
 		else
 			K = apply_status_effect(/datum/status_effect/incapacitating/knockdown, amount)
 	return K
@@ -127,7 +127,7 @@
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(K)
 		if(K.max_duration != -1)
-			K.duration = min(K.duration + amount, world.time + K.max_duration)
+			K.duration = min(K.duration + amount, K.max_duration)
 		else
 			K.duration += amount
 	else if(amount > 0)
@@ -141,7 +141,7 @@
 /mob/living/proc/AmountImmobilized() //How many deciseconds remain in our Immobilized status effect
 	var/datum/status_effect/incapacitating/immobilized/I = IsImmobilized()
 	if(I)
-		return I.duration - world.time
+		return I.duration
 	return 0
 
 /mob/living/proc/Immobilize(amount, ignore_canstun = FALSE) //Can't go below remaining duration
@@ -153,7 +153,10 @@
 		return
 	var/datum/status_effect/incapacitating/immobilized/I = IsImmobilized()
 	if(I)
-		I.duration = max(world.time + amount, I.duration)
+		if(I.max_duration != -1)
+			I.duration = clamp(amount, I.duration, I.max_duration)
+		else
+			I.duration = max(amount, I.duration)
 	else if(amount > 0)
 		I = apply_status_effect(/datum/status_effect/incapacitating/immobilized, amount)
 	return I
@@ -171,7 +174,7 @@
 		if(absorb_stun(amount, ignore_canstun))
 			return
 		if(I)
-			I.duration = world.time + amount
+			I.duration = amount
 		else
 			I = apply_status_effect(/datum/status_effect/incapacitating/immobilized, amount)
 	return I
@@ -197,7 +200,7 @@
 /mob/living/proc/AmountParalyzed() //How many deciseconds remain in our Paralyzed status effect
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(P)
-		return P.duration - world.time
+		return P.duration
 	return 0
 
 /mob/living/proc/Paralyze(amount, ignore_canstun = FALSE) //Can't go below remaining duration
@@ -210,9 +213,9 @@
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(P)
 		if(P.max_duration != -1)
-			P.duration = clamp(world.time + amount, P.duration, world.time + P.max_duration)
+			P.duration = clamp(amount, P.duration, P.max_duration)
 		else
-			P.duration = max(world.time + amount, P.duration)
+			P.duration = max(amount, P.duration)
 	else if(amount > 0)
 		P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
@@ -231,9 +234,9 @@
 			return
 		if(P)
 			if(P.max_duration != -1)
-				P.duration = min(world.time + amount, world.time + P.max_duration)
+				P.duration = min(amount, P.max_duration)
 			else
-				P.duration = world.time + amount
+				P.duration = amount
 		else
 			P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
@@ -248,7 +251,7 @@
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(P)
 		if(P.max_duration != -1)
-			P.duration = min(P.duration + amount, world.time + P.max_duration)
+			P.duration = min(P.duration + amount, P.max_duration)
 		else
 			P.duration += amount
 	else if(amount > 0)
@@ -321,7 +324,7 @@
 /mob/living/proc/AmountDisoriented() //How many deciseconds remain in our Paralyzed status effect
 	var/datum/status_effect/incapacitating/disoriented/P = IsDisoriented()
 	if(P)
-		return P.duration - world.time
+		return P.duration
 	return 0
 
 
@@ -332,7 +335,7 @@
 /mob/living/proc/amount_incapacitated()
 	var/datum/status_effect/incapacitating/incapacitated/incapacitated_status_effect = has_status_effect(/datum/status_effect/incapacitating/incapacitated)
 	if (incapacitated_status_effect)
-		return incapacitated_status_effect.duration - world.time
+		return incapacitated_status_effect.duration
 	else
 		return 0
 
@@ -348,7 +351,7 @@
 		return
 	var/datum/status_effect/incapacitating/incapacitated/incapacitated_status_effect = has_status_effect(/datum/status_effect/incapacitating/incapacitated)
 	if(incapacitated_status_effect)
-		incapacitated_status_effect.duration = max(world.time + amount, incapacitated_status_effect.duration)
+		incapacitated_status_effect.duration = max(amount, incapacitated_status_effect.duration)
 	else if(amount > 0)
 		incapacitated_status_effect = apply_status_effect(/datum/status_effect/incapacitating/incapacitated, amount)
 	return incapacitated_status_effect
@@ -370,7 +373,7 @@
 		if(absorb_stun(amount, ignore_canstun))
 			return
 		if(incapacitated_status_effect)
-			incapacitated_status_effect.duration = world.time + amount
+			incapacitated_status_effect.duration = amount
 		else
 			incapacitated_status_effect = apply_status_effect(/datum/status_effect/incapacitating/incapacitated, amount)
 	return incapacitated_status_effect
@@ -422,7 +425,7 @@
 /mob/living/proc/AmountUnconscious() //How many deciseconds remain in our unconsciousness
 	var/datum/status_effect/incapacitating/unconscious/U = IsUnconscious()
 	if(U)
-		return U.duration - world.time
+		return U.duration
 	return 0
 
 /mob/living/proc/Unconscious(amount, ignore_canstun = FALSE) //Can't go below remaining duration
@@ -432,7 +435,7 @@
 		return
 	var/datum/status_effect/incapacitating/unconscious/U = IsUnconscious()
 	if(U)
-		U.duration = max(world.time + amount, U.duration)
+		U.duration = max(amount, U.duration)
 	else if(amount > 0)
 		U = apply_status_effect(/datum/status_effect/incapacitating/unconscious, amount)
 	return U
@@ -447,7 +450,7 @@
 		if(U)
 			qdel(U)
 	else if(U)
-		U.duration = world.time + amount
+		U.duration = amount
 	else
 		U = apply_status_effect(/datum/status_effect/incapacitating/unconscious, amount)
 	return U
@@ -472,7 +475,7 @@
 /mob/living/proc/AmountSleeping() //How many deciseconds remain in our sleep
 	var/datum/status_effect/incapacitating/sleeping/S = IsSleeping()
 	if(S)
-		return S.duration - world.time
+		return S.duration
 	return 0
 
 /mob/living/proc/Sleeping(amount) //Can't go below remaining duration
@@ -482,7 +485,7 @@
 		return
 	var/datum/status_effect/incapacitating/sleeping/S = IsSleeping()
 	if(S)
-		S.duration = max(world.time + amount, S.duration)
+		S.duration = max(amount, S.duration)
 	else if(amount > 0)
 		S = apply_status_effect(/datum/status_effect/incapacitating/sleeping, amount)
 	return S
@@ -497,7 +500,7 @@
 		if(S)
 			qdel(S)
 	else if(S)
-		S.duration = world.time + amount
+		S.duration = amount
 	else
 		S = apply_status_effect(/datum/status_effect/incapacitating/sleeping, amount)
 	return S
@@ -742,13 +745,12 @@
 		if(isnum(max_duration) && duration > 0)
 			// Check the duration remaining on the existing status effect
 			// If it's greater than / equal to our passed max duration, we don't need to do anything
-			var/remaining_duration = existing.duration - world.time
-			if(remaining_duration >= max_duration)
+			if(existing.duration >= max_duration)
 				return
 
 			// Otherwise, add duration up to the max (max_duration - remaining_duration),
 			// or just add duration if it doesn't exceed our max at all
-			existing.duration += min(max_duration - remaining_duration, duration)
+			existing.duration += min(max_duration - existing.duration, duration)
 
 		else
 			existing.duration += duration
@@ -756,7 +758,7 @@
 		// If the duration was decreased and is now less 0 seconds,
 		// qdel it / clean up the status effect immediately
 		// (rather than waiting for the process tick to handle it)
-		if(existing.duration <= world.time)
+		if(existing.duration <= 0)
 			qdel(existing)
 
 	else if(duration > 0)
@@ -789,12 +791,11 @@
 		if(only_if_higher)
 			// If the existing status effect has a higher remaining duration
 			// than what we aim to set it to, don't downgrade it - do nothing (return)
-			var/remaining_duration = existing.duration - world.time
-			if(remaining_duration >= duration)
+			if(existing.duration >= duration)
 				return
 
 		// Set the duration accordingly
-		existing.duration = world.time + duration
+		existing.duration = duration
 
 	else if(duration > 0)
 		apply_status_effect(effect, duration)
@@ -814,10 +815,10 @@
 		return 0
 	// Infinite duration status effects technically are not "timed status effects"
 	// by name or nature, but support is included just in case.
-	if(existing.duration == -1)
+	if(existing.duration == STATUS_EFFECT_PERMANENT)
 		return INFINITY
 
-	return existing.duration - world.time
+	return existing.duration
 
 /**
  * Adjust the "drunk value" the mob is currently experiencing,

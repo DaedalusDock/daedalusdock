@@ -14,7 +14,6 @@ TYPEINFO_DEF(/obj/item/taperecorder)
 	slot_flags = ITEM_SLOT_BELT
 	force = 2
 	throwforce = 2
-	speech_span = SPAN_TAPE_RECORDER
 	drop_sound = 'sound/items/handling/taperecorder_drop.ogg'
 	pickup_sound = 'sound/items/handling/taperecorder_pickup.ogg'
 

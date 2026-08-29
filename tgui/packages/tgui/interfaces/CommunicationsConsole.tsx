@@ -1,0 +1,441 @@
+import { BooleanLike } from 'common/react';
+import { ReactNode } from 'react';
+
+import { useBackend, useLocalState } from '../backend';
+import {
+  Blink,
+  Box,
+  Button,
+  Dimmer,
+  Flex,
+  Icon,
+  Modal,
+  Section,
+  TextArea,
+} from '../components';
+import { Window } from '../layouts';
+import { sanitizeText } from '../sanitize';
+
+const STATE_MAIN = 'main';
+const STATE_MESSAGES = 'messages';
+
+// Used for whether or not you need to swipe to confirm an alert level change
+const SWIPE_NEEDED = 'SWIPE_NEEDED';
+
+const MessageModal = (props) => {
+  const { data } = useBackend<CommunicationsData>();
+  const { maxMessageLength } = data;
+
+  const [input, setInput] = useLocalState(props.label, '');
+
+  const longEnough =
+    props.minLength === undefined || input.length >= props.minLength;
+
+  return (
+    <Modal>
+      <Flex direction="column">
+        <Flex.Item fontSize="16px" maxWidth="90vw" mb={1}>
+          {props.label}:
+        </Flex.Item>
+
+        <Flex.Item mr={2} mb={1}>
+          <TextArea
+            fluid
+            height="20vh"
+            width="80vw"
+            backgroundColor="black"
+            textColor="white"
+            onInput={(_, value) => {
+              setInput(value.substring(0, maxMessageLength));
+            }}
+            value={input}
+          />
+        </Flex.Item>
+
+        <Flex.Item>
+          <Button
+            icon={props.icon}
+            content={props.buttonText}
+            color="good"
+            disabled={!longEnough}
+            tooltip={!longEnough ? 'You need a longer reason.' : ''}
+            tooltipPosition="right"
+            onClick={() => {
+              if (longEnough) {
+                setInput('');
+                props.onSubmit(input);
+              }
+            }}
+          />
+
+          <Button
+            icon="times"
+            content="Cancel"
+            color="bad"
+            onClick={props.onBack}
+          />
+        </Flex.Item>
+
+        {!!props.notice && (
+          <Flex.Item maxWidth="90vw">{props.notice}</Flex.Item>
+        )}
+      </Flex>
+    </Modal>
+  );
+};
+
+const NoConnectionModal = () => {
+  return (
+    <Dimmer>
+      <Flex direction="column" textAlign="center" width="300px">
+        <Flex.Item>
+          <Icon color="red" name="wifi" size={10} />
+
+          <Blink>
+            <div
+              style={{
+                background: '#db2828',
+                bottom: '60%',
+                left: '25%',
+                height: '10px',
+                position: 'relative',
+                transform: 'rotate(45deg)',
+                width: '150px',
+              }}
+            />
+          </Blink>
+        </Flex.Item>
+
+        <Flex.Item fontSize="16px">
+          A connection to the station cannot be established.
+        </Flex.Item>
+      </Flex>
+    </Dimmer>
+  );
+};
+
+type CommunicationsData = {
+  authenticated: BooleanLike;
+  authorizeName: string;
+  canLogOut: BooleanLike;
+  canMakeAnnouncement: BooleanLike;
+  canMessageAssociates: BooleanLike;
+  canRequestNuke: BooleanLike;
+  canRequestSafeCode: BooleanLike;
+  canSendToSectors: BooleanLike;
+  emagged: BooleanLike;
+  hasConnection: BooleanLike;
+  importantActionReady: BooleanLike;
+  maxMessageLength: number;
+  messages: Message[];
+  page: string;
+  safeCodeDeliveryArea: string;
+  safeCodeDeliveryWait: number;
+  sectors: string[];
+  syndicate: BooleanLike;
+};
+
+type Message = {
+  answered: BooleanLike;
+  content: string;
+  possibleAnswers: string[];
+  title: string;
+};
+
+const PageMain = (props) => {
+  const { act, data } = useBackend<CommunicationsData>();
+  const {
+    canMakeAnnouncement,
+    canMessageAssociates,
+    canRequestNuke,
+    canSendToSectors,
+    emagged,
+    syndicate,
+    importantActionReady,
+    sectors,
+  } = data;
+
+  const [callingShuttle, setCallingShuttle] = useLocalState<String | boolean>(
+    'calling_shuttle',
+    false,
+  );
+  const [messagingAssociates, setMessagingAssociates] = useLocalState<
+    String | boolean
+  >('messaging_associates', false);
+  const [messagingSector, setMessagingSector] = useLocalState<String | null>(
+    'messaing_sector',
+    null,
+  );
+  const [requestingNukeCodes, setRequestingNukeCodes] = useLocalState<
+    String | boolean
+  >('requesting_nuke_codes', false);
+
+  const [
+    [showAlertLevelConfirm, confirmingAlertLevelTick],
+    setShowAlertLevelConfirm,
+  ] = useLocalState('showConfirmPrompt', [null, null]);
+
+  return (
+    <Box>
+      <Section title="Functions">
+        <Flex direction="column">
+          {!!canMakeAnnouncement && (
+            <Button
+              icon="bullhorn"
+              content="Make Priority Announcement"
+              onClick={() => act('makePriorityAnnouncement')}
+            />
+          )}
+
+          <Button
+            icon="envelope-o"
+            content="Message List"
+            onClick={() => act('setState', { state: STATE_MESSAGES })}
+          />
+
+          {!!canMessageAssociates && (
+            <Button
+              icon="comment-o"
+              content={`Send message to ${emagged ? '[UNKNOWN]' : 'CentCom'}`}
+              disabled={!importantActionReady}
+              onClick={() => setMessagingAssociates(true)}
+            />
+          )}
+
+          {!!canRequestNuke && (
+            <Button
+              icon="radiation"
+              content="Request Nuclear Authentication Codes"
+              disabled={!importantActionReady}
+              onClick={() => setRequestingNukeCodes(true)}
+            />
+          )}
+
+          {!!emagged && !syndicate && (
+            <Button
+              icon="undo"
+              content="Restore Backup Routing Data"
+              onClick={() => act('restoreBackupRoutingData')}
+            />
+          )}
+        </Flex>
+      </Section>
+
+      {!!canMessageAssociates && messagingAssociates && (
+        <MessageModal
+          label={`Message to transmit to ${
+            emagged ? '[ABNORMAL ROUTING COORDINATES]' : 'CentCom'
+          } via quantum entanglement`}
+          notice="Please be aware that this process is very expensive, and abuse will lead to...termination. Transmission does not guarantee a response."
+          icon="bullhorn"
+          buttonText="Send"
+          onBack={() => setMessagingAssociates(false)}
+          onSubmit={(message) => {
+            setMessagingAssociates(false);
+            act('messageAssociates', {
+              message,
+            });
+          }}
+        />
+      )}
+
+      {!!canRequestNuke && requestingNukeCodes && (
+        <MessageModal
+          label="Reason for requesting nuclear self-destruct codes"
+          notice="Misuse of the nuclear request system will not be tolerated under any circumstances. Transmission does not guarantee a response."
+          icon="bomb"
+          buttonText="Request Codes"
+          onBack={() => setRequestingNukeCodes(false)}
+          onSubmit={(reason) => {
+            setRequestingNukeCodes(false);
+            act('requestNukeCodes', {
+              reason,
+            });
+          }}
+        />
+      )}
+
+      {!!canSendToSectors && sectors.length > 0 && (
+        <Section title="Allied Sectors">
+          <Flex direction="column">
+            {sectors.map((sectorName) => (
+              <Flex.Item key={sectorName}>
+                <Button
+                  content={`Send a message to station in ${sectorName} sector`}
+                  disabled={!importantActionReady}
+                  onClick={() => setMessagingSector(sectorName)}
+                />
+              </Flex.Item>
+            ))}
+
+            {sectors.length > 2 && (
+              <Flex.Item>
+                <Button
+                  content="Send a message to all allied stations"
+                  disabled={!importantActionReady}
+                  onClick={() => setMessagingSector('all')}
+                />
+              </Flex.Item>
+            )}
+          </Flex>
+        </Section>
+      )}
+
+      {!!canSendToSectors && sectors.length > 0 && messagingSector && (
+        <MessageModal
+          label="Message to send to allied station"
+          notice="Please be aware that this process is very expensive, and abuse will lead to...termination."
+          icon="bullhorn"
+          buttonText="Send"
+          onBack={() => setMessagingSector(null)}
+          onSubmit={(message) => {
+            act('sendToOtherSector', {
+              destination: messagingSector,
+              message,
+            });
+
+            setMessagingSector(null);
+          }}
+        />
+      )}
+    </Box>
+  );
+};
+
+const PageMessages = (props) => {
+  const { act, data } = useBackend<CommunicationsData>();
+  const messages = data.messages || [];
+
+  const children: ReactNode[] = [];
+
+  children.push(
+    <Section>
+      <Button
+        icon="chevron-left"
+        content="Back"
+        onClick={() => act('setState', { state: STATE_MAIN })}
+      />
+    </Section>,
+  );
+
+  const messageElements: ReactNode[] = [];
+
+  for (const [messageIndex, message] of Object.entries(messages)) {
+    let answers: ReactNode | null = null;
+
+    if (message.possibleAnswers.length > 0) {
+      answers = (
+        <Box mt={1}>
+          {message.possibleAnswers.map((answer, answerIndex) => (
+            <Button
+              content={answer}
+              color={message.answered === answerIndex + 1 ? 'good' : undefined}
+              key={answerIndex}
+              onClick={
+                message.answered
+                  ? undefined
+                  : () =>
+                      act('answerMessage', {
+                        message: parseInt(messageIndex, 10) + 1,
+                        answer: answerIndex + 1,
+                      })
+              }
+            />
+          ))}
+        </Box>
+      );
+    }
+
+    const textHtml = {
+      __html: sanitizeText(message.content),
+    };
+
+    messageElements.push(
+      <Section
+        title={message.title}
+        key={messageIndex}
+        buttons={
+          <Button.Confirm
+            icon="trash"
+            content="Delete"
+            color="red"
+            onClick={() =>
+              act('deleteMessage', {
+                message: messageIndex + 1,
+              })
+            }
+          />
+        }
+      >
+        <Box dangerouslySetInnerHTML={textHtml} />
+
+        {answers}
+      </Section>,
+    );
+  }
+
+  children.push(messageElements.reverse());
+
+  return children;
+};
+
+export const CommunicationsConsole = (props) => {
+  const { act, data } = useBackend<CommunicationsData>();
+  const {
+    authenticated,
+    authorizeName,
+    canLogOut,
+    emagged,
+    hasConnection,
+    page,
+    canRequestSafeCode,
+    safeCodeDeliveryWait,
+    safeCodeDeliveryArea,
+  } = data;
+
+  return (
+    <Window width={400} height={650} theme={emagged ? 'syndicate' : undefined}>
+      <Window.Content scrollable>
+        {!hasConnection && <NoConnectionModal />}
+
+        {(canLogOut || !authenticated) && (
+          <Section title="Authentication">
+            <Button
+              icon={authenticated ? 'sign-out-alt' : 'sign-in-alt'}
+              content={
+                authenticated
+                  ? `Log Out${authorizeName ? ` (${authorizeName})` : ''}`
+                  : 'Log In'
+              }
+              color={authenticated ? 'bad' : 'good'}
+              onClick={() => act('toggleAuthentication')}
+            />
+          </Section>
+        )}
+
+        {(!!canRequestSafeCode && (
+          <Section title="Emergency Safe Code">
+            <Button
+              icon="key"
+              content="Request Safe Code"
+              color="good"
+              onClick={() => act('requestSafeCodes')}
+            />
+          </Section>
+        )) ||
+          (!!safeCodeDeliveryWait && (
+            <Section title="Emergency Safe Code Delivery">
+              {`Drop pod to ${safeCodeDeliveryArea} in \
+            ${Math.round(safeCodeDeliveryWait / 10)}s`}
+            </Section>
+          ))}
+
+        {!!authenticated &&
+          ((page === STATE_MAIN && <PageMain />) ||
+            (page === STATE_MESSAGES && <PageMessages />) || (
+              <Box>Page not implemented: {page}</Box>
+            ))}
+      </Window.Content>
+    </Window>
+  );
+};

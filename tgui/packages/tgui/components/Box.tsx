@@ -124,6 +124,7 @@ const stringStyleMap = {
   fontFamily: mapRawPropTo('fontFamily'),
   fontSize: mapUnitPropTo('fontSize', unit),
   fontWeight: mapRawPropTo('fontWeight'),
+  gap: mapUnitPropTo('gap', unit),
   height: mapUnitPropTo('height', unit),
   left: mapUnitPropTo('left', unit),
   maxHeight: mapUnitPropTo('maxHeight', unit),

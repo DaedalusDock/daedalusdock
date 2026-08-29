@@ -284,7 +284,10 @@ TYPEINFO_DEF(/obj/item/wallframe/status_display)
 /// Evac display which shows shuttle timer or message set by Command.
 /obj/machinery/status_display/evac
 	current_mode = SD_EMERGENCY
-	var/frequency = FREQ_STATUS_DISPLAYS
+
+	network_flags = NETWORK_FLAG_GEN_ID | NETWORK_FLAG_JOIN_FREQUENCY | NETWORK_FLAG_NEED_NOT_DEST
+	connection_frequency = FREQ_STATUS_DISPLAYS
+
 	var/friendc = FALSE      // track if Friend Computer mode
 	var/last_picture  // For when Friend Computer mode is undone
 
@@ -297,16 +300,10 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 
 /obj/machinery/status_display/evac/Initialize(mapload)
 	. = ..()
-	// register for radio system
-	SSpackets.add_object(src, frequency)
 	// Circuit USB
 	AddComponent(/datum/component/usb_port, list(
 		/obj/item/circuit_component/status_display,
 	))
-
-/obj/machinery/status_display/evac/Destroy()
-	SSpackets.remove_object(src,frequency)
-	return ..()
 
 /obj/machinery/status_display/evac/process()
 	if(machine_stat & NOPOWER)
@@ -341,25 +338,43 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/evac, 32)
 		. += "The display is blank."
 
 /obj/machinery/status_display/evac/receive_signal(datum/signal/signal)
-	SHOULD_CALL_PARENT(FALSE) //Not properly networked yet.
-	switch(signal.data["command"])
-		if("blank")
-			current_mode = SD_BLANK
-			update_appearance()
-		if("shuttle")
-			current_mode = SD_EMERGENCY
-			set_messages("", "")
-		if("message")
-			current_mode = SD_MESSAGE
-			set_messages(signal.data["msg1"] || "", signal.data["msg2"] || "")
-		if("alert")
-			current_mode = SD_PICTURE
-			last_picture = signal.data["picture_state"]
-			set_picture(last_picture)
+	. = ..()
+	if(. == RECEIVE_SIGNAL_FINISHED)
+		return
+
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	var/do_update = FALSE
+
+	switch(payload[PKT_ARG_CMD])
+		if(NET_COMMAND_STATDISPLAY_SET)
+			do_update = TRUE
+			switch(payload[PKT_ARG_STATDISPLAY_MODE])
+				if("blank")
+					current_mode = SD_BLANK
+					update_appearance()
+
+				if("shuttle")
+					current_mode = SD_EMERGENCY
+					set_messages("", "")
+
+				if("message")
+					current_mode = SD_MESSAGE
+					set_messages(payload["msg1"] || "", payload["msg2"] || "")
+
+				if("alert")
+					current_mode = SD_PICTURE
+					last_picture = payload[PKT_ARG_STATDISPLAY_PICTURE]
+					set_picture(last_picture)
+
 		if("friendcomputer")
 			friendc = !friendc
-	update()
+			do_update = TRUE
 
+		if(NET_COMMAND_UPDATE)
+			do_update = TRUE
+
+	if(do_update)
+		update()
 
 /// Supply display which shows the status of the supply shuttle.
 /obj/machinery/status_display/supply
@@ -552,34 +567,6 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/status_display/ai, 32)
 
 	picture = add_option_port("Picture", picture_options)
 	picture_map = picture_options
-
-/obj/item/circuit_component/status_display/register_usb_parent(atom/movable/shell)
-	. = ..()
-	if(istype(shell, /obj/machinery/status_display))
-		connected_display = shell
-
-/obj/item/circuit_component/status_display/unregister_usb_parent(atom/movable/parent)
-	connected_display = null
-	return ..()
-
-/obj/item/circuit_component/status_display/input_received(datum/port/input/port)
-	// Just use command handling built into status display.
-	// The option inputs thankfully sanitize command and picture for us.
-
-	if(!connected_display)
-		return
-
-	var/command_value = command_map[command.value]
-	var/datum/signal/status_signal = new(src, list("command" = command_value))
-	switch(command_value)
-		if("message")
-			status_signal.data["msg1"] = message1.value
-			status_signal.data["msg2"] = message2.value
-		if("alert")
-			status_signal.data["picture_state"] = picture_map[picture.value]
-
-	INVOKE_ASYNC(connected_display, TYPE_PROC_REF(/datum, receive_signal), status_signal)
-	//connected_display.receive_signal(status_signal)
 
 #undef CHARS_PER_LINE
 #undef FONT_SIZE

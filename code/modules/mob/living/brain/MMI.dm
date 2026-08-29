@@ -94,7 +94,7 @@
 
 		brainmob.reset_perspective()
 		brain = newbrain
-		brain.organ_flags |= ORGAN_FROZEN
+		ADD_TRAIT(brain, TRAIT_ORGAN_FROZEN, ref(src))
 
 		name = "[initial(name)]: [brainmob.real_name]"
 		update_appearance()
@@ -134,7 +134,7 @@
 	brain.forceMove(drop_location())
 	if(Adjacent(user))
 		user.put_in_hands(brain)
-	brain.organ_flags &= ~ORGAN_FROZEN
+	REMOVE_TRAIT(brain, TRAIT_ORGAN_FROZEN, ref(src))
 
 	brain = null //No more brain in here
 
@@ -161,7 +161,7 @@
 		brain = new(src)
 		brain.name = "[L.real_name]'s brain"
 
-	brain.organ_flags |= ORGAN_FROZEN
+	ADD_TRAIT(brain, TRAIT_ORGAN_FROZEN, ref(src))
 
 	name = "[initial(name)]: [brainmob.real_name]"
 	update_appearance()

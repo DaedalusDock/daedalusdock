@@ -118,7 +118,6 @@
 #define span_syndradio(str) ("<span class='syndradio'>" + str + "</span>")
 #define span_system(str) ("<span class='system'>" + str + "</span>")
 #define span_systemfont(str) ("<span class='systemfont'>" + str + "</span>")
-#define span_tape_recorder(str) ("<span class='tape_recorder'>" + str + "</span>")
 #define span_tinynotice(str) ("<span class='tinynotice'>" + str + "</span>")
 #define span_tinynoticeital(str) ("<span class='tinynoticeital'>" + str + "</span>")
 #define span_unconscious(str) ("<span class='unconscious'>" + str + "</span>")

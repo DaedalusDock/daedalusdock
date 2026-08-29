@@ -113,6 +113,7 @@
 /obj/structure/barricade/sandbags/Initialize(mapload)
 	. = ..()
 	AddElement(/datum/element/climbable)
+	AddElement(/datum/element/elevation, pixel_shift = 12)
 
 TYPEINFO_DEF(/obj/structure/barricade/security)
 	default_armor = list(BLUNT = 10, PUNCTURE = 50, SLASH = 90, LASER = 50, ENERGY = 50, BOMB = 10, BIO = 100, FIRE = 10, ACID = 0)

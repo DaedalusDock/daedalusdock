@@ -106,9 +106,9 @@
 	if(!can_be_seen(get_turf(loc)))
 		..()
 
-/mob/living/simple_animal/hostile/statue/face_atom()
+/mob/living/simple_animal/hostile/statue/canface()
 	if(!can_be_seen(get_turf(loc)))
-		..()
+		return ..()
 
 /mob/living/simple_animal/hostile/statue/IsVocal() //we're a statue, of course we can't talk.
 	return FALSE

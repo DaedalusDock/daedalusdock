@@ -1,10 +1,9 @@
 import { BooleanLike } from 'common/react';
 import { Component } from 'react';
-import { Tooltip } from 'tgui-core/components';
 
 import { resolveAsset } from '../../assets';
 import { useBackend } from '../../backend';
-import { Box, Button, Section, Stack, Tabs } from '../../components';
+import { Box, Button, Section, Stack, Tabs, Tooltip } from '../../components';
 import { fetchRetry } from '../../http';
 import { Window } from '../../layouts';
 import {

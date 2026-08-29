@@ -60,7 +60,7 @@
 
 	if(direction == dir && !(GetAbove(src) || check_ascent(leaving, TRUE)))
 		var/turf/dest_turf = get_step(src, direction)
-		if(locate(/obj/structure/table, dest_turf) || locate(/obj/structure/stairs, dest_turf))
+		if(locate(/obj/structure/table, dest_turf) || locate(/obj/structure/stairs, dest_turf) || locate(/obj/structure/low_wall, dest_turf))
 			return NONE
 
 	if(!isobserver(leaving) && isTerminator() && direction == dir)
@@ -99,7 +99,7 @@
 
 	if(!(climber.throwing || (climber.movement_type & (VENTCRAWLING | FLYING)) || HAS_TRAIT(climber, TRAIT_IMMOBILIZED)))
 		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)
-		playsound(my_turf, 'sound/effects/stairs_step.ogg', 50)
+		playsound(target, 'sound/effects/stairs_step.ogg', 50)
 
 	/// Moves anything that's being dragged by src or anything buckled to it to the stairs turf.
 	for(var/mob/living/buckled as anything in climber.buckled_mobs)

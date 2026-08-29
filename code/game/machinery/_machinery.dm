@@ -162,6 +162,8 @@
 
 	//Datanet related vars.
 
+	/// Primary radio connection
+	var/datum/radio_frequency/radio_connection
 	/// Linked Network Terminal
 	var/obj/machinery/power/data_terminal/netjack
 	/// Network ID, see network_flags for autopopulation info.
@@ -170,8 +172,10 @@
 	var/master_id
 	/// A short string shown to players fingerprinting the device type as part of `command:ping`
 	var/net_class = "PNET_CALL_A_PRIEST"
-	/// Additional data stapled to pings, reduces network usage for some machines.
-	var/ping_addition = null
+	/// The radio_channel frequency this machine is connected to (automatically connects on init).
+	VAR_PROTECTED/connection_frequency
+	/// The default filter applied in set_connection_frequency on init.
+	var/default_connection_frequency_inbound_filter
 
 	///Used by SSairmachines for optimizing scrubbers and vent pumps.
 	COOLDOWN_DECLARE(hibernating)
@@ -193,6 +197,9 @@
 		occupant_typecache = typecacheof(occupant_typecache)
 
 
+	if(connection_frequency)
+		set_connection_frequency(connection_frequency, filter = default_connection_frequency_inbound_filter)
+
 	/*
 	 * This is needed to prevent indestructible machinery still blowing up.
 	 * If an explosion occurs on the same tile as the indestructible machinery without the PREVENT_CONTENTS_EXPLOSION_1 flag,
@@ -209,14 +216,15 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/LateInitialize()
+	if(network_flags & NETWORK_FLAG_USE_DATATERMINAL)
+		link_to_jack()
+
 	power_change()
 	if(use_power == NO_POWER_USE)
 		return
 
 	update_current_power_usage()
 	setup_area_power_relationship()
-	if(network_flags & NETWORK_FLAG_USE_DATATERMINAL)
-		link_to_jack()
 
 /obj/machinery/Destroy()
 	end_processing()
@@ -227,6 +235,9 @@
 	unlink_from_jack(ignore_check = TRUE)
 	QDEL_NULL(internal_disk)
 	QDEL_NULL(inserted_disk)
+
+	if(radio_connection && (network_flags & NETWORK_FLAG_JOIN_FREQUENCY))
+		set_connection_frequency(null)
 	return ..()
 
 /**

@@ -1,0 +1,36 @@
+2026-07-04:
+  RikuTheKiller, MrMelbert:
+  - bugfix: Status effects now tick consistently, with Fleshmend and such giving a
+      consistent total healing amount. Report any oddities.
+  - refactor: Status effect code is now easier to read and makes more sense. Again,
+      report any oddities, the changes are major.
+2026-07-05:
+  Ghommie, MrMelbert, the-sushi, VinylSpiders:
+  - rscadd: Standing on certain movables now visually bumps you up.
+  Rug-Dealer:
+  - rscadd: Due to a bad batch of igniters, welding tools can now fail to start. Chances
+      improve with higher Fine Motor skill.
+2026-07-12:
+  Francinum, Kapu1178:
+  - refactor: Standardized the entire packet network.
+  francinum:
+  - refactor: Virtual speakers no longer hold a hard ref to their original speaker,
+      or their radio.
+2026-07-18:
+  Kapu1178:
+  - rscadd: Almost every packet should now have a proper netclass.
+  - rscadd: The Bridge voidcomputer now has the comMASTER program, taking many of
+      the old Communications Console responsibilities.
+  - tweak: Renamed the old Communications Console to the Announcements Console.
+  ToasterBan:
+  - rscadd: The Mummification Ritual, something the Augur can do to create un-rotting
+      organs
+2026-07-22:
+  Kapu1178:
+  - tweak: Mechanics that freeze organs now also freeze bodyparts.
+  - bugfix: Some sources of damage correctly update health state.
+  ToasterBan:
+  - rscadd: Added a wield button to the UI
+2026-07-30:
+  Kapu1178:
+  - bugfix: Air Alarms can configure vent pumps again.

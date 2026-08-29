@@ -27,6 +27,7 @@
 @include meta.load-css('./components/Divider.scss');
 @include meta.load-css('./components/Dropdown.scss');
 @include meta.load-css('./components/Flex.scss');
+@include meta.load-css('./components/Floating.scss');
 @include meta.load-css('./components/Icon.scss');
 @include meta.load-css('./components/Input.scss');
 @include meta.load-css('./components/Knob.scss');
@@ -38,6 +39,7 @@
 @include meta.load-css('./components/RoundGauge.scss');
 @include meta.load-css('./components/Section.scss');
 @include meta.load-css('./components/Slider.scss');
+@include meta.load-css('./components/SkillRollTooltip.scss');
 @include meta.load-css('./components/Stack.scss');
 @include meta.load-css('./components/Table.scss');
 @include meta.load-css('./components/Tabs.scss');

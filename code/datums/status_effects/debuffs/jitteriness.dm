@@ -24,7 +24,7 @@
 	owner.pixel_y = 0
 
 /datum/status_effect/jitter/get_examine_text()
-	switch(duration - world.time)
+	switch(duration)
 		if(5 MINUTES to INFINITY)
 			return span_boldwarning("[owner.p_they(TRUE)] [owner.p_are()] convulsing violently!")
 		if(3 MINUTES to 5 MINUTES)
@@ -42,7 +42,7 @@
 
 /datum/status_effect/jitter/tick()
 
-	var/time_left_in_seconds = (duration - world.time) / 10
+	var/time_left_in_seconds = (duration) / 10
 	owner.do_jitter_animation(time_left_in_seconds)
 
 	// Decrease the duration by our resting_modifier, effectively skipping resting_modifier ticks per tick

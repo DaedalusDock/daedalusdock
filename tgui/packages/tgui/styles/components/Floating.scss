@@ -1,0 +1,60 @@
+.Floating {
+  z-index: 5;
+
+  &--animated {
+    &[data-transition='open'] {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    &[data-transition='close'],
+    &[data-transition='initial'] {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+
+    &[data-transition='open'],
+    &[data-transition='close'] {
+      transition-duration: 0.2s;
+      transition-timing-function: ease;
+      transition-property: opacity, transform;
+    }
+  }
+
+  // MARK: Transform origin handling
+  &[data-position='top'] {
+    transform-origin: bottom;
+  }
+
+  &[data-position='top-start'],
+  &[data-position='right-end'] {
+    transform-origin: bottom left;
+  }
+
+  &[data-position='top-end'],
+  &[data-position='left-end'] {
+    transform-origin: bottom right;
+  }
+
+  &[data-position='bottom'] {
+    transform-origin: top;
+  }
+
+  &[data-position='bottom-start'],
+  &[data-position='right-start'] {
+    transform-origin: top left;
+  }
+
+  &[data-position='bottom-end'],
+  &[data-position='left-start'] {
+    transform-origin: top right;
+  }
+
+  &[data-position='right'] {
+    transform-origin: left;
+  }
+
+  &[data-position='left'] {
+    transform-origin: right;
+  }
+}

@@ -21,10 +21,10 @@
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(computer, list("command" = "message"))
+	var/datum/signal/status_signal = new(computer, packetv2(payload = list(PKT_ARG_CMD = "message")))
 
-	status_signal.data["msg1"] = reject_bad_text(upper_text || "", MAX_STATUS_LINE_LENGTH)
-	status_signal.data["msg2"] = reject_bad_text(lower_text || "", MAX_STATUS_LINE_LENGTH)
+	status_signal.data[PKT_PAYLOAD]["msg1"] = reject_bad_text(upper_text || "", MAX_STATUS_LINE_LENGTH)
+	status_signal.data[PKT_PAYLOAD]["msg2"] = reject_bad_text(lower_text || "", MAX_STATUS_LINE_LENGTH)
 
 	frequency.post_signal(status_signal)
 

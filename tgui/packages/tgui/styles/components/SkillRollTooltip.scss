@@ -1,0 +1,100 @@
+@use '../base.scss';
+@use '../colors.scss';
+@use '../functions.scss' as *;
+
+@mixin statsgood($shadow: colors.$stats-good-shadow) {
+  color: colors.$stats-good;
+  text-shadow: $shadow;
+  font-style: italic;
+}
+
+@mixin statsbad($shadow: colors.$stats-bad-shadow) {
+  color: colors.$stats-bad;
+  text-shadow: $shadow;
+  font-style: italic;
+}
+
+.RollTooltip {
+  &--good {
+    @include statsgood;
+  }
+
+  &--bad {
+    @include statsbad;
+  }
+}
+
+.RollTooltip__skillName {
+  &--good {
+    @include statsgood(inherit);
+  }
+  &--bad {
+    @include statsbad(inherit);
+  }
+}
+
+.RollTooltip__result {
+  &--good {
+    color: colors.$stats-good;
+  }
+  &--bad {
+    color: colors.$stats-bad;
+  }
+
+  &.text {
+    font-size: 2rem;
+  }
+}
+
+@mixin tooltiptext {
+  color: #bbbbad;
+  font-style: italic;
+}
+.RollTooltip__spacer {
+  @include tooltiptext;
+}
+
+.RollTooltip__tooltip {
+  @include tooltiptext;
+  border-bottom: 1px dashed #fff;
+}
+
+.RollTooltip__floating {
+  font-size: 2.5rem;
+  .good {
+    color: colors.$stats-good;
+  }
+
+  .bad {
+    color: colors.$stats-bad;
+  }
+}
+
+.RollTooltip__die {
+  &--good {
+    .die-pip {
+      r: 8;
+      fill: colors.$stats-good;
+    }
+
+    .die-bg {
+      stroke: colors.$stats-good;
+      fill: '#000000';
+      stroke-width: 4;
+      rx: 12px;
+    }
+  }
+
+  &--bad {
+    .die-pip {
+      r: 8;
+      fill: colors.$stats-bad;
+    }
+    .die-bg {
+      stroke: colors.$stats-bad;
+      fill: '#000000';
+      stroke-width: 4;
+      rx: 12px;
+    }
+  }
+}

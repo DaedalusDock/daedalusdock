@@ -283,7 +283,7 @@ SUBSYSTEM_DEF(shuttle)
 
 /// Check if we can call the evac shuttle.
 /// Returns TRUE if we can. Otherwise, returns a string detailing the problem.
-/datum/controller/subsystem/shuttle/proc/canEvac(mob/user)
+/datum/controller/subsystem/shuttle/proc/canEvac()
 	var/srd = CONFIG_GET(number/shuttle_refuel_delay)
 	if(world.time - SSticker.round_start_time < srd)
 		return "The emergency shuttle is refueling. Please wait [DisplayTimeText(srd - (world.time - SSticker.round_start_time))] before attempting to call."
@@ -304,57 +304,94 @@ SUBSYSTEM_DEF(shuttle)
 
 	return TRUE
 
-/datum/controller/subsystem/shuttle/proc/requestEvac(mob/user, call_reason)
+/// Request evac via a mob (ai)
+/datum/controller/subsystem/shuttle/proc/mobRequestEvac(mob/user, call_reason)
+	call_reason = trim(html_encode(call_reason))
+
+	if(length(call_reason) < CALL_SHUTTLE_REASON_LENGTH && seclevel2num(get_security_level()) > SEC_LEVEL_GREEN)
+		to_chat(user, span_alert("You must provide a reason."))
+		return FALSE
+
+	var/can_evac_or_fail_reason = SSshuttle.canEvac()
+	if(can_evac_or_fail_reason != TRUE)
+		to_chat(user, span_alert(can_evac_or_fail_reason))
+		return FALSE
+
+	return doRequestEvac("\nNature of emergency:\n[call_reason]", user)
+
+/datum/controller/subsystem/shuttle/proc/packetRequestEvac(mob/user, call_reason)
+	call_reason = trim(html_encode(call_reason))
+
+	var/can_evac_or_fail_reason = SSshuttle.canEvac()
+	if(can_evac_or_fail_reason != TRUE)
+		return can_evac_or_fail_reason
+
+	return doRequestEvac("\nNature of emergency:\n\n[call_reason]", user)
+
+/datum/controller/subsystem/shuttle/proc/adminRequestEvac(mob/admin, admin_prevent_recall = FALSE)
+	if(EMERGENCY_AT_LEAST_DOCKED)
+		to_chat(admin, span_alert("The shuttle has already reached the station."))
+		return
+
+	return doRequestEvac(null, admin, admin, admin_prevent_recall)
+
+/datum/controller/subsystem/shuttle/proc/doRequestEvac(call_reason = "", calling_thing, mob/admin_caller, admin_prevent_recall = FALSE, set_coefficient, silent = FALSE)
 	if(!emergency)
-		WARNING("requestEvac(): There is no emergency shuttle, but the \
+		WARNING("doRequestEvac(): There is no emergency shuttle, but the \
 			shuttle was called. Using the backup shuttle instead.")
 		if(!backup_shuttle)
-			CRASH("requestEvac(): There is no emergency shuttle, \
+			. = "SOMETHING IS DEEPLY WRONG ALERT A CODER IMMEDIATELY"
+
+			CRASH("doRequestEvac(): There is no emergency shuttle, \
 			or backup shuttle! The game will be unresolvable. This is \
 			possibly a mapping error, more likely a bug with the shuttle \
 			manipulation system, or badminry. It is possible to manually \
 			resolve this problem by loading an emergency shuttle template \
 			manually, and then calling register() on the mobile docking port. \
 			Good luck.")
+
 		emergency = backup_shuttle
 
-	var/can_evac_or_fail_reason = SSshuttle.canEvac(user)
-	if(can_evac_or_fail_reason != TRUE)
-		to_chat(user, span_alert("[can_evac_or_fail_reason]"))
-		return
+	if(admin_caller)
+		if(admin_prevent_recall)
+			admin_emergency_no_recall = TRUE
 
-	call_reason = trim(html_encode(call_reason))
+		emergency.request(reason = call_reason, silent = silent)
+	else
+		var/area/signal_origin = get_area(calling_thing)
+		emergency.request(null, signal_origin, html_decode(call_reason), set_coefficient = set_coefficient, silent = silent)
 
-	if(length(call_reason) < CALL_SHUTTLE_REASON_LENGTH && seclevel2num(get_security_level()) > SEC_LEVEL_GREEN)
-		to_chat(user, span_alert("You must provide a reason."))
-		return
+	var/datum/signal/status_signal = new(null, packetv2(payload = list(PKT_ARG_CMD = NET_COMMAND_UPDATE))) // Start processing shuttle-mode displays to display the timer
+	comms_dish_relay_packet(status_signal)
 
-	var/area/signal_origin = get_area(user)
-	var/emergency_reason = "\nNature of emergency:\n\n[call_reason]"
-	var/security_num = seclevel2num(get_security_level())
-	switch(security_num)
-		if(SEC_LEVEL_RED,SEC_LEVEL_DELTA)
-			emergency.request(null, signal_origin, html_decode(emergency_reason), 1) //There is a serious threat we gotta move no time to give them five minutes.
+	var/mob/logging_user = admin_caller || astype(calling_thing, /mob)
+
+	log_shuttle("[logging_user ? key_name(logging_user) : "[calling_thing] *GAME*"] has called the emergency shuttle.")
+
+	if(logging_user)
+		if(admin_caller)
+			deadchat_broadcast("An administrator has called the shuttle.", message_type = DEADCHAT_ANNOUNCEMENT)
 		else
-			emergency.request(null, signal_origin, html_decode(emergency_reason), 0)
+			deadchat_broadcast(" has called the shuttle at [span_name(get_area_name(logging_user))].", span_name("[logging_user.real_name]"), logging_user, message_type=DEADCHAT_ANNOUNCEMENT)
+	else
+		deadchat_broadcast("The shuttle has been called.", message_type = DEADCHAT_ANNOUNCEMENT)
 
-	var/datum/radio_frequency/frequency = SSpackets.return_frequency(FREQ_STATUS_DISPLAYS)
-
-	if(!frequency)
-		return
-
-	var/datum/signal/status_signal = new(src, list("command" = "update")) // Start processing shuttle-mode displays to display the timer
-	frequency.post_signal(status_signal)
-
-	var/area/A = get_area(user)
-
-	log_shuttle("[key_name(user)] has called the emergency shuttle.")
-	deadchat_broadcast(" has called the shuttle at [span_name("[A.name]")].", span_name("[user.real_name]"), user, message_type=DEADCHAT_ANNOUNCEMENT)
 	if(call_reason)
 		SSblackbox.record_feedback("text", "shuttle_reason", 1, "[call_reason]")
 		log_shuttle("Shuttle call reason: [call_reason]")
 		SSticker.emergency_reason = call_reason
-	message_admins("[ADMIN_LOOKUPFLW(user)] has called the shuttle. (<A HREF='?_src_=holder;[HrefToken()];trigger_centcom_recall=1'>TRIGGER CENTCOM RECALL</A>)")
+
+	if(admin_caller)
+		log_admin("[key_name(admin_caller)] called the Emergency Shuttle.")
+
+	var/admin_append = ""
+	if(admin_caller)
+		admin_append = " (ADMIN VERB)"
+		if(admin_prevent_recall)
+			admin_append += " (NO RECALL)"
+
+	message_admins("[logging_user ? ADMIN_LOOKUPFLW(logging_user) : "[calling_thing] *GAME*"] has called the shuttle[admin_caller && " (ADMIN VERB)"]. (<A HREF='?_src_=holder;[HrefToken()];trigger_centcom_recall=1'>TRIGGER CENTCOM RECALL</A>)")
+	return TRUE
 
 /datum/controller/subsystem/shuttle/proc/centcom_recall(old_timer, admiral_message)
 	if(emergency.mode != SHUTTLE_CALL || emergency.timer != old_timer)
@@ -420,10 +457,9 @@ SUBSYSTEM_DEF(shuttle)
 				continue
 			if(AI.stat || !AI.client)
 				continue
-		else if(istype(thing, /obj/machinery/computer/communications))
-			var/obj/machinery/computer/communications/C = thing
-			if(C.machine_stat & BROKEN)
-				continue
+
+		if(istype(thing, /obj/machinery/communications_dish) && !(astype(thing, /obj/machinery/communications_dish).machine_stat & BROKEN))
+			continue
 
 		var/turf/T = get_turf(thing)
 		if(T && is_station_level(T.z))
@@ -432,9 +468,9 @@ SUBSYSTEM_DEF(shuttle)
 
 	if(callShuttle)
 		if(EMERGENCY_IDLE_OR_RECALLED)
-			emergency.request(null, set_coefficient = 2.5)
+			doRequestEvac(set_coefficient = 2.5)
 			log_shuttle("There is no means of calling the emergency shuttle anymore. Shuttle automatically called.")
-			message_admins("All the communications consoles were destroyed and all AIs are inactive. Shuttle called.")
+			message_admins("All the communications dishes were destroyed and all AIs are inactive. Shuttle called.")
 
 /datum/controller/subsystem/shuttle/proc/registerHostileEnvironment(datum/bad, announce = TRUE)
 	hostile_environments[bad] = TRUE

@@ -230,8 +230,9 @@ TYPEINFO_DEF(/obj/vehicle/sealed/mecha)
 	log_message("[src.name] created.", LOG_MECHA)
 	SET_TRACKING(__TYPE__)
 	prepare_huds()
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.add_atom_to_hud(src)
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.add_atom_to_hud(src)
+
 	diag_hud_set_mechhealth()
 	diag_hud_set_mechcell()
 	diag_hud_set_mechstat()
@@ -276,8 +277,8 @@ TYPEINFO_DEF(/obj/vehicle/sealed/mecha)
 	QDEL_NULL(ui_view)
 
 	UNSET_TRACKING(__TYPE__)
-	for(var/datum/atom_hud/data/diagnostic/diag_hud in GLOB.huds)
-		diag_hud.remove_atom_from_hud(src) //YEET
+	for(var/num,hud in GLOB.huds)
+		astype(hud, /datum/atom_hud/data/diagnostic)?.remove_atom_from_hud(src)
 	lose_atmos_sensitivity()
 	return ..()
 

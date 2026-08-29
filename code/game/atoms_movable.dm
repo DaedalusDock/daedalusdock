@@ -82,6 +82,8 @@
 	var/verb_sing = "sings"
 	var/verb_yell = "yells"
 	var/speech_span
+	/// Does this speaker trigger speech emphasis processing?
+	var/allow_speech_emphasis = TRUE
 
 	/// The list of factions this atom belongs to
 	var/list/faction
@@ -1315,6 +1317,13 @@
 */
 /atom/movable/proc/keybind_face_direction(direction)
 	setDir(direction)
+	return TRUE
+
+/mob/keybind_face_direction(direction)
+	if(!canface())
+		return FALSE
+	return ..()
+
 
 /**
  * Show a message to this mob (visual or audible)
@@ -1335,7 +1344,7 @@
 
 /atom/movable/wash(clean_types)
 	. = ..()
-	germ_level = 0
+	set_germ_level(0)
 
 /atom/movable/proc/add_passmob(source)
 	if(!source)
@@ -1381,3 +1390,7 @@
 
 	if(!HAS_TRAIT(src, TRAIT_MOVABLE_FLUORESCENCE_REVEALED))
 		return TRUE
+
+/// Setter for germ_level.
+/atom/movable/proc/set_germ_level(new_germ)
+	germ_level = max(new_germ, 0)

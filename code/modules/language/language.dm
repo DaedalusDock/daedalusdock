@@ -185,7 +185,7 @@
 	var/avoid_highlight = FALSE
 	if(istype(speaker, /atom/movable/virtualspeaker))
 		var/atom/movable/virtualspeaker/virt = speaker
-		avoid_highlight = hearer == virt.source
+		avoid_highlight = IS_WEAKREF_OF(hearer, virt.speaker_weakref)
 	else
 		avoid_highlight = hearer == speaker
 

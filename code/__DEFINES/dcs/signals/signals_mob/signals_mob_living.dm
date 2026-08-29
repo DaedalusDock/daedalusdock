@@ -115,3 +115,9 @@
 ///from /mob/living/proc/check_block(): (atom/hit_by, damage, attack_text, attack_type, armour_penetration)
 #define COMSIG_LIVING_CHECK_BLOCK "living_check_block"
 	#define SUCCESSFUL_BLOCK (1<<0)
+
+/// From /datum/status_effect/proc/on_creation() : (datum/status_effect/effect)
+#define COMSIG_LIVING_STATUS_APPLIED "living_status_applied"
+
+/// From /datum/status_effect/proc/Destroy() : (datum/status_effect/effect)
+#define COMSIG_LIVING_STATUS_REMOVED "living_status_removed"

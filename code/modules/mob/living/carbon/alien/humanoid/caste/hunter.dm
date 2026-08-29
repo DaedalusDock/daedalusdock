@@ -45,16 +45,14 @@
 	else //Maybe uses plasma in the future, although that wouldn't make any sense...
 		leaping = TRUE
 		//Because the leaping sprite is bigger than the normal one
-		body_position_pixel_x_offset = -32
-		body_position_pixel_y_offset = -32
+		add_offsets(LEAPING_TRAIT, x_add = -32, y_add = -32)
 		update_icons()
 		ADD_TRAIT(src, TRAIT_MOVE_FLOATING, LEAPING_TRAIT) //Throwing itself doesn't protect mobs against lava (because gulag).
 		throw_at(A, MAX_ALIEN_LEAP_DIST, 1, src, FALSE, TRUE, callback = CALLBACK(src, PROC_REF(leap_end)))
 
 /mob/living/carbon/alien/humanoid/hunter/proc/leap_end()
 	leaping = FALSE
-	body_position_pixel_x_offset = 0
-	body_position_pixel_y_offset = 0
+	remove_offsets(LEAPING_TRAIT)
 	REMOVE_TRAIT(src, TRAIT_MOVE_FLOATING, LEAPING_TRAIT)
 	update_icons()
 

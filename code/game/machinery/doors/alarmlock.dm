@@ -7,17 +7,15 @@
 	assemblytype = /obj/structure/door_assembly/door_assembly_public
 	glass = TRUE
 
+	network_flags = NETWORK_FLAG_GEN_ID
+
 	var/datum/radio_frequency/air_connection
 	var/air_frequency = FREQ_ATMOS_ALARMS
-	autoclose = FALSE
 
-/obj/machinery/door/airlock/alarmlock/Initialize(mapload)
-	. = ..()
-	air_connection = new
+	autoclose = FALSE
 
 /obj/machinery/door/airlock/alarmlock/Destroy()
 	SSpackets.remove_object(src,air_frequency)
-	air_connection = null
 	return ..()
 
 /obj/machinery/door/airlock/alarmlock/Initialize(mapload)
@@ -28,11 +26,12 @@
 
 /obj/machinery/door/airlock/alarmlock/receive_signal(datum/signal/signal)
 	..()
-	if(machine_stat & (NOPOWER|BROKEN))
+	if(!is_operational)
 		return
 
-	var/alarm_area = signal.data["zone"]
-	var/alert = signal.data["alert"]
+	var/list/payload = signal.data[PKT_PAYLOAD]
+	var/alarm_area = payload["zone"]
+	var/alert = payload["alert"]
 
 	if(alarm_area == get_area_name(src))
 		switch(alert)

@@ -63,8 +63,8 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 
 	// Apply some lag based on traffic rates
 	var/netlag = round(traffic / 50)
-	if(netlag > signal.data["slow"])
-		signal.data["slow"] = netlag
+	if(netlag > signal.data[PKT_PAYLOAD]["slow"])
+		signal.data[PKT_PAYLOAD]["slow"] = netlag
 
 	// Loop through all linked machines and send the signal or copy.
 
@@ -81,7 +81,7 @@ GLOBAL_LIST_EMPTY(telecomms_list)
 			filtered_machine.traffic++
 
 		if(copysig)
-			filtered_machine.receive_information(signal.copy(), src)
+			filtered_machine.receive_information(signal.Copy(), src)
 		else
 			filtered_machine.receive_information(signal, src)
 

@@ -264,7 +264,7 @@
 			<div class='headline subhead'>
 			A tale of economic disparity and unfairness.
 			</div>
-			The richest man-or-woman at the end of the cycle was one <span class='highlighter'>[mr_moneybags.account_holder] with [most_marks] Federation marks.</span>
+			The richest man-or-woman at the end of the cycle was one <span class='highlighter-on-on'>[mr_moneybags.account_holder] with [most_marks] Federation marks.</span>
 		</div>
 	"}
 
@@ -285,7 +285,7 @@
 						<div class='headline subhead'>
 							by Hugh G. Pockets
 						</div>
-						We estimate the total wealth of the station amounted to less than <span class='highlighter'>[station_vault] marks</span>.
+						We estimate the total wealth of the station amounted to less than <span class='highlighter-on-on'>[station_vault] marks</span>.
 						The average wealth of an individual is estimated to have been just short of [floor(station_vault)] marks.
 					</div>
 					[moneybags_column]

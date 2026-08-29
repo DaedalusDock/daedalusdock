@@ -280,5 +280,5 @@
 	if(!frequency)
 		return
 
-	var/datum/signal/status_signal = new(computer, list("command" = command))
+	var/datum/signal/status_signal = new(computer, packetv2(payload = list("command" = command)))
 	frequency.post_signal(status_signal)

@@ -548,25 +548,25 @@
 
 /obj/item/storage/organbox/Entered(atom/movable/arrived, atom/old_loc, list/atom/old_locs)
 	. = ..()
-	if(isinternalorgan(arrived))
-		var/obj/item/organ/int_organ = arrived
-		int_organ.organ_flags |= ORGAN_FROZEN
+	if(isorgan(arrived))
+		ADD_TRAIT(arrived, TRAIT_ORGAN_FROZEN, ref(src))
 		return
-	if(istype(arrived, /obj/item/bodypart))
-		var/obj/item/bodypart/B = arrived
-		for(var/obj/item/organ/int_organ in B.contents)
-			int_organ.organ_flags |= ORGAN_FROZEN
+
+	if(isbodypart(arrived))
+		ADD_TRAIT(arrived, TRAIT_ORGAN_FROZEN, ref(src))
+		for(var/obj/item/organ/int_organ in arrived.contents)
+			ADD_TRAIT(int_organ, TRAIT_ORGAN_FROZEN, ref(src))
 
 /obj/item/storage/organbox/Exited(atom/movable/gone, direction)
 	. = ..()
-	if(isinternalorgan(gone))
-		var/obj/item/organ/int_organ = gone
-		int_organ.organ_flags &= ~ORGAN_FROZEN
+	if(isorgan(gone))
+		REMOVE_TRAIT(gone, TRAIT_ORGAN_FROZEN, ref(src))
 		return
-	if(istype(gone, /obj/item/bodypart))
-		var/obj/item/bodypart/B = gone
-		for(var/obj/item/organ/int_organ in B.contents)
-			int_organ.organ_flags &= ~ORGAN_FROZEN
+
+	if(isbodypart(gone))
+		REMOVE_TRAIT(gone, TRAIT_ORGAN_FROZEN, ref(src))
+		for(var/obj/item/organ/int_organ in gone.contents)
+			REMOVE_TRAIT(int_organ, TRAIT_ORGAN_FROZEN, ref(src))
 
 /obj/item/storage/organbox/suicide_act(mob/living/carbon/user)
 	if(HAS_TRAIT(user, TRAIT_RESISTCOLD)) //if they're immune to cold, just do the box suicide
@@ -575,7 +575,7 @@
 			user.visible_message(span_suicide("[user] puts [user.p_their()] head into \the [src] and begins closing it! It looks like [user.p_theyre()] trying to commit suicide!"))
 			myhead.dismember()
 			myhead.forceMove(src) //force your enemies to kill themselves with your head collection box!
-			playsound(user, "desecration-01.ogg", 50, TRUE, -1)
+			playsound(user, SFX_DESECRATION, 50, TRUE, -1)
 			return BRUTELOSS
 		user.visible_message(span_suicide("[user] is beating [user.p_them()]self with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 		return BRUTELOSS

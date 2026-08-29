@@ -4,9 +4,8 @@
  * @author LeahTheTech (https://github.com/TobleroneSwordfish)
  * @license MIT
  */
-import { Tooltip } from 'tgui-core/components';
-
 import { useBackend, useLocalState } from '../backend';
+import { Tooltip } from '../components';
 import {
   Box,
   Button,

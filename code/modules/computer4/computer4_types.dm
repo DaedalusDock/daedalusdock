@@ -34,9 +34,11 @@
 		/datum/c4_file/terminal_program/notepad,
 		/datum/c4_file/terminal_program/netpage,
 		/datum/c4_file/terminal_program/directman,
+		/datum/c4_file/terminal_program/commaster,
 	)
 
 	default_peripherals = list(
 		/obj/item/peripheral/card_reader,
+		/obj/item/peripheral/printer,
 		/obj/item/peripheral/network_card/wireless,
 	)

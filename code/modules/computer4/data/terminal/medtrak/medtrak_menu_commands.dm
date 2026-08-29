@@ -1,12 +1,26 @@
 /datum/shell_command/medtrak/home/quit
 	aliases = list("quit", "0", "q", "exit")
+	help_text = "Terminates the program.\nUsage: 'quit'"
 
 /datum/shell_command/medtrak/home/quit/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	system.println("Quitting...")
 	system.unload_program(program)
 
+/datum/shell_command/medtrak/home/help
+	aliases = list("help")
+	help_text = "Lists all available commands. Use help \[command\] to view information about a specific command."
+
+/datum/shell_command/medtrak/home/help/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
+	var/datum/c4_file/terminal_program/medtrak/medtrak = program
+	noop(medtrak)
+	var/list/all_commands = medtrak.home_commands
+	var/list/output = generate_help(system, program, arguments, all_commands)
+	if(output)
+		system.println(jointext(output, "\n"))
+
 /datum/shell_command/medtrak/home/index
 	aliases = list("records", "1", "index", "view")
+	help_text = "View stored records.\nUsage: 'records'"
 
 /datum/shell_command/medtrak/home/index/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/datum/c4_file/terminal_program/medtrak/medtrak = program
@@ -14,15 +28,14 @@
 
 /datum/shell_command/medtrak/home/search
 	aliases = list("search", "2")
+	help_text = "Search stored records.\nUsage: 'search \[name or ID\]'"
 
 /datum/shell_command/medtrak/home/search/exec(datum/c4_file/terminal_program/operating_system/thinkdos/system, datum/c4_file/terminal_program/program, list/arguments, list/options)
 	var/datum/c4_file/terminal_program/medtrak/medtrak = program
-	medtrak.await_input("Enter target Name, or ID.", CALLBACK(src, PROC_REF(search_input)))
 
-/datum/shell_command/medtrak/home/search/proc/search_input(datum/c4_file/terminal_program/medtrak/medtrak, datum/parsed_cmdline/stdin)
-	var/search_text = stdin.raw
-	if(isnull(search_text))
-		medtrak.view_home()
+	var/search_text = jointext(arguments, " ")
+	if(!length(search_text))
+		system.print_error("[ANSI_WRAP_BOLD("Error:")] No search query provided.")
 		return
 
 	var/list/results = list()
@@ -35,7 +48,7 @@
 	switch(length(results))
 		if(0)
 			medtrak.view_home()
-			medtrak.get_os().println("No results found.")
+			system.println("No results found.")
 			return
 
 		if(1)

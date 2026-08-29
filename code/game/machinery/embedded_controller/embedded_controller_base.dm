@@ -24,8 +24,13 @@
 /obj/machinery/embedded_controller
 	var/datum/computer/file/embedded_program/program
 
+	network_flags = NETWORK_FLAG_GEN_ID
+	net_class = NETCLASS_EMBEDDED_CONTROLLER
+
 	name = "embedded controller"
 	density = FALSE
+
+	var/can_send_signals = FALSE
 
 	var/on = TRUE
 
@@ -44,8 +49,9 @@
 /obj/machinery/embedded_controller/proc/return_text()
 
 /obj/machinery/embedded_controller/post_signal(datum/signal/signal, comm_line)
-	SHOULD_CALL_PARENT(FALSE) //This... Probably has a reason... I guess??????
-	return
+	if(can_send_signals)
+		return ..()
+	return FALSE
 
 /obj/machinery/embedded_controller/receive_signal(datum/signal/signal)
 	SHOULD_CALL_PARENT(FALSE) // This is technically a relay so this is okay.
@@ -74,26 +80,8 @@
 	update_appearance()
 	src.updateDialog()
 
+/// This is a deprecated type. It used to have unique behavior that is now moved to /obj/machinery
 /obj/machinery/embedded_controller/radio
-	var/frequency
-	var/datum/radio_frequency/radio_connection
+	network_flags = NETWORK_FLAG_GEN_ID | NETWORK_FLAG_JOIN_FREQUENCY
 
-/obj/machinery/embedded_controller/radio/Destroy()
-	SSpackets.remove_object(src,frequency)
-	return ..()
-
-/obj/machinery/embedded_controller/radio/Initialize(mapload)
-	. = ..()
-	set_frequency(frequency)
-
-/obj/machinery/embedded_controller/radio/post_signal(datum/signal/signal)
-	signal.transmission_method = TRANSMISSION_RADIO
-	if(radio_connection)
-		return radio_connection.post_signal(signal)
-	else
-		signal = null
-
-/obj/machinery/embedded_controller/radio/proc/set_frequency(new_frequency)
-	SSpackets.remove_object(src, frequency)
-	frequency = new_frequency
-	radio_connection = SSpackets.add_object(src, frequency)
+	can_send_signals = TRUE

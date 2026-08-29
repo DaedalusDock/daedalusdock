@@ -47,7 +47,7 @@
 	reagents.my_atom = src
 	reagents.end_metabolization(stomach_owner)
 	if(ishuman(stomach_owner))
-		var/mob/living/carbon/human/human_owner = owner
+		var/mob/living/carbon/human/human_owner = stomach_owner
 		human_owner.clear_alert(ALERT_DISGUST)
 		human_owner.clear_alert(ALERT_NUTRITION)
 	return ..()

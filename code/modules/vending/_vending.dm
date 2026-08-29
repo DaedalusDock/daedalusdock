@@ -880,8 +880,9 @@ GLOBAL_LIST_EMPTY(vending_products)
 
 	playsound(src, 'sound/machines/cash_desert.ogg', 20, extrarange = SHORT_RANGE_SOUND_EXTRARANGE)
 
+	var/obj/item/old_cash = contained_cash
 	if(user?.put_in_hands(contained_cash))
-		contained_cash.do_pickup_animation(user, get_turf(src))
+		old_cash.do_pickup_animation(user, get_turf(src))
 	else
 		contained_cash.forceMove(drop_location())
 

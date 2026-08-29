@@ -83,7 +83,7 @@
 		if(elevation_open)
 			AddElement(/datum/element/elevation, pixel_shift = elevation_open)
 
-	tear_manifest()
+	tear_manifest(user)
 
 /obj/structure/closet/crate/after_close(mob/living/user, force)
 	. = ..()

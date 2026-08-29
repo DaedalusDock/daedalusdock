@@ -189,13 +189,6 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"aR" = (
-/obj/machinery/door/airlock/public/glass{
-	name = "Emergency Shuttle Cockpit"
-	},
-/obj/effect/mapping_helpers/access/all/command/general/airlock,
-/turf/open/floor/iron/dark,
-/area/shuttle/escape)
 "aS" = (
 /obj/structure/chair/comfy/shuttle,
 /turf/open/floor/mineral/plastitanium/red/brig,
@@ -837,15 +830,6 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/escape)
-"cP" = (
-/obj/machinery/door/airlock/engineering/glass{
-	name = "Engine Room"
-	},
-/obj/effect/turf_decal/tile/yellow/fourcorners,
-/obj/effect/mapping_helpers/access/any/engineering/atmos/airlock,
-/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
-/turf/open/floor/iron,
-/area/shuttle/escape)
 "cQ" = (
 /obj/machinery/door/airlock{
 	name = "Bathroom"
@@ -1123,13 +1107,6 @@
 	},
 /turf/open/floor/iron,
 /area/shuttle/escape)
-"dT" = (
-/obj/machinery/door/airlock/public/glass{
-	name = "Emergency Shuttle Brig"
-	},
-/obj/effect/mapping_helpers/access/all/security/general/airlock,
-/turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
 "hS" = (
 /obj/structure/table,
 /obj/item/storage/medkit/o2,
@@ -1143,10 +1120,14 @@
 	},
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
-"kk" = (
-/obj/machinery/computer/aifixer,
-/obj/effect/turf_decal/tile/purple/fourcorners,
-/turf/open/floor/iron/dark,
+"iK" = (
+/obj/machinery/door/airlock/engineering/glass{
+	name = "Engine Room"
+	},
+/obj/effect/turf_decal/tile/yellow/fourcorners,
+/obj/effect/mapping_helpers/access/any/engineering/atmos/airlock,
+/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
+/turf/open/floor/iron,
 /area/shuttle/escape)
 "ok" = (
 /obj/structure/table,
@@ -1227,6 +1208,20 @@
 /obj/effect/turf_decal/tile/purple/fourcorners,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
+"Ez" = (
+/obj/machinery/door/airlock/shuttle{
+	name = "Emergency Shuttle Airlock"
+	},
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
+/turf/open/floor/plating,
+/area/shuttle/escape/brig)
+"Gz" = (
+/obj/machinery/door/airlock/security/glass{
+	name = "Emergency Shuttle Brig"
+	},
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
+/turf/open/floor/mineral/plastitanium/red/brig,
+/area/shuttle/escape/brig)
 "Ie" = (
 /obj/structure/table,
 /obj/item/storage/medkit/regular{
@@ -1246,13 +1241,13 @@
 	},
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
-"Ju" = (
-/obj/machinery/door/airlock/shuttle{
-	name = "Emergency Shuttle Airlock"
+"LK" = (
+/obj/machinery/door/airlock/public/glass{
+	name = "Emergency Shuttle Cockpit"
 	},
-/obj/effect/mapping_helpers/access/all/security/general/airlock,
-/turf/open/floor/plating,
-/area/shuttle/escape/brig)
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
+/turf/open/floor/iron/dark,
+/area/shuttle/escape)
 "PD" = (
 /obj/structure/chair/comfy/beige{
 	dir = 1
@@ -1260,6 +1255,13 @@
 /obj/effect/turf_decal/tile/purple/fourcorners,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
+"VN" = (
+/obj/machinery/door/airlock/public/glass{
+	name = "Emergency Shuttle Brig"
+	},
+/obj/effect/mapping_helpers/access/all/security/general/airlock,
+/turf/open/floor/mineral/plastitanium/red/brig,
+/area/shuttle/escape/brig)
 "Xo" = (
 /obj/machinery/computer/security{
 	dir = 8
@@ -1267,13 +1269,6 @@
 /obj/effect/turf_decal/tile/red/fourcorners,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"Xt" = (
-/obj/machinery/door/airlock/security/glass{
-	name = "Emergency Shuttle Brig"
-	},
-/obj/effect/mapping_helpers/access/all/security/general/airlock,
-/turf/open/floor/mineral/plastitanium/red/brig,
-/area/shuttle/escape/brig)
 
 (1,1,1) = {"
 aa
@@ -1289,7 +1284,7 @@ ab
 ab
 ab
 ab
-Ju
+Ez
 ab
 bE
 ab
@@ -1464,7 +1459,7 @@ ab
 ab
 ab
 ac
-dT
+VN
 ac
 ab
 bF
@@ -1543,7 +1538,7 @@ dz
 aa
 aa
 ac
-kk
+DS
 PD
 ap
 aI
@@ -1574,7 +1569,7 @@ bT
 bT
 bT
 bR
-cP
+iK
 cU
 bc
 bc
@@ -1727,8 +1722,8 @@ aO
 ab
 ab
 ac
-Xt
-Xt
+Gz
+Gz
 ac
 ad
 aZ
@@ -1768,7 +1763,7 @@ au
 aD
 aC
 aC
-aR
+LK
 aZ
 aZ
 aZ
@@ -1812,7 +1807,7 @@ av
 aE
 aC
 aC
-aR
+LK
 ba
 ba
 ba

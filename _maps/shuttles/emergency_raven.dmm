@@ -48,11 +48,6 @@
 /obj/effect/turf_decal/bot_white,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"ai" = (
-/obj/effect/turf_decal/bot_white,
-/obj/machinery/computer/aifixer,
-/turf/open/floor/iron/dark,
-/area/shuttle/escape)
 "aj" = (
 /obj/effect/turf_decal/bot_white,
 /obj/machinery/shieldgen{
@@ -310,13 +305,6 @@
 /obj/structure/chair/comfy/shuttle,
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
-"aS" = (
-/obj/machinery/door/airlock/command/glass{
-	name = "Cockpit"
-	},
-/obj/effect/mapping_helpers/access/all/command/general/airlock,
-/turf/open/floor/iron/dark,
-/area/shuttle/escape)
 "aT" = (
 /turf/open/floor/iron/white/side{
 	dir = 9
@@ -501,24 +489,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"bo" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/decal/cleanable/dirt,
-/obj/machinery/door/airlock/medical/glass{
-	name = "Escape Shuttle Infirmary"
-	},
-/obj/effect/mapping_helpers/access/all/command/general/airlock,
-/turf/open/floor/iron/dark,
-/area/shuttle/escape)
 "bp" = (
 /turf/open/floor/iron/white/side{
 	dir = 8
@@ -571,23 +541,6 @@
 	},
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
-"bx" = (
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/machinery/door/airlock/command/glass{
-	name = "Cockpit"
-	},
-/obj/effect/mapping_helpers/access/all/command/general/airlock,
-/turf/open/floor/iron/dark,
-/area/shuttle/escape)
 "by" = (
 /obj/machinery/iv_drip,
 /obj/structure/bed/roller,
@@ -1767,14 +1720,6 @@
 /obj/effect/decal/cleanable/dirt,
 /turf/open/floor/plating,
 /area/shuttle/escape)
-"dA" = (
-/obj/machinery/door/airlock/engineering{
-	name = "Emergency Shutle Engineering"
-	},
-/obj/effect/mapping_helpers/access/any/engineering/atmos/airlock,
-/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
-/turf/open/floor/plating,
-/area/shuttle/escape)
 "dB" = (
 /obj/structure/sign/departments/engineering,
 /turf/closed/wall/mineral/plastitanium/nodiagonal,
@@ -2043,7 +1988,7 @@
 	},
 /turf/open/floor/iron/dark,
 /area/shuttle/escape)
-"gr" = (
+"nX" = (
 /obj/effect/turf_decal/tile/neutral,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
@@ -2060,6 +2005,10 @@
 /obj/effect/mapping_helpers/access/all/security/general/airlock,
 /turf/open/floor/iron/dark,
 /area/shuttle/escape/brig)
+"rh" = (
+/obj/effect/turf_decal/bot_white,
+/turf/open/floor/iron/dark,
+/area/shuttle/escape)
 "rC" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/machinery/computer4/medical{
@@ -2068,6 +2017,56 @@
 /turf/open/floor/iron/white/side{
 	dir = 9
 	},
+/area/shuttle/escape)
+"st" = (
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/effect/decal/cleanable/dirt,
+/obj/machinery/door/airlock/medical/glass{
+	name = "Escape Shuttle Infirmary"
+	},
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
+/turf/open/floor/iron/dark,
+/area/shuttle/escape)
+"vC" = (
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/neutral{
+	dir = 1
+	},
+/obj/machinery/door/airlock/command/glass{
+	name = "Cockpit"
+	},
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
+/turf/open/floor/iron/dark,
+/area/shuttle/escape)
+"yE" = (
+/obj/machinery/door/airlock/command/glass{
+	name = "Cockpit"
+	},
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
+/turf/open/floor/iron/dark,
+/area/shuttle/escape)
+"DW" = (
+/obj/machinery/door/airlock/engineering{
+	name = "Emergency Shutle Engineering"
+	},
+/obj/effect/mapping_helpers/access/any/engineering/atmos/airlock,
+/obj/effect/mapping_helpers/access/any/engineering/general/airlock,
+/turf/open/floor/plating,
 /area/shuttle/escape)
 "LJ" = (
 /obj/machinery/computer4/medical{
@@ -2259,7 +2258,7 @@ aY
 aY
 aY
 bE
-gr
+nX
 bX
 ci
 ci
@@ -2273,7 +2272,7 @@ da
 dh
 bP
 bP
-dA
+DW
 dJ
 dJ
 dZ
@@ -2358,7 +2357,7 @@ aA
 aI
 ax
 ax
-gr
+nX
 ax
 ax
 bO
@@ -2390,10 +2389,10 @@ am
 as
 aB
 aJ
-aS
+yE
 bb
 bl
-bx
+vC
 bG
 bP
 bP
@@ -2458,10 +2457,10 @@ ep
 au
 aD
 aL
-aS
+yE
 bc
 bn
-bx
+vC
 bI
 bQ
 bP
@@ -2494,7 +2493,7 @@ aE
 aM
 ax
 ax
-bo
+st
 ax
 ax
 bR
@@ -2521,7 +2520,7 @@ el
 "}
 (14,1,1) = {"
 ab
-ai
+rh
 an
 av
 aF
@@ -2613,7 +2612,7 @@ de
 dn
 bP
 bP
-dA
+DW
 dJ
 dJ
 eg

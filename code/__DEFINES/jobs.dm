@@ -35,7 +35,7 @@
 #define JOB_HEAD_OF_PERSONNEL "Delegate"
 #define JOB_SECURITY_CONSULTANT "Security Consultant"
 //Silicon
-#define JOB_AI "AI"
+#define JOB_AI "Colony Intelligence"
 #define JOB_CYBORG "Cyborg"
 #define JOB_PERSONAL_AI "Personal AI"
 //Security

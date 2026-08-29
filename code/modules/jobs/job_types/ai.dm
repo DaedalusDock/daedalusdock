@@ -1,8 +1,10 @@
 /datum/job/ai
 	title = JOB_AI
-	description = "One of the last Integrated Intelligences left in the Shrouded Sector, an impartial assistant to all of the colony's inhabitants.."
-	radio_help_message = "Prefix your message with :b to speak with cyborgs and other AIs."
+	description = "Assist the crew, follow your laws, coordinate your cyborgs."
+	radio_help_message = "<b>Prefix your message with :b to speak with cyborgs and other AIs.</b>"
+
 	auto_deadmin_role_flags = DEADMIN_POSITION_SILICON
+
 	faction = FACTION_STATION
 
 	total_positions = 1
@@ -35,9 +37,12 @@
 		for(var/mob/living/silicon/robot/R in GLOB.silicon_mobs)
 			if(!R.connected_ai)
 				R.TryConnectToAI()
+
 	var/mob/living/silicon/ai/ai_spawn = spawned
 	ai_spawn.log_current_laws()
 
+	// There's no real reason for this to actually be in datacore on ready, its just an arbitrary delay and it's in sync with AAS messages.
+	SSdatacore.OnReady(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(priority_announce), "Integrated Intelligence Unit designated \"[ai_spawn.real_name]\" boot sequence successful.", ))
 
 /datum/job/ai/get_roundstart_spawn_point_fixed()
 	return get_latejoin_spawn_point()

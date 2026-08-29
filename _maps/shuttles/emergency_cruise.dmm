@@ -6,6 +6,20 @@
 	},
 /turf/open/floor/wood,
 /area/shuttle/escape)
+"bT" = (
+/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/blue,
+/obj/effect/turf_decal/tile/purple{
+	dir = 8
+	},
+/obj/effect/turf_decal/tile/purple{
+	dir = 4
+	},
+/obj/effect/turf_decal/tile/purple{
+	dir = 1
+	},
+/turf/open/floor/iron/white,
+/area/shuttle/escape)
 "ca" = (
 /obj/machinery/vending/cola,
 /turf/open/floor/wood,
@@ -485,6 +499,15 @@
 	},
 /turf/open/floor/wood,
 /area/shuttle/escape)
+"wl" = (
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/effect/turf_decal/tile/blue/fourcorners,
+/obj/machinery/door/airlock/command/glass{
+	name = "Cockpit"
+	},
+/obj/effect/mapping_helpers/access/all/command/general/airlock,
+/turf/open/floor/iron/white,
+/area/shuttle/escape)
 "wF" = (
 /obj/machinery/door/window/left/directional/west{
 	name = "bar door"
@@ -741,32 +764,6 @@
 	dir = 4
 	},
 /obj/machinery/light/directional/west,
-/turf/open/floor/iron/white,
-/area/shuttle/escape)
-"FR" = (
-/obj/effect/turf_decal/tile/blue,
-/obj/effect/turf_decal/tile/blue,
-/obj/machinery/computer/aifixer{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/purple{
-	dir = 8
-	},
-/obj/effect/turf_decal/tile/purple{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/purple{
-	dir = 1
-	},
-/turf/open/floor/iron/white,
-/area/shuttle/escape)
-"FS" = (
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/effect/turf_decal/tile/blue/fourcorners,
-/obj/machinery/door/airlock/command/glass{
-	name = "Cockpit"
-	},
-/obj/effect/mapping_helpers/access/all/command/general/airlock,
 /turf/open/floor/iron/white,
 /area/shuttle/escape)
 "Gv" = (
@@ -1400,7 +1397,7 @@ jt
 jt
 en
 qw
-FR
+bT
 yH
 Vm
 jT
@@ -1585,7 +1582,7 @@ vq
 tx
 qw
 qw
-FS
+wl
 qw
 qw
 qw
@@ -1631,7 +1628,7 @@ mG
 zm
 qw
 qw
-FS
+wl
 qw
 qw
 qw

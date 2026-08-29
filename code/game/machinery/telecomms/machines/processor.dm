@@ -23,7 +23,7 @@
 	var/list/payload = signal.data[PKT_PAYLOAD]
 	if (!process_mode)
 		payload["compression"] = 100 // even more compressed signal
-	else if (signal.data["compression"])
+	else if (payload["compression"])
 		payload["compression"] = 0 // uncompress subspace signal
 
 	if(istype(machine_from, /obj/machinery/telecomms/bus))

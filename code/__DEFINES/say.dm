@@ -49,8 +49,6 @@
 
 #define MODE_MONKEY "monkeyhive"
 
-#define MODE_MAFIA "mafia"
-
 #define MODE_SING "sing"
 
 #define MODE_CUSTOM_SAY_EMOTE "custom_say"

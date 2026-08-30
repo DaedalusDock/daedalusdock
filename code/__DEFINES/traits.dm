@@ -198,7 +198,10 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_STUNRESISTANCE "stun_resistance"
 /// Anti Dual-baton cooldown bypass exploit.
 #define TRAIT_IWASBATONED "iwasbatoned"
+/// Subject cannot sleep. Takes priority over permasleep.
 #define TRAIT_SLEEPIMMUNE "sleep_immunity"
+/// Subject will be unable to wake up from Sleep at all.
+#define TRAIT_PERMASLEEP "permasleep"
 #define TRAIT_PUSHIMMUNE "push_immunity"
 #define TRAIT_SHOCKIMMUNE "shock_immunity"
 #define TRAIT_TESLA_SHOCKIMMUNE "tesla_shock_immunity"
@@ -485,6 +488,9 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 
 /// Smoke temporarily cannot affect this mob.
 #define TRAIT_AFFECTED_BY_SMOKE_RECENTLY "affected_by_smoke_recently"
+
+/// Shrouded
+#define TRAIT_SHROUDED "shrouded"
 
 /// A trait applied to objects with the capacity to be revealed by UV.
 #define TRAIT_MOVABLE_FLUORESCENT "flourescence"
@@ -808,8 +814,6 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define POWER_LACK_TRAIT "power-lack"
 /// Trait associated to lacking motor movement
 #define MOTOR_LACK_TRAIT "motor-lack"
-/// Trait associated with mafia
-#define MAFIA_TRAIT "mafia"
 /// Trait associated with highlander
 #define HIGHLANDER_TRAIT "highlander"
 /// Trait associated with airflow/spacewind

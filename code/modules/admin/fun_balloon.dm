@@ -90,7 +90,7 @@
 	var/question = "Would you like to be [group_name]?"
 	var/list/candidates = poll_candidates_for_mobs(question, ROLE_PAI, FALSE, 10 SECONDS, bodies)
 	while(LAZYLEN(candidates) && LAZYLEN(bodies))
-		var/mob/dead/observer/C = pick_n_take(candidates)
+		var/mob/dead/ghost/C = pick_n_take(candidates)
 		var/mob/living/body = pick_n_take(bodies)
 
 		message_admins("[key_name_admin(C)] has taken control of ([key_name_admin(body)])")

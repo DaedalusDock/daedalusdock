@@ -21,12 +21,14 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
-		if(S.max_duration != -1STATUS_EFFECT_PERMANENT)
+		if(S.max_duration != STATUS_EFFECT_PERMANENT)
 			S.duration = clamp(amount, S.duration, S.max_duration)
 		else
 			S.duration = max(amount, S.duration)
+
 	else if(amount > 0)
 		S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
@@ -36,18 +38,21 @@
 		return
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_STUN, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
+
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(amount <= 0)
 		if(S)
-			qdel(S)
+			S.duration = 0
+			S.consider_expiring()
 	else
 		if(absorb_stun(amount, ignore_canstun))
 			return
+
 		if(S)
-			if(S.max_duration != -1)
+			if(S.max_duration != STATUS_EFFECT_PERMANENT)
 				S.duration = min(amount, S.max_duration)
 			else
-				S.duration = amount
+				S.duration = max(amount, 0)
 		else
 			S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
@@ -59,12 +64,17 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
 	if(S)
-		if(S.max_duration != -1)
-			S.duration = min(amount, S.max_duration)
+		if(S.max_duration != STATUS_EFFECT_PERMANENT)
+			S.duration = clamp(S.duration + amount, S.max_duration, 0)
 		else
-			S.duration += amount
+			S.duration = max(S.duration + amount, 0)
+
+		if(amount < 0)
+			S.consider_expiring()
+
 	else if(amount > 0)
 		S = apply_status_effect(/datum/status_effect/incapacitating/stun, amount)
 	return S
@@ -86,9 +96,10 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(K)
-		if(K.max_duration != -1)
+		if(K.max_duration != STATUS_EFFECT_PERMANENT)
 			K.duration = clamp(amount, K.duration, K.max_duration)
 		else
 			K.duration = max(amount, K.duration)
@@ -104,15 +115,16 @@
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(amount <= 0)
 		if(K)
-			qdel(K)
+			K.duration = 0
+			K.consider_expiring()
 	else
 		if(absorb_stun(amount, ignore_canstun))
 			return
 		if(K)
-			if(K.max_duration != -1)
+			if(K.max_duration != STATUS_EFFECT_PERMANENT)
 				K.duration = min(amount, K.max_duration)
 			else
-				K.duration = amount
+				K.duration = max(amount, 0)
 		else
 			K = apply_status_effect(/datum/status_effect/incapacitating/knockdown, amount)
 	return K
@@ -124,12 +136,17 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/knockdown/K = IsKnockdown()
 	if(K)
-		if(K.max_duration != -1)
-			K.duration = min(K.duration + amount, K.max_duration)
+		if(K.max_duration != STATUS_EFFECT_PERMANENT)
+			K.duration = clamp(K.duration + amount, K.max_duration, 0)
 		else
-			K.duration += amount
+			K.duration = max(K.duration + amount, 0)
+
+		if(amount < 0)
+			K.consider_expiring()
+
 	else if(amount > 0)
 		K = apply_status_effect(/datum/status_effect/incapacitating/knockdown, amount)
 	return K
@@ -151,12 +168,14 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/immobilized/I = IsImmobilized()
 	if(I)
-		if(I.max_duration != -1)
+		if(I.max_duration != STATUS_EFFECT_PERMANENT)
 			I.duration = clamp(amount, I.duration, I.max_duration)
 		else
 			I.duration = max(amount, I.duration)
+
 	else if(amount > 0)
 		I = apply_status_effect(/datum/status_effect/incapacitating/immobilized, amount)
 	return I
@@ -166,15 +185,21 @@
 		return
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_IMMOBILIZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
+
 	var/datum/status_effect/incapacitating/immobilized/I = IsImmobilized()
 	if(amount <= 0)
 		if(I)
-			qdel(I)
+			I.duration = 0
+			I.consider_expiring()
 	else
 		if(absorb_stun(amount, ignore_canstun))
 			return
+
 		if(I)
-			I.duration = amount
+			if(I.max_duration != STATUS_EFFECT_PERMANENT)
+				I.duration = clamp(amount, I.duration, I.max_duration)
+			else
+				I.duration = max(amount, 0)
 		else
 			I = apply_status_effect(/datum/status_effect/incapacitating/immobilized, amount)
 	return I
@@ -186,9 +211,17 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/immobilized/I = IsImmobilized()
 	if(I)
-		I.duration += amount
+		if(I.max_duration != STATUS_EFFECT_PERMANENT)
+			I.duration = clamp(I.duration + amount, I.max_duration, 0)
+		else
+			I.duration = max(I.duration + amount, 0)
+
+		if(amount < 0)
+			I.consider_expiring()
+
 	else if(amount > 0)
 		I = apply_status_effect(/datum/status_effect/incapacitating/immobilized, amount)
 	return I
@@ -210,9 +243,10 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(P)
-		if(P.max_duration != -1)
+		if(P.max_duration != STATUS_EFFECT_PERMANENT)
 			P.duration = clamp(amount, P.duration, P.max_duration)
 		else
 			P.duration = max(amount, P.duration)
@@ -225,18 +259,20 @@
 		return
 	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_PARALYZE, amount, ignore_canstun) & COMPONENT_NO_STUN)
 		return
+
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(amount <= 0)
 		if(P)
-			qdel(P)
+			P.duration = 0
+			P.consider_expiring()
 	else
 		if(absorb_stun(amount, ignore_canstun))
 			return
 		if(P)
-			if(P.max_duration != -1)
-				P.duration = min(amount, P.max_duration)
+			if(P.max_duration != STATUS_EFFECT_PERMANENT)
+				P.duration = clamp(amount, P.max_duration, 0)
 			else
-				P.duration = amount
+				P.duration = max(amount, 0)
 		else
 			P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
@@ -248,12 +284,14 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/paralyzed/P = IsParalyzed(FALSE)
 	if(P)
-		if(P.max_duration != -1)
-			P.duration = min(P.duration + amount, P.max_duration)
+		if(P.max_duration != STATUS_EFFECT_PERMANENT)
+			P.duration = clamp(P.duration + amount, P.max_duration, 0)
 		else
-			P.duration += amount
+			P.duration = max(P.duration + amount, 0)
+
 	else if(amount > 0)
 		P = apply_status_effect(/datum/status_effect/incapacitating/paralyzed, amount)
 	return P
@@ -349,6 +387,7 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/incapacitated/incapacitated_status_effect = has_status_effect(/datum/status_effect/incapacitating/incapacitated)
 	if(incapacitated_status_effect)
 		incapacitated_status_effect.duration = max(amount, incapacitated_status_effect.duration)
@@ -368,12 +407,17 @@
 	var/datum/status_effect/incapacitating/incapacitated/incapacitated_status_effect = has_status_effect(/datum/status_effect/incapacitating/incapacitated)
 	if(amount <= 0)
 		if(incapacitated_status_effect)
-			qdel(incapacitated_status_effect)
+			incapacitated_status_effect.duration = 0
+			incapacitated_status_effect.consider_expiring()
 	else
 		if(absorb_stun(amount, ignore_canstun))
 			return
+
 		if(incapacitated_status_effect)
-			incapacitated_status_effect.duration = amount
+			if(incapacitated_status_effect.max_duration != STATUS_EFFECT_PERMANENT)
+				incapacitated_status_effect.duration = clamp(amount, incapacitated_status_effect.max_duration, 0)
+			else
+				incapacitated_status_effect.duration = max(amount, 0)
 		else
 			incapacitated_status_effect = apply_status_effect(/datum/status_effect/incapacitating/incapacitated, amount)
 	return incapacitated_status_effect
@@ -389,9 +433,18 @@
 		return
 	if(absorb_stun(amount, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/incapacitated/incapacitated_status_effect = has_status_effect(/datum/status_effect/incapacitating/incapacitated)
+
 	if(incapacitated_status_effect)
-		incapacitated_status_effect.duration += amount
+		if(incapacitated_status_effect.max_duration != STATUS_EFFECT_PERMANENT)
+			incapacitated_status_effect.duration = clamp(incapacitated_status_effect.duration + amount, incapacitated_status_effect.max_duration, 0)
+		else
+			incapacitated_status_effect.duration = max(incapacitated_status_effect.duration + amount, 0)
+
+		if(amount < 0)
+			incapacitated_status_effect.consider_expiring()
+
 	else if(amount > 0)
 		incapacitated_status_effect = apply_status_effect(/datum/status_effect/incapacitating/incapacitated, amount)
 	return incapacitated_status_effect
@@ -433,9 +486,14 @@
 		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/unconscious/U = IsUnconscious()
 	if(U)
-		U.duration = max(amount, U.duration)
+		if(U.max_duration != STATUS_EFFECT_PERMANENT)
+			U.duration = clamp(amount, U.duration, U.max_duration)
+		else
+			U.duration = max(amount, U.duration)
+
 	else if(amount > 0)
 		U = apply_status_effect(/datum/status_effect/incapacitating/unconscious, amount)
 	return U
@@ -445,12 +503,18 @@
 		return
 	if(IS_STUN_IMMUNE(src, ignore_canstun))
 		return
+
 	var/datum/status_effect/incapacitating/unconscious/U = IsUnconscious()
 	if(amount <= 0)
 		if(U)
-			qdel(U)
+			U.duration = 0
+			U.consider_expiring()
+
 	else if(U)
-		U.duration = amount
+		if(U.max_duration != STATUS_EFFECT_PERMANENT)
+			U.duration = clamp(amount, U.max_duration, 0)
+		else
+			U.duration = max(amount, 0)
 	else
 		U = apply_status_effect(/datum/status_effect/incapacitating/unconscious, amount)
 	return U
@@ -462,7 +526,14 @@
 		return
 	var/datum/status_effect/incapacitating/unconscious/U = IsUnconscious()
 	if(U)
-		U.duration += amount
+		if(U.max_duration != STATUS_EFFECT_PERMANENT)
+			U.duration = clamp(U.duration + amount, U.max_duration, 0)
+		else
+			U.duration = max(U.duration + amount, 0)
+
+		if(amount <= 0)
+			U.consider_expiring()
+
 	else if(amount > 0)
 		U = apply_status_effect(/datum/status_effect/incapacitating/unconscious, amount)
 	return U
@@ -483,9 +554,13 @@
 		return
 	if(status_flags & GODMODE)
 		return
+
 	var/datum/status_effect/incapacitating/sleeping/S = IsSleeping()
 	if(S)
-		S.duration = max(amount, S.duration)
+		if(S.max_duration != STATUS_EFFECT_PERMANENT)
+			S.duration = clamp(amount, S.duration, S.max_duration)
+		else
+			S.duration = max(amount, S.duration)
 	else if(amount > 0)
 		S = apply_status_effect(/datum/status_effect/incapacitating/sleeping, amount)
 	return S
@@ -495,12 +570,16 @@
 		return
 	if(status_flags & GODMODE)
 		return
+
 	var/datum/status_effect/incapacitating/sleeping/S = IsSleeping()
-	if(amount <= 0)
-		if(S)
-			qdel(S)
-	else if(S)
-		S.duration = amount
+	if(S)
+		if(S.max_duration != STATUS_EFFECT_PERMANENT)
+			S.duration = clamp(amount, S.max_duration, 0)
+		else
+			S.duration = max(amount, 0)
+
+		if(amount <= 0)
+			S.consider_expiring()
 	else
 		S = apply_status_effect(/datum/status_effect/incapacitating/sleeping, amount)
 	return S
@@ -510,24 +589,19 @@
 		return
 	if(status_flags & GODMODE)
 		return
+
 	var/datum/status_effect/incapacitating/sleeping/S = IsSleeping()
 	if(S)
-		S.duration += amount
+		if(S.max_duration != STATUS_EFFECT_PERMANENT)
+			S.duration = clamp(S.duration + amount, S.max_duration, 0)
+		else
+			S.duration = max(S.duration + amount, 0)
+
+		if(amount <= 0)
+			S.consider_expiring()
+
 	else if(amount > 0)
 		S = apply_status_effect(/datum/status_effect/incapacitating/sleeping, amount)
-	return S
-
-///Allows us to set a permanent sleep on a player (use with caution and remember to unset it with SetSleeping() after the effect is over)
-/mob/living/proc/PermaSleeping()
-	if(SEND_SIGNAL(src, COMSIG_LIVING_STATUS_SLEEP, -1) & COMPONENT_NO_STUN)
-		return
-	if(status_flags & GODMODE)
-		return
-	var/datum/status_effect/incapacitating/sleeping/S = IsSleeping()
-	if(S)
-		S.duration = -1
-	else
-		S = apply_status_effect(/datum/status_effect/incapacitating/sleeping, -1)
 	return S
 
 ///////////////////////// CLEAR STATUS /////////////////////////

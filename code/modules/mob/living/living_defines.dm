@@ -222,7 +222,3 @@ DEFINE_INTERACTABLE(/mob/living)
 	/// List of stasis sources to their given value
 	var/list/stasis_sources = list()
 
-	/// Lazylists of pixel offsets this mob is currently using
-	/// Modify this via add_offsets and remove_offsets,
-	/// NOT directly (and definitely avoid modifying offsets directly)
-	VAR_PRIVATE/list/offsets

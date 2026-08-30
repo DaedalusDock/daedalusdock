@@ -67,7 +67,6 @@ GLOBAL_LIST_INIT(message_modes_stat_limits, list(
 	MODE_ALIEN = UNCONSCIOUS,
 	MODE_BINARY = UNCONSCIOUS, //extra stat check on human/binarycheck()
 	MODE_MONKEY = UNCONSCIOUS,
-	MODE_MAFIA = UNCONSCIOUS
 ))
 
 /mob/living/proc/Ellipsis(original_msg, chance = 50, keep_words)

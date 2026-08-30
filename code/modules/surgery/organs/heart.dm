@@ -435,7 +435,7 @@
 		return //lol double rip
 
 	if(HAS_TRAIT(victim, TRAIT_CANNOT_CRYSTALIZE))
-		return // no reviving during mafia, or other inconvenient times.
+		return
 
 	victim.visible_message(
 		span_notice("Crystals start forming around [victim]."),

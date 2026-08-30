@@ -1819,7 +1819,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	switch(.) //Previous stat.
 		if(CONSCIOUS)
 			if(stat >= UNCONSCIOUS)
-				ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
+				ADD_TRAIT(src, TRAIT_IMMOBILIZED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_HANDS_BLOCKED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_INCAPACITATED, STAT_TRAIT)
 				ADD_TRAIT(src, TRAIT_FLOORED, STAT_TRAIT)
@@ -1837,7 +1837,7 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 	switch(stat) //Current stat.
 		if(CONSCIOUS)
 			if(. >= UNCONSCIOUS)
-				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_KNOCKEDOUT)
+				REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAT_TRAIT)
 				mob_mood?.update_mood(quiet = TRUE)
 				blur_eyes(4)
 

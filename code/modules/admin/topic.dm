@@ -1478,11 +1478,6 @@
 		else if(answer == "no")
 			log_query_debug("[usr.key] | Reported no server hang")
 
-	else if(href_list["ctf_toggle"])
-		if(!check_rights(R_ADMIN))
-			return
-		toggle_id_ctf(usr, "centcom")
-
 	else if(href_list["rebootworld"])
 		if(!check_rights(R_ADMIN))
 			return

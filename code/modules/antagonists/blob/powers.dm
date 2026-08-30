@@ -153,7 +153,7 @@
 
 	B.naut = TRUE //temporary placeholder to prevent creation of more than one per factory.
 	to_chat(src, span_notice("You attempt to produce a blobbernaut."))
-	var/list/mob/dead/observer/candidates = poll_ghost_candidates("Do you want to play as a [blobstrain.name] blobbernaut?", ROLE_BLOB, ROLE_BLOB, 50) //players must answer rapidly
+	var/list/mob/dead/ghost/candidates = poll_ghost_candidates("Do you want to play as a [blobstrain.name] blobbernaut?", ROLE_BLOB, ROLE_BLOB, 50) //players must answer rapidly
 	if(LAZYLEN(candidates)) //if we got at least one candidate, they're a blobbernaut now.
 		B.modify_max_integrity(initial(B.max_integrity) * 0.25) //factories that produced a blobbernaut have much lower health
 		B.update_appearance()
@@ -167,7 +167,7 @@
 		blobber.update_icons()
 		blobber.adjustHealth(blobber.maxHealth * 0.5)
 		blob_mobs += blobber
-		var/mob/dead/observer/C = pick(candidates)
+		var/mob/dead/ghost/C = pick(candidates)
 		blobber.PossessByPlayer(C.key)
 		SEND_SOUND(blobber, sound('sound/effects/blobattack.ogg', channel = SSsounds.random_available_channel()))
 		SEND_SOUND(blobber, sound('sound/effects/attackblob.ogg', channel = SSsounds.random_available_channel()))

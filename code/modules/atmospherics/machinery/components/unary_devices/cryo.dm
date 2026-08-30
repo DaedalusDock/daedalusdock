@@ -132,10 +132,11 @@ TYPEINFO_DEF(/obj/machinery/atmospherics/components/unary/cryo_cell)
 	var/mob/living/occupant_mob = occupant
 	if(occupant_mob)
 		occupant_mob.SetSleeping(10)
+		REMOVE_TRAIT(occupant_mob, TRAIT_PERMASLEEP, "cryocell")
 	. = ..()
 	occupant_mob = occupant
 	if(occupant_mob)
-		occupant_mob.PermaSleeping()
+		ADD_TRAIT(occupant_mob, TRAIT_PERMASLEEP, "cryocell")
 
 	update_appearance()
 

@@ -1,14 +1,6 @@
 /mob/dead/observer/check_emote(message, forced)
 	return emote(copytext(message, length(message[1]) + 1), intentional = !forced, force_silence = TRUE)
 
-//Modified version of get_message_mods, removes the trimming, the only thing we care about here is admin channels
-/mob/dead/observer/get_message_mods(message, list/mods)
-	var/key = message[1]
-	if((key in GLOB.department_radio_prefixes) && length(message) > length(key) + 1 && !mods[RADIO_EXTENSION])
-		mods[RADIO_KEY] = lowertext(message[1 + length(key)])
-		mods[RADIO_EXTENSION] = GLOB.department_radio_keys[mods[RADIO_KEY]]
-	return message
-
 /mob/dead/observer/say(message, bubble_type, list/spans = list(), sanitize = TRUE, datum/language/language = null, ignore_spam = FALSE, forced = null, filterproof = null, range = 7)
 	message = trim(message) //trim now and sanitize after checking for special admin radio keys
 

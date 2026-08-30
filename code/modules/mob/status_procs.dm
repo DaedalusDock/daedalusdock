@@ -54,26 +54,30 @@
 			else
 				do_set_blindness(BLIND_NOT_BLIND)
 		if(UNCONSCIOUS)
-			do_set_blindness(BLIND_SLEEPING)
+			if(!mind?.in_the_theatre)
+				do_set_blindness(BLIND_SLEEPING)
+			else
+				do_set_blindness(BLIND_NOT_BLIND)
 		if(DEAD)
 			do_set_blindness(BLIND_NOT_BLIND)
 
 ///Proc that handles adding and removing the blindness overlays.
 /mob/proc/do_set_blindness(blindness_level)
+	clear_fullscreen("completely_blind")
+	clear_fullscreen("blind")
+	remove_client_colour(/datum/client_colour/monochrome/blind)
+
 	switch(blindness_level)
 		if(BLIND_SLEEPING)
 			overlay_fullscreen("completely_blind", /atom/movable/screen/fullscreen/blind/blinder)
 			// You are blind why should you be able to make out details like color, only shapes near you
 			add_client_colour(/datum/client_colour/monochrome/blind)
 		if(BLIND_PHYSICAL)
-			clear_fullscreen("completely_blind")
 			overlay_fullscreen("blind", /atom/movable/screen/fullscreen/blind)
 			// You are blind why should you be able to make out details like color, only shapes near you
 			add_client_colour(/datum/client_colour/monochrome/blind)
 		else
 			clear_alert(ALERT_BLIND)
-			clear_fullscreen("completely_blind")
-			clear_fullscreen("blind")
 			remove_client_colour(/datum/client_colour/monochrome/blind)
 
 

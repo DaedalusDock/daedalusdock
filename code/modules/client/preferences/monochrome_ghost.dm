@@ -6,7 +6,7 @@
 	default_value = TRUE
 
 /datum/preference/toggle/monochrome_ghost/apply_to_client(client/client, value)
-	var/mob/dead/observer/M = client.mob
+	var/mob/dead/M = client.mob
 	if(!istype(M))
 		return
 

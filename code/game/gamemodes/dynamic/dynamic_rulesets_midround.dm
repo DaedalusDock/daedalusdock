@@ -22,7 +22,7 @@
 
 /datum/dynamic_ruleset/midround/from_ghosts
 	weight = 0
-	required_type = /mob/dead/observer
+	required_type = /mob/dead/ghost
 	/// Whether the ruleset should call generate_ruleset_body or not.
 	var/makeBody = TRUE
 	/// The rule needs this many applicants to be properly executed.

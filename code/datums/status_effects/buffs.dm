@@ -232,7 +232,7 @@
 	if(istype(owner, /mob/living/carbon/human))
 		var/mob/living/carbon/human/humi = owner
 		humi.set_coretemperature(humi.get_body_temp_normal())
-	return TRUE
+	return ..()
 
 /datum/status_effect/regenerative_core/on_remove()
 	REMOVE_TRAIT(owner, TRAIT_IGNOREDAMAGESLOWDOWN, STATUS_EFFECT_TRAIT)
@@ -249,7 +249,7 @@
 	owner.alpha = 180
 	owner.pass_flags |= PASSCLOSEDTURF | PASSGLASS | PASSGRILLE | PASSMACHINE | PASSSTRUCTURE | PASSTABLE | PASSMOB | PASSDOORS | PASSVEHICLE
 	location = get_turf(owner)
-	return TRUE
+	return ..()
 
 /datum/status_effect/crucible_soul/on_remove()
 	to_chat(owner,span_notice("You regain your physicality, returning you to your original location..."))
@@ -354,7 +354,7 @@
 		else
 			addtimer(CALLBACK(src, PROC_REF(create_blade)), time_until_created)
 
-	return TRUE
+	return ..()
 
 /datum/status_effect/protective_blades/on_remove()
 	UnregisterSignal(owner, COMSIG_LIVING_CHECK_BLOCK)

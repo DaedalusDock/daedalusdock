@@ -81,6 +81,9 @@
 /turf/open/floor/wood/airless
 	initial_gas = AIRLESS_ATMOS
 
+/turf/open/floor/wood/unsimulated
+	simulated = FALSE
+
 /turf/open/floor/bamboo
 	desc = "A bamboo mat with a decorative trim."
 	icon = 'icons/turf/floors/bamboo_mat.dmi'

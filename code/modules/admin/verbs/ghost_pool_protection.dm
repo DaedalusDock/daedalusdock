@@ -50,7 +50,6 @@
 	data["spawners"] = (new_role_flags & GHOSTROLE_SPAWNER)
 	data["station_sentience"] = (new_role_flags & GHOSTROLE_STATION_SENTIENCE)
 	data["silicons"] = (new_role_flags & GHOSTROLE_SILICONS)
-	data["minigames"] = (new_role_flags & GHOSTROLE_MINIGAME)
 	return data
 
 /datum/ghost_pool_menu/ui_act(action, params)
@@ -67,8 +66,6 @@
 			new_role_flags ^= GHOSTROLE_STATION_SENTIENCE
 		if("toggle_silicons")
 			new_role_flags ^= GHOSTROLE_SILICONS
-		if("toggle_minigames")
-			new_role_flags ^= GHOSTROLE_MINIGAME
 		if("all_roles")
 			new_role_flags = ALL
 		if("no_roles")

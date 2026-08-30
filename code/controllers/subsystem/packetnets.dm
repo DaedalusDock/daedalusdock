@@ -435,10 +435,10 @@ SUBSYSTEM_DEF(packets)
 	var/list/receive = get_hearers_in_radio_ranges(radios)
 	var/list/globally_receiving = list()
 
-	// Add observers who have ghost radio enabled.
-	for(var/mob/dead/observer/ghost in GLOB.player_list)
-		if(!ghost.observetarget && (ghost.client.prefs?.chat_toggles & CHAT_GHOSTRADIO))
-			globally_receiving |= ghost
+	// Add observers who have observer radio enabled.
+	for(var/mob/dead/observer/observer in GLOB.player_list)
+		if(!observer.observetarget && (observer.client.prefs?.chat_toggles & CHAT_GHOSTRADIO))
+			globally_receiving |= observer
 
 	// Render the message and have everybody hear it.
 	// Always call this on the virtualspeaker to avoid issues.

@@ -1,7 +1,6 @@
-import { map } from 'common/collections';
 import { toFixed } from 'common/math';
+import { numberOfDecimalDigits } from 'common/math';
 
-import { numberOfDecimalDigits } from '../../common/math';
 import { useBackend, useLocalState } from '../backend';
 import {
   Box,
@@ -16,6 +15,18 @@ import {
   Section,
 } from '../components';
 import { Window } from '../layouts';
+import { logger } from '../logging';
+
+type FilterInfo = {
+  defaults: Record<string, any>;
+  flags?: Record<string, number>;
+};
+
+type FilterifficData = {
+  filter_info: Record<string, FilterInfo>;
+  target_filter_data: Record<string, FilterInfo>;
+  target_name?: string;
+};
 
 const FilterIntegerEntry = (props) => {
   const { value, name, filterName } = props;
@@ -25,6 +36,7 @@ const FilterIntegerEntry = (props) => {
       value={value}
       minValue={-500}
       maxValue={500}
+      step={1}
       stepPixelSize={5}
       width="39px"
       onDrag={(value) =>
@@ -67,6 +79,8 @@ const FilterFloatEntry = (props) => {
       </Box>
       <NumberInput
         value={step}
+        minValue={-500}
+        maxValue={500}
         step={0.001}
         format={(value) => toFixed(value, 4)}
         width="70px"
@@ -148,12 +162,14 @@ const FilterIconEntry = (props) => {
 
 const FilterFlagsEntry = (props) => {
   const { name, value, filterName, filterType } = props;
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<FilterifficData>();
 
   const filterInfo = data.filter_info;
-  const flags = filterInfo[filterType]['flags'];
-  return map((bitField, flagName) => (
+  const flags = filterInfo[filterType].flags;
+
+  return Object.entries(flags || {}).map(([flagName, bitField]) => (
     <Button.Checkbox
+      key={flagName}
       checked={value & bitField}
       content={flagName}
       onClick={() =>
@@ -165,7 +181,7 @@ const FilterFlagsEntry = (props) => {
         })
       }
     />
-  ))(flags);
+  ));
 };
 
 const FilterDataEntry = (props) => {
@@ -210,15 +226,23 @@ const FilterDataEntry = (props) => {
 };
 
 const FilterEntry = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<FilterifficData>();
   const { name, filterDataEntry } = props;
   const { type, priority, ...restOfProps } = filterDataEntry;
 
   const filterDefaults = data['filter_info'];
 
-  const targetFilterPossibleKeys = Object.keys(
-    filterDefaults[type]['defaults'],
-  );
+  // Color filter type isn't known to the UI.
+  if (type === 'color') {
+    return;
+  }
+
+  if (filterDefaults[type] === undefined) {
+    logger.log(`Cannot find defaults for filter type: ${type}`);
+    return;
+  }
+
+  const targetFilterPossibleKeys = Object.keys(filterDefaults[type].defaults);
 
   return (
     <Collapsible
@@ -226,6 +250,9 @@ const FilterEntry = (props) => {
       buttons={
         <>
           <NumberInput
+            minValue={-500}
+            maxValue={500}
+            step={1}
             value={priority}
             stepPixelSize={10}
             width="60px"
@@ -254,7 +281,7 @@ const FilterEntry = (props) => {
         </>
       }
     >
-      <Section level={2}>
+      <Section>
         <LabeledList>
           {targetFilterPossibleKeys.map((entryName) => {
             const defaults = filterDefaults[type]['defaults'];
@@ -278,11 +305,11 @@ const FilterEntry = (props) => {
 };
 
 export const Filteriffic = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<FilterifficData>();
   const name = data.target_name || 'Unknown Object';
   const filters = data.target_filter_data || {};
   const hasFilters = Object.keys(filters).length !== 0;
-  const filterDefaults = data['filter_info'];
+  const filterDefaults = data.filter_info;
   const [massApplyPath, setMassApplyPath] = useLocalState('massApplyPath', '');
   const [hiddenSecret, setHiddenSecret] = useLocalState('hidden', false);
   return (
@@ -335,9 +362,9 @@ export const Filteriffic = (props) => {
           {!hasFilters ? (
             <Box>No filters</Box>
           ) : (
-            map((entry, key) => (
+            Object.entries(filters).map(([key, entry]) => (
               <FilterEntry filterDataEntry={entry} name={key} key={key} />
-            ))(filters)
+            ))
           )}
         </Section>
       </Window.Content>

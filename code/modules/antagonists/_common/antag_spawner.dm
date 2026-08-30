@@ -63,7 +63,7 @@
 	if(QDELETED(src) || used)
 		return
 	used = TRUE
-	var/mob/dead/observer/student = pick(candidates)
+	var/mob/dead/ghost/student = pick(candidates)
 	spawn_antag(student.client, get_turf(src), apprentice_school, teacher.mind)
 
 /obj/item/antag_spawner/contract/spawn_antag(client/C, turf/T, kind, datum/mind/user)
@@ -132,7 +132,7 @@
 		if(QDELETED(src) || !check_usability(user))
 			return
 		used = TRUE
-		var/mob/dead/observer/G = pick(nuke_candidates)
+		var/mob/dead/ghost/G = pick(nuke_candidates)
 		spawn_antag(G.client, get_turf(src), "nukeop", user.mind)
 		do_sparks(4, TRUE, src)
 		qdel(src)
@@ -250,7 +250,7 @@
 		if(used || QDELETED(src))
 			return
 		used = TRUE
-		var/mob/dead/observer/C = pick(candidates)
+		var/mob/dead/ghost/C = pick(candidates)
 		spawn_antag(C.client, get_turf(src), initial(demon_type.name),user.mind)
 		to_chat(user, shatter_msg)
 		to_chat(user, veil_msg)

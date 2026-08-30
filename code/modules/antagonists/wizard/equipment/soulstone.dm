@@ -439,7 +439,7 @@
 
 
 /obj/item/soulstone/proc/getCultGhost(mob/living/carbon/victim, mob/user)
-	var/mob/dead/observer/chosen_ghost
+	var/mob/dead/chosen_ghost
 
 	chosen_ghost = victim.get_ghost(TRUE,TRUE) //Try to grab original owner's ghost first
 

@@ -128,7 +128,7 @@
 			else
 				to_chat(usr, span_warning("Could not spawn you in as briefing officer as you are not a ghost!"))
 
-		var/list/mob/dead/observer/candidates = poll_ghost_candidates("Do you wish to be considered for [ertemplate.polldesc]?", "deathsquad")
+		var/list/mob/dead/ghost/candidates = poll_ghost_candidates("Do you wish to be considered for [ertemplate.polldesc]?", "deathsquad")
 		var/teamSpawned = FALSE
 
 		if(candidates.len == 0)
@@ -150,13 +150,13 @@
 		ert_team.objectives += missionobj
 		ert_team.mission = missionobj
 
-		var/mob/dead/observer/earmarked_leader
+		var/mob/dead/ghost/earmarked_leader
 		var/leader_spawned = FALSE // just in case the earmarked leader disconnects or becomes unavailable, we can try giving leader to the last guy to get chosen
 
 		if(ertemplate.leader_experience)
 			var/list/candidate_living_exps = list()
 			for(var/i in candidates)
-				var/mob/dead/observer/potential_leader = i
+				var/mob/dead/ghost/potential_leader = i
 				candidate_living_exps[potential_leader] = potential_leader.client?.get_exp_living(TRUE)
 
 			candidate_living_exps = sort_list(candidate_living_exps, cmp=GLOBAL_PROC_REF(cmp_numeric_dsc))
@@ -170,7 +170,7 @@
 			var/spawnloc = spawnpoints[index+1]
 			//loop through spawnpoints one at a time
 			index = (index + 1) % spawnpoints.len
-			var/mob/dead/observer/chosen_candidate = earmarked_leader || pick(candidates) // this way we make sure that our leader gets chosen
+			var/mob/dead/ghost/chosen_candidate = earmarked_leader || pick(candidates) // this way we make sure that our leader gets chosen
 			candidates -= chosen_candidate
 			if(!chosen_candidate?.key)
 				continue

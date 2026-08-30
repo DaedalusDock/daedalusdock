@@ -17,7 +17,7 @@
 		if(health<= -maxHealth || !getorgan(/obj/item/organ/brain))
 			death(cause_of_death = cause_of_death)
 			return
-		if((HAS_TRAIT(src, TRAIT_KNOCKEDOUT)))
+		if(IsUnconscious())
 			set_stat(UNCONSCIOUS)
 		else
 			if(stat == UNCONSCIOUS)

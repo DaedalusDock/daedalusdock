@@ -306,23 +306,3 @@ GLOBAL_LIST_EMPTY(freq2icon)
 	frequency = FREQ_AI_PRIVATE
 	icon = "ai.png"
 	span = "aiprivradio"
-
-/datum/radio_channel/ctf_red
-	key = RADIO_CHANNEL_CTF_RED
-	frequency = FREQ_CTF_RED
-	span = "redteamradio"
-
-/datum/radio_channel/ctf_blue
-	key = RADIO_CHANNEL_CTF_BLUE
-	frequency = FREQ_CTF_BLUE
-	span = "blueteamradio"
-
-/datum/radio_channel/ctf_green
-	key = RADIO_CHANNEL_CTF_GREEN
-	frequency = FREQ_CTF_GREEN
-	span = "greenteamradio"
-
-/datum/radio_channel/ctf_yellow
-	key = RADIO_CHANNEL_CTF_YELLOW
-	frequency = FREQ_CTF_YELLOW
-	span = "yellowteamradio"

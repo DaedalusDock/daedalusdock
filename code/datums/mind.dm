@@ -70,6 +70,13 @@
 
 	var/force_escaped = FALSE  // Set by Into The Sunset command of the shuttle manipulator
 
+	/// Set to TRUE when the mob is asleep and visiting the Theatre.
+	var/in_the_theatre = FALSE
+	/// Timer ID for the theatre exit.
+	var/theatre_timer_id
+	/// Our simulacrum in the Theatre when visiting.
+	var/obj/effect/simulacrum/simulacrum
+
 	var/list/learned_recipes //List of learned recipe TYPES.
 
 	///List of skills the user has received a reward for. Should not be used to keep track of currently known skills. Lazy list because it shouldnt be filled often
@@ -126,6 +133,7 @@
 	QDEL_LIST(owned_requitals)
 	QDEL_LIST(targeted_requitals)
 	set_current(null)
+	QDEL_NULL(simulacrum)
 	return ..()
 
 /datum/mind/vv_edit_var(var_name, var_value)
@@ -142,9 +150,14 @@
 /datum/mind/proc/set_current(mob/new_current)
 	if(new_current && QDELETED(new_current))
 		CRASH("Tried to set a mind's current var to a qdeleted mob, what the fuck")
+
 	if(current)
 		UnregisterSignal(src, COMSIG_PARENT_QDELETING)
+		if(in_the_theatre)
+			exit_the_theatre()
+
 	current = new_current
+
 	if(current)
 		RegisterSignal(src, COMSIG_PARENT_QDELETING, PROC_REF(clear_current))
 
@@ -158,6 +171,7 @@
 		language_holder = new (src)
 	return language_holder
 
+/// Transfers the mind to a new mob. Ghostizes the new mob's player if they have a player that doesn't own this mind.
 /datum/mind/proc/transfer_to(mob/new_character, force_key_move = 0)
 	set_original_character(null)
 	if(current) // remove ourself from our old body's mind variable
@@ -200,7 +214,7 @@
 		for(var/addiction_type in subtypesof(/datum/addiction))
 			remove_addiction_points(addiction_type, MAX_ADDICTION_POINTS)
 
-	RegisterSignal(new_character, COMSIG_LIVING_DEATH, PROC_REF(set_death_time))
+	RegisterSignal(new_character, COMSIG_LIVING_DEATH, PROC_REF(on_current_death))
 
 	if(active || force_key_move)
 		new_character.PossessByPlayer(key) //now transfer the key to link the client to our new body
@@ -299,7 +313,8 @@
 	msg += "</span>"
 	to_chat(user, examine_block(msg))
 
-/datum/mind/proc/set_death_time()
+/// Called when mob.current dies.
+/datum/mind/proc/on_current_death()
 	SIGNAL_HANDLER
 
 	last_death = world.time
@@ -849,15 +864,15 @@
 		else
 			martial_art.teach(new_character)
 
-/datum/mind/proc/get_ghost(even_if_they_cant_reenter, ghosts_with_clients)
-	for(var/mob/dead/observer/G in (ghosts_with_clients ? GLOB.player_list : GLOB.dead_mob_list))
+/datum/mind/proc/get_ghost(even_if_they_cant_reenter, ghosts_with_clients) as /mob/dead
+	for(var/mob/dead/G in (ghosts_with_clients ? GLOB.player_list : GLOB.dead_mob_list))
 		if(G.mind == src)
 			if(G.can_reenter_corpse || even_if_they_cant_reenter)
 				return G
 			break
 
-/datum/mind/proc/grab_ghost(force)
-	var/mob/dead/observer/G = get_ghost(even_if_they_cant_reenter = force)
+/datum/mind/proc/grab_ghost(force) as /mob/dead
+	var/mob/dead/G = get_ghost(even_if_they_cant_reenter = force)
 	. = G
 	if(G)
 		G.reenter_corpse()
@@ -968,6 +983,98 @@
 	list_clear_nulls(divs)
 
 	to_chat(current.client, "<div class='examine_block roundstartNotifications'>[jointext(divs, "<hr>")]</div>")
+
+/// Sends the character to the Mind's Eye Theatre (name pending).
+/datum/mind/proc/visit_the_theatre(forced_visit_time)
+	if(in_the_theatre)
+		return
+
+	if(current.stat != UNCONSCIOUS)
+		return
+
+
+	/// Pick an unoccupied landmark to spawn the simulacrum at.
+	var/obj/effect/landmark/used_landmark
+	var/list/landmarks = INSTANCES_OF_COPY(/obj/effect/landmark/ghost_theatre_sleeper)
+	while(!used_landmark && length(landmarks))
+		var/obj/effect/landmark/ghost_theatre_sleeper/landmark = pick_n_take(landmarks)
+		if(!landmark.using_this)
+			used_landmark = landmark
+			break
+
+	if(!used_landmark)
+		return
+
+	in_the_theatre = TRUE
+	current.update_blindness() // Removes blindness overlay so you can see your schizo dream world
+
+	GLOB.ghost_theatre_visitors += current
+
+	var/turf/ghost_loc = get_turf(used_landmark)
+	simulacrum = new(ghost_loc, current, src, used_landmark)
+
+	current.reset_perspective(simulacrum)
+
+	current.add_client_colour(/datum/client_colour/monochrome/ghost_theatre)
+	RegisterSignal(current, COMSIG_MOB_RESET_PERSPECTIVE, PROC_REF(on_reset_perspective))
+	RegisterSignal(current, COMSIG_MOB_STATCHANGE, PROC_REF(on_stat_change))
+	RegisterSignal(current, COMSIG_MOB_LOGOUT, PROC_REF(on_logout))
+
+	ADD_TRAIT(current, TRAIT_CANNOT_DREAM, "visiting_the_theatre")
+	/// Force them to be asleep for a given duration.
+	if(forced_visit_time)
+		ADD_TRAIT(current, TRAIT_KNOCKEDOUT, "visiting_the_theatre")
+		theatre_timer_id = addtimer(CALLBACK(src, PROC_REF(theatre_forced_visit_end)), forced_visit_time, TIMER_DELETE_ME|TIMER_STOPPABLE)
+
+	var/datum/media/media = pick_safe(SSmedia.get_track_pool(MEDIA_TAG_SPIRIT_THEATRE))
+	if(media)
+		var/sound/S = sound(media.path, repeat = TRUE, channel = CHANNEL_LOBBYMUSIC)
+		SEND_SOUND(current.client, S)
+	return TRUE
+
+/datum/mind/proc/theatre_forced_visit_end()
+	REMOVE_TRAIT(current, TRAIT_KNOCKEDOUT, "visiting_the_theatre")
+
+/datum/mind/proc/exit_the_theatre()
+	if(!in_the_theatre)
+		return
+
+	in_the_theatre = FALSE
+	GLOB.ghost_theatre_visitors -= current
+	deltimer(theatre_timer_id)
+
+	current.remove_client_colour(/datum/client_colour/monochrome/ghost_theatre)
+	UnregisterSignal(current, list(COMSIG_MOB_RESET_PERSPECTIVE, COMSIG_MOB_STATCHANGE))
+
+	REMOVE_TRAIT(current, TRAIT_KNOCKEDOUT, "visiting_the_theatre")
+	REMOVE_TRAIT(current, TRAIT_CANNOT_DREAM, "visiting_the_theatre")
+	QDEL_NULL(simulacrum)
+
+	SEND_SOUND(current.client, sound(null, channel = CHANNEL_LOBBYMUSIC))
+	current.update_blindness()
+	current.reset_perspective()
+	return TRUE
+
+/// Called when the owner's perspective changes whilst visiting the theatre.
+/datum/mind/proc/on_reset_perspective(mob/source)
+	SIGNAL_HANDLER
+	if(!current.client)
+		return
+
+	if(current.client.eye != simulacrum)
+		current.reset_perspective(simulacrum)
+
+/// Called when the owner's stat changes whilst in the theatre.
+/datum/mind/proc/on_stat_change(mob/source, new_stat, old_stat)
+	SIGNAL_HANDLER
+
+	if(new_stat != UNCONSCIOUS)
+		exit_the_theatre()
+
+/// Called when the owner logs out whilst in the theatre
+/datum/mind/proc/on_logout(mob/source)
+	SIGNAL_HANDLER
+	exit_the_theatre()
 
 /mob/dead/new_player/sync_mind()
 	return

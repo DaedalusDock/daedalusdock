@@ -119,6 +119,7 @@
 
 //#define FLY_LAYER 5 //For easy recordkeeping; this is a byond define
 #define GAS_LAYER 5
+#define HIGH_EFFECT_LAYER 5.03
 #define GASFIRE_LAYER 5.05
 #define MIMICKED_LIGHTING_LAYER 5.06
 #define RIPPLE_LAYER 5.1
@@ -128,7 +129,7 @@
 
 #define AREA_PLANE 60
 #define MASSIVE_OBJ_PLANE 70
-#define GHOST_PLANE 80
+#define OBSERVER_PLANE 80
 #define POINT_PLANE 90
 
 #define RAD_TEXT_PLANE 90

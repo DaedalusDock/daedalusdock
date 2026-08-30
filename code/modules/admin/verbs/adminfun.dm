@@ -262,7 +262,7 @@
 	if(!isobserver(mob))
 		return
 
-	var/mob/dead/observer/observer_mob = mob
+	var/mob/dead/ghost/observer_mob = mob
 	var/mob/living/carbon/human/dummy/consistent/template = new
 	if(prefs)
 		var/real_name = prefs.read_preference(/datum/preference/name/real_name)

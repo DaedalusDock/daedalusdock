@@ -30,3 +30,18 @@ TYPEINFO_DEF(/obj/item/metal_ball)
 	w_class = WEIGHT_CLASS_BULKY
 	attack_verb_continuous = list("hits", "thwacks", "bowls")
 	attack_verb_simple = list("hit", "thwack", "bowl")
+
+/obj/item/rope
+	name = "strand of rope"
+	desc = "A length of rope."
+	icon = 'icons/obj/slapcrafting/components.dmi'
+	icon_state = "rope"
+	lefthand_file = 'icons/mob/inhands/equipment/tools_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/tools_righthand.dmi'
+	inhand_icon_state = "coil"
+
+	w_class = WEIGHT_CLASS_NORMAL
+
+	drop_sound = 'sound/items/handling/cloth_drop.ogg'
+	pickup_sound = 'sound/items/handling/cloth_pickup.ogg'
+

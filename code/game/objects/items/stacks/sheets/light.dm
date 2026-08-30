@@ -13,6 +13,9 @@
 	grind_results = list(/datum/reagent/silicon = 20, /datum/reagent/copper = 5)
 	merge_type = /obj/item/stack/light_w
 
+/obj/item/stack/light_w/thirty
+	amount = 30
+
 /obj/item/stack/light_w/examine(mob/user)
 	. = ..()
 	. += span_alert("The [name] looks unfinished, add <b>iron</b> to complete it.")

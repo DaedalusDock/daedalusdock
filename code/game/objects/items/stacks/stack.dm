@@ -167,6 +167,7 @@
 /obj/item/stack/get_controls_info()
 	. = ..()
 	. += "Right Click - Split stack."
+	. += "Right Click (Same item) - Combine stack."
 
 /// Set the maptext for the item that shows how much junk is inside the trunk.
 /obj/item/stack/proc/update_maptext()
@@ -632,8 +633,10 @@
 /obj/item/stack/proc/on_movable_entered_occupied_turf(datum/source, atom/movable/arrived)
 	SIGNAL_HANDLER
 
-	// Edge case. This signal will also be sent when src has entered the turf. Don't want to merge with ourselves.
 	if(arrived == src)
+		return
+
+	if(!isturf(loc))
 		return
 
 	if(!arrived.throwing && can_merge(arrived))
@@ -722,13 +725,13 @@
 
 	is_zero_amount(delete_if_zero = TRUE)
 
-/obj/item/stack/attackby(obj/item/W, mob/user, params)
-	if(can_merge(W, inhand = TRUE))
-		var/obj/item/stack/S = W
+/obj/item/stack/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	if(modifiers?[RIGHT_CLICK] && can_merge(tool, inhand = TRUE))
+		var/obj/item/stack/S = tool
 		if(merge(S))
 			to_chat(user, span_notice("[S] [stack_name] of [S.name] now contains [S.get_amount()] [S.singular_name]\s."))
-	else
-		. = ..()
+			return ITEM_INTERACT_SUCCESS
+		return ITEM_INTERACT_BLOCKING
 
 /obj/item/stack/microwave_act(obj/machinery/microwave/M)
 	if(istype(M) && M.dirty < 100)

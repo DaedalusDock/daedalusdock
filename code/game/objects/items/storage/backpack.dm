@@ -751,3 +751,13 @@ TYPEINFO_DEF(/obj/item/storage/backpack/holding)
 	slowdown = 0
 	supports_variations_flags = NONE
 
+
+/obj/item/storage/backpack/sling
+	name = "sling bag"
+	desc = "A sling made out of cloth."
+	icon_state = "slingbag"
+
+/obj/item/storage/backpack/sling/Initialize()
+	. = ..()
+	atom_storage.max_slots = 3
+	atom_storage.max_total_storage = 5 // Can hold 1 normal item and 2 tiny items.

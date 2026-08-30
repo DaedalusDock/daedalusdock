@@ -405,8 +405,6 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 	if(target.client)
 		target.client.images.Remove(fakebroken)
 		target.client.images.Remove(fakerune)
-	QDEL_NULL(fakebroken)
-	QDEL_NULL(fakerune)
 	QDEL_NULL(bubblegum)
 	STOP_PROCESSING(SSfastprocess, src)
 	return ..()

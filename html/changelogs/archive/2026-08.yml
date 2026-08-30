@@ -1,3 +1,12 @@
 2026-08-07:
   Kapu1178, Lohikar:
   - bugfix: On our zero multi-z maps, space renders more* correctly.
+2026-08-30:
+  Kapu1178, Aphtonites:
+  - imageadd: New AI sprites from Aphtonites, originally for Goonstation.
+  - rscadd: Station AI now has a death animation.
+  - bugfix: Fixed cases where you could not re-enter your corpse while intended to
+      be able to.
+  - rscdel: Removed Intellicards and related mechanics.
+  - rscdel: Triple AI.
+  - rscdel: AI face preference.

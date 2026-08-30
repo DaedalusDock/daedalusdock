@@ -31,7 +31,7 @@
 
 	for(var/mob/living/carbon/human/guy as anything in targets)
 		to_chat(guy, span_alert("Horrifying static bursts into your headset, disorienting you severely!"))
-		playsound(guy, "sound/effects/radio_sweep[rand(1,5)].ogg", 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
+		playsound(guy, pick('goon/sounds/radio_sweep1.ogg','goon/sounds/radio_sweep2.ogg','goon/sounds/radio_sweep3.ogg','goon/sounds/radio_sweep4.ogg','goon/sounds/radio_sweep5.ogg'), 50, TRUE, SHORT_RANGE_SOUND_EXTRARANGE)
 		guy.Knockdown(3 SECONDS)
 		guy.set_confusion_if_lower(20 SECONDS)
 		guy.do_jitter_animation(10)

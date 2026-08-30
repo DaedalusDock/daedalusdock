@@ -409,7 +409,7 @@
 /// Pings a location, alerting all flocktraces.
 /datum/flock/proc/ping(turf/T, mob/camera/flock/pinger)
 	var/message = "System interrupt. Designating new target: [T] in [get_area(T)]."
-	flock_talk(pinger, message, src, TRUE, list("italics"))
+	flock_talk(pinger, message, src, TRUE, list("italics"), runechat = FALSE)
 	T.AddComponent(/datum/component/flock_ping, 5 SECONDS)
 
 	for(var/mob/camera/flock/ghost_bird in (traces + overmind))

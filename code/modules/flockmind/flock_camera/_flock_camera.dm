@@ -22,6 +22,9 @@
 	move_on_shuttle = FALSE
 	movement_type = PHASING
 
+	chat_color = "#6fbbac"
+	chat_color_darkened = "#6fbbac"
+
 	var/datum/flock/flock
 	var/list/actions_to_grant = list()
 

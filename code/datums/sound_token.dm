@@ -93,7 +93,7 @@
 
 	var/is_muted = listeners[M] & SOUND_MUTE
 	var/should_be_muted = FALSE
-	if(!source_turf || !listener_turf)
+	if(!(source_turf && listener_turf) || source_turf.z != listener_turf.z)
 		should_be_muted = TRUE
 		if(should_be_muted && is_muted)
 			return

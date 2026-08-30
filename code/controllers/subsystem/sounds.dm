@@ -144,7 +144,8 @@ SUBSYSTEM_DEF(sounds)
 	PRIVATE_PROC(TRUE)
 
 	using_channels_by_datum -= D
-	UnregisterSignal(D, COMSIG_PARENT_QDELETING)
+	if(D != DATUMLESS)
+		UnregisterSignal(D, COMSIG_PARENT_QDELETING)
 
 /// Handles a tracked datum being deleted, automatically freeing the channels.
 /datum/controller/subsystem/sounds/proc/tracked_datum_deleted(datum/source)

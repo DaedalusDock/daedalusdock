@@ -34,14 +34,17 @@
 		avoid_highlighting = speaker == src
 	)
 
-/proc/flock_talk(atom/speaker, message, datum/flock/flock, involuntary, list/inner_spans)
+/proc/flock_talk(atom/speaker, raw_message, datum/flock/flock, involuntary, list/inner_spans, runechat = TRUE)
 
-	message = trim(copytext_char(sanitize(message), 1, MAX_MESSAGE_LEN))
-	if (!message)
+	raw_message = trim(copytext_char(sanitize(raw_message), 1, MAX_MESSAGE_LEN))
+	if (!raw_message)
 		return
 
+	var/message = raw_message
+	var/silicon_message = stars(raw_message, 50)
 	if(inner_spans)
 		message = attach_spans(message, inner_spans)
+		silicon_message = attach_spans(silicon_message, inner_spans)
 
 	var/used_name = ""
 	var/list/spans = list("flocksay")
@@ -80,7 +83,6 @@
 		var/mob/camera/flock/overmind/ghost_bird = speaker
 		used_name = ghost_bird.real_name
 
-	var/silicon_message = stars(message, 50)
 	if(mob_speaker)
 		var/say_verb = pick("sings", "clicks", "whistles", "intones", "transmits", "submits", "uploads")
 		message = "[say_verb], \"[message]\""
@@ -95,12 +97,17 @@
 	for(var/mob/player as anything in GLOB.player_list)
 		if(isflockmob(player))
 			to_chat(player, flock_message)
+			if(speaker && runechat && (mob_speaker ? player.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) : player.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)))
+				player.create_chat_message(speaker, GET_LANGUAGE_DATUM(/datum/language/flock), raw_message)
 			continue
 
 		if(isobserver(player) && !involuntary)
 			to_chat(player, flock_message)
+			if(speaker && runechat && (mob_speaker ? player.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat) : player.client?.prefs.read_preference(/datum/preference/toggle/enable_runechat_non_mobs)))
+				player.create_chat_message(speaker, GET_LANGUAGE_DATUM(/datum/language/flock), raw_message)
 			continue
 
+		// Snooping in-round mobs don't get the runechat.
 		if(player.can_hear() && player.binarycheck() && (!involuntary && speaker || prob(30)))
 			to_chat(player, silicon_message)
 			continue

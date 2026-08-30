@@ -24,6 +24,7 @@
 		/datum/action/cooldown/flock/ping,
 		/datum/action/cooldown/flock/radio_blast,
 		/datum/action/cooldown/flock/gatecrash,
+		/datum/action/cooldown/flock/radio_talk
 	)
 
 /mob/camera/flock/overmind/Initialize(mapload, join_flock)

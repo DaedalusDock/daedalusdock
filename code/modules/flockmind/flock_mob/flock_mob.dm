@@ -116,7 +116,7 @@
 
 	language = GET_LANGUAGE_DATUM(language) || get_selected_language()
 	if(flock && istype(language, /datum/language/flock))
-		flock_talk(src, message, flock, forced)
+		flock_talk(src, message, flock, forced, runechat = FALSE)
 
 // changing the default arg value here
 /mob/living/simple_animal/flock/treat_message(message, correct_grammar = FALSE, is_visual_language = FALSE)

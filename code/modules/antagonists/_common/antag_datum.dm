@@ -283,7 +283,7 @@ GLOBAL_LIST_EMPTY(antagonists)
 
 /datum/antagonist/proc/greeting_header()
 	var/list/out = list()
-	out += "<div style='font-size: 200%;text-align: center'>You are [name_prefix ? "[name_prefix] " : ""][span_alert(name)]</div>"
+	out += "<div class='discoTitle' style='margin-bottom: 8px;'>You are[name_prefix ? " [name_prefix]" : ""]<br>[uppertext(name)]</div>"
 	if(description)
 		out += "<div style='text-align: center'>[description]</div>"
 	return jointext(out, "")

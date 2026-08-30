@@ -23,7 +23,7 @@
 	var/announcement = "<div class='priorityAnnounceHeader'><h1>[uppertext(html_encode(super_title))]</h1>"
 
 	if(sub_title)
-		announcement += "<h2'>[html_encode(sub_title)]</h2>"
+		announcement += "<h2>[html_encode(sub_title)]</h2>"
 
 	announcement += "</div><hr>"
 	///If the announcer overrides alert messages, use that message.

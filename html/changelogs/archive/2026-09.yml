@@ -3,3 +3,12 @@
   - qol: Slapcrafting is now commutative, click order does not matter.
   - rscadd: Added sling backpacks, crafted with Cloth and Rope.
   - rscadd: Rope, crafted with two pieces of Cloth.
+2026-09-13:
+  Kapu1178:
+  - rscadd: Overhead text to Flocksay
+  - rscadd: Narrowbeam Transmission flock ability
+  - bugfix: Flockdrones correctly report when they are wandering
+  - bugfix: Bugs
+  MatoTheTomato, Kapu1178:
+  - tweak: Adjusted the chatbox style slightly, to increase cool factor by approx.
+      500%

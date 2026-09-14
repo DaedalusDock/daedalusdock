@@ -281,6 +281,7 @@
 
 /// Called from the module's used()
 /obj/item/mod/module/proc/on_use()
+	set waitfor = FALSE
 	return
 
 /// Called on the MODsuit's process if it is an active module

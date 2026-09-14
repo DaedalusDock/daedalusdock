@@ -19,7 +19,8 @@
 	for (var/datum/design/design as anything in SStech.designs)
 		if (!(design.build_type & COMPONENT_PRINTER) || !ispath(design.build_path, /obj/item/circuit_component))
 			continue
-			designs += design
+
+		designs += design
 
 	var/datum/c4_file/fab_design_bundle/dundle = new(designs)
 	disk_write_file(dundle, internal_disk)

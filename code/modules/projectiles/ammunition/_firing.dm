@@ -90,7 +90,8 @@
 		loaded_projectile.preparePixelProjectile(target, fired_from, modifiers, spread)
 	var/obj/projectile/loaded_projectile_cache = loaded_projectile
 	loaded_projectile = null
-	loaded_projectile_cache.fire(null, direct_target)
+	spawn(-1)
+		loaded_projectile_cache.fire(null, direct_target)
 	return TRUE
 
 /obj/item/ammo_casing/proc/spread(turf/target, turf/current, distro)

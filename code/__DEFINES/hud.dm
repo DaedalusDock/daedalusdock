@@ -189,13 +189,12 @@
 #define ui_pai_navigate_menu "SOUTH+1:8,WEST+12:31"
 
 //Ghosts
-#define ui_ghost_spawners_menu "SOUTH:6,CENTER-3:24"
-#define ui_ghost_orbit "SOUTH:6,CENTER-2:24"
-#define ui_ghost_reenter_corpse "SOUTH:6,CENTER-1:24"
-#define ui_ghost_teleport "SOUTH:6,CENTER:24"
-#define ui_ghost_pai "SOUTH: 6, CENTER+1:24"
-#define ui_ghost_minigames "SOUTH: 6, CENTER+2:24"
-#define ui_ghost_language_menu "SOUTH: 22, CENTER+3:8"
+#define ui_observer_spawners_menu "SOUTH:6,CENTER-3:24"
+#define ui_observer_orbit "SOUTH:6,CENTER-2:24"
+#define ui_observer_reenter_corpse "SOUTH:6,CENTER-1:24"
+#define ui_observer_teleport "SOUTH:6,CENTER:24"
+#define ui_observer_pai "SOUTH: 6, CENTER+1:24"
+#define ui_observer_language_menu "SOUTH: 22, CENTER+3:8"
 
 //Blobbernauts
 #define ui_blobbernaut_overmind_health "EAST-1:28,CENTER+0:19"
@@ -321,12 +320,9 @@
 #define HUDKEY_PAI_HOST_MONITOR "paimonitor"
 #define HUDKEY_PAI_GPS "paigps"
 
-#define HUDKEY_GHOST_SPAWNERS "ghostspawners"
 #define HUDKEY_GHOST_ORBIT "ghostorbit"
 #define HUDKEY_GHOST_REENTER_CORPSE "ghostcorpse"
 #define HUDKEY_GHOST_TELEPORT "ghostteleport"
-#define HUDKEY_GHOST_PAI "ghostpai"
-#define HUDKEY_GHOST_MINIGAMES "ghostminigames"
 
 #define HUDKEY_ALIEN_QUEEN_FINDER "alienqueenfinder"
 #define HUDKEY_ALIEN_PLASMA_DISPLAY "alienplasmadisplay"

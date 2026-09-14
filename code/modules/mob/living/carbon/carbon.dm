@@ -768,7 +768,7 @@
 		return
 
 	if(stat != DEAD)
-		if(HAS_TRAIT(src, TRAIT_KNOCKEDOUT))
+		if(IsUnconscious())
 			set_stat(UNCONSCIOUS)
 		else
 			set_stat(CONSCIOUS)

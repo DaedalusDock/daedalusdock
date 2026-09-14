@@ -59,7 +59,7 @@
 	return ..()
 
 ///Prepares a footstep for living mobs. Determines if it should get played. Returns the turf it should get played on. Note that it is always a /turf/open
-/datum/element/footstep/proc/prepare_step(mob/living/source)
+/datum/element/footstep/proc/prepare_step(mob/source)
 	var/turf/open/turf = get_turf(source)
 	if(!istype(turf))
 		return
@@ -67,7 +67,7 @@
 	if(source.buckled || source.throwing || source.movement_type & (VENTCRAWLING | FLYING) || HAS_TRAIT(source, TRAIT_IMMOBILIZED) || CHECK_MOVE_LOOP_FLAGS(source, MOVEMENT_LOOP_OUTSIDE_CONTROL))
 		return
 
-	if(source.body_position == LYING_DOWN) //play crawling sound if we're lying
+	if(astype(source, /mob/living)?.body_position == LYING_DOWN) //play crawling sound if we're lying
 		if(turf.footstep)
 			playsound(turf, 'sound/effects/footstep/crawl1.ogg', 15 * volume, falloff_distance = 1, vary = sound_vary)
 		return

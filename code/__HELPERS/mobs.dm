@@ -271,8 +271,8 @@ GLOBAL_LIST_EMPTY(species_list)
 
 // Displays a message in deadchat, sent by source. source is not linkified, message is, to avoid stuff like character names to be linkified.
 // Automatically gives the class deadsay to the whole message (message + source)
-/proc/deadchat_broadcast(message, source=null, mob/follow_target=null, turf/turf_target=null, speaker_key=null, message_type=DEADCHAT_REGULAR, admin_only=FALSE)
-	message = span_deadsay("[source]<span class='linkify'>[message]</span>")
+/proc/deadchat_broadcast(message, source=null, mob/follow_target=null, turf/turf_target=null, speaker_key=null, message_type=DEADCHAT_REGULAR, admin_only=FALSE, atom/runechat = null, raw_message = "")
+	var/chat_message = span_deadsay("[source]<span class='linkify'>[message]</span>")
 
 	for(var/mob/M in GLOB.player_list)
 		var/chat_toggles = TOGGLES_DEFAULT_CHAT
@@ -283,22 +283,30 @@ GLOBAL_LIST_EMPTY(species_list)
 			chat_toggles = prefs.chat_toggles
 			toggles = prefs.toggles
 			ignoring = prefs.ignoring
+
 		if(admin_only)
 			if (!M.client?.holder)
-				return
+				continue
 			else
-				message += span_deadsay(" (This is viewable to admins only).")
+				chat_message += span_deadsay(" (This is viewable to admins only).")
+
 		var/override = FALSE
 		if(M.client?.holder && (chat_toggles & CHAT_DEAD))
 			override = TRUE
+			if(M.stat != DEAD)
+				runechat = FALSE // No runechat for admins that aren't also observers.
+
 		if(HAS_TRAIT(M, TRAIT_SIXTHSENSE) && message_type == DEADCHAT_REGULAR)
 			override = TRUE
 		if(SSticker.current_state == GAME_STATE_FINISHED)
 			override = TRUE
+
 		if(isnewplayer(M) && !override)
 			continue
+
 		if(M.stat != DEAD && !override)
 			continue
+
 		if(speaker_key && (speaker_key in ignoring))
 			continue
 
@@ -316,8 +324,9 @@ GLOBAL_LIST_EMPTY(species_list)
 				if(!(chat_toggles & CHAT_LOGIN_LOGOUT))
 					continue
 
+		// At this point, the mob is receiving the message.
 		if(isobserver(M))
-			var/rendered_message = message
+			var/rendered_message = chat_message
 
 			if(follow_target)
 				var/F
@@ -325,14 +334,17 @@ GLOBAL_LIST_EMPTY(species_list)
 					F = FOLLOW_OR_TURF_LINK(M, follow_target, turf_target)
 				else
 					F = FOLLOW_LINK(M, follow_target)
-				rendered_message = "[F] [message]"
+				rendered_message = "[F] [chat_message]"
 			else if(turf_target)
 				var/turf_link = TURF_LINK(M, turf_target)
-				rendered_message = "[turf_link] [message]"
+				rendered_message = "[turf_link] [chat_message]"
 
 			to_chat(M, rendered_message, avoid_highlighting = speaker_key == M.key)
 		else
-			to_chat(M, message, avoid_highlighting = speaker_key == M.key)
+			to_chat(M, chat_message, avoid_highlighting = speaker_key == M.key)
+
+		if(runechat)
+			M.create_chat_message(runechat, raw_message = raw_message)
 
 //Used in chemical_mob_spawn. Generates a random mob based on a given gold_core_spawnable value.
 /proc/create_random_mob(spawn_location, mob_class = HOSTILE_SPAWN)

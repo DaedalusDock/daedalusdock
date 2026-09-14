@@ -234,10 +234,7 @@
 		to_chat(user, span_warning("This artifact can only affect the dead!"))
 		return
 
-	for(var/mob/dead/observer/ghost in GLOB.dead_mob_list) //excludes new players
-		if(ghost.mind && ghost.mind.current == M && ghost.client)  //the dead mobs list can contain clientless mobs
-			ghost.reenter_corpse()
-			break
+	M.grab_ghost(FALSE)
 
 	if(!M.mind || !M.client)
 		to_chat(user, span_warning("There is no soul connected to this body..."))

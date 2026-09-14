@@ -21,7 +21,7 @@
 	invisibility = INVISIBILITY_REVENANT
 	health = INFINITY //Revenants don't use health, they use essence instead
 	maxHealth = INFINITY
-	plane = GHOST_PLANE
+	plane = OBSERVER_PLANE
 	healable = FALSE
 	sight = SEE_SELF
 	throwforce = 0
@@ -470,7 +470,7 @@
 			inert = TRUE
 			visible_message(span_revenwarning("[src] settles down and seems lifeless."))
 			return
-		var/mob/dead/observer/C = pick(candidates)
+		var/mob/dead/ghost/C = pick(candidates)
 		key_of_revenant = C.key
 		if(!key_of_revenant)
 			qdel(revenant)

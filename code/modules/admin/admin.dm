@@ -236,7 +236,7 @@
 	if(tomob.client)
 		tomob.ghostize(FALSE)
 	else
-		for(var/mob/dead/observer/ghost in GLOB.dead_mob_list)
+		for(var/mob/dead/ghost in GLOB.dead_mob_list)
 			if(tomob.mind == ghost.mind)
 				ghost.mind = null
 

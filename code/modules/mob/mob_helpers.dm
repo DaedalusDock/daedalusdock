@@ -372,7 +372,7 @@ GLOBAL_LIST_INIT(bodyzone_gurps_mods, list(
 		return
 	if(!user.client) // Do they have a client?
 		return
-	if(!isobserver(user)) // Are they a ghost?
+	if(!(isobserver(user) || isghost(user))) // Are they a ghost?
 		return
 	if(!check_rights_for(user.client, R_ADMIN)) // Are they allowed?
 		return

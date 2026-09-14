@@ -1,4 +1,6 @@
 #define VV_HTML_ENCODE(thing) ( sanitize ? html_encode(thing) : thing )
+#define IS_REF_STRING(thing) (istext(thing) && (length(thing) == 11) && locate(thing))
+
 /// Get displayed variable in VV variable list
 /proc/debug_variable(name, value, level, datum/owner, sanitize = TRUE, display_flags = NONE) //if D is a list, name will be index, and value will be assoc value.
 	if(owner)
@@ -19,6 +21,8 @@
 	if(level > 0 || islist(owner)) //handling keys in assoc lists
 		if(istype(name,/datum))
 			name_part = "<a href='?_src_=vars;[HrefToken()];Vars=[REF(name)]'>[VV_HTML_ENCODE(name)] [REF(name)]</a>"
+		else if(IS_REF_STRING(name))
+			name_part = "<a href='?_src_=vars;[HrefToken()];Vars=[REF(name)]'>[VV_HTML_ENCODE(name)]</a>"
 		else if(islist(name))
 			var/list/list_value = name
 			name_part = "<a href='?_src_=vars;[HrefToken()];Vars=[REF(name)]'> /list ([length(list_value)]) [REF(name)]</a>"
@@ -37,6 +41,8 @@
 		return "<span class='value'>null</span>"
 
 	if(istext(value))
+		if(IS_REF_STRING(value))
+			return "<span class='value'>\"[VV_HTML_ENCODE(value)]\"</span> <a href='?_src_=vars;[HrefToken()];Vars=[value]'>(Locate)</a>"
 		return "<span class='value'>\"[VV_HTML_ENCODE(value)]\"</span>"
 
 	if(isicon(value))

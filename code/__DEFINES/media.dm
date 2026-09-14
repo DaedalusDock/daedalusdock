@@ -20,3 +20,6 @@
 #define MEDIA_TAG_WHITEWOMEN "WHITEWOMEN"
 /// Carmen Miranda's Ghost
 #define MEDIA_TAG_CARMEN_MIRANDA "CARMEN"
+
+/// Music played when in the spirit theatre
+#define MEDIA_TAG_SPIRIT_THEATRE "SPIRIT_THEATRE"

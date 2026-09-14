@@ -38,7 +38,7 @@
 	if(client)
 		add_to_current_dead_players()
 
-///Remvoes the mob reference from list of all the dead mobs. If mob is cliented, it adds it to the list of all dead player-mobs.
+///Remvoes the mob reference from list of all the dead mobs. If mob is cliented, it removes it from the list of all dead player-mobs.
 /mob/proc/remove_from_dead_mob_list()
 	GLOB.dead_mob_list -= src
 	if(client)

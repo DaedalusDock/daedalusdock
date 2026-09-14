@@ -188,7 +188,7 @@ INITIALIZE_IMMEDIATE(/atom/movable/screen)
 	H.open_language_menu(usr)
 
 /atom/movable/screen/language_menu/ghost
-	screen_loc = ui_ghost_language_menu
+	screen_loc = ui_observer_language_menu
 
 /atom/movable/screen/language_menu/ai
 	screen_loc = ui_ai_language_menu

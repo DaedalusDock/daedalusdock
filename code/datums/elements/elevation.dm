@@ -138,7 +138,7 @@
 /datum/element/elevation_core/proc/on_entered(turf/source, atom/movable/entered, atom/old_loc)
 	SIGNAL_HANDLER
 	// If the movement has been aborted by something else within the chain we need to abort
-	if(!isliving(entered) || entered.loc != source)
+	if(!(isliving(entered) || isghost(entered)) || entered.loc != source)
 		return
 
 	if(isnull(old_loc) || !HAS_TRAIT_FROM(old_loc, TRAIT_ELEVATED_TURF, ELEVATION_SOURCE(src)))
@@ -146,7 +146,7 @@
 
 /datum/element/elevation_core/proc/on_exited(turf/source, atom/movable/gone)
 	SIGNAL_HANDLER
-	if((isnull(gone.loc) || !HAS_TRAIT_FROM(gone.loc, TRAIT_ELEVATED_TURF, ELEVATION_SOURCE(src))) && isliving(gone))
+	if((isnull(gone.loc) || !HAS_TRAIT_FROM(gone.loc, TRAIT_ELEVATED_TURF, ELEVATION_SOURCE(src))) && (isliving(gone) || isghost(gone)))
 		// Always unregister the signals, we're still leaving even if not affected by elevation.
 		UnregisterSignal(gone, list(COMSIG_LIVING_SET_BUCKLED, SIGNAL_ADDTRAIT(TRAIT_IGNORE_ELEVATION), SIGNAL_REMOVETRAIT(TRAIT_IGNORE_ELEVATION)))
 		deelevate_mob(gone, isturf(gone.loc) && source.Adjacent(gone.loc) ? ELEVATE_TIME : 0)
@@ -169,7 +169,7 @@
  * ...And that something is an object, neither the mob nor the object will be elevated.
  * ...And that something is a mob, we will be elevated (but not the other mob).
  */
-/datum/element/elevation_core/proc/elevate_mob(mob/living/target, elevate_time = ELEVATE_TIME, force = FALSE)
+/datum/element/elevation_core/proc/elevate_mob(mob/target, elevate_time = ELEVATE_TIME, force = FALSE)
 	if(HAS_TRAIT(target, TRAIT_IGNORE_ELEVATION) && !force)
 		return
 	// while the offset system can natively handle this,
@@ -193,7 +193,7 @@
 	ADD_TRAIT(target, TRAIT_MOB_ELEVATED, ELEVATION_SOURCE(src))
 
 /// Reverts elevation of the mob.
-/datum/element/elevation_core/proc/deelevate_mob(mob/living/target, elevate_time = ELEVATE_TIME)
+/datum/element/elevation_core/proc/deelevate_mob(mob/target, elevate_time = ELEVATE_TIME)
 	target.remove_offsets(ELEVATION_SOURCE(src), animate = elevate_time > 0)
 	if(isvehicle(target.buckled))
 		z_animate(target.buckled, pixel_y = -pixel_shift, time = elevate_time, flags = ANIMATION_RELATIVE|ANIMATION_PARALLEL)

@@ -18,6 +18,9 @@
 	/// The time until the next [proc/tick] call, gets set to [var/tick_interval] after every [proc/tick] call and decrements on every [proc/process] call.
 	var/time_until_next_tick
 
+	/// World.time this effect was added.
+	var/time_added = 0
+
 	/// The mob affected by the status effect.
 	var/mob/living/owner
 	/// How many of the effect can be on one mob, and/or what happens when you try to add a duplicate.
@@ -44,8 +47,11 @@
 	if(QDELETED(owner) || !on_apply())
 		qdel(src)
 		return
+
 	if(owner)
 		LAZYADD(owner.status_effects, src)
+
+	time_added = world.time
 
 	if(duration == INFINITY)
 		// we will optionally allow INFINITY, because i imagine it'll be convenient in some places,
@@ -115,10 +121,26 @@
 	if(QDELING(src))
 		return // tick deleted us, no need to continue
 
-	if(duration != STATUS_EFFECT_PERMANENT)
-		if(duration <= 0)
-			qdel(src)
-			return
+	if(consider_expiring())
+		return
+
+/// If duration is zero, attempt to expire.
+/datum/status_effect/proc/consider_expiring()
+	if(duration == STATUS_EFFECT_PERMANENT)
+		return
+
+	if(duration < 0)
+		stack_trace("Status effect tried to expire with a duration of [duration], deleting and warning!")
+		qdel(src)
+		return TRUE
+
+	if(duration <= 0 && should_expire())
+		qdel(src)
+		return TRUE
+
+/// Returns TRUE if the status effect has expired due to duration loss and should qdel.
+/datum/status_effect/proc/should_expire()
+	return TRUE
 
 /// Called whenever the effect is applied in on_created
 /// Returning FALSE will cause it to delete itself during creation instead.
@@ -183,9 +205,8 @@
 	if(duration == STATUS_EFFECT_PERMANENT) // Infinite duration
 		return FALSE
 
-	duration -= (seconds SECONDS)
-	if(duration <= 0)
-		qdel(src)
+	duration = max(duration - (seconds SECONDS), 0)
+	if(consider_expiring())
 		return TRUE
 
 	return FALSE

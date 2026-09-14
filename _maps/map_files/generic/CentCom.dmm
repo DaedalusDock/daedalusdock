@@ -1819,6 +1819,11 @@
 /obj/machinery/status_display/evac/directional/north,
 /turf/open/floor/iron/dark,
 /area/centcom/tdome/observation)
+"fl" = (
+/turf/open/indestructible/shroud{
+	opacity = 1
+	},
+/area/centcom/theatre)
 "fm" = (
 /obj/effect/spawner/structure/window/reinforced,
 /obj/effect/mapping_helpers/paint_wall/centcom,
@@ -2073,10 +2078,6 @@
 /obj/effect/landmark/start/new_player,
 /turf/open/floor/plating,
 /area/misc/start)
-"fZ" = (
-/obj/effect/landmark/ctf,
-/turf/open/space/basic,
-/area/space)
 "ga" = (
 /obj/structure/flora/ausbushes/lavendergrass,
 /obj/structure/flora/ausbushes/sparsegrass,
@@ -2215,10 +2216,6 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/courtroom)
-"gt" = (
-/obj/effect/landmark/mafia_game_area,
-/turf/open/space/basic,
-/area/space)
 "gu" = (
 /turf/closed/indestructible/splashscreen,
 /area/misc/start)
@@ -2239,6 +2236,10 @@
 /obj/effect/turf_decal/stripes/line,
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/armory)
+"gx" = (
+/obj/structure/stairs/east,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "gy" = (
 /obj/machinery/shower{
 	dir = 4
@@ -2891,6 +2892,9 @@
 /obj/machinery/status_display/evac/directional/west,
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/prison)
+"iq" = (
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "ir" = (
 /turf/closed/indestructible/fakeglass,
 /area/centcom/central_command_areas/prison/cells)
@@ -4211,6 +4215,11 @@
 	icon_state = "alien11"
 	},
 /area/centcom/abductor_ship)
+"ma" = (
+/obj/structure/low_wall/wood,
+/obj/structure/curtain/cloth/fancy/closed,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "mb" = (
 /obj/effect/turf_decal/siding/thinplating_new/dark{
 	dir = 5
@@ -4728,6 +4737,10 @@
 /obj/structure/overfloor_catwalk/iron_smooth,
 /turf/open/floor/plating,
 /area/centcom/syndicate_mothership/control)
+"nx" = (
+/obj/structure/trash_can,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "nz" = (
 /turf/closed/indestructible/opsglass,
 /area/centcom/syndicate_mothership/control)
@@ -5128,6 +5141,10 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/admin)
+"oC" = (
+/obj/structure/sign/exitonly,
+/turf/closed/wall/mineral/wood,
+/area/centcom/theatre)
 "oD" = (
 /obj/item/kirbyplants{
 	icon_state = "plant-21"
@@ -5426,6 +5443,10 @@
 /obj/machinery/status_display/evac/directional/south,
 /turf/open/floor/iron,
 /area/centcom/central_command_areas/prison)
+"pn" = (
+/obj/effect/landmark/ghost_theatre,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "pp" = (
 /obj/effect/turf_decal/stripes/box,
 /obj/machinery/shower{
@@ -6979,10 +7000,19 @@
 /obj/effect/baseturf_helper/asteroid/snow,
 /turf/closed/indestructible/syndicate,
 /area/centcom/syndicate_mothership/control)
+"tZ" = (
+/obj/structure/low_wall/wood,
+/obj/structure/curtain/cloth/fancy/closed,
+/obj/machinery/light/small/directional/north,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "uc" = (
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/control)
+"ue" = (
+/turf/open/indestructible/shroud/deep,
+/area/centcom/theatre)
 "uf" = (
 /turf/closed/indestructible/reinforced/centcom,
 /area/centcom/tdome/administration)
@@ -7921,6 +7951,10 @@
 	},
 /turf/open/floor/iron/white,
 /area/centcom/tdome/observation)
+"wS" = (
+/obj/structure/stairs/west,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "wU" = (
 /obj/structure/extinguisher_cabinet/directional/south,
 /turf/open/floor/iron/smooth_half{
@@ -10296,6 +10330,12 @@
 	heat_capacity = 1e+006
 	},
 /area/centcom/tdome/observation)
+"Dz" = (
+/obj/item/kirbyplants{
+	icon_state = "plant-22"
+	},
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "DA" = (
 /obj/structure/chair/sofa/bench/left{
 	dir = 8
@@ -11255,6 +11295,10 @@
 	},
 /turf/open/lava,
 /area/centcom/wizard_station)
+"Gs" = (
+/obj/machinery/light/small/directional/south,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "Gt" = (
 /obj/effect/turf_decal/siding/wood{
 	dir = 8
@@ -12159,6 +12203,10 @@
 	},
 /turf/open/lava/plasma/snow_air,
 /area/centcom/syndicate_mothership/control)
+"Jn" = (
+/obj/structure/low_wall/wood,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "Jo" = (
 /obj/machinery/door/airlock/centcom{
 	name = "Briefing Room";
@@ -12328,6 +12376,11 @@
 	},
 /turf/open/floor/mineral/plastitanium/red,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
+"JP" = (
+/obj/effect/landmark/ghost_theatre_sleeper,
+/obj/structure/chair/stool/wood,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "JS" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
@@ -13351,6 +13404,11 @@
 /obj/machinery/monkey_recycler,
 /turf/open/floor/mineral/titanium/tiled/yellow,
 /area/centcom/syndicate_mothership/expansion_bioterrorism)
+"Nk" = (
+/obj/structure/low_wall/wood,
+/obj/machinery/light/floor/has_bulb,
+/turf/open/floor/wood/unsimulated,
+/area/centcom/theatre)
 "Nl" = (
 /obj/machinery/light/directional/south,
 /obj/effect/turf_decal/tile/neutral{
@@ -13387,6 +13445,9 @@
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/centcom/central_command_areas/courtroom)
+"Nq" = (
+/turf/closed/wall/mineral/wood,
+/area/centcom/theatre)
 "Nr" = (
 /obj/structure/table/reinforced,
 /obj/item/folder/red,
@@ -28588,15 +28649,15 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+Nq
+Nq
+Nq
+Nq
+Nq
+Nq
+Nq
+Nq
 aa
 aa
 aa
@@ -28845,15 +28906,15 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+iq
+iq
+iq
+iq
+iq
+iq
+nx
+Nq
 aa
 aa
 aa
@@ -29101,16 +29162,16 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+Nq
+gx
+gx
+iq
+iq
+iq
+pn
+iq
+Nq
 aa
 aa
 aa
@@ -29358,16 +29419,16 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+ma
+Jn
+Jn
+iq
+iq
+iq
+iq
+Gs
+Nq
 aa
 aa
 aa
@@ -29615,18 +29676,18 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+ma
+Jn
+Jn
+Dz
+iq
+iq
+iq
+iq
+oC
+Nq
+Nq
 aa
 aa
 aa
@@ -29872,18 +29933,18 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+ma
+Jn
+Jn
+Jn
+iq
+JP
+iq
+iq
+fl
+ue
+Nq
 aa
 aa
 aa
@@ -30129,18 +30190,18 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+tZ
+Jn
+Jn
+Nk
+iq
+JP
+iq
+iq
+fl
+ue
+Nq
 aa
 aa
 aa
@@ -30386,18 +30447,18 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+ma
+Jn
+Jn
+Jn
+iq
+JP
+iq
+iq
+fl
+ue
+Nq
 aa
 aa
 aa
@@ -30643,18 +30704,18 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+ma
+Jn
+Jn
+Dz
+iq
+iq
+iq
+iq
+oC
+Nq
+Nq
 aa
 aa
 aa
@@ -30900,16 +30961,16 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+ma
+Jn
+Jn
+iq
+iq
+iq
+iq
+Gs
+Nq
 aa
 aa
 aa
@@ -31157,16 +31218,16 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+Nq
+wS
+wS
+iq
+iq
+iq
+pn
+iq
+Nq
 aa
 aa
 aa
@@ -31415,15 +31476,15 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+iq
+iq
+iq
+iq
+iq
+iq
+iq
+Nq
 aa
 aa
 aa
@@ -31672,15 +31733,15 @@ aa
 aa
 aa
 aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
-aa
+Nq
+Nq
+Nq
+Nq
+Nq
+Nq
+Nq
+Nq
+Nq
 aa
 aa
 aa
@@ -49508,7 +49569,7 @@ aa
 aa
 aa
 aa
-gt
+aa
 aa
 aa
 aa
@@ -66158,7 +66219,7 @@ aa
 aa
 aa
 aa
-fZ
+aa
 aa
 aa
 aa

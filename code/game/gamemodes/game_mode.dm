@@ -250,7 +250,7 @@
 					failed = TRUE //Dead
 
 			continue //Happy connected client
-		for(var/mob/dead/observer/D in GLOB.dead_mob_list)
+		for(var/mob/dead/ghost/D in GLOB.dead_mob_list)
 			if(D.mind && D.mind.current == L)
 				if(L.stat == DEAD)
 					if(L.suiciding) //Suicider

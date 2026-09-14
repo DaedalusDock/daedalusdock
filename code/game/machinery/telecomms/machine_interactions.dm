@@ -13,10 +13,6 @@
 	var/list/banned_frequencies = list(
 		FREQ_SYNDICATE,
 		FREQ_CENTCOM,
-		FREQ_CTF_RED,
-		FREQ_CTF_YELLOW,
-		FREQ_CTF_GREEN,
-		FREQ_CTF_BLUE,
 	)
 
 /obj/machinery/telecomms/receive_signal(datum/signal/signal)

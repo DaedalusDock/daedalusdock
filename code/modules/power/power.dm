@@ -11,14 +11,14 @@
 	icon = 'icons/obj/power.dmi'
 	anchored = TRUE
 	obj_flags = CAN_BE_HIT
-	var/datum/powernet/powernet = null
 	use_power = NO_POWER_USE
 	idle_power_usage = 0
 	active_power_usage = 0
 
+	var/datum/powernet/powernet = null
 
 	// This is EXPLICITLY zeroed out. you MUST opt power equipment in to the data net as they underpin the concept.
-	// NETWORK_FLAG_POWERNET_DATANODE will result in being added to powernet.data_nodes.
+	// NETWORK_FLAGpowernet_DATANODE will result in being added to powernet.data_nodes.
 	// post_signal() will !!!directly queue signals with SSPackets by default!!!
 	// Address-optimized receiving doesn't exist this far down.
 	// You should know what you're doing if you're messing with stuff at this level anyways.
@@ -32,7 +32,6 @@
 
 /obj/machinery/power/Destroy()
 	disconnect_from_network()
-	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(update_cable_icons_on_turf), get_turf(src)), 3) //lol redstone wires
 	return ..()
 
 ///////////////////////////////
@@ -48,6 +47,7 @@
 /obj/machinery/power/proc/should_have_node()
 	return FALSE
 
+/// Adds power to the power network in the form of newavail for 1 tick.
 /obj/machinery/power/proc/add_avail(amount)
 	if(powernet)
 		powernet.newavail += amount
@@ -55,32 +55,38 @@
 	else
 		return FALSE
 
+/// Adds load to the power network for 1 tick.
 /obj/machinery/power/proc/add_load(amount)
 	if(powernet)
 		powernet.load += amount
 
+/// Returns the amount of power available this tick after subtracting this tick's load.
 /obj/machinery/power/proc/surplus()
 	if(powernet)
-		return clamp(powernet.avail-powernet.load, 0, powernet.avail)
+		return clamp(powernet.avail - powernet.load, 0, powernet.avail)
 	else
 		return 0
 
+/// Returns the available amount of power on the network. Supply a threshold to return TRUE instead.
 /obj/machinery/power/proc/avail(amount)
 	if(powernet)
 		return amount ? powernet.avail >= amount : powernet.avail
 	else
 		return 0
 
+/// Adds load to the NEXT tick of powernets. This should be used over add_load() when called outside of SSmachines process loop.
 /obj/machinery/power/proc/add_delayedload(amount)
 	if(powernet)
 		powernet.delayedload += amount
 
+/// Returns the amount of power available to the network next tick, after subtracting any delayed load.
 /obj/machinery/power/proc/delayed_surplus()
 	if(powernet)
 		return clamp(powernet.newavail - powernet.delayedload, 0, powernet.newavail)
 	else
 		return 0
 
+/// Returns the amount of power generated this tick.
 /obj/machinery/power/proc/newavail()
 	if(powernet)
 		return powernet.newavail
@@ -95,6 +101,7 @@
 /obj/machinery/proc/powered(chan = power_channel, ignore_use_power = FALSE)
 	if(!loc)
 		return FALSE
+
 	if(!use_power && !ignore_use_power)
 		return TRUE
 
@@ -118,11 +125,12 @@
 	var/obj/machinery/power/apc/local_apc
 	if(!A)
 		return FALSE
+
 	local_apc = A.apc
-	if(!local_apc)
+
+	if(!local_apc?.cell)
 		return FALSE
-	if(!local_apc.cell)
-		return FALSE
+
 	local_apc.cell.use(amount)
 	return TRUE
 
@@ -150,13 +158,16 @@
 	var/obj/machinery/power/apc/local_apc = home.apc
 	if(!local_apc)
 		return FALSE
+
 	var/surplus = local_apc.surplus()
 	if(surplus <= 0) //I don't know if powernet surplus can ever end up negative, but I'm just gonna failsafe it
 		return FALSE
 	if(surplus < amount)
 		if(!take_any)
 			return FALSE
+
 		amount = surplus
+
 	local_apc.add_load(amount)
 	return amount
 
@@ -202,11 +213,11 @@
 	var/obj/structure/cable/C = T.get_cable_node() //check if we have a node cable on the machine turf, the first found is picked
 	if(!C || !C.powernet)
 		var/obj/machinery/power/terminal/term = locate(/obj/machinery/power/terminal) in T
-		if(!term || !term.powernet)
+		if(!term?.powernet)
 			return FALSE
-		else
-			term.powernet.add_machine(src)
-			return TRUE
+
+		term.powernet.add_machine(src)
+		return TRUE
 
 	C.powernet.add_machine(src)
 	return TRUE
@@ -283,7 +294,7 @@
 //////////////////////////////////////////
 
 ///remove the old powernet and replace it with a new one throughout the network.
-/proc/propagate_network(obj/structure/cable/C, datum/powernet/PN, skip_assigned_powernets = FALSE)
+/proc/propagate_network(obj/structure/cable/C, datum/powernet/PN, skip_assignedpowernets = FALSE)
 	var/list/found_machines = list()
 	var/list/cables = list()
 	var/index = 1
@@ -295,15 +306,14 @@
 		working_cable = cables[index]
 		index++
 
-		var/list/connections = working_cable.get_cable_connections(skip_assigned_powernets)
+		PN.add_cable(working_cable)
+
+		var/list/connections = working_cable.get_cable_connections(skip_assignedpowernets)
+		found_machines += working_cable.get_machine_connections(skip_assignedpowernets)
 
 		for(var/obj/structure/cable/cable_entry in connections)
-			if(!cables[cable_entry]) //Since it's an associated list, we can just do an access and check it's null before adding; prevents duplicate entries
-				cables[cable_entry] = TRUE
+			cables[cable_entry] = TRUE // Since it's associative, cables are only inserted once.
 
-	for(var/obj/structure/cable/cable_entry in cables)
-		PN.add_cable(cable_entry)
-		found_machines += cable_entry.get_machine_connections(skip_assigned_powernets)
 
 	//now that the powernet is set, connect found machines to it
 	for(var/obj/machinery/power/PM in found_machines)

@@ -8,14 +8,16 @@
 	icon_state = "term"
 	desc = "It's an underfloor wiring terminal for power equipment."
 	layer = WIRE_TERMINAL_LAYER //a bit above wires
-	var/obj/machinery/power/master = null
 	network_flags = NETWORK_FLAG_POWERNET_DATANODE
+
+	var/obj/machinery/power/master = null
 
 
 /obj/machinery/power/terminal/Initialize(mapload)
 	. = ..()
 
 	AddElement(/datum/element/undertile, TRAIT_T_RAY_VISIBLE, use_alpha = TRUE)
+	connect_to_network()
 
 /obj/machinery/power/terminal/Destroy()
 	if(master)

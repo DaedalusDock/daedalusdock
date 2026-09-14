@@ -382,8 +382,7 @@
 				template.y = y; \
 				break; \
 			}; \
-		}; \
-		while (collisions <= MAX_COLLISIONS_BEFORE_ABORT); \
+		} while (collisions <= MAX_COLLISIONS_BEFORE_ABORT); \
 	} while(FALSE);
 
 /// Generates the random map for the magnet.

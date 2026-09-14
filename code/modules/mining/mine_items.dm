@@ -52,17 +52,16 @@
 
 /obj/structure/closet/secure_closet/miner/PopulateContents()
 	..()
-	new /obj/item/stack/sheet/mineral/sandbags(src, 5)
-	new /obj/item/storage/box/emptysandbags(src)
 	new /obj/item/shovel(src)
-	new /obj/item/pickaxe/mini(src)
-	new /obj/item/radio/headset/headset_cargo/mining(src)
-	new /obj/item/flashlight/seclite(src)
-	new /obj/item/storage/bag/plants(src)
-	new /obj/item/storage/bag/ore(src)
-	new /obj/item/t_scanner/adv_mining_scanner/lesser(src)
+	new /obj/item/pickaxe/diamond(src)
 	new /obj/item/clothing/glasses/meson(src)
-	new /obj/item/survivalcapsule(src)
+	new /obj/item/t_scanner/adv_mining_scanner/lesser(src)
+	new /obj/item/storage/bag/ore(src)
+	new /obj/item/clothing/head/helmet/space/nasavoid/old(src)
+	new /obj/item/clothing/suit/space/nasavoid/old(src)
+	new /obj/item/clothing/mask/breath(src)
+	new /obj/item/flashlight/seclite(src)
+
 
 
 /**********************Shuttle Computer**************************/

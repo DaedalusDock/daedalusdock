@@ -336,10 +336,7 @@
 /turf/open/floor/plating,
 /area/station/maintenance/starboard/greater)
 "asz" = (
-/obj/machinery/mineral/ore_redemption{
-	input_dir = 2;
-	output_dir = 1
-	},
+/obj/machinery/mineral/material_bank,
 /obj/machinery/door/window/right/directional/south,
 /obj/machinery/door/window/right/directional/north,
 /obj/effect/mapping_helpers/access/all/supply/general/windoor,
@@ -10274,7 +10271,6 @@
 /area/station/maintenance/starboard/aft)
 "kAN" = (
 /obj/structure/table/reinforced,
-/obj/item/circuitboard/machine/ore_silo,
 /turf/open/floor/engine/airless,
 /area/space/nearstation)
 "kAO" = (
@@ -19358,7 +19354,6 @@
 "tqW" = (
 /obj/effect/turf_decal/delivery,
 /obj/machinery/light_switch/directional/north,
-/obj/machinery/mineral/equipment_vendor,
 /turf/open/floor/iron/ported/techfloor_grid,
 /area/station/cargo/miningoffice)
 "trE" = (

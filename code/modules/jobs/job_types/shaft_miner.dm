@@ -38,17 +38,11 @@
 
 	id_template = /datum/access_template/job/shaft_miner
 	uniform = /obj/item/clothing/under/rank/cargo/miner
-	backpack_contents = list(
-		/obj/item/flashlight/seclite = 1,
-		/obj/item/knife/combat/survival = 1,
-		/obj/item/mining_voucher = 1,
-		/obj/item/stack/marker_beacon/ten = 1,
-		)
+
 	belt = /obj/item/modular_computer/tablet/pda/shaftminer
 	ears = /obj/item/radio/headset/headset_cargo/mining
 	gloves = /obj/item/clothing/gloves/color/black
 	shoes = /obj/item/clothing/shoes/workboots/mining
-	l_pocket = /obj/item/reagent_containers/hypospray/medipen/survival
 	r_pocket = /obj/item/storage/bag/ore //causes issues if spawned in backpack
 
 	back = /obj/item/storage/backpack/explorer

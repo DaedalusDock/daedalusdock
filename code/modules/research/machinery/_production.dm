@@ -7,9 +7,11 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	name = "technology fabricator"
 	desc = "Makes researched and prototype items with materials and energy."
 	layer = BELOW_OBJ_LAYER
+
 	/// Materials needed / coeff = actual.
 	var/efficiency_coeff = 1
-	var/datum/component/remote_materials/materials
+	/// Material container
+	var/datum/component/material_container/mat_container
 	var/allowed_buildtypes = NONE
 
 	/// Used by the search in the UI.
@@ -36,14 +38,14 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	queue = list()
 	create_reagents(0, OPENCONTAINER)
 	matching_designs = list()
-	materials = AddComponent(/datum/component/remote_materials, "lathe", mapload, mat_container_flags=BREAKDOWN_FLAGS_LATHE)
+	mat_container = AddComponent(/datum/component/material_container, GLOB.default_material_container_material_whitelist, INFINITY, BREAKDOWN_FLAGS_LATHE, allowed_items=/obj/item/stack)
 	RefreshParts()
 	update_icon(UPDATE_OVERLAYS)
 	if(internal_disk)
 		compile_categories()
 
 /obj/machinery/rnd/production/Destroy()
-	materials = null
+	mat_container = null
 	matching_designs = null
 	return ..()
 
@@ -59,16 +61,20 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 
 /obj/machinery/rnd/production/proc/calculate_efficiency()
 	efficiency_coeff = 1
+
 	if(reagents) //If reagents/materials aren't initialized, don't bother, we'll be doing this again after reagents init anyways.
 		reagents.maximum_volume = 0
 		for(var/obj/item/reagent_containers/cup/G in component_parts)
 			reagents.maximum_volume += G.volume
 			G.reagents.trans_to(src, G.reagents.total_volume)
-	if(materials)
+
+	if(mat_container)
 		var/total_storage = 0
 		for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 			total_storage += M.rating * 75000
-		materials.set_local_size(total_storage)
+
+		mat_container.max_amount = total_storage
+
 	var/total_rating = 1.2
 	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		total_rating = clamp(total_rating - (M.rating * 0.1), 0, 1)
@@ -137,8 +143,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	power = min(active_power_usage, power)
 	use_power(power)
 
-	materials.mat_container.use_materials(efficient_mats, amount)
-	materials.silo_log(src, "built", -amount, "[D.name]", efficient_mats)
+	mat_container.use_materials(efficient_mats, amount)
 
 	for(var/R in D.reagents_list)
 		reagents.remove_reagent(R, D.reagents_list[R]*amount/coeff)
@@ -159,7 +164,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	for(var/MAT in D.materials)
 		efficient_mats[MAT] = D.materials[MAT]/coeff
 
-	if(!materials.mat_container.has_materials(efficient_mats, amount))
+	if(!mat_container.has_materials(efficient_mats, amount))
 		say("Not enough materials to complete object[amount > 1? "s" : ""].")
 		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
 		return FALSE
@@ -174,17 +179,6 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 		say("This machine does not have the necessary manipulation systems for this design. Please contact Ananke Support!")
 		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
 		return FALSE
-
-	if(!materials.mat_container)
-		say("No connection to material storage, please contact the quartermaster.")
-		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
-		return FALSE
-
-	if(materials.on_hold())
-		say("Mineral access is on hold, please contact the quartermaster.")
-		playsound(src, 'sound/machines/buzz-two.ogg', 50, FALSE)
-		return FALSE
-
 	return TRUE
 
 /**
@@ -195,10 +189,7 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
  * - material: The material being checked.
  */
 /obj/machinery/rnd/production/proc/check_material_req(datum/design/being_built, material)
-	if(!materials.mat_container)  // no connected silo
-		return 0
-
-	var/mat_amt = materials.mat_container.get_material_amount(material)
+	var/mat_amt = mat_container.get_material_amount(material)
 	if(!mat_amt)
 		return 0
 
@@ -283,10 +274,9 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 /obj/machinery/rnd/production/proc/ui_header()
 	var/list/l = list()
 	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Ananke [department_tag ? "[department_tag] Fabricator" : "Omni Fabricator"]</b></legend>[RDSCREEN_NOBREAK]"
-	if (materials.mat_container)
-		l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [materials.format_amount()]</A>"
-	else
-		l += "<font color='red'>No material storage connected, please contact the quartermaster.</font>"
+	if (mat_container)
+		l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MATERIALS]'><B>Material Amount:</B> [mat_container.format_amount()]</A>"
+
 	l += "<A href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_CHEMICALS]'><B>Chemical volume:</B> [reagents.total_volume] / [reagents.maximum_volume]</A>"
 	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MODIFY_MEMORY]'>Manage Data</a>"
 	l += "<a href='?src=[REF(src)];switch_screen=[FABRICATOR_SCREEN_MAIN]'>Main Screen</a><br>"
@@ -294,14 +284,11 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	return l
 
 /obj/machinery/rnd/production/proc/ui_screen_materials()
-	if (!materials.mat_container)
-		screen = FABRICATOR_SCREEN_MAIN
-		return ui_screen_main()
 	var/list/l = list()
 	l += "<fieldset class='computerPaneSimple'><legend class='computerLegend'><b>Material Storage</b></legend>"
-	for(var/mat_id in materials.mat_container.materials)
+	for(var/mat_id in mat_container.materials)
 		var/datum/material/M = mat_id
-		var/amount = materials.mat_container.materials[mat_id]
+		var/amount = mat_container.materials[mat_id]
 		var/ref = REF(M)
 		l += "* [amount] of [M.name]: "
 		if(amount >= MINERAL_MATERIAL_AMOUNT) l += "<A href='?src=[REF(src)];ejectsheet=[ref];eject_amt=1'>Eject</A> [RDSCREEN_NOBREAK]"
@@ -422,17 +409,9 @@ DEFINE_INTERACTABLE(/obj/machinery/rnd/production)
 	updateUsrDialog()
 
 /obj/machinery/rnd/production/proc/eject_sheets(eject_sheet, eject_amt)
-	var/datum/component/material_container/mat_container = materials.mat_container
-	if (!mat_container)
-		say("No access to material storage, please contact the quartermaster.")
-		return 0
-	if (materials.on_hold())
-		say("Mineral access is on hold, please contact the quartermaster.")
-		return 0
 	var/count = mat_container.retrieve_sheets(text2num(eject_amt), eject_sheet, drop_location())
 	var/list/matlist = list()
 	matlist[eject_sheet] = MINERAL_MATERIAL_AMOUNT
-	materials.silo_log(src, "ejected", -count, "sheets", matlist)
 	return count
 
 /obj/machinery/rnd/production/proc/ui_screen_main()

@@ -9,7 +9,7 @@
 	has_disk_slot = TRUE
 
 	/// The internal material bus
-	var/datum/component/remote_materials/materials
+	var/datum/component/material_container/mat_container
 
 	density = TRUE
 
@@ -19,18 +19,18 @@
 	for (var/datum/design/design as anything in SStech.designs)
 		if (!(design.build_type & COMPONENT_PRINTER) || !ispath(design.build_path, /obj/item/circuit_component))
 			continue
-			designs += design
+
+		designs += design
 
 	var/datum/c4_file/fab_design_bundle/dundle = new(designs)
 	disk_write_file(dundle, internal_disk)
 
 
-	materials = AddComponent( \
-		/datum/component/remote_materials, \
-		"component_printer", \
-		mapload, \
-		mat_container_flags = BREAKDOWN_FLAGS_LATHE, \
-	)
+	mat_container = AddComponent(/datum/component/material_container, GLOB.default_material_container_material_whitelist, INFINITY, BREAKDOWN_FLAGS_LATHE, allowed_items=/obj/item/stack)
+
+/obj/machinery/component_printer/Destroy()
+	mat_container = null
+	. = ..()
 
 /obj/machinery/component_printer/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -50,14 +50,10 @@
 	if (!(design.build_type & COMPONENT_PRINTER))
 		return
 
-	if (materials.on_hold())
+	if (!mat_container?.has_materials(design.materials))
 		return
 
-	if (!materials.mat_container?.has_materials(design.materials))
-		return
-
-	materials.mat_container.use_materials(design.materials)
-	materials.silo_log(src, "printed", -1, design.name, design.materials)
+	mat_container.use_materials(design.materials)
 	return new design.build_path(drop_location())
 
 /obj/machinery/component_printer/ui_act(action, list/params)
@@ -75,17 +71,12 @@
 			if (!(design.build_type & COMPONENT_PRINTER))
 				return TRUE
 
-			if (materials.on_hold())
-				say("Mineral access is on hold, please contact the quartermaster.")
-				return TRUE
-
-			if (!materials.mat_container?.has_materials(design.materials))
+			if (!mat_container.has_materials(design.materials))
 				say("Not enough materials.")
 				return TRUE
 
 			balloon_alert_to_viewers("printed [design.name]")
-			materials.mat_container?.use_materials(design.materials)
-			materials.silo_log(src, "printed", -1, design.name, design.materials)
+			mat_container?.use_materials(design.materials)
 			var/atom/printed_design = new design.build_path(drop_location())
 			printed_design.pixel_x = printed_design.base_pixel_x + rand(-5, 5)
 			printed_design.pixel_y = printed_design.base_pixel_y + rand(-5, 5)
@@ -97,13 +88,13 @@
 				return TRUE
 
 			// SAFETY: eject_sheets checks for valid mats
-			materials.eject_sheets(material, amount)
+			mat_container.retrieve_sheets(amount, material)
 
 	return TRUE
 
 /obj/machinery/component_printer/ui_data(mob/user)
 	var/list/data = list()
-	data["materials"] = materials.mat_container.ui_data()
+	data["materials"] = mat_container.ui_data()
 	return data
 
 /obj/machinery/component_printer/ui_static_data(mob/user)
@@ -251,7 +242,7 @@
 	circuit = /obj/item/circuitboard/machine/module_duplicator
 
 	/// The internal material bus
-	var/datum/component/remote_materials/materials
+	var/datum/component/material_container/mat_container
 
 	density = TRUE
 
@@ -262,12 +253,7 @@
 /obj/machinery/module_duplicator/Initialize(mapload)
 	. = ..()
 
-	materials = AddComponent( \
-		/datum/component/remote_materials, \
-		"module_duplicator", \
-		mapload, \
-		mat_container_flags = BREAKDOWN_FLAGS_LATHE, \
-	)
+	mat_container = AddComponent(/datum/component/material_container, GLOB.default_material_container_material_whitelist, INFINITY, BREAKDOWN_FLAGS_LATHE, allowed_items=/obj/item/stack)
 
 /obj/machinery/module_duplicator/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -293,19 +279,14 @@
 				return TRUE
 
 			var/list/design = scanned_designs[design_id]
-
-			if (materials.on_hold())
-				say("Mineral access is on hold, please contact the quartermaster.")
-				return TRUE
-
-			if (!materials.mat_container?.has_materials(design["materials"]))
+			if (!mat_container.has_materials(design["materials"]))
 				say("Not enough materials.")
 				return TRUE
 
 			balloon_alert_to_viewers("printed [design["name"]]")
-			materials.mat_container?.use_materials(design["materials"])
-			materials.silo_log(src, "printed", -1, design["name"], design["materials"])
+			mat_container.use_materials(design["materials"])
 			print_module(design)
+
 		if ("remove_mat")
 			var/datum/material/material = locate(params["ref"])
 			var/amount = text2num(params["amount"])
@@ -314,7 +295,7 @@
 				return TRUE
 
 			// SAFETY: eject_sheets checks for valid mats
-			materials.eject_sheets(material, amount)
+			mat_container.retrieve_sheets(amount, material)
 
 	return TRUE
 
@@ -394,7 +375,7 @@
 
 /obj/machinery/module_duplicator/ui_data(mob/user)
 	var/list/data = list()
-	data["materials"] = materials.mat_container.ui_data()
+	data["materials"] = mat_container.ui_data()
 	return data
 
 /obj/machinery/module_duplicator/ui_static_data(mob/user)

@@ -455,13 +455,6 @@
 	build_path = /obj/item/circuitboard/machine/stacking_machine
 	mapload_design_flags = DESIGN_IMPRINTER
 
-/datum/design/board/ore_silo
-	name = "Machine Board (Ore Silo)"
-	desc = "The circuit board for an ore silo."
-	id = "ore_silo"
-	build_path = /obj/item/circuitboard/machine/ore_silo
-	mapload_design_flags = DESIGN_IMPRINTER
-
 /datum/design/board/fat_sucker
 	name = "Machine Board (Lipid Extractor)"
 	desc = "The circuit board for a lipid extractor."

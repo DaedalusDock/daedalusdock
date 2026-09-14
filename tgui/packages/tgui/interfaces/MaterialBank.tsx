@@ -18,7 +18,6 @@ type ORMData = {
   diskDesigns: Design[];
   hasDisk: BooleanLike;
   materials: Material[];
-  unclaimedPoints: number;
 };
 
 type Design = {
@@ -39,11 +38,11 @@ type Material = {
   value: number;
 };
 
-export const OreRedemptionMachine = (props) => {
+export const MaterialBank = (props) => {
   const { act, data } = useBackend<ORMData>();
-  const { unclaimedPoints, materials, alloys, diskDesigns, hasDisk } = data;
+  const { materials, alloys, diskDesigns, hasDisk } = data;
   return (
-    <Window title="Ore Redemption Machine" width={440} height={550}>
+    <Window title="Material Bank" width={440} height={550}>
       <Window.Content scrollable>
         <Section>
           <BlockQuote mb={1}>
@@ -51,18 +50,6 @@ export const OreRedemptionMachine = (props) => {
             <br />
             Slag is not accepted.
           </BlockQuote>
-          <Box>
-            <Box inline color="label" mr={1}>
-              Unclaimed points:
-            </Box>
-            {unclaimedPoints}
-            <Button
-              ml={2}
-              content="Claim"
-              disabled={unclaimedPoints === 0}
-              onClick={() => act('Claim')}
-            />
-          </Box>
         </Section>
         <Section>
           {(hasDisk && (

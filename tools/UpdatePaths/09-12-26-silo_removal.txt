@@ -1,0 +1,5 @@
+/obj/item/rcd_upgrade/silo_link : @DELETE
+/obj/machinery/ore_silo : @DELETE
+/obj/item/circuitboard/machine/ore_silo : @DELETE
+/obj/machinery/mineral/ore_redemption : /obj/machinery/mineral/material_bank
+/obj/machinery/mineral/equipment_vendor : @DELETE

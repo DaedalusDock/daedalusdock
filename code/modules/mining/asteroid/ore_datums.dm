@@ -12,12 +12,12 @@
 	var/rarity = MINING_NO_RANDOM_SPAWN
 
 	// How many turfs per spawn trigger should this ore occupy
-	var/turfs_per_vein_min = 0
-	var/turfs_per_vein_max = 0
+	var/turfs_per_vein_min = 1
+	var/turfs_per_vein_max = 1
 
 	// How many sheets are dropped per turf
-	var/amount_per_turf_min = 0
-	var/amount_per_turf_max = 0
+	var/amount_per_turf_min = 1
+	var/amount_per_turf_max = 1
 
 	/// How much mining health to give to the turfs.
 	var/mining_health = 0
@@ -39,11 +39,11 @@
 
 	rarity = MINING_COMMON
 
-	turfs_per_vein_min = 6
-	turfs_per_vein_max = 16
+	turfs_per_vein_min = 2
+	turfs_per_vein_max = 6
 
-	amount_per_turf_min = 3
-	amount_per_turf_max = 6
+	amount_per_turf_min = 1
+	amount_per_turf_max = 4
 
 	mining_health = 60
 	spread_chance = 60
@@ -58,8 +58,8 @@
 	turfs_per_vein_min = 4
 	turfs_per_vein_max = 8
 
-	amount_per_turf_min = 4
-	amount_per_turf_max = 12
+	amount_per_turf_min = 1
+	amount_per_turf_max = 3
 
 	mining_health = 80
 	spread_chance = 20
@@ -71,11 +71,11 @@
 
 	rarity = MINING_COMMON
 
-	turfs_per_vein_min = 4
-	turfs_per_vein_max = 8
+	turfs_per_vein_min = 1
+	turfs_per_vein_max = 4
 
-	amount_per_turf_min = 4
-	amount_per_turf_max = 8
+	amount_per_turf_min = 1
+	amount_per_turf_max = 3
 
 	mining_health = 100
 	spread_chance = 5
@@ -87,11 +87,11 @@
 
 	rarity = MINING_UNCOMMON
 
-	turfs_per_vein_min = 4
-	turfs_per_vein_max = 8
+	turfs_per_vein_min = 1
+	turfs_per_vein_max = 4
 
-	amount_per_turf_min = 4
-	amount_per_turf_max = 8
+	amount_per_turf_min = 1
+	amount_per_turf_max = 2
 
 	mining_health = 100
 	spread_chance = 5
@@ -106,8 +106,8 @@
 	turfs_per_vein_min = 1
 	turfs_per_vein_max = 2
 
-	amount_per_turf_min = 8
-	amount_per_turf_max = 16
+	amount_per_turf_min = 1
+	amount_per_turf_max = 4
 
 	mining_health = 100
 	spread_chance = 0
@@ -119,11 +119,11 @@
 
 	rarity = MINING_RARE
 
-	turfs_per_vein_min = 2
+	turfs_per_vein_min = 1
 	turfs_per_vein_max = 4
 
-	amount_per_turf_min = 4
-	amount_per_turf_max = 8
+	amount_per_turf_min = 1
+	amount_per_turf_max = 1
 
 	mining_health = 100
 	spread_chance = 0
@@ -135,11 +135,11 @@
 
 	rarity = MINING_RARE
 
-	turfs_per_vein_min = 2
-	turfs_per_vein_max = 4
+	turfs_per_vein_min = 1
+	turfs_per_vein_max = 5
 
-	amount_per_turf_min = 8
-	amount_per_turf_max = 16
+	amount_per_turf_min = 1
+	amount_per_turf_max = 2
 
 	mining_health = 100
 	spread_chance = 0
@@ -162,7 +162,7 @@
 	scan_state = "rock_Bluespace"
 	rarity = MINING_NO_RANDOM_SPAWN
 
-	amount_per_turf_min = 8
-	amount_per_turf_max = 16
+	amount_per_turf_min = 1
+	amount_per_turf_max = 1
 
 	mining_health = 100

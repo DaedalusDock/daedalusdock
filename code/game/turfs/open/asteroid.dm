@@ -213,6 +213,15 @@ GLOBAL_LIST_EMPTY(dug_up_basalt)
 /turf/open/misc/asteroid/snow/ice/burn_tile()
 	return FALSE
 
+/turf/open/misc/asteroid/snow/ice/tospace
+	explodable = TRUE
+	baseturfs = /turf/baseturf_bottom
+
+/turf/open/misc/asteroid/snow/ice/airless/tospace
+	explodable = TRUE
+	baseturfs = /turf/baseturf_bottom
+	initial_gas = null
+
 /turf/open/misc/asteroid/snow/airless
 	initial_gas = AIRLESS_ATMOS
 

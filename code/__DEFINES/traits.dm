@@ -253,6 +253,7 @@ Remember to update _globalvars/traits.dm if you're adding/removing/renaming trai
 #define TRAIT_ANTIMAGIC_NO_SELFBLOCK "anti_magic_no_selfblock"
 #define TRAIT_DEPRESSION "depression"
 #define TRAIT_JOLLY "jolly"
+/// Prevents oxyloss build-up from being unable to breathe.
 #define TRAIT_NOCRITDAMAGE "no_crit"
 /// Cannot experience Shock (pain version, not electrical)
 #define TRAIT_NO_PAINSHOCK "no_painshock"

@@ -1,0 +1,28 @@
+.ManuIO {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+
+  height: 20rem;
+  max-width: 20rem;
+}
+
+.ManuIO__upButton {
+  grid-column-start: 2;
+}
+
+.ManuIO__leftButton {
+  grid-row-start: 2;
+}
+
+.ManuIO__rightButton {
+  grid-row-start: 2;
+  grid-column-start: 3;
+}
+
+.ManuIO__downButton {
+  grid-row-start: 3;
+  grid-column-start: 2;
+}

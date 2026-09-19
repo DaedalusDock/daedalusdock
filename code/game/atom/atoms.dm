@@ -1245,15 +1245,8 @@ TYPEINFO_DEF(/atom)
 /atom/proc/update_atom_colour()
 	if(!length(atom_colours))
 		return
-	for(var/checked_color in atom_colours)
-		if(isnull(checked_color))
-			continue
-		if(islist(checked_color) && length(checked_color))
-			color = checked_color
-			return
 
-		color = checked_color
-		return
+	for(var/checked_color in atom_colours)
 		if(isnull(checked_color))
 			continue
 		if(islist(checked_color) && length(checked_color))

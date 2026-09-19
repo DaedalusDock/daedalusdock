@@ -1055,7 +1055,7 @@
 /obj/item/circuitboard/machine/ore_redemption
 	name = "Ore Redemption (Machine Board)"
 	greyscale_colors = CIRCUIT_COLOR_SUPPLY
-	build_path = /obj/machinery/mineral/ore_redemption
+	build_path = /obj/machinery/mineral/material_bank
 	req_components = list(
 		/obj/item/stack/sheet/glass = 1,
 		/obj/item/stock_parts/matter_bin = 1,
@@ -1068,12 +1068,6 @@
 		/obj/item/disk/data = /obj/item/disk/data/medium
 	)
 	needs_anchored = FALSE
-
-/obj/item/circuitboard/machine/ore_silo
-	name = "Ore Silo (Machine Board)"
-	greyscale_colors = CIRCUIT_COLOR_SUPPLY
-	build_path = /obj/machinery/ore_silo
-	req_components = list()
 
 /obj/item/circuitboard/machine/fabricator/department/cargo
 	name = "Departmental Fabricator - Cargo (Machine Board)"

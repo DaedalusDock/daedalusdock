@@ -8,7 +8,6 @@
 	dye_color = DYE_COSMIC
 	w_class = WEIGHT_CLASS_TINY
 	mats_per_unit = list(/datum/material/bluespace=MINERAL_MATERIAL_AMOUNT)
-	points = 50
 	refined_type = /obj/item/stack/sheet/bluespace_crystal
 	merge_type = /obj/item/stack/ore/bluespace_crystal
 	/// The teleport range when crushed/thrown at someone.
@@ -16,7 +15,6 @@
 
 /obj/item/stack/ore/bluespace_crystal/refined
 	name = "refined bluespace crystal"
-	points = 0
 	refined_type = null
 	merge_type = /obj/item/stack/ore/bluespace_crystal/refined
 
@@ -54,7 +52,6 @@
 	desc = "An artificially made bluespace crystal, it looks delicate."
 	mats_per_unit = list(/datum/material/bluespace=MINERAL_MATERIAL_AMOUNT*0.5)
 	blink_range = 4 // Not as good as the organic stuff!
-	points = 0 //nice try
 	refined_type = null
 	grind_results = list()
 	merge_type = /obj/item/stack/ore/bluespace_crystal/artificial

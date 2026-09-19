@@ -84,12 +84,13 @@
 	circuit = /obj/item/circuitboard/machine/stacking_machine
 	input_dir = EAST
 	output_dir = WEST
+
 	var/obj/machinery/mineral/stacking_unit_console/console
 	var/stk_types = list()
 	var/stk_amt = list()
 	var/stack_list[0] //Key: Type.  Value: Instance of type.
 	var/stack_amt = 50 //amount to stack before releassing
-	var/datum/component/remote_materials/materials
+	var/datum/component/material_container/materials
 	var/force_connect = FALSE
 	///Proximity monitor associated with this atom, needed for proximity checks.
 	var/datum/proximity_monitor/proximity_monitor
@@ -97,7 +98,7 @@
 /obj/machinery/mineral/stacking_machine/Initialize(mapload)
 	. = ..()
 	proximity_monitor = new(src, 1)
-	materials = AddComponent(/datum/component/remote_materials, "stacking", mapload, FALSE, mapload && force_connect)
+	materials = AddComponent(/datum/component/material_container, GLOB.default_material_container_material_whitelist, INFINITY, allowed_items=/obj/item/stack)
 
 /obj/machinery/mineral/stacking_machine/Destroy()
 	if(console)
@@ -124,16 +125,6 @@
 	if(QDELETED(inp))
 		return
 
-	// Dump the sheets to the silo if attached
-	if(materials.silo && !materials.on_hold())
-		var/matlist = inp.custom_materials & materials.mat_container.materials
-		if (length(matlist))
-			var/inserted = materials.mat_container.insert_item(inp)
-			materials.silo_log(src, "collected", inserted, "sheets", matlist)
-			qdel(inp)
-			return
-
-	// No silo attached process to internal storage
 	var/key = inp.merge_type
 	var/obj/item/stack/sheet/storage = stack_list[key]
 	if(!storage) //It's the first of this sheet added

@@ -387,7 +387,6 @@
 /area/station/science/misc_lab)
 "co" = (
 /obj/machinery/light/directional/east,
-/obj/machinery/ore_silo,
 /turf/open/floor/iron,
 /area/station/science)
 "cp" = (

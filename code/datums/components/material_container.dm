@@ -75,7 +75,7 @@
 	. = ..()
 
 	if(!(mat_container_flags & MATCONTAINER_NO_INSERT))
-		RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
+		RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_item_interact))
 	if(mat_container_flags & MATCONTAINER_EXAMINE)
 		RegisterSignal(parent, COMSIG_PARENT_EXAMINE, PROC_REF(on_examine))
 
@@ -90,9 +90,9 @@
 			UnregisterSignal(parent, COMSIG_PARENT_EXAMINE)
 
 		if(old_flags & MATCONTAINER_NO_INSERT && !(mat_container_flags & MATCONTAINER_NO_INSERT))
-			RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, PROC_REF(on_attackby))
+			RegisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION, PROC_REF(on_item_interact))
 		else if(!(old_flags & MATCONTAINER_NO_INSERT) && mat_container_flags & MATCONTAINER_NO_INSERT)
-			UnregisterSignal(parent, COMSIG_PARENT_ATTACKBY)
+			UnregisterSignal(parent, COMSIG_ATOM_ITEM_INTERACTION)
 
 
 /datum/component/material_container/proc/on_examine(datum/source, mob/user, list/examine_texts)
@@ -105,48 +105,48 @@
 			examine_texts += span_notice("It has [amt] units of [lowertext(M.name)] stored.")
 
 /// Proc that allows players to fill the parent with mats
-/datum/component/material_container/proc/on_attackby(datum/source, obj/item/I, mob/living/user)
+/datum/component/material_container/proc/on_item_interact(datum/source, mob/living/user, obj/item/tool, list/modifiers)
 	SIGNAL_HANDLER
 
 	var/list/tc = allowed_item_typecache
 	if(!(mat_container_flags & MATCONTAINER_ANY_INTENT) && user.combat_mode)
-		return
+		return NONE
 
-	if(I.item_flags & ABSTRACT)
-		return
+	if(tool.item_flags & ABSTRACT)
+		return NONE
 
-	if((I.flags_1 & HOLOGRAM_1) || (I.item_flags & NO_MAT_REDEMPTION) || (tc && !is_type_in_typecache(I, tc)))
+	if((tool.flags_1 & HOLOGRAM_1) || (tool.item_flags & NO_MAT_REDEMPTION) || (tc && !is_type_in_typecache(tool, tc)))
 		if(!(mat_container_flags & MATCONTAINER_SILENT))
-			to_chat(user, span_warning("[parent] won't accept [I]!"))
-		return
+			to_chat(user, span_warning("[parent] will not accept [tool]."))
+		return ITEM_INTERACT_BLOCKING
 
-	. = COMPONENT_NO_AFTERATTACK
+	if(precondition && !precondition.Invoke(user))
+		return ITEM_INTERACT_BLOCKING
 
-	var/datum/callback/pc = precondition
-	if(pc && !pc.Invoke(user))
-		return
-
-	var/material_amount = get_item_material_amount(I, mat_container_flags)
+	var/material_amount = get_item_material_amount(tool, mat_container_flags)
 	if(!material_amount)
-		to_chat(user, span_warning("[I] does not contain sufficient materials to be accepted by [parent]."))
-		return
+		to_chat(user, span_warning("[tool] does not contain sufficient materials to be accepted by [parent]."))
+		return ITEM_INTERACT_BLOCKING
+
 	if(!has_space(material_amount))
-		if(istype(I, /obj/item/stack))
+		if(istype(tool, /obj/item/stack))
 			//figure out how much space is left
 			var/space_left = max_amount - total_amount
 			//figure out the amount of sheets that can fit that space
-			var/obj/item/stack/stack_to_split = I
+			var/obj/item/stack/stack_to_split = tool
 			var/material_per_sheet = material_amount / stack_to_split.amount
 			var/sheets_to_insert = round(space_left / material_per_sheet)
 			if(!sheets_to_insert)
-				to_chat(user, span_warning("[parent] can't hold any more of [I] sheets."))
-				return
+				to_chat(user, span_warning("[parent] can not hold any more of [tool] sheets."))
+				return ITEM_INTERACT_BLOCKING
 			//split the amount we don't need off
 			INVOKE_ASYNC(stack_to_split, TYPE_PROC_REF(/obj/item/stack, split_stack), user, stack_to_split.amount - sheets_to_insert, user)
 		else
-			to_chat(user, span_warning("[I] contains more materials than [parent] has space to hold."))
-			return
-	user_insert(I, user, mat_container_flags)
+			to_chat(user, span_warning("[tool] contains more materials than [parent] has space to hold."))
+			return ITEM_INTERACT_BLOCKING
+
+	user_insert(tool, user, mat_container_flags)
+	return ITEM_INTERACT_SUCCESS
 
 /// Proc used for when player inserts materials
 /datum/component/material_container/proc/user_insert(obj/item/held_item, mob/living/user, breakdown_flags = mat_container_flags)
@@ -430,6 +430,10 @@
 	if(!istype(mat))
 		mat = GET_MATERIAL_REF(mat)
 	return materials[mat]
+
+/// Formats the storage usage.
+/datum/component/material_container/proc/format_amount()
+	return "[total_amount] / [max_amount == INFINITY ? "Unlimited" : max_amount]"
 
 /// List format is list(material_name = list(amount = ..., ref = ..., etc.))
 /datum/component/material_container/ui_data(mob/user)

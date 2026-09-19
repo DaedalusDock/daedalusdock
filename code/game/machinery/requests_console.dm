@@ -71,7 +71,7 @@ TYPEINFO_DEF(/obj/machinery/requests_console)
 	var/priority = REQ_NO_NEW_MESSAGE //Priority of the message being sent
 	var/obj/item/radio/Radio
 	var/emergency //If an emergency has been called by this device. Acts as both a cooldown and lets the responder know where it the emergency was triggered from
-	var/receive_ore_updates = FALSE //If ore redemption machines will send an update when it receives new ores.
+	var/receive_ore_updates = FALSE //If materials banks will send an update when it receives new materials.
 	max_integrity = 300
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)

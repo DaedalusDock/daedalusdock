@@ -358,50 +358,54 @@
 		T.ChangeTurf(/turf/baseturf_bottom)
 
 
+#define INSERT_TEMPLATE(template_path, generator) \
+	do { \
+		var/collisions = 0; \
+		var/x; \
+		var/y; \
+		var/vector/point; \
+		var/template_type = template_path; \
+		var/datum/mining_template/template; \
+		template = new template_type(center_turf, area_size); \
+		template.randomize(); \
+		templates_on_map += template; \
+		do { \
+			point = generator.Rand(); \
+			x = round(point.x, 1); \
+			y = round(point.y, 1); \
+			if(map.return_coordinate(x, y)) { \
+				collisions++; \
+			}; \
+			else { \
+				map.set_coordinate(x, y, template); \
+				template.x = x; \
+				template.y = y; \
+				break; \
+			}; \
+		} while (collisions <= MAX_COLLISIONS_BEFORE_ABORT); \
+	} while(FALSE);
+
 /// Generates the random map for the magnet.
 /obj/machinery/asteroid_magnet/proc/GenerateMap()
 	PRIVATE_PROC(TRUE)
 	map = new(-100, 100, -100, 100)
 
-	// Generate common templates
-	for(var/i in 1 to 12)
-		InsertTemplateToMap(pick(SSmaterials.template_paths_by_rarity["[MINING_COMMON]"]))
+	var/asteroid_count = 400 // 0.001% of cells contain an asteroid
+	var/common_asteroids = floor(asteroid_count * 0.6)
+	var/uncommon_asteroids = floor(asteroid_count * 0.3)
+	var/rare_asteroids = floor(asteroid_count * 0.1)
 
-	/*
-	// Generate uncommon templates
-	for(var/i in 1 to 4)
-		InsertTemplateToMap(pick(SSmaterials.template_paths_by_rarity["[MINING_UNCOMMON]"]))
+	var/generator/gen = generator("square", 0, 100, UNIFORM_RAND)
 
-	// Generate rare templates
-	for(var/i in 1 to 2)
-		InsertTemplateToMap(pick(SSmaterials.template_paths_by_rarity["[MINING_RARE]"]))
-	*/
+	for(var/i in 1 to common_asteroids)
+		INSERT_TEMPLATE(pick(SSmaterials.template_paths_by_rarity["[MINING_COMMON]"]), gen)
 
-/obj/machinery/asteroid_magnet/proc/InsertTemplateToMap(path)
-	PRIVATE_PROC(TRUE)
+	for(var/i in 1 to uncommon_asteroids)
+		INSERT_TEMPLATE(pick(SSmaterials.template_paths_by_rarity["[MINING_UNCOMMON]"]), gen)
 
-	var/collisions = 0
-	var/datum/mining_template/template
-	var/x
-	var/y
+	for(var/i in 1 to rare_asteroids)
+		INSERT_TEMPLATE(pick(SSmaterials.template_paths_by_rarity["[MINING_RARE]"]), gen)
 
-	template = new path(center_turf, area_size)
-	template.randomize()
-	templates_on_map += template
-
-	do
-		x = rand(-100, 100)
-		y = rand(-100, 100)
-
-		if(map.return_coordinate(x, y))
-			collisions++
-		else
-			map.set_coordinate(x, y, template)
-			template.x = x
-			template.y = y
-			break
-
-	while (collisions <= MAX_COLLISIONS_BEFORE_ABORT)
-
+#undef INSERT_TEMPLATE
 #undef MAX_COLLISIONS_BEFORE_ABORT
 #undef STATUS_OKAY

@@ -454,6 +454,7 @@
 
 /// Breaks down to an asteroid floor that breaks down to space
 /turf/closed/mineral/asteroid/tospace
+	turf_type = /turf/open/misc/asteroid/airless/tospace
 	baseturfs = /turf/open/misc/asteroid/airless/tospace
 
 /turf/closed/mineral/random/stationside/asteroid
@@ -470,6 +471,20 @@
 	name = "porous rock"
 	desc = "This rock is filled with pockets of breathable air."
 	baseturfs = /turf/open/misc/asteroid
+
+// yoo BLUE ROCK BLUE ROCK
+/turf/closed/mineral/iron/ice
+	icon_state = "icerock"
+	icon = MAP_SWITCH('icons/turf/walls/legacy/icerock_wall.dmi', 'icons/turf/mining.dmi')
+	base_icon_state = "icerock_wall"
+	smoothing_flags = SMOOTH_BITMASK | SMOOTH_BORDER
+	turf_type = /turf/open/misc/asteroid/snow/ice
+	baseturfs = /turf/open/misc/asteroid/snow/ice
+	temperature = 180
+
+/turf/closed/mineral/iron/ice/tospace
+	turf_type = /turf/open/misc/asteroid/snow/ice/airless/tospace
+	baseturfs = /turf/open/misc/asteroid/snow/ice/airless/tospace
 
 //GIBTONITE
 

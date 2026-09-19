@@ -20,8 +20,6 @@
 	abstract_type = /obj/item/stack/ore
 
 	var/list/stack_overlays
-	/// How many points this ore gets you from the ore redemption machine
-	var/points = 0
 	/// What this ore defaults to being refined into
 	var/refined_type = null
 
@@ -77,7 +75,6 @@
 	icon_state = "Uranium ore"
 	inhand_icon_state = "Uranium ore"
 	singular_name = "uranium ore chunk"
-	points = 30
 	material_flags = NONE
 	mats_per_unit = list(/datum/material/uranium=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/uranium
@@ -88,7 +85,6 @@
 	icon_state = "Iron ore"
 	inhand_icon_state = "Iron ore"
 	singular_name = "iron ore chunk"
-	points = 1
 	mats_per_unit = list(/datum/material/iron=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/iron
 	merge_type = /obj/item/stack/ore/iron
@@ -98,7 +94,6 @@
 	icon_state = "Glass ore"
 	inhand_icon_state = "Glass ore"
 	singular_name = "sand pile"
-	points = 1
 	mats_per_unit = list(/datum/material/glass=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/glass
 	w_class = WEIGHT_CLASS_TINY
@@ -142,7 +137,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	icon_state = "Plasma ore"
 	inhand_icon_state = "Plasma ore"
 	singular_name = "plasma ore chunk"
-	points = 15
 	mats_per_unit = list(/datum/material/plasma=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/plasma
 	merge_type = /obj/item/stack/ore/plasma
@@ -156,7 +150,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	icon_state = "Silver ore"
 	inhand_icon_state = "Silver ore"
 	singular_name = "silver ore chunk"
-	points = 16
 	mats_per_unit = list(/datum/material/silver=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/silver
 	merge_type = /obj/item/stack/ore/silver
@@ -166,7 +159,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	icon_state = "Gold ore"
 	inhand_icon_state = "Gold ore"
 	singular_name = "gold ore chunk"
-	points = 18
 	mats_per_unit = list(/datum/material/gold=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/gold
 	merge_type = /obj/item/stack/ore/gold
@@ -176,7 +168,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	icon_state = "Diamond ore"
 	inhand_icon_state = "Diamond ore"
 	singular_name = "diamond ore chunk"
-	points = 50
 	mats_per_unit = list(/datum/material/diamond=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/diamond
 	merge_type = /obj/item/stack/ore/diamond
@@ -186,7 +177,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	icon_state = "Bananium ore"
 	inhand_icon_state = "Bananium ore"
 	singular_name = "bananium ore chunk"
-	points = 60
 	mats_per_unit = list(/datum/material/bananium=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/bananium
 	merge_type = /obj/item/stack/ore/bananium
@@ -196,7 +186,6 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	icon_state = "Titanium ore"
 	inhand_icon_state = "Titanium ore"
 	singular_name = "titanium ore chunk"
-	points = 50
 	mats_per_unit = list(/datum/material/titanium=MINERAL_MATERIAL_AMOUNT)
 	refined_type = /obj/item/stack/sheet/mineral/titanium
 	merge_type = /obj/item/stack/ore/titanium

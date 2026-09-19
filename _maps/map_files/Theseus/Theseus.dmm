@@ -20395,11 +20395,7 @@
 /obj/machinery/door/window/left/directional/east{
 	name = "Ore Redemtion Window"
 	},
-/obj/machinery/mineral/ore_redemption{
-	dir = 4;
-	input_dir = 8;
-	output_dir = 4
-	},
+/obj/machinery/mineral/material_bank,
 /turf/open/floor/iron,
 /area/station/cargo/sorting)
 "hoN" = (
@@ -22717,7 +22713,6 @@
 /turf/open/floor/iron/ported/techfloor,
 /area/station/commons/locker)
 "iiD" = (
-/obj/machinery/mineral/equipment_vendor,
 /obj/effect/turf_decal/tile/brown/anticorner/contrasted{
 	dir = 8
 	},
@@ -39329,7 +39324,6 @@
 /area/station/maintenance/port/fore)
 "nYl" = (
 /obj/effect/turf_decal/bot_white/right,
-/obj/machinery/ore_silo,
 /obj/effect/turf_decal/tile/neutral/fourcorners,
 /turf/open/floor/iron/dark,
 /area/station/ai_monitored/command/nuke_storage)

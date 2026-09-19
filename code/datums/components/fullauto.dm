@@ -321,7 +321,8 @@
 		return NONE
 
 	if(!can_fire(check_lockout = TRUE))
-		shoot_with_empty_chamber(shooter)
+		spawn(-1)
+			shoot_with_empty_chamber(shooter)
 		return NONE
 
 	INVOKE_ASYNC(src, PROC_REF(do_autofire_shot), source, target, shooter, params)

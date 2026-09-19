@@ -139,6 +139,7 @@ GLOBAL_LIST_EMPTY(station_turfs)
 	var/area/our_area = loc
 	if(!our_area.luminosity && always_lit) //Only provide your own lighting if the area doesn't for you
 		add_overlay(global.fullbright_overlay)
+		luminosity = 1
 
 	if (z_flags & Z_MIMIC_BELOW)
 		setup_zmimic(mapload)

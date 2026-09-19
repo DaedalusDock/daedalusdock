@@ -172,6 +172,8 @@ GLOBAL_LIST_INIT(turfs_without_ground, typecacheof(list(
 //Misc mobs
 #define isobserver(A) (istype(A, /mob/dead/observer))
 
+#define isghost(A) (istype(A, /mob/dead/ghost))
+
 #define isdead(A) (istype(A, /mob/dead))
 
 #define isnewplayer(A) (istype(A, /mob/dead/new_player))

@@ -63,15 +63,13 @@
 /// Called when [TRAIT_KNOCKEDOUT] is added to the mob.
 /mob/living/proc/on_knockedout_trait_gain(datum/source)
 	SIGNAL_HANDLER
-	if(stat < UNCONSCIOUS)
-		set_stat(UNCONSCIOUS)
+	Unconscious(1, TRUE)
 
 /// Called when [TRAIT_KNOCKEDOUT] is removed from the mob.
 /mob/living/proc/on_knockedout_trait_loss(datum/source)
 	SIGNAL_HANDLER
-	if(stat <= UNCONSCIOUS)
-		update_stat()
-
+	var/datum/status_effect/incapacitating/unconscious/uncon = has_status_effect(__IMPLIED_TYPE__)
+	uncon?.consider_expiring()
 
 /// Called when [TRAIT_DEATHCOMA] is added to the mob.
 /mob/living/proc/on_deathcoma_trait_gain(datum/source)
@@ -283,6 +281,7 @@
 /mob/living/proc/on_hearing_loss()
 	SIGNAL_HANDLER
 	refresh_looping_ambience()
+	SEND_SOUND(src, sound(null, repeat = 0, wait = 0, channel = CHANNEL_AMBIENCE))
 
 ///Called when [TRAIT_DEAF] is added to the mob.
 /mob/living/proc/on_hearing_regain()

@@ -54,7 +54,7 @@
 
 /atom/movable/screen/plane_master/ghost
 	name = "ghost plane master"
-	plane = GHOST_PLANE
+	plane = OBSERVER_PLANE
 	blend_mode = BLEND_OVERLAY
 	render_relay_plane = RENDER_PLANE_NON_GAME
 

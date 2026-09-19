@@ -102,12 +102,6 @@
 			continue
 		SEND_SIGNAL(gun, COMSIG_ITEM_RECHARGED)
 
-/obj/effect/powerup/ammo/ctf
-	icon = 'icons/effects/effects.dmi'
-	icon_state = "at_shield1"
-	respawn_time = FALSE
-	lifetime = 30 SECONDS
-
 /obj/effect/powerup/speed
 	name = "Lightning Orb"
 	desc = "You feel faster just looking at it."

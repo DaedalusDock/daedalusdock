@@ -537,13 +537,3 @@
 	else if (emitter.charge < 10)
 		playsound(src,'sound/machines/buzz-sigh.ogg', 50, TRUE)
 	return ITEM_INTERACT_SUCCESS
-
-/obj/machinery/power/emitter/ctf
-	name = "Energy Cannon"
-	active = TRUE
-	active_power_usage = 0
-	idle_power_usage = 0
-	locked = TRUE
-	req_access_txt = "100"
-	welded = TRUE
-	use_power = NO_POWER_USE

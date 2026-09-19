@@ -225,7 +225,7 @@
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_STATION_SENTIENCE))
 		return candidates
 
-	for(var/mob/dead/observer/ghost_player in GLOB.player_list)
+	for(var/mob/dead/ghost/ghost_player in GLOB.player_list)
 		candidates += ghost_player
 
 	return poll_candidates(question, jobban_type, be_special_flag, poll_time, ignore_category, flashwindow, candidates)

@@ -235,3 +235,8 @@
 
 	/// A ref of the area we're taking our ambient loop from.
 	var/area/ambience_tracked_area
+
+	/// Lazylists of pixel offsets this mob is currently using
+	/// Modify this via add_offsets and remove_offsets,
+	/// NOT directly (and definitely avoid modifying offsets directly)
+	VAR_PRIVATE/list/offsets

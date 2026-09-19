@@ -561,7 +561,7 @@
 
 		var/mob/M = locate(href_list["sendbacktolobby"])
 
-		if(!isobserver(M))
+		if(!isdead(M))
 			to_chat(usr, span_notice("You can only send ghost players back to the Lobby."), confidential = TRUE)
 			return
 
@@ -1477,11 +1477,6 @@
 					log_query_debug("[usr.key] | [response]")
 		else if(answer == "no")
 			log_query_debug("[usr.key] | Reported no server hang")
-
-	else if(href_list["ctf_toggle"])
-		if(!check_rights(R_ADMIN))
-			return
-		toggle_id_ctf(usr, "centcom")
 
 	else if(href_list["rebootworld"])
 		if(!check_rights(R_ADMIN))

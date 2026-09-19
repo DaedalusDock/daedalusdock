@@ -53,7 +53,7 @@
 	var/letters_per_update = 1
 
 	///opening styling for the message
-	var/style_open = "<span class='maptext' style=font-size:20pt;text-align:center valign='top'>"
+	var/style_open = "<span class='maptext' style='font-size:20pt;text-align:center' valign='top'>"
 	///closing styling for the message
 	var/style_close = "</span>"
 	///var for the text we are going to play

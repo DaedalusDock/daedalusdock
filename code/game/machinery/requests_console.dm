@@ -112,7 +112,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 
 /obj/machinery/requests_console/Initialize(mapload)
 	. = ..()
-	name = "\improper [department] requests console"
+	if(department != "Unknown")
+		name = "\improper [department] requests console"
 
 	SET_TRACKING(__TYPE__)
 

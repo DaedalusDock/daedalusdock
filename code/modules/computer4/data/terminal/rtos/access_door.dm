@@ -224,45 +224,45 @@
 		if(AC_COMMAND_OPEN)
 			signal = new(
 				src,
-				list(
+				packetv2(payload = list(
 					"tag" = tag_target,
-					LEGACY_PACKET_COMMAND = "secure_open"
-				)
+					PKT_ARG_CMD = "secure_open"
+				)),
 			)
 			expected_airlock_state = "open"
 		if(AC_COMMAND_CLOSE_AND_BOLT)
 			signal = new(
 				src,
-				list(
+				packetv2(payload = list(
 					"tag" = tag_target,
-					LEGACY_PACKET_COMMAND = "secure_close"
-				)
+					PKT_ARG_CMD = "secure_close"
+				)),
 			)
 			expected_airlock_state = "closed"
 		if(AC_COMMAND_UPDATE)
 			signal = new(
 				src,
-				list(
+				packetv2(payload = list(
 					"tag" = tag_target,
-					LEGACY_PACKET_COMMAND = "status"
-				)
+					PKT_ARG_CMD = "status"
+				)),
 			)
 		if(AC_COMMAND_BOLT)
 			signal = new(
 				src,
-				list(
+				packetv2(payload = list(
 					"tag" = tag_target,
-					LEGACY_PACKET_COMMAND = "lock"
-				)
+					PKT_ARG_CMD = "lock"
+				)),
 			)
 			expected_bolt_state = "locked"
 		if(AC_COMMAND_UNBOLT)
 			signal = new(
 				src,
-				list(
+				packetv2(payload = list(
 					"tag" = tag_target,
-					LEGACY_PACKET_COMMAND = "unlock"
-				)
+					PKT_ARG_CMD = "unlock"
+				)),
 			)
 			expected_bolt_state = "unlocked"
 	if(signal)

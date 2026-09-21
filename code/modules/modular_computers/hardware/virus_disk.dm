@@ -123,7 +123,7 @@
 	var/list/pda_data_staple = list(
 		// We already have the target address
 		// GPRS Card handles the source address
-		LEGACY_PACKET_COMMAND = NETCMD_PDAMESSAGE,
+		PKT_ARG_CMD = NETCMD_PDAMESSAGE,
 		"name" = sender_name,
 		"job" = sender_job,
 		"message" = text_message

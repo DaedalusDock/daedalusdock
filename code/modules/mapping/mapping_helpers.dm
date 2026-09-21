@@ -248,7 +248,7 @@
 	var/frequency_to_set
 
 /obj/effect/mapping_helpers/airlock/frequency/payload(obj/machinery/door/airlock/airlock)
-	airlock.set_connection_frequency(frequency_to_set)
+	airlock.set_connection_frequency(frequency_to_set, airlock.default_connection_frequency_inbound_filter)
 
 /obj/effect/mapping_helpers/airlock/frequency/airlock_control
 	frequency_to_set = FREQ_AIRLOCK_CONTROL

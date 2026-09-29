@@ -21,7 +21,7 @@
 		return
 
 	/// Not in stamcrit range.
-	if(stamina > stamina.maximum * STAMINA_STUN_THRESHOLD_MODIFIER)
+	if(stamina.current > stamina.maximum * STAMINA_STUN_THRESHOLD_MODIFIER)
 		return
 
 	// https://www.desmos.com/calculator/9iswwbufye

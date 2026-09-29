@@ -239,7 +239,7 @@
 
 /datum/reagent/stimulants/overdose_process(mob/living/carbon/C)
 	if(prob(25))
-		C.stamina.adjust(2.5)
+		C.stamina.adjust(-2.5)
 		C.adjustToxLoss(1, 0, cause_of_death = "Stimulant overdose")
 		C.losebreath++
 		. = TRUE

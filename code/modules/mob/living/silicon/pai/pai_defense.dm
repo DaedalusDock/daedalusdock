@@ -80,9 +80,9 @@
 
 /mob/living/silicon/pai/pre_stamina_change(diff as num, forced)
 	if(forced)
-		take_holo_damage(diff)
+		take_holo_damage(-diff)
 	else
-		take_holo_damage(diff * 0.25)
+		take_holo_damage(-diff * 0.25)
 	return 0
 
 /mob/living/silicon/pai/getBruteLoss()

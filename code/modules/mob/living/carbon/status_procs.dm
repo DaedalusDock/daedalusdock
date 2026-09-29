@@ -13,13 +13,20 @@
 	SIGNAL_HANDLER
 	return
 
+/// Attempt a stamina stun.
 /mob/living/carbon/stamina_stun()
 	if(!(status_flags & CANKNOCKDOWN) || HAS_TRAIT(src, TRAIT_STUNIMMUNE))
 		return
 	if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)) //Already in stamcrit
 		return
 
-	var/chance = STAMINA_SCALING_STUN_BASE + (STAMINA_SCALING_STUN_SCALER * stamina.current * STAMINA_STUN_THRESHOLD_MODIFIER)
+	/// Not in stamcrit range.
+	if(stamina > stamina.maximum * STAMINA_STUN_THRESHOLD_MODIFIER)
+		return
+
+	// https://www.desmos.com/calculator/9iswwbufye
+	var/stamina_percent = stamina.current / stamina.maximum
+	var/chance = STAMINA_SCALING_STUN_BASE + STAMINA_SCALING_STUN_SCALER * (1 - stamina_percent / STAMINA_STUN_THRESHOLD_MODIFIER)
 	if(!prob(chance))
 		return
 	if(absorb_stun(1))
@@ -31,6 +38,7 @@
 	filters += FILTER_STAMINACRIT
 
 	addtimer(CALLBACK(src, PROC_REF(exit_stamina_stun)), STAMINA_STUN_TIME)
+	return TRUE
 
 /mob/living/carbon/exit_stamina_stun()
 	REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)

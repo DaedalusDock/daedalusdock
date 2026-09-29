@@ -22,8 +22,6 @@
 #define STAMINA_EXHAUSTION_RECOVERY_THRESHOLD_MODIFIER (0.7) //70% or more
 ///The slowdown when a mob is exhausted
 #define STAMINA_EXHAUSTION_MOVESPEED_SLOWDOWN 3
-///Carbons will be exposed to stamina stuns upon dropping below this percentage
-#define STAMINA_STUN_THRESHOLD_MODIFIER (0.2) //20% or less
 
 
 
@@ -45,8 +43,11 @@
 #define STAMINA_CRITICAL_MODIFIER 2
 ///The amount of stamina at which point swinging is free.
 #define STAMINA_MAXIMUM_TO_SWING 100
+
 ///The time a mob is stunned when stamina stunned
 #define STAMINA_STUN_TIME 3 SECONDS
+///Carbons will be exposed to stamina stuns upon dropping below this percentage
+#define STAMINA_STUN_THRESHOLD_MODIFIER (0.2) //20% or less
 ///The base value of a stamina stun chance
 #define STAMINA_SCALING_STUN_BASE 20
 ///The maximum additional stun chance based on missing stamina

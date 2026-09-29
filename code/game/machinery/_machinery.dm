@@ -616,6 +616,7 @@
 		if(brainloss > 120)
 			visible_message(span_warning("\The [user] stares cluelessly at \the [src]."))
 			return TRUE
+
 		if(prob(min(brainloss, 30)))
 			to_chat(user, span_warning("You momentarily forget how to use \the [src]."))
 			return TRUE

@@ -29,13 +29,12 @@
 	RegisterSignal(src, COMSIG_RAT_INTERACT, PROC_REF(on_rat_eat))
 	if(isturf(loc))
 		var/turf/turf_loc = loc
-		turf_loc.add_blueprints_preround(src)
-	mapping_init()
-	update_layer()
 
-/obj/structure/cable/proc/mapping_init()
+		turf_loc.add_blueprints_preround(src)
+
 	linked_dirs = text2num(icon_state)
 	merge_new_connections()
+	update_layer()
 
 /obj/structure/cable/proc/is_knotted()
 	var/dir_count = 0
@@ -59,15 +58,20 @@
 		if(!(linked_dirs & dir))
 			continue
 		new_dir_count++
+
 	if(new_dir_count > 2)
 		CRASH("Cable has more than 2 directions on [loc.x],[loc.y],[loc.z]")
+
 	if(merge_connections)
 		merge_new_connections()
+
 	update_appearance()
 
+/// Merges powernets and joins machines.
 /obj/structure/cable/proc/merge_new_connections()
 	if(linked_dirs == NONE)
 		return
+
 	merge_connected_cables()
 	merge_connected_machines()
 
@@ -112,29 +116,6 @@
 	if(isobserver(user))
 		. += get_power_info()
 
-/obj/structure/cable/proc/handlecable(obj/item/W, mob/user, params)
-	var/turf/T = get_turf(src)
-	if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
-		return
-	if(W.tool_behaviour == TOOL_WIRECUTTER)
-		if (shock(user, 50))
-			return
-		user.visible_message(span_notice("[user] cuts the cable."), span_notice("You cut the cable."))
-		investigate_log("was cut by [key_name(usr)] in [AREACOORD(src)]", INVESTIGATE_WIRES)
-		deconstruct()
-		return
-
-	else if(W.tool_behaviour == TOOL_MULTITOOL)
-		to_chat(user, get_power_info())
-		shock(user, 5, 0.2)
-	else if (istype(W, /obj/item/stack/cable_coil))
-		var/obj/item/stack/cable_coil/coil = W
-		coil.place_turf(loc, user, NONE, TRUE, src)
-
-
-	W.leave_evidence(user, src)
-
-
 /obj/structure/cable/proc/get_power_info()
 	if(powernet?.avail > 0)
 		return span_danger("Total power: [display_power(powernet.avail)]\nLoad: [display_power(powernet.load)]\nExcess power: [display_power(surplus())]")
@@ -146,14 +127,35 @@
 //   - Wirecutters : cut it duh !
 //   - Multitool : get the power currently passing through the cable
 //
-/obj/structure/cable/attackby(obj/item/W, mob/user, params)
-	handlecable(W, user, params)
+/obj/structure/cable/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
+	var/turf/T = get_turf(src)
+	if(T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE)
+		return NONE
 
+	if(tool.tool_behaviour == TOOL_WIRECUTTER)
+		if (shock(user, 50))
+			return ITEM_INTERACT_BLOCKING
+
+		user.visible_message(span_notice("[user] cuts the cable."), span_notice("You cut the cable."))
+		investigate_log("was cut by [key_name(usr)] in [AREACOORD(src)]", INVESTIGATE_WIRES)
+		deconstruct()
+		return ITEM_INTERACT_SUCCESS
+
+	else if(tool.tool_behaviour == TOOL_MULTITOOL)
+		to_chat(user, get_power_info())
+		shock(user, 5, 0.2)
+		return ITEM_INTERACT_SUCCESS
+
+	else if (istype(tool, /obj/item/stack/cable_coil))
+		var/obj/item/stack/cable_coil/coil = tool
+		coil.place_turf(loc, user, NONE, TRUE, src)
+		return ITEM_INTERACT_SUCCESS
 
 // shock the user with probability prb
 /obj/structure/cable/proc/shock(mob/user, prb, siemens_coeff = 1)
 	if(!prob(prb))
 		return FALSE
+
 	if(electrocute_mob(user, powernet, src, siemens_coeff))
 		do_sparks(5, TRUE, src)
 		return TRUE
@@ -277,11 +279,14 @@
 
 /obj/structure/cable/proc/get_cable_connections(powernetless_only = FALSE)
 	. = list()
+	SEND_SIGNAL(loc, COMSIG_TURF_GET_CABLE_CONNECTIONS, src, ., powernetless_only)
+
 	var/static/list/diagonal_masking_pair = list(NORTH|SOUTH, EAST|WEST)
 	var/turf/T
 	for(var/cable_dir in GLOB.cable_dirs)
 		if(!(linked_dirs & cable_dir))
 			continue
+
 		var/inverse_cable_dir = GLOB.cable_dirs_to_inverse["[cable_dir]"]
 		var/real_dir = GLOB.cable_dirs_to_real_dirs["[cable_dir]"]
 		// Is it diagonal? Yes? Detour into this special shitty hack.
@@ -308,6 +313,7 @@
 			if(powernetless_only && cable_structure.powernet)
 				continue
 			. += cable_structure
+
 	// Connect to other knotted cables if we are knotted
 	if(is_knotted())
 		for(var/obj/structure/cable/cable_structure in get_turf(src))
@@ -322,6 +328,7 @@
 	. = list()
 	if(!is_knotted())
 		return
+
 	for(var/obj/machinery/power/P in get_turf(src))
 		if(powernetless_only && P.powernet)
 			continue
@@ -331,6 +338,7 @@
 /obj/structure/cable/proc/rotate_clockwise_amount(amount)
 	if(amount <= 0)
 		return
+
 	var/current_links = linked_dirs
 	for(var/i in 1 to amount)
 		var/list/current_dirs = list()
@@ -377,7 +385,7 @@
 	propagate_network(src, newPN)
 
 // cut the cable's powernet at this cable and updates the powergrid
-/obj/structure/cable/proc/cut_cable_from_powernet(remove = TRUE)
+/obj/structure/cable/proc/cut_cable_from_powernet(remove = TRUE, propagate_network = TRUE)
 	if(!powernet)
 		return
 
@@ -396,14 +404,16 @@
 		moveToNullspace()
 	powernet.remove_cable(src) //remove the cut cable from its powernet
 
-	var/first = TRUE
-	for(var/obj/structure/cable/cable in P_list)
-		if(first)
-			first = FALSE
-			continue
-		//so we don't rebuild the network X times when singulo/explosion destroys a line of X cables
-		cable.auto_propagate_cut_cable()
-		//addtimer(CALLBACK(O, PROC_REF(auto_propagate_cut_cable), O), 0)
+	if(propagate_network)
+		var/first = TRUE
+		for(var/obj/structure/cable/cable in P_list)
+			if(first)
+				first = FALSE
+				continue
+
+			//so we don't rebuild the network X times when singulo/explosion destroys a line of X cables
+			cable.auto_propagate_cut_cable()
+
 
 ///////////////////////////////////////////////
 // Cable variants for mapping

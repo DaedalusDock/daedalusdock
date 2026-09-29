@@ -32,3 +32,6 @@
 #define COMSIG_TURF_RESET_ELEVATION "turf_reset_elevation"
 	#define ELEVATION_CURRENT_PIXEL_SHIFT 1
 	#define ELEVATION_MAX_PIXEL_SHIFT 2
+
+/// From /obj/structure/cable/get_cable_connections(): (obj/structure/cable/cable, list/connections, powernetless_only)
+#define COMSIG_TURF_GET_CABLE_CONNECTIONS "turf_get_cable_connections"

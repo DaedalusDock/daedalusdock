@@ -25,6 +25,8 @@
 	network_flags = NETWORK_FLAG_GEN_ID //Only visible on supply side.
 	net_class = NETCLASS_SMES
 
+	use_power = FALSE
+
 	var/capacity = 10e6 // maximum charge
 	var/charge = 0 // actual charge
 
@@ -59,8 +61,8 @@
 					break dir_loop
 
 	if(!terminal)
-		atom_break()
-		return
+		return INITIALIZE_HINT_QDEL
+
 	terminal.master = src
 	update_appearance()
 
@@ -83,14 +85,14 @@
 /obj/machinery/power/smes/should_have_node()
 	return TRUE
 
-/obj/machinery/power/smes/attackby(obj/item/I, mob/user, params)
+/obj/machinery/power/smes/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	//opening using screwdriver
-	if(default_deconstruction_screwdriver(user, "[initial(icon_state)]-o", initial(icon_state), I))
+	if(default_deconstruction_screwdriver(user, "[initial(icon_state)]-o", initial(icon_state), tool))
 		update_appearance()
-		return
+		return ITEM_INTERACT_SUCCESS
 
 	//changing direction using wrench
-	if(default_change_direction_wrench(user, I))
+	if(default_change_direction_wrench(user, tool))
 		terminal?.master = null
 		terminal = null
 		var/turf/T = get_step(src, dir)
@@ -100,70 +102,73 @@
 				terminal.master = src
 				to_chat(user, span_notice("Terminal found."))
 				break
+
 		if(!terminal)
 			to_chat(user, span_alert("No power terminal found."))
-			return
+			return ITEM_INTERACT_BLOCKING
+
 		set_machine_stat(machine_stat & ~BROKEN)
 		update_appearance()
-		return
+		return ITEM_INTERACT_SUCCESS
 
 	//building and linking a terminal
-	if(istype(I, /obj/item/stack/cable_coil))
+	if(istype(tool, /obj/item/stack/cable_coil))
 		var/dir = get_dir(user,src)
 		if(dir & (dir-1))//we don't want diagonal click
-			return
+			return NONE
 
 		if(terminal) //is there already a terminal ?
-			to_chat(user, span_warning("This SMES already has a power terminal!"))
-			return
+			to_chat(user, span_warning("This SMES already has a power terminal."))
+			return ITEM_INTERACT_BLOCKING
 
 		if(!panel_open) //is the panel open ?
-			to_chat(user, span_warning("You must open the maintenance panel first!"))
-			return
+			to_chat(user, span_warning("The maintenance panel must be open."))
+			return ITEM_INTERACT_BLOCKING
 
 		var/turf/T = get_turf(user)
 		if (T.underfloor_accessibility < UNDERFLOOR_INTERACTABLE) //can we get to the underfloor?
-			to_chat(user, span_warning("You must first remove the floor plating!"))
-			return
+			to_chat(user, span_warning("Something is blocking the plating."))
+			return ITEM_INTERACT_BLOCKING
 
 
-		var/obj/item/stack/cable_coil/C = I
+		var/obj/item/stack/cable_coil/C = tool
 		if(C.get_amount() < 10)
-			to_chat(user, span_warning("You need more wires!"))
-			return
+			to_chat(user, span_warning("You need [10 - C.get_amount()] more wires."))
+			return ITEM_INTERACT_BLOCKING
 
 		to_chat(user, span_notice("You start building the power terminal..."))
 		playsound(src.loc, 'sound/items/deconstruct.ogg', 50, TRUE)
 
 		if(do_after(user, src, 20))
-			if(C.get_amount() < 10 || !C)
-				return
+			if(C?.get_amount() < 10)
+				return ITEM_INTERACT_BLOCKING
+
 			var/obj/structure/cable/N = T.get_cable_node() //get the connecting node cable, if there's one
 			if (prob(50) && electrocute_mob(usr, N, N, 1, TRUE)) //animate the electrocution if uncautious and unlucky
 				do_sparks(5, TRUE, src)
-				return
+				return ITEM_INTERACT_BLOCKING
+
 			if(!terminal)
 				C.use(10)
-				user.visible_message(span_notice("[user.name] builds a power terminal."),\
-					span_notice("You build the power terminal."))
+				user.visible_message(
+					span_notice("[user.name] builds a power terminal."),
+					span_notice("You build the power terminal.")
+				)
 
 				//build the terminal and link it to the network
 				make_terminal(T)
 				terminal.connect_to_network()
 				connect_to_network()
-		return
+
+		return ITEM_INTERACT_SUCCESS
 
 	//crowbarring it !
 	var/turf/T = get_turf(src)
-	if(default_deconstruction_crowbar(I))
+	if(default_deconstruction_crowbar(tool))
 		message_admins("[src] has been deconstructed by [ADMIN_LOOKUPFLW(user)] in [ADMIN_VERBOSEJMP(T)]")
 		log_game("[src] has been deconstructed by [key_name(user)] at [AREACOORD(src)]")
 		investigate_log("deconstructed by [key_name(user)] at [AREACOORD(src)]", INVESTIGATE_ENGINE)
-		return
-	else if(panel_open && I.tool_behaviour == TOOL_CROWBAR)
-		return
-
-	return ..()
+		return ITEM_INTERACT_SUCCESS
 
 /obj/machinery/power/smes/wirecutter_act(mob/living/user, obj/item/I)
 	//disassembling the terminal
@@ -172,10 +177,9 @@
 		terminal.dismantle(user, I)
 		return TRUE
 
-
 /obj/machinery/power/smes/default_deconstruction_crowbar(obj/item/crowbar/C)
 	if(istype(C) && terminal)
-		to_chat(usr, span_warning("You must first remove the power terminal!"))
+		to_chat(usr, span_warning("You must first remove the power terminal."))
 		return FALSE
 
 	return ..()

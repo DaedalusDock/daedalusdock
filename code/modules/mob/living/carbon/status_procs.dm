@@ -9,42 +9,11 @@
 /mob/living/proc/stamina_stun()
 	return
 
-/mob/living/proc/exit_stamina_stun()
-	SIGNAL_HANDLER
-	return
-
-/// Attempt a stamina stun.
 /mob/living/carbon/stamina_stun()
-	if(!(status_flags & CANKNOCKDOWN) || HAS_TRAIT(src, TRAIT_STUNIMMUNE))
-		return
-	if(HAS_TRAIT_FROM(src, TRAIT_INCAPACITATED, STAMINA)) //Already in stamcrit
-		return
-
-	/// Not in stamcrit range.
-	if(stamina.current > stamina.maximum * STAMINA_STUN_THRESHOLD_MODIFIER)
-		return
-
-	// https://www.desmos.com/calculator/9iswwbufye
-	var/stamina_percent = stamina.current / stamina.maximum
-	var/chance = STAMINA_SCALING_STUN_BASE + STAMINA_SCALING_STUN_SCALER * (1 - stamina_percent / STAMINA_STUN_THRESHOLD_MODIFIER)
-	if(!prob(chance))
-		return
-	if(absorb_stun(1))
-		return
-
-	ADD_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
-	ADD_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
-	ADD_TRAIT(src, TRAIT_FLOORED, STAMINA)
-	filters += FILTER_STAMINACRIT
-
-	addtimer(CALLBACK(src, PROC_REF(exit_stamina_stun)), STAMINA_STUN_TIME)
-	return TRUE
-
-/mob/living/carbon/exit_stamina_stun()
-	REMOVE_TRAIT(src, TRAIT_INCAPACITATED, STAMINA)
-	REMOVE_TRAIT(src, TRAIT_IMMOBILIZED, STAMINA)
-	REMOVE_TRAIT(src, TRAIT_FLOORED, STAMINA)
-	filters -= FILTER_STAMINACRIT
+	var/threshold = stamina.maximum * STAMINA_STUN_THRESHOLD_MODIFIER
+	var/chance = STAMINA_SCALING_STUN_BASE + STAMINA_SCALING_STUN_SCALER * (1 - stamina.current / threshold)
+	if(prob(chance))
+		apply_status_effect(/datum/status_effect/incapacitating/stamcrit)
 
 /mob/living/carbon/adjust_disgust(amount)
 	disgust = clamp(disgust+amount, 0, DISGUST_LEVEL_MAXEDOUT)

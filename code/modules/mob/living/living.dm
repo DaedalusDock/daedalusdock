@@ -780,7 +780,6 @@
 	hallucination = 0
 	heal_overall_damage(INFINITY, INFINITY, null, TRUE) //heal brute and burn dmg on both organic and robotic limbs, and update health right away.
 	stamina.adjust(INFINITY)
-	exit_stamina_stun()
 	extinguish_mob()
 	set_drowsyness(0)
 	stop_sound_channel(CHANNEL_HEARTBEAT)
@@ -2154,7 +2153,13 @@ GLOBAL_LIST_EMPTY(fire_appearances)
 
 ///Called by the stamina holder, passing the change in stamina to modify.
 /mob/living/proc/pre_stamina_change(diff as num, forced)
+	if(!forced && (status_flags & GODMODE))
+		return 0
 	return diff
+
+///Whether stamina damage does anything to us. For snowflake mobs that need to be excluded
+/mob/living/proc/takes_stamina_damage()
+	return pre_stamina_change(-1) != 0
 
 ///Checks if the user is incapacitated or on cooldown.
 /mob/living/proc/can_look_up()

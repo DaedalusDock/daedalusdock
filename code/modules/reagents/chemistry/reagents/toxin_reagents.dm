@@ -254,7 +254,7 @@
 			C.adjust_drowsyness(1 * removed)
 			C.adjust_timed_status_effect(6 SECONDS * removed, /datum/status_effect/speech/slurring/drunk)
 		if(5 to 8)
-			C.stamina.adjust(40 * removed)
+			C.stamina.adjust(-40 * removed)
 		if(9 to INFINITY)
 			spawn(-1)
 				C.fakedeath(type)
@@ -503,7 +503,7 @@
 
 /datum/reagent/toxin/staminatoxin/affect_blood(mob/living/carbon/C, removed)
 	. = ..()
-	C.stamina.adjust(data * removed)
+	C.stamina.adjust(-data * removed)
 	data = max(data - 1, 3)
 
 /datum/reagent/toxin/polonium

@@ -108,4 +108,5 @@
 		new_max_stamina += value
 
 	maximum = max(new_max_stamina, 50)
+	current = min(current, maximum)
 	process()

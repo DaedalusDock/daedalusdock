@@ -229,8 +229,8 @@
 		target.Disorient(6 SECONDS, charged_stamina_damage, paralyze = disable_duration, stack_status = FALSE)
 		additional_effects_cyborg(target, user)
 
-	else
-		target.Disorient(6 SECONDS, charged_stamina_damage, paralyze = disable_duration)
+	else if(target.takes_stamina_damage())
+		target.Disorient(6 SECONDS, charged_stamina_damage, paralyze = disable_duration, stack_status = FALSE)
 		additional_effects_non_cyborg(target, user)
 
 	return TRUE

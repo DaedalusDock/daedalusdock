@@ -842,7 +842,6 @@
 		client?.prefs?.apply_prefs_to(src)
 
 	cure_all_traumas(TRAUMA_RESILIENCE_MAGIC)
-	exit_stamina_stun()
 	..()
 
 /mob/living/carbon/can_be_revived()

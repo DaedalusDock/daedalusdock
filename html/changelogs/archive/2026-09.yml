@@ -18,3 +18,6 @@
 2026-09-22:
   Kapu1178:
   - bugfix: Embedded Controller airlocks function again.
+2026-09-29:
+  Kapu1178:
+  - bugfix: Stamina stuns behave in a more sane manner.

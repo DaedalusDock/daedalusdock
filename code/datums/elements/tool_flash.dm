@@ -1,7 +1,7 @@
 /**
  * Tool flash bespoke element
  *
- * Flashes the user when using this tool
+ * Flashes the user (and nearby mobs) when using this tool
  */
 /datum/element/tool_flash
 	element_flags = ELEMENT_BESPOKE
@@ -33,5 +33,12 @@
 /datum/element/tool_flash/proc/flash(datum/source, mob/living/user)
 	SIGNAL_HANDLER
 
-	if(user && get_dist(get_turf(source), get_turf(user)) <= 1)
-		user.flash_act(flash_strength)
+	if(flash_strength <= 0)
+		return
+
+	var/turf/weld_location = get_turf(source)
+	for(var/mob/living/victim in viewers(1, weld_location))
+		var/relative_dir = get_dir(victim, weld_location)
+		if(relative_dir == 0 || (victim.dir & relative_dir)) // Same tile or victim is facing the tile.
+			var/flash_strength_for_victim = max(flash_strength - get_dist(victim, weld_location), 0)
+			victim.flash_act(flash_strength_for_victim)

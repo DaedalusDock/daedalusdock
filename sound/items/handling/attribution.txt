@@ -1,0 +1,8 @@
+{
+cloth_rip1.ogg
+cloth_rip2.ogg
+cloth_rip3.ogg
+cloth_rip4.ogg
+}
+ported from https://github.com/Baystation12/Baystation12/commit/c9e54f011e83bb4d0330bf52babfb158b439f69c,
+which in turn is from https://freesound.org/people/altfuture/sounds/174627/ -- License: Creative Commons 0

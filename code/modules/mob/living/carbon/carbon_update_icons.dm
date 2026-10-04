@@ -107,14 +107,9 @@
 	var/list/overlays = list()
 
 	for(var/obj/item/bodypart/iter_part as anything in bodyparts)
-		if(iter_part.is_stump)
-			continue
-
-		if(iter_part.icon_dmg_overlay && !iter_part.is_husked)
-			if(iter_part.brutestate)
-				overlays += image(iter_part.icon_dmg_overlay, "[iter_part.body_zone]_[iter_part.brutestate]0", -DAMAGE_LAYER) //we're adding icon_states of the base image as overlays
-			if(iter_part.burnstate)
-				overlays += image(iter_part.icon_dmg_overlay, "[iter_part.body_zone]_0[iter_part.burnstate]", -DAMAGE_LAYER)
+		var/list/limb_overlays = iter_part.get_damage_overlays()
+		if(limb_overlays)
+			overlays += limb_overlays
 
 	overlays_standing[DAMAGE_LAYER] = overlays
 	if(length(overlays))

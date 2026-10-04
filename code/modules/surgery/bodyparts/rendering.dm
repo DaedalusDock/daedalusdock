@@ -330,3 +330,24 @@ GLOBAL_LIST_EMPTY(masked_leg_icons_cache)
 
 /obj/item/bodypart/proc/remove_color_override(color_priority)
 	LAZYREMOVE(color_overrides, "[color_priority]")
+
+/// Return damage overlays, not rendered as apart of the bodypart, for some reason.
+/obj/item/bodypart/proc/get_damage_overlays()
+	var/list/overlays
+	if(is_stump)
+		return overlays
+
+	if(icon_dmg_overlay && !is_husked)
+		if(brutestate)
+			LAZYADD(overlays, image(icon_dmg_overlay, "[body_zone]_[brutestate]0", -DAMAGE_LAYER))
+		if(burnstate)
+			LAZYADD(overlays, image(icon_dmg_overlay, "[body_zone]_[burnstate]0", -DAMAGE_LAYER))
+
+	if(bandage)
+		var/mutable_appearance/gauze_overlay = bandage.build_worn_icon(
+			default_layer = GAUZE_LAYER, // build_worn_icon inverts it for us
+			override_file = 'icons/mob/bandage.dmi',
+			override_state = bandage.worn_icon_state,
+		)
+		LAZYADD(overlays, gauze_overlay)
+	return overlays

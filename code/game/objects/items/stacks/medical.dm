@@ -100,9 +100,11 @@
 	if(!affecting) //Missing limb?
 		to_chat(user, span_warning("[C] doesn't have \a [parse_zone(user.zone_selected)]!"))
 		return FALSE
+
 	if(!IS_ORGANIC_LIMB(affecting)) //Limb must be organic to be healed - RR
 		to_chat(user, span_warning("[src] won't work on a robotic limb!"))
 		return FALSE
+
 	if(affecting.brute_dam && brute || affecting.burn_dam && burn)
 		user.visible_message(
 			span_infoplain(span_green("[user] applies [src] on [C]'s [parse_zone(affecting.body_zone)].")),
@@ -112,7 +114,8 @@
 		affecting.heal_damage(brute, burn)
 		post_heal_effects(max(previous_damage - affecting.get_damage(), 0), C, user)
 		return TRUE
-	to_chat(user, span_warning("[C]'s [parse_zone(affecting.body_zone)] can not be healed with [src]!"))
+
+	to_chat(user, span_warning("[C]'s [parse_zone(affecting.body_zone)] can not be healed with [src]."))
 	return FALSE
 
 ///Override this proc for special post heal effects.
@@ -160,6 +163,13 @@
 
 	merge_type = /obj/item/stack/gauze
 	dynamically_set_name = TRUE
+
+/obj/item/stack/gauze/try_bandage(mob/living/carbon/human/target, mob/living/user)
+	. = ..()
+	if(!(. & ITEM_INTERACT_SUCCESS))
+		return
+
+	playsound(user, SFX_CLOTH_RIP, 50, TRUE)
 
 /obj/item/stack/gauze/twelve
 	amount = 12

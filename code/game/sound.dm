@@ -195,6 +195,8 @@
 	if(istext(soundin))
 		soundin = get_sfx_pariah(soundin) //PARIAH EDIT ADDITION - This overrides the default sound effects too, so use it to modularly change a sound effect output.
 		switch(soundin)
+			if(SFX_CLOTH_RIP)
+				soundin = pick('sound/items/handling/cloth_rip1.ogg', 'sound/items/handling/cloth_rip2.ogg', 'sound/items/handling/cloth_rip3.ogg', 'sound/items/handling/cloth_rip4.ogg')
 			if (SFX_SHATTER)
 				soundin = pick('sound/effects/glassbr1.ogg','sound/effects/glassbr2.ogg','sound/effects/glassbr3.ogg')
 			if (SFX_EXPLOSION)

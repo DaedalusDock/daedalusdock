@@ -654,10 +654,10 @@
 	if(splint_slowdown)
 		return try_splint(interacting_with, user)
 
-	if(!absorption_capacity || !ishuman(interacting_with))
-		return NONE
+	if(absorption_capacity && ishuman(interacting_with))
+		return try_bandage(interacting_with, user)
 
-	var/mob/living/carbon/human/target = interacting_with
+/obj/item/stack/proc/try_bandage(mob/living/carbon/human/target, mob/living/user)
 	var/obj/item/bodypart/BP = target.get_bodypart(user.zone_selected, TRUE)
 	if(BP.bandage)
 		to_chat(user, span_warning("[target]'s [BP.plaintext_zone] is already bandaged."))

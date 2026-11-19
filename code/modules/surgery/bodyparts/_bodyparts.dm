@@ -1046,6 +1046,10 @@
 		return
 
 	bandage = new_bandage.split_stack(null, 1, src)
+	bandage.worn_icon_state = "[body_zone][rand(1, 3)]"
+
+	owner?.update_damage_overlays()
+
 	RegisterSignal(bandage, COMSIG_PARENT_QDELETING, PROC_REF(bandage_gone))
 	if(bandage.absorption_capacity && owner.stat < UNCONSCIOUS)
 		for(var/datum/wound/iter_wound as anything in wounds)
@@ -1057,11 +1061,16 @@
 	if(!bandage)
 		return FALSE
 
+	bandage.worn_icon_state = "nothing"
+
 	. = bandage
+
 	UnregisterSignal(bandage, COMSIG_PARENT_QDELETING)
 	if(bandage.loc == src)
 		bandage.forceMove(drop_location())
+
 	bandage = null
+	owner?.update_damage_overlays()
 
 /obj/item/bodypart/proc/bandage_gone(obj/item/stack/bandage)
 	SIGNAL_HANDLER

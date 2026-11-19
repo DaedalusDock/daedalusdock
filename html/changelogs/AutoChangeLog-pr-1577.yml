@@ -1,0 +1,6 @@
+author: MrMelbert, Timothymtorres
+delete-after: true
+changes:
+  - rscadd: Bandages apply a visual overlay when used.
+  - rscadd: Cloth ripping sounds.
+  - rscadd: Welding now blinds all nearby mobs instead of just the welder.

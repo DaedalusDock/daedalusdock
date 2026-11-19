@@ -33,6 +33,7 @@
 	feature_key = "tail_cat"
 	color_source = ORGAN_COLOR_HAIR
 
+/obj/item/organ/tail/cat/get_global_feature_list()
 	return GLOB.tails_list_human
 
 /obj/item/organ/tail/monkey

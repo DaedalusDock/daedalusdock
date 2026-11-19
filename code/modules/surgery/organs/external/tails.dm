@@ -33,8 +33,12 @@
 	feature_key = "tail_cat"
 	color_source = ORGAN_COLOR_HAIR
 
+/obj/item/organ/tail/cat/get_global_feature_list()
+	return GLOB.tails_list_human
+
 /obj/item/organ/tail/monkey
 	color_source = NONE
+	dna_block = null
 
 /obj/item/organ/tail/lizard
 	name = "lizard tail"
@@ -45,6 +49,9 @@
 
 	///A reference to the paired_spines, since for some fucking reason tail spines are tied to the spines themselves.
 	var/obj/item/organ/spines/paired_spines
+
+/obj/item/organ/tail/lizard/get_global_feature_list()
+	return GLOB.tails_list_lizard
 
 /obj/item/organ/tail/lizard/Insert(mob/living/carbon/reciever, special, drop_if_replaced)
 	. = ..()

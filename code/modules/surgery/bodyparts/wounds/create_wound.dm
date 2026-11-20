@@ -44,7 +44,7 @@
 			if(length(compatible_wounds))
 				var/datum/wound/W = pick(compatible_wounds)
 				W.open_wound(damage, update_damage)
-				if(prob(25))
+				if(owner && prob(25))
 					if(!IS_ORGANIC_LIMB(src))
 						owner.visible_message(
 							span_warning("The damage to \the [owner]'s [plaintext_zone] worsens."),
@@ -90,15 +90,15 @@
 		return
 
 	var/datum/wound/W = new type2make(damage, src)
-	var/merged = FALSE
+	var/datum/wound/merged_into
 	for(var/datum/wound/other as anything in wounds)
 		if(other.can_merge(W))
 			other.merge_wound(W)
-			merged = TRUE
-			. = other
+			merged_into = other
+			break
 
-	if(!merged)
+	if(!merged_into)
 		LAZYADD(wounds, W)
 	if(update_damage)
 		update_damage()
-	return W
+	return merged_into || W

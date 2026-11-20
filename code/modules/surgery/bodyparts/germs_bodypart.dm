@@ -22,7 +22,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		set_germ_level(0)
 		return
 
-	if(owner.bodytemperature > TCRYO || HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))	//cryo stops germs from moving and doing their bad stuffs
+	if(owner.bodytemperature > TCRYO && !HAS_TRAIT(src, TRAIT_ORGAN_FROZEN))	//cryo stops germs from moving and doing their bad stuffs
 		// Syncing germ levels with external wounds
 		handle_germ_sync()
 
@@ -33,6 +33,19 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(germ_level)
 			// Handle the effects of infections
 			. = handle_germ_effects()
+
+/// Sets or clears necrosis on this limb. Returns TRUE if the necrotic state changed.
+/obj/item/bodypart/proc/set_necrotic(val = TRUE)
+	if(!!(bodypart_flags & BP_NECROTIC) == !!val)
+		return FALSE
+
+	if(val)
+		bodypart_flags |= BP_NECROTIC
+	else
+		bodypart_flags &= ~BP_NECROTIC
+
+	update_disabled()
+	return TRUE
 
 /// Syncing germ levels with external wounds
 /obj/item/bodypart/proc/handle_germ_sync()
@@ -121,10 +134,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 					parent.set_germ_level(parent.germ_level + 1)
 
 	if(germ_level >= INFECTION_LEVEL_THREE && antibiotics < 30)	//overdosing is necessary to stop severe infections
-		if (!(bodypart_flags & BP_NECROTIC))
-			bodypart_flags |= BP_NECROTIC
+		if(set_necrotic(TRUE))
 			to_chat(owner, span_warning("You can't feel your [plaintext_zone] anymore..."))
-			update_disabled()
 
 		set_germ_level(germ_level + 1)
 		owner.adjustToxLoss(1, FALSE, cause_of_death = "Necrosis")

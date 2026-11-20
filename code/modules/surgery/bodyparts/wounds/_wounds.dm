@@ -174,7 +174,7 @@
 			return prob(dam_coef*5)
 		if (WOUND_BURN)
 			return prob(dam_coef*25)
-		if (WOUND_CUT)
+		if (WOUND_CUT, WOUND_PIERCE)
 			return prob(dam_coef*10)
 
 	return 0

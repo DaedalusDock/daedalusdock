@@ -92,6 +92,7 @@
 // Category Includes
 #include "atmospherics\__include.dm"
 #include "combat\__include.dm"
+#include "flock\__include.dm"
 #include "mapping_standards\__include.dm"
 #include "materials\__include.dm"
 #include "miracles\__include.dm"

@@ -80,7 +80,7 @@
 		spawn(-1)
 			deposit_action.Trigger(target = target)
 
-	if(DOING_INTERACTION(bird, "flock_cage"))
+	if(DOING_INTERACTION(bird, "flock_deposit"))
 		return BEHAVIOR_PERFORM_COOLDOWN
 
 	return BEHAVIOR_PERFORM_SUCCESS

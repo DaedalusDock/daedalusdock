@@ -110,7 +110,7 @@
 	playsound(src, 'sound/items/poster_ripped.ogg', 75, TRUE)
 
 	if(!user?.put_in_hands(manifest))
-		manifest.forceMove(loc.drop_location())
+		manifest.forceMove(drop_location())
 	manifest = null
 	update_appearance()
 

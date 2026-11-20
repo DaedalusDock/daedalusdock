@@ -10,7 +10,7 @@
 	. = ..()
 	if(overmind_target)
 		var/mob/living/simple_animal/flock/drone/bird = controller.pawn
-		if(!goap_is_valid_target(controller, overmind_target))
+		if(goap_is_valid_target(controller, overmind_target))
 			controller.set_blackboard_key(BB_FLOCK_OVERMIND_CONTROL, TRUE)
 			controller.set_blackboard_key(BB_PATH_MAX_LENGTH, 200)
 			bird.say("instruction confirmed: incapacitate lifeform")
@@ -65,7 +65,7 @@
 
 	// Strafe!
 	else if(DT_PROB(60, delta_time) && COOLDOWN_FINISHED(controller, blackboard[BB_FLOCK_ATTACK_STRAFE_COOLDOWN]))
-		controller.set_blackboard_key(BB_FLOCK_ATTACK_STRAFE_COOLDOWN, bird.movement_delay * 3)
+		controller.set_blackboard_key(BB_FLOCK_ATTACK_STRAFE_COOLDOWN, world.time + bird.movement_delay * 3)
 		var/step_dir = turn(get_dir(bird, target), prob(50) ? 90 : -90)
 		step(bird, step_dir)
 
@@ -83,3 +83,5 @@
 	. = ..()
 	controller.clear_blackboard_key(BB_FLOCK_ATTACK_TARGET)
 	controller.clear_blackboard_key(BB_FLOCK_ATTACK_FRUSTRATION)
+	controller.clear_blackboard_key(BB_PATH_MAX_LENGTH)
+	controller.clear_blackboard_key(BB_FLOCK_OVERMIND_CONTROL)

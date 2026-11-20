@@ -36,7 +36,7 @@
 	. = ..()
 	controller.clear_blackboard_key(BB_PATH_TO_USE)
 
-/datum/ai_behavior/flock/next_behavior(datum/ai_controller/controller, success)
+/datum/ai_behavior/flock/find_existing_nest/next_behavior(datum/ai_controller/controller, success)
 	if(success)
 		controller.queue_behavior(/datum/ai_behavior/flock/perform_replicate)
 
@@ -60,6 +60,6 @@
 
 	return BEHAVIOR_PERFORM_SUCCESS
 
-/datum/ai_behavior/flock/perform_nest/finish_action(datum/ai_controller/controller, succeeded, ...)
+/datum/ai_behavior/flock/perform_replicate/finish_action(datum/ai_controller/controller, succeeded, ...)
 	. = ..()
 	controller.clear_blackboard_key(BB_FLOCK_REPLICATE_TARGET)

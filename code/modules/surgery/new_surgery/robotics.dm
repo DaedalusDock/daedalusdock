@@ -86,7 +86,7 @@
 
 /datum/surgery_step/robotics/open_hatch/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
-	user.visible_message(span_notice("[user] opens the maintenance hatch on [target]'s [affected.name] with [tool]."))
+	user.visible_message(span_notice("[user] [affected.hatch_state == HATCH_UNSCREWED ? "pries open" : "closes"] the maintenance hatch on [target]'s [affected.name] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
 	if(affected.hatch_state == HATCH_UNSCREWED)
 		affected.hatch_state = HATCH_OPENED
 	else
@@ -137,6 +137,7 @@
 /datum/surgery_step/robotics/repair_brute/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] finishes patching damage to [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
+	affected.heal_damage(rand(30,50), 0, BODYTYPE_ROBOTIC)
 	..()
 
 /datum/surgery_step/robotics/repair_brute/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -165,7 +166,7 @@
 		else
 			var/obj/item/stack/cable_coil/C = tool
 			if(istype(C))
-				if(!C.tool_use_check(3))
+				if(!C.tool_use_check(user, 3))
 					to_chat(user, span_warning("You need three or more cable pieces to repair this damage."))
 				else
 					return TRUE
@@ -214,7 +215,6 @@
 	for(var/obj/item/organ/I in affected.contained_organs)
 		if((I.organ_flags & ORGAN_SYNTHETIC) && I.damage > 0)
 			return TRUE
-	..()
 
 /datum/surgery_step/robotics/fix_organ_robotic/pre_surgery_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
@@ -227,7 +227,7 @@
 			organs[I.name] = I.slot
 
 	if(!length(organs))
-		to_chat(span_warning("[target.p_they(TRUE)] has no robotic organs there."))
+		to_chat(user, span_warning("[target.p_they(TRUE)] [target.p_have()] no robotic organs there."))
 		return FALSE
 
 	var/organ = input(user, "Which organ do you want to prepare for surgery?", "Repair Organ", "Surgery") as null|anything in organs
@@ -240,11 +240,11 @@
 
 /datum/surgery_step/robotics/fix_organ_robotic/succeed_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/I = target.getorganslot((LAZYACCESS(target.surgeries_in_progress, target_zone))?[2])
-	if(!I || !I.owner == target)
+	if(!I || I.owner != target)
 		return
 
 	user.visible_message(span_notice("[user] repairs [target]'s [I.name] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)
-	I.damage = 0
+	I.setOrganDamage(0)
 	..()
 
 /datum/surgery_step/robotics/fix_organ_robotic/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -272,6 +272,8 @@
 	var/list/attached_organs = list()
 
 	for(var/obj/item/organ/I in affected.contained_organs)
+		if(I.organ_flags & ORGAN_UNREMOVABLE)
+			continue
 		attached_organs[I.name] = I.slot
 
 	if(!length(attached_organs))
@@ -314,8 +316,11 @@
 	var/list/removable_organs = list()
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	for(var/obj/item/organ/I in affected.cavity_items)
-		if ((deprecise_zone(I.zone) == affected.body_zone))
-			removable_organs[I.name] = REF(I)
+		if(deprecise_zone(I.zone) != affected.body_zone)
+			continue
+		if(target.getorganslot(I.slot)) // Don't replace an organ that's already there
+			continue
+		removable_organs[I.name] = REF(I)
 
 	if(!length(removable_organs))
 		to_chat(user, span_warning("You cannot find any organs to attach."))

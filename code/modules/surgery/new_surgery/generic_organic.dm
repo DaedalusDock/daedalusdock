@@ -26,6 +26,13 @@
 	success_sound = 'sound/surgery/scalpel2.ogg'
 	failure_sound = 'sound/surgery/organ2.ogg'
 
+/datum/surgery_step/generic_organic/laser_incise/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	. = ..()
+	if(.)
+		var/obj/item/bodypart/affected = .
+		if(affected.how_open())
+			return FALSE
+
 /datum/surgery_step/generic_organic/laser_incise/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message(span_notice("[user] starts the bloodless incision on [target]'s [affected.plaintext_zone] with [tool]."), vision_distance = COMBAT_MESSAGE_RANGE)

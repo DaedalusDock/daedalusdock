@@ -81,7 +81,7 @@
 	if(!.)
 		return
 
-	if(!tool.tool_use_check(1))
+	if(!tool.tool_use_check(user, 1))
 		to_chat(user, span_warning("[tool] cannot be used right now."))
 		return FALSE
 
@@ -89,3 +89,8 @@
 	name = "Repair third degree burns (robotic)"
 	desc = "Repairs extreme damage from burns."
 	surgery_flags = SURGERY_NO_FLESH
+	damage_type = BURN
+	allowed_tools = list(
+		/obj/item/stack/cable_coil = 95
+	)
+	success_sound = null

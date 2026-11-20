@@ -12,6 +12,7 @@
 	)
 
 	can_infect = FALSE
+	pain_given = 10
 	min_duration = 5 SECONDS
 	max_duration = 6 SECONDS
 
@@ -23,7 +24,6 @@
 /datum/surgery_step/sterilize_wound/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/bodypart/affected = target.get_bodypart(target_zone)
 	user.visible_message("[user] starts pouring the contents of [tool] on to [target]'s [affected.plaintext_zone].")
-	target.apply_pain()
 	playsound(target.loc, 'sound/effects/spritz.ogg', 50, TRUE, -6)
 	..()
 
@@ -69,7 +69,7 @@
 	if(tool.reagents.has_reagent(/datum/reagent/space_cleaner/sterilizine))
 		return TRUE
 
-	var/datum/reagent/consumable/ethanol/alcohol = tool.reagents.has_reagent(/datum/reagent/consumable/ethanol)
-	if(alcohol && alcohol?.boozepwr >= 80)
-		return TRUE
+	for(var/datum/reagent/consumable/ethanol/alcohol in tool.reagents.reagent_list)
+		if(alcohol.boozepwr >= 80)
+			return TRUE
 	return FALSE

@@ -39,7 +39,7 @@
 
 	to_chat(ghost_bird, span_flocksay("Partitioning initiated, stand by..."))
 
-	message_admins("Sending Flocktrace offer to ghosts, they have [30 SECONDS] to respond.")
+	message_admins("Sending Flocktrace offer to ghosts, they have 30 seconds to respond.")
 	var/list/candidates = poll_ghost_candidates("Would you like to join the Flock as a new partition?", ROLE_FLOCK, ROLE_FLOCK, 30 SECONDS, flashwindow = TRUE)
 
 	awaiting_partition = FALSE

@@ -152,7 +152,7 @@
 
 	var/list/bodyparts = human_victim.bodyparts.Copy()
 	for(var/obj/item/bodypart/BP in bodyparts)
-		if(BP.body_part & (HEAD | CHEST))
+		if(BP.body_part & (HEAD | CHEST) || BP.is_stump)
 			bodyparts -= BP
 
 	if(length(bodyparts))

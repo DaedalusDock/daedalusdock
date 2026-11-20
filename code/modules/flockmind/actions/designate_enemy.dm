@@ -55,11 +55,9 @@
 
 	if(flock.is_mob_ignored(target))
 		flock.remove_ignore(target)
-
-	else if(flock.is_mob_enemy(target))
-		flock.remove_enemy(target)
 		return TRUE
 
+	// add_ignore() handles removing enemy status, so enemies get switched to ignored.
 	flock.add_ignore(target)
 	return TRUE
 

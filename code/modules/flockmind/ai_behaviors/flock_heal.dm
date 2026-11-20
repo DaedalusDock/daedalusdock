@@ -64,16 +64,25 @@
 /datum/ai_behavior/flock/heal/perform(delta_time, datum/ai_controller/controller, ...)
 	..()
 	var/mob/living/simple_animal/flock/drone/bird = controller.pawn
+	var/mob/living/simple_animal/flock/target = controller.blackboard[BB_FLOCK_HEAL_TARGET]
+	if(QDELETED(target) || target.stat == DEAD)
+		return BEHAVIOR_PERFORM_FAILURE
+
+	if(DOING_INTERACTION(bird, "flock_repair"))
+		// Actively repairing, keep the frustration timer from running out mid-repair.
+		controller.set_blackboard_key(BB_FLOCK_HEAL_FRUSTRATION, world.time + 3 SECONDS)
+		return BEHAVIOR_PERFORM_COOLDOWN
+
+	// Fully repaired, or out of substrate to repair with.
+	if(!(target.getBruteLoss() + target.getFireLoss()) || !bird.substrate.has_points(FLOCK_SUBSTRATE_COST_REPAIR))
+		return BEHAVIOR_PERFORM_SUCCESS
 
 	if(isnull(controller.blackboard[BB_FLOCK_HEAL_FRUSTRATION]))
 		controller.set_blackboard_key(BB_FLOCK_HEAL_FRUSTRATION, world.time + 3 SECONDS)
 
-	if(DOING_INTERACTION(bird, "flock_repair"))
-		return BEHAVIOR_PERFORM_COOLDOWN
-
 	var/datum/action/cooldown/flock/flock_heal/repair = locate() in bird.actions
 	spawn(-1)
-		repair.Trigger(target = controller.blackboard[BB_FLOCK_HEAL_TARGET])
+		repair.Trigger(target = target)
 
 	if(controller.blackboard[BB_FLOCK_HEAL_FRUSTRATION] >= world.time)
 		return BEHAVIOR_PERFORM_COOLDOWN
@@ -84,3 +93,5 @@
 	. = ..()
 	controller.clear_blackboard_key(BB_FLOCK_HEAL_FRUSTRATION)
 	controller.clear_blackboard_key(BB_FLOCK_HEAL_TARGET)
+	controller.clear_blackboard_key(BB_PATH_MAX_LENGTH)
+	controller.clear_blackboard_key(BB_FLOCK_OVERMIND_CONTROL)

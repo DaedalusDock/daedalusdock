@@ -39,5 +39,5 @@
 	bird.visible_message(span_notice("[bird] deploys some sort of device."))
 	playsound(bird, 'goon/sounds/Metal_Clang_1.ogg', 30, TRUE, extrarange = SILENCED_SOUND_EXTRARANGE)
 
-	new /obj/structure/flock/egg(flockfloor)
+	new /obj/structure/flock/egg(flockfloor, bird.flock)
 	return TRUE

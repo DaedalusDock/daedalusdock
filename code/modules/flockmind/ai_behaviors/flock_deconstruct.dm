@@ -61,7 +61,7 @@
 
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	if(bird.flock)
-		bird.flock.reserve_turf(bird, get_turf(target), remove_on_change = FALSE)
+		bird.flock.reserve_turf(bird, get_turf(target))
 
 	return BEHAVIOR_PERFORM_SUCCESS
 

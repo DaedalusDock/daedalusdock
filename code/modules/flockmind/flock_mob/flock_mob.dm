@@ -142,9 +142,9 @@
 	update_health_notice()
 
 /mob/living/simple_animal/flock/death(gibbed, cause_of_death)
+	flock?.stat_deaths++ // Before free_unit(), which nulls flock.
 	flock?.remove_notice(src, FLOCK_NOTICE_HEALTH)
 	flock?.free_unit(src)
-	flock?.stat_deaths++
 	return ..()
 
 /mob/living/simple_animal/flock/get_flock_id()
@@ -159,7 +159,7 @@
 		notice = flock.add_notice(src, FLOCK_NOTICE_HEALTH)
 
 	var/image/I = notice.image
-	I.icon_state = "hp-[round(getHealthPercent(), 10)]"
+	I.icon_state = "hp-[clamp(round(getHealthPercent(), 10), 10, 100)]" // Icon states are hp-10 to hp-100
 
 /mob/living/simple_animal/flock/proc/get_flock_data()
 	var/list/data = list()

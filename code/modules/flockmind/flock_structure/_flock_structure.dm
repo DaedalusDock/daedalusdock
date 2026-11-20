@@ -124,7 +124,7 @@ TYPEINFO_DEF(/obj/structure/flock)
 
 /obj/structure/flock/deconstruct(disassembled)
 	visible_message(span_warning("[src] dissolves into nothingness."))
-	var/refund = round(get_integrity_percentage() * (disassembled ? 1 : 0.5) * resource_cost, 1)
+	var/refund = round((get_integrity_percentage() / 100) * (disassembled ? 1 : 0.5) * resource_cost, 1)
 	if(refund)
 		var/obj/item/flock_cube/cube = new(drop_location())
 		cube.substrate = refund
@@ -164,8 +164,10 @@ TYPEINFO_DEF(/obj/structure/flock)
 	// 	playsound(src, 'sound/impact_sounds/Glass_Shards_Hit_1.ogg', 50, TRUE)
 
 /obj/structure/flock/update_integrity(new_value)
+	var/old_integrity = get_integrity()
 	. = ..()
-	if(isnull(.))
+	// Parent has no meaningful return value, so check for a change ourselves.
+	if(QDELETED(src) || old_integrity == get_integrity())
 		return
 
 	if(!flock)
@@ -176,7 +178,7 @@ TYPEINFO_DEF(/obj/structure/flock)
 		notice = flock.add_notice(src, FLOCK_NOTICE_HEALTH)
 
 	var/image/I = notice.image
-	I.icon_state = "hp-[get_integrity_percentage()]"
+	I.icon_state = "hp-[clamp(round(get_integrity_percentage(), 10), 10, 100)]" // Icon states are hp-10 to hp-100
 
 /obj/structure/flock/process(delta_time)
 	update_info_tag()

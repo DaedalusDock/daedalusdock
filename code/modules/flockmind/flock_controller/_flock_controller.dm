@@ -104,7 +104,11 @@
 	if(isnull(T))
 		return
 
-	free_turf(T)
+	free_turf(override_turf = T)
+	if(marked_for_conversion[T])
+		marked_for_conversion -= T
+		remove_notice(T, FLOCK_NOTICE_PRIORITY)
+
 	if(convert)
 		T = flock_convert_turf(T, src)
 
@@ -120,21 +124,20 @@
 		claimed_floors[T] = TRUE
 
 	T.AddComponent(/datum/component/flock_interest, src)
-	RegisterSignal(T, COMSIG_TURF_CHANGE, PROC_REF(claimed_turf_change))
+	update_turf_change_signal(T)
 	SEND_SIGNAL(T, COMSIG_TURF_CLAIMED_BY_FLOCK, src)
 
 /// Stop tracking a turf that is in our claimed walls or claimed floors lists.
 /datum/flock/proc/stop_tracking_turf(turf/T)
-	if(iswallturf(T))
-		claimed_walls -= T
-	else
-		claimed_floors -= T
+	// Remove from both, this can be called before a ChangeTurf, so the turf type can't be trusted.
+	claimed_walls -= T
+	claimed_floors -= T
 
 	qdel(T.GetComponent(/datum/component/flock_interest))
-	UnregisterSignal(T, COMSIG_TURF_CHANGE)
+	update_turf_change_signal(T)
 
 /// Reserves a turf, making AI ignore it for the purposes of targetting.
-/datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target, remove_on_change = TRUE)
+/datum/flock/proc/reserve_turf(mob/living/simple_animal/flock/user, turf/target)
 	if(turf_reservations_by_flock[user])
 		return FALSE
 	if(turf_reservations[target])
@@ -143,8 +146,7 @@
 	turf_reservations_by_flock[user] = target
 	turf_reservations[target] = user
 	add_notice(target, FLOCK_NOTICE_RESERVED)
-	if(remove_on_change)
-		RegisterSignal(target, COMSIG_TURF_CHANGE, PROC_REF(reserved_turf_change))
+	update_turf_change_signal(target)
 	return TRUE
 
 /// Free a turf from reservation, allowing AI to target it again. override_turf can be given to lookup the user if there isnt a user in this context.
@@ -167,8 +169,15 @@
 	turf_reservations_by_flock -= user
 	turf_reservations -= to_free
 	marked_for_conversion -= to_free
-	UnregisterSignal(to_free, COMSIG_TURF_CHANGE)
+	update_turf_change_signal(to_free)
 
+/// (Un)registers COMSIG_TURF_CHANGE on a turf depending on if it is claimed or reserved. Reservations are freed when the turf changes.
+/// Claims and reservations share a single handler, as a signal can only have one handler per listener.
+/datum/flock/proc/update_turf_change_signal(turf/T)
+	if(claimed_floors[T] || claimed_walls[T] || turf_reservations[T])
+		RegisterSignal(T, COMSIG_TURF_CHANGE, PROC_REF(tracked_turf_change), override = TRUE)
+	else
+		UnregisterSignal(T, COMSIG_TURF_CHANGE)
 /// Returns TRUE if the given turf is not reserved.
 /datum/flock/proc/is_turf_free(turf/T)
 	return !turf_reservations[T]
@@ -301,7 +310,7 @@
 /// Updates the substrate cost of an egg given the current status of the flock.
 /datum/flock/proc/update_egg_cost()
 	var/egg_count = 0
-	for(var/obj/structure/flock/egg/egg as anything in structures)
+	for(var/obj/structure/flock/egg/egg in structures)
 		egg_count++
 
 	var/status_addend = (length(drones) + egg_count) ** sqrt(2)
@@ -357,7 +366,11 @@
 	if(!isliving(ignore))
 		return
 
-	if(!enemies[ignore])
+	// Enemies and ignores share the QDELETING signal, so a mob can only be one or the other.
+	if(enemies[ignore])
+		remove_enemy(ignore, TRUE)
+
+	if(!ignores[ignore])
 		RegisterSignal(ignore, COMSIG_PARENT_QDELETING, PROC_REF(on_ignore_gone))
 		add_notice(ignore, FLOCK_NOTICE_IGNORE)
 	ignores[ignore] = TRUE
@@ -366,7 +379,7 @@
 /datum/flock/proc/remove_ignore(atom/movable/ignore, skip_buckled)
 	if(!skip_buckled)
 		for(var/mob/living/L in ignore.buckled_mobs)
-			add_ignore(L)
+			remove_ignore(L)
 
 	if(!isliving(ignore))
 		return
@@ -446,19 +459,25 @@
 	for(var/mob/living/simple_animal/flock/drone/bird as anything in drones)
 		. += bird.substrate.has_points()
 
-/// Called when a turf reserved by a flock mob changes.
-/datum/flock/proc/reserved_turf_change(datum/source)
+/// Called when a turf that is claimed or reserved by the flock is about to change.
+/// NOTE: This is sent BEFORE the change, so source is still the old turf. Use path for the incoming type.
+/datum/flock/proc/tracked_turf_change(turf/source, path, new_baseturfs, flags, list/post_change_callbacks)
 	SIGNAL_HANDLER
-	free_turf(override_turf = source)
+	if(turf_reservations[source])
+		free_turf(override_turf = source)
 
-/// Called when a turf owned by the flock changes.
-/datum/flock/proc/claimed_turf_change(turf/source)
-	SIGNAL_HANDLER
-	if(isflockturf(source))
-		stop_tracking_turf(source)
-		claim_turf(source, FALSE) // WAll to floor or visa-versa, keep it updated.
-	else
-		stop_tracking_turf(source)
+	if(!claimed_floors[source] && !claimed_walls[source])
+		return
+
+	stop_tracking_turf(source)
+	if(ispath(path, /turf/open/floor/flock) || ispath(path, /turf/closed/wall/flock))
+		// Wall to floor or visa-versa, re-claim it once the new turf exists so the type checks are correct.
+		post_change_callbacks += CALLBACK(src, PROC_REF(reclaim_changed_turf))
+
+/// Post-ChangeTurf callback from tracked_turf_change(), re-claims a flock turf that changed into another flock turf.
+/datum/flock/proc/reclaim_changed_turf(turf/new_turf)
+	if(isflockturf(new_turf))
+		claim_turf(new_turf, FALSE)
 
 /// Helper for adding a ping image to a client's screen and handling clean up.
 /datum/flock/proc/add_ping_image(client/C, image/ping, duration)
@@ -499,7 +518,7 @@
 /// Called when a client holding a ping image disconnects.
 /datum/flock/proc/on_client_gone(client/source)
 	SIGNAL_HANDLER
-	cleanup_ping_images()
+	cleanup_ping_images(source)
 
 /// Called when a unit under the flock's control dies.
 /datum/flock/proc/on_unit_death(datum/source)
@@ -618,7 +637,9 @@
 			new_desc =  "Overall Progress: [percent_total]%</br>Bandwidth: [percent_avail_bandwidth]%</br>Converted: [percent_tiles]%"
 
 		if(FLOCK_ENDGAME_RELAY_BUILT)
-			new_desc = "Time until broadcast: [] seconds."
+			var/obj/structure/flock/relay/relay = locate() in structures
+			var/time_left = relay ? max(0, ceil((relay.started_time + relay.win_time - world.time) / 10)) : 0
+			new_desc = "Time until broadcast: [time_left] seconds."
 
 		if(FLOCK_ENDGAME_RELAY_ACTIVATING, FLOCK_ENDGAME_VICTORY)
 			new_desc = "!!! TRANSMITTING !!!"

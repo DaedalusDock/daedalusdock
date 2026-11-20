@@ -154,7 +154,7 @@
 /mob/living/simple_animal/flock/drone/Click(location, control, params)
 	. = ..()
 	var/mob/camera/flock/ghost_bird = usr
-	if(!istype(ghost_bird))
+	if(!istype(ghost_bird) || isnull(flock) || ghost_bird.flock != flock)
 		return
 
 	var/list/modifiers = params2list(params)
@@ -198,7 +198,7 @@
 	else
 		active_part?.left_click_on(A, FALSE)
 
-/mob/living/simple_animal/update_health_hud()
+/mob/living/simple_animal/flock/drone/update_health_hud()
 	var/severity = 0
 	var/healthpercent = ceil((health/maxHealth) * 100)
 	if(hud_used?.screen_objects[HUDKEY_MOB_HEALTH]) //to really put you in the boots of a simplemob
@@ -249,7 +249,7 @@
 	var/current_behavior_name
 
 	if(controlled_by)
-		data["task"] = "controlled"
+		current_behavior_name = "controlled"
 		data["controller_ref"] = REF(controlled_by)
 
 	else if((ai_controller.ai_status == AI_ON) && length(ai_controller.current_behaviors))
@@ -341,7 +341,7 @@
 		return
 
 	for(var/turf/T in get_adjacent_open_turfs(src))
-		if(!T.can_flock_occupy(src))
+		if(T.can_flock_occupy(src))
 			forceMove(T)
 			break
 
@@ -378,6 +378,9 @@
 	return TRUE
 
 /mob/living/simple_animal/flock/drone/proc/take_control(mob/camera/flock/master_bird)
+	if(isnull(flock) || master_bird.flock != flock)
+		return FALSE
+
 	if(HAS_TRAIT_FROM(src, TRAIT_AI_DISABLE_PLANNING, FLOCK_CONTROLLED_BY_OVERMIND_SOURCE))
 		to_chat(master_bird, span_alert("This drone is recieving a sentient-level instruction."))
 		return FALSE
@@ -412,7 +415,7 @@
 
 	var/dest_was_safe = TRUE
 	var/turf/destination = get_turf(src)
-	if(!flock.is_on_safe_z(destination))
+	if(flock && !flock.is_on_safe_z(destination))
 		dest_was_safe = FALSE
 		destination = get_turf(pick_safe(flock.drones)) || get_safe_random_station_turf()
 
@@ -447,11 +450,12 @@
 	ai_controller.PauseAi(3 SECONDS)
 	say("\[System notification: drone diffracting.\]", forced = "flock diffract")
 	emote("scream")
+	var/datum/flock/old_flock = flock // free_unit() nulls our flock var.
 	flock?.free_unit(src)
 
 	var/turf/T = get_turf(src)
 	for(var/i in 1 to 3)
-		var/mob/living/simple_animal/flock/bit/bitty_bird = new(T, flock)
+		var/mob/living/simple_animal/flock/bit/bitty_bird = new(T, old_flock)
 		bitty_bird.i_just_split(T)
 
 	var/list/new_color = list(1,0,0, 0,1,0, 0,0,1, 0.15,0.77,0.66)

@@ -33,13 +33,13 @@
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	var/datum/flock/bird_flock = bird.flock
 
-	var/list/options = view(controller.target_search_radius, bird)
+	var/list/options = list()
+	for(var/turf/T in view(controller.target_search_radius, bird))
+		options += T
+
 	var/list/priority_turfs = bird_flock?.get_priority_turfs()
 	if(length(priority_turfs))
-		options += priority_turfs
-
-	for(var/turf/T as turf in view(controller.target_search_radius, bird))
-		options += T
+		options |= priority_turfs
 
 	return options
 
@@ -48,15 +48,14 @@
 	if(!isturf(T))
 		return FALSE
 
+	if(!T.can_flock_convert())
+		return FALSE
 
 	var/mob/living/simple_animal/flock/bird = controller.pawn
 	if(isnull(bird.flock))
 		return TRUE
 
 	if(isflockturf(T) && (bird.flock.claimed_floors[T] || bird.flock.claimed_walls[T]))
-		return FALSE
-
-	if(!T.can_flock_convert())
 		return FALSE
 
 	return bird.flock.is_turf_free(T)
@@ -133,7 +132,7 @@
 	if(!bird.flock)
 		return FALSE
 
-	if(length(bird.flock.drones) > FLOCK_DRONE_LIMIT)
+	if(length(bird.flock.drones) >= FLOCK_DRONE_LIMIT)
 		return FALSE
 
 	return bird.substrate.has_points(FLOCK_SUBSTRATE_COST_CONVERT + bird.flock.current_egg_cost)
@@ -141,6 +140,10 @@
 /datum/ai_behavior/flock/find_conversion_target/nest/goap_is_valid_target(datum/ai_controller/controller, atom/target)
 	var/turf/T = target
 	return ..() && !T.is_blocked_turf(exclude_mobs = TRUE) && !locate(/obj/structure/flock/egg, T)
+
+/datum/ai_behavior/flock/find_conversion_target/nest/next_behavior(datum/ai_controller/controller, success)
+	if(success)
+		controller.queue_behavior(/datum/ai_behavior/flock/perform_conversion/nest)
 
 /datum/ai_behavior/flock/perform_conversion/nest
 	name = "nesting"

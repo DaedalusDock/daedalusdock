@@ -44,7 +44,7 @@
 
 /// Complete the structure.
 /obj/structure/flock/tealprint/proc/complete_structure()
-	var/obj/structure/flock/structure = new building_type(get_turf(src))
+	var/obj/structure/flock/structure = new building_type(get_turf(src), flock)
 	flock_talk(src, "Tealprint for [structure.flock_id] realized.", flock, involuntary = TRUE)
 	qdel(src)
 

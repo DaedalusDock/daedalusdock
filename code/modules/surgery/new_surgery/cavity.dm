@@ -124,7 +124,7 @@
 		for(var/obj/item/I in affected.cavity_items)
 			if(istype(I,/obj/item/implant))
 				continue
-			total_volume += (tool.w_class - 1) ** 2
+			total_volume += (I.w_class - 1) ** 2
 
 		if(total_volume > max_volume)
 			to_chat(user, span_warning("There isn't enough space left in [affected.cavity_name] cavity for [tool]."))

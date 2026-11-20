@@ -8,6 +8,11 @@
 	max_duration = 3 SECONDS
 	surgery_flags = SURGERY_NO_ROBOTIC | SURGERY_NO_STUMP | SURGERY_NEEDS_DEENCASEMENT
 
+/datum/surgery_step/insert_pill/assess_bodypart(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/bodypart/affected = ..()
+	if(affected?.body_zone == BODY_ZONE_HEAD)
+		return affected
+
 /datum/surgery_step/insert_pill/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	. = ..()
 	user.visible_message(span_notice("[user] begins inserting [tool] into [target]'s tooth."), vision_distance = COMBAT_MESSAGE_RANGE)

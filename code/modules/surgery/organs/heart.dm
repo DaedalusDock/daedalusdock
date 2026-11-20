@@ -223,7 +223,7 @@
 		owner.med_hud_set_health()
 
 /obj/item/organ/heart/proc/handle_heartbeat()
-	var/can_hear_heart = owner.traumatic_shock_stage >= SHOCK_TIER_3 || get_step(owner, 0)?.is_below_sound_pressure() || owner.has_status_effect(owner.has_status_effect(/datum/status_effect/jitter))
+	var/can_hear_heart = owner.traumatic_shock_stage >= SHOCK_TIER_3 || get_step(owner, 0)?.is_below_sound_pressure() || owner.has_status_effect(/datum/status_effect/jitter)
 
 	var/static/sound/slowbeat = sound('sound/health/slowbeat.ogg', repeat = TRUE)
 	var/static/sound/fastbeat = sound('sound/health/fastbeat.ogg', repeat = TRUE)
@@ -232,9 +232,10 @@
 		beat = BEAT_NONE
 		return
 
-	if(pulse >= PULSE_2FAST && beat != BEAT_FAST)
-		owner.playsound_local(owner, fastbeat, 55, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
-		beat = BEAT_FAST
+	if(pulse >= PULSE_2FAST)
+		if(beat != BEAT_FAST)
+			owner.playsound_local(owner, fastbeat, 55, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
+			beat = BEAT_FAST
 	else if(beat != BEAT_SLOW)
 		owner.playsound_local(owner, slowbeat, 55, 0, channel = CHANNEL_HEARTBEAT, pressure_affected = FALSE, use_reverb = FALSE)
 		beat = BEAT_SLOW
@@ -309,12 +310,12 @@
 	. = ..()
 
 	// If the owner doesn't need a heart, we don't need to do anything with it.
-	if(!owner.needs_organ(ORGAN_SLOT_HEART))
+	if(!owner?.needs_organ(ORGAN_SLOT_HEART))
 		return
 
 	if(. & EMP_PROTECT_SELF)
 		return
-	if(!COOLDOWN_FINISHED(src, severe_cooldown)) //So we cant just spam emp to kill people.
+	if(COOLDOWN_FINISHED(src, severe_cooldown)) //So we cant just spam emp to kill people.
 		owner.set_timed_status_effect(20 SECONDS, /datum/status_effect/dizziness, only_if_higher = TRUE)
 		owner.losebreath += 10
 		COOLDOWN_START(src, severe_cooldown, 20 SECONDS)

@@ -148,7 +148,7 @@
 /obj/item/bodypart/arm/update_interaction_speed()
 	. = ..()
 	if(. != 1)
-		owner.apply_status_effect(/datum/status_effect/arm_slowdown)
+		owner?.apply_status_effect(/datum/status_effect/arm_slowdown)
 
 /obj/item/bodypart/proc/set_sever_artery(val = TRUE)
 	if(val)
@@ -176,9 +176,9 @@
 
 	if(val)
 		bodypart_flags |= BP_TENDON_CUT
+		playsound(loc, pick('sound/effects/wounds/tendon_snap1.ogg', 'sound/effects/wounds/tendon_snap2.ogg', 'sound/effects/wounds/tendon_snap3.ogg'), 50)
 	else
 		bodypart_flags &= ~BP_TENDON_CUT
-		playsound(loc, pick('sound/effects/wounds/tendon_snap1.ogg', 'sound/effects/wounds/tendon_snap2.ogg', 'sound/effects/wounds/tendon_snap3.ogg'), 50)
 
 	update_disabled()
 	return TRUE
@@ -293,7 +293,9 @@
 	if(!W)
 		return
 
-	W.open_wound(min(W.damage * 2, W.damage_list[length(W.damage_list)] - W.damage))
+	var/widen_by = min(W.damage * 2, W.damage_list[length(W.damage_list)] - W.damage)
+	if(widen_by > 0)
+		W.open_wound(widen_by)
 
 /obj/item/bodypart/proc/jointlock(mob/living/user)
 	if(!IS_ORGANIC_LIMB(src))

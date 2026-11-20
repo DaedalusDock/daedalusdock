@@ -342,7 +342,7 @@
 			spawn(-1)
 				owner.emote("cough")		//respitory tract infection
 
-	if(damage >= low_threshold)
+	if(passed_low_threshold())
 		if(prob(2) && owner.blood_volume)
 			owner.visible_message("[owner] coughs up blood!", span_warning("You cough up blood."), span_hear("You hear someone coughing."))
 			owner.bleed(1)
@@ -445,7 +445,7 @@
 	. = ..()
 	if(. & EMP_PROTECT_SELF)
 		return
-	if(!COOLDOWN_FINISHED(src, severe_cooldown)) //So we cant just spam emp to kill people.
+	if(owner && COOLDOWN_FINISHED(src, severe_cooldown)) //So we cant just spam emp to kill people.
 		owner.losebreath += 20
 		COOLDOWN_START(src, severe_cooldown, 30 SECONDS)
 	if(prob(emp_vulnerability/severity)) //Chance of permanent effects

@@ -10,7 +10,7 @@
 	blood_volume = clamp(blood_volume + adj, 0, BLOOD_VOLUME_ABSOLUTE_MAX)
 	return old_blood_volume - blood_volume
 
-/mob/living/proc/adjustBloodVolumeUpTo(adj, max)
+/mob/living/proc/adjustBloodVolumeUpTo(adj, max = BLOOD_VOLUME_ABSOLUTE_MAX)
 	if(blood_volume >= max)
 		return 0
 	return adjustBloodVolume(min(max-blood_volume, adj))
@@ -217,7 +217,7 @@
 	if(!blood_id)
 		return FALSE
 
-	blood_volume -= amount
+	adjustBloodVolume(-amount)
 
 	var/list/blood_data = get_blood_data(blood_id)
 
@@ -234,7 +234,7 @@
 					C.reagents.add_reagent(/datum/reagent/toxin, amount * 0.5)
 					return TRUE
 
-			C.adjustBloodVolumeUpTo(0.1)
+			C.adjustBloodVolumeUpTo(amount, BLOOD_VOLUME_MAXIMUM)
 			return TRUE
 
 	AM.reagents.add_reagent(blood_id, amount, blood_data, bodytemperature)

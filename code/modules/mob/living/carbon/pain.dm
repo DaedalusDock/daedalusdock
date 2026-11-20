@@ -46,7 +46,9 @@
 	if(!def_zone) // Distribute to all bodyparts evenly if no bodypart
 		var/list/not_full = bodyparts.Copy()
 		var/list/parts = not_full.Copy()
-		var/amount_remaining = round(amount/2)
+		var/sign = is_healing ? -1 : 1
+		var/amount_to_apply = round(abs(amount)/2, DAMAGE_PRECISION)
+		var/amount_remaining = amount_to_apply
 		while(amount_remaining > 0 && length(not_full))
 			if(!length(parts))
 				parts += not_full
@@ -55,13 +57,13 @@
 			BP = pick(parts)
 			parts -= BP
 
-			var/used = BP.adjustPain(pain_per_part)
+			var/used = BP.adjustPain(pain_per_part * sign)
 			if(!used)
 				not_full -= BP
 				continue
 
 			amount_remaining -= abs(used)
-		. = amount - amount_remaining
+		. = (amount_to_apply - amount_remaining) * sign
 	else
 		if(isbodypart(def_zone))
 			BP = def_zone
@@ -246,9 +248,9 @@
 	else if(!heart_attack_gaming)
 		traumatic_shock_stage = min(traumatic_shock_stage, SHOCK_MAXIMUM)
 		var/recovery = 2
-		if(pain < 0.5 * traumatic_shock_stage)
+		if(pain < 0.25 * traumatic_shock_stage)
 			recovery = 4
-		else if(pain < 0.25 * traumatic_shock_stage)
+		else if(pain < 0.5 * traumatic_shock_stage)
 			recovery = 3
 
 		// ~25% chance at base to recover twice as fast..
@@ -346,7 +348,7 @@
 
 	var/pain_passout = min(PAIN_AMT_PASSOUT * brain_health_factor * blood_circulation_factor, PAIN_AMT_PASSOUT)
 
-	if(pain <= max((pain_passout * 0.075), 10))
+	if(pain > max((pain_passout * 0.075), 10))
 		var/slowdown = min(pain * (PAIN_MAX_SLOWDOWN / pain_passout), PAIN_MAX_SLOWDOWN)
 		add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/pain, TRUE, slowdown)
 	else
@@ -415,15 +417,15 @@
 			continue
 
 		var/obj/item/bodypart/parent = I.ownerlimb
-		if(parent.bodypart_flags & BP_NO_PAIN)
+		if(!parent || (parent.bodypart_flags & BP_NO_PAIN))
 			continue
 
 		LAZYINITLIST(organ_pain_zones)
 
-		if(I.damage > (I.low_threshold * I.maxHealth))
-			organ_pain_zones[parent] += 25
 		if(I.damage > (I.high_threshold * I.maxHealth))
 			organ_pain_zones[parent] += 40
+		else if(I.damage > (I.low_threshold * I.maxHealth))
+			organ_pain_zones[parent] += 25
 		else
 			organ_pain_zones[parent] += 10
 
@@ -500,7 +502,7 @@
 
 /// Converts a pain value to a "class" of pain.
 /proc/pain_class(pain_amt)
-	switch(pain_amt)
+	switch(ceil(pain_amt))
 		if(0)
 			return PAIN_CLASS_NONE
 

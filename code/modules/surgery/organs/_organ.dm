@@ -445,7 +445,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			if(!BP)
 				return
 			var/degree = ""
-			if(damage < low_threshold)
+			if(damage > high_threshold * maxHealth)
 				degree = " a lot"
 			else if(damage_amount < 5)
 				degree = " a bit"
@@ -503,7 +503,7 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			return low_threshold_passed
 		if(ORGAN_LOW_THRESHOLD_CLEARED)
 			return low_threshold_cleared
-		if(ORGAN_HIGH_THRESHOLD_PASSED)
+		if(ORGAN_HIGH_THRESHOLD_CLEARED)
 			return high_threshold_cleared
 		if(ORGAN_NOW_FIXED)
 			return now_fixed
@@ -644,9 +644,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 			germ_message =  "Mild Infection+"
 		if (INFECTION_LEVEL_ONE + (2 * (INFECTION_LEVEL_TWO - INFECTION_LEVEL_ONE) / 3) to INFECTION_LEVEL_TWO)
 			germ_message =  "Mild Infection++"
-		if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + ((INFECTION_LEVEL_THREE - INFECTION_LEVEL_THREE) / 3))
+		if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + ((INFECTION_LEVEL_THREE - INFECTION_LEVEL_TWO) / 3))
 			germ_message =  "Acute Infection"
-		if (INFECTION_LEVEL_TWO + ((INFECTION_LEVEL_THREE - INFECTION_LEVEL_THREE) / 3) to INFECTION_LEVEL_TWO + (2 * (INFECTION_LEVEL_THREE - INFECTION_LEVEL_TWO) / 3))
+		if (INFECTION_LEVEL_TWO + ((INFECTION_LEVEL_THREE - INFECTION_LEVEL_TWO) / 3) to INFECTION_LEVEL_TWO + (2 * (INFECTION_LEVEL_THREE - INFECTION_LEVEL_TWO) / 3))
 			germ_message =  "Acute Infection+"
 		if (INFECTION_LEVEL_TWO + (2 * (INFECTION_LEVEL_THREE - INFECTION_LEVEL_TWO) / 3) to INFECTION_LEVEL_THREE)
 			germ_message =  "Acute Infection++"
@@ -659,9 +659,9 @@ INITIALIZE_IMMEDIATE(/obj/item/organ)
 	// Add more info if Technetium is in their blood
 	if(owner?.has_reagent(/datum/reagent/technetium))
 		. += tag ? "<span style='font-weight: bold; color:#E42426'> organ is [round((damage/maxHealth)*100, 1)]% damaged.</span>" : "[round((damage/maxHealth)*100, 1)]"
-	else if(damage > high_threshold)
+	else if(damage > high_threshold * maxHealth)
 		. +=  tag ? "<span style='font-weight: bold; color:#ff9933'>Severely Damaged</span>" : "Severely Damaged"
-	else if (damage > low_threshold)
+	else if (damage > low_threshold * maxHealth)
 		. += tag ? "<span style='font-weight: bold; color:#ffcc33'>Mildly Damaged</span>" : "Mildly Damaged"
 
 

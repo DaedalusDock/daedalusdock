@@ -524,9 +524,9 @@
 				W.salved = 0
 				disturbed += W.damage
 
-		if(disturbed)
+		if(disturbed && owner)
 			to_chat(owner, span_warning("Ow! Your burns were disturbed."))
-			owner.apply_pain(0.2*burn, body_zone, updating_health = FALSE)
+			owner.apply_pain(0.2 * disturbed, body_zone, updating_health = FALSE)
 
 		if(owner && can_break_bones && istype(src, /obj/item/bodypart/head) && (bodypart_flags & BP_HAS_BLOOD) && sharpness == NONE && (owner.stat == CONSCIOUS) && owner.has_mouth())
 			if(prob(8) && owner.bleed(5))
@@ -624,7 +624,7 @@
 			owner.updatehealth()
 			if(. & BODYPART_LIFE_UPDATE_DAMAGE_OVERLAYS)
 				owner.update_damage_overlays()
-	cremation_progress = min(0, cremation_progress - ((brute_dam + burn_dam)*(100/max_damage)))
+	cremation_progress = max(0, cremation_progress - ((brute_dam + burn_dam)*(100/max_damage)))
 	return .
 
 ///Proc to hook behavior associated to the change of the brute_dam variable's value.
@@ -809,9 +809,11 @@
 			UnregisterSignal(old_owner, list(
 				SIGNAL_REMOVETRAIT(TRAIT_NOLIMBDISABLE),
 				SIGNAL_ADDTRAIT(TRAIT_NOLIMBDISABLE),
-				SIGNAL_REMOVETRAIT(TRAIT_NOBLEED),
-				SIGNAL_ADDTRAIT(TRAIT_NOBLEED),
 				))
+		UnregisterSignal(old_owner, list(
+			SIGNAL_REMOVETRAIT(TRAIT_NOBLEED),
+			SIGNAL_ADDTRAIT(TRAIT_NOBLEED),
+			))
 	if(owner)
 		if(initial(can_be_disabled))
 			if(HAS_TRAIT(owner, TRAIT_NOLIMBDISABLE))
@@ -819,9 +821,9 @@
 				needs_update_disabled = FALSE
 			RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOLIMBDISABLE), PROC_REF(on_owner_nolimbdisable_trait_loss))
 			RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOLIMBDISABLE), PROC_REF(on_owner_nolimbdisable_trait_gain))
-			// Bleeding stuff
-			RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOBLEED), PROC_REF(on_owner_nobleed_loss))
-			RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOBLEED), PROC_REF(on_owner_nobleed_gain))
+		// Bleeding stuff
+		RegisterSignal(owner, SIGNAL_REMOVETRAIT(TRAIT_NOBLEED), PROC_REF(on_owner_nobleed_loss))
+		RegisterSignal(owner, SIGNAL_ADDTRAIT(TRAIT_NOBLEED), PROC_REF(on_owner_nobleed_gain))
 
 		if(needs_update_disabled)
 			update_disabled()
@@ -1051,7 +1053,7 @@
 	owner?.update_damage_overlays()
 
 	RegisterSignal(bandage, COMSIG_PARENT_QDELETING, PROC_REF(bandage_gone))
-	if(bandage.absorption_capacity && owner.stat < UNCONSCIOUS)
+	if(bandage.absorption_capacity && owner && owner.stat < UNCONSCIOUS)
 		for(var/datum/wound/iter_wound as anything in wounds)
 			if(iter_wound.bleeding())
 				to_chat(owner, span_warning("You feel blood pool on your [plaintext_zone]."))
@@ -1156,7 +1158,7 @@
 	if(. & EMP_PROTECT_WIRES || !(bodytype & BODYTYPE_ROBOTIC))
 		return FALSE
 
-	if(!(body_zone == BODY_ZONE_CHEST))
+	if(owner && !(body_zone == BODY_ZONE_CHEST))
 		owner.visible_message(span_danger("<b>[owner]<b>'s [src.name] falls limp!"))
 
 	var/time_needed = 10 SECONDS
@@ -1179,13 +1181,13 @@
 
 /obj/item/bodypart/leg/emp_act(severity)
 	. = ..()
-	if(!.)
+	if(!. || !owner)
 		return
 	owner.Knockdown(severity == EMP_HEAVY ? 20 SECONDS : 10 SECONDS)
 
 /obj/item/bodypart/chest/robot/emp_act(severity)
 	. = ..()
-	if(!.)
+	if(!. || !owner)
 		return
 	to_chat(owner, span_danger("Your [src.name]'s logic boards temporarily become unresponsive!"))
 	if(severity == EMP_HEAVY)

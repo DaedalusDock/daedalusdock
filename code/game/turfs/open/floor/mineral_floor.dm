@@ -21,8 +21,9 @@
 	. = ..()
 	icons = typelist("icons", icons)
 
-/turf/open/floor/mineral/setup_broken_states()
-	return list("[initial(icon_state)]_dam")
+// Subtypes that change icon_state need a TYPEINFO_DEF with a matching "<icon_state>_dam" broken state.
+TYPEINFO_DEF(/turf/open/floor/mineral)
+	broken_states = list("_dam")
 
 /turf/open/floor/mineral/update_icon_state()
 	if(!broken && !burnt && !(icon_state in icons))
@@ -33,6 +34,7 @@
 
 TYPEINFO_DEF(/turf/open/floor/mineral/plasma)
 	default_materials = list(/datum/material/plasma = 500)
+	broken_states = list("plasma_dam")
 
 /turf/open/floor/mineral/plasma
 	name = "plasma floor"
@@ -50,6 +52,7 @@ TYPEINFO_DEF(/turf/open/floor/mineral/plasma)
 
 TYPEINFO_DEF(/turf/open/floor/mineral/gold)
 	default_materials = list(/datum/material/gold = 500)
+	broken_states = list("gold_dam")
 
 /turf/open/floor/mineral/gold
 	name = "gold floor"
@@ -61,6 +64,7 @@ TYPEINFO_DEF(/turf/open/floor/mineral/gold)
 
 TYPEINFO_DEF(/turf/open/floor/mineral/silver)
 	default_materials = list(/datum/material/silver = 500)
+	broken_states = list("silver_dam")
 
 /turf/open/floor/mineral/silver
 	name = "silver floor"
@@ -72,6 +76,7 @@ TYPEINFO_DEF(/turf/open/floor/mineral/silver)
 
 TYPEINFO_DEF(/turf/open/floor/mineral/titanium)
 	default_materials = list(/datum/material/titanium = 500)
+	broken_states = list("titanium_dam")
 
 /turf/open/floor/mineral/titanium
 	name = "shuttle floor"
@@ -84,12 +89,18 @@ TYPEINFO_DEF(/turf/open/floor/mineral/titanium)
 /turf/open/floor/mineral/titanium/airless
 	initial_gas = AIRLESS_ATMOS
 
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/yellow)
+	broken_states = list("titanium_yellow_dam")
+
 /turf/open/floor/mineral/titanium/yellow
 	icon_state = "titanium_yellow"
 	floor_tile = /obj/item/stack/tile/mineral/titanium/yellow
 
 /turf/open/floor/mineral/titanium/yellow/airless
 	initial_gas = AIRLESS_ATMOS
+
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/blue)
+	broken_states = list("titanium_blue_dam")
 
 /turf/open/floor/mineral/titanium/blue
 	icon_state = "titanium_blue"
@@ -98,12 +109,18 @@ TYPEINFO_DEF(/turf/open/floor/mineral/titanium)
 /turf/open/floor/mineral/titanium/blue/airless
 	initial_gas = AIRLESS_ATMOS
 
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/white)
+	broken_states = list("titanium_white_dam")
+
 /turf/open/floor/mineral/titanium/white
 	icon_state = "titanium_white"
 	floor_tile = /obj/item/stack/tile/mineral/titanium/white
 
 /turf/open/floor/mineral/titanium/white/airless
 	initial_gas = AIRLESS_ATMOS
+
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/purple)
+	broken_states = list("titanium_purple_dam")
 
 /turf/open/floor/mineral/titanium/purple
 	icon_state = "titanium_purple"
@@ -113,6 +130,9 @@ TYPEINFO_DEF(/turf/open/floor/mineral/titanium)
 	initial_gas = AIRLESS_ATMOS
 
 // OLD TITANIUM (titanium floor tiles before PR #50454)
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/tiled)
+	broken_states = list("titanium_tiled_dam")
+
 /turf/open/floor/mineral/titanium/tiled
 	name = "titanium tile"
 	icon_state = "titanium_tiled"
@@ -121,12 +141,18 @@ TYPEINFO_DEF(/turf/open/floor/mineral/titanium)
 /turf/open/floor/mineral/titanium/tiled/airless
 	initial_gas = AIRLESS_ATMOS
 
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/tiled/yellow)
+	broken_states = list("titanium_tiled_yellow_dam")
+
 /turf/open/floor/mineral/titanium/tiled/yellow
 	icon_state = "titanium_tiled_yellow"
 	floor_tile = /obj/item/stack/tile/mineral/titanium/tiled/yellow
 
 /turf/open/floor/mineral/titanium/tiled/yellow/airless
 	initial_gas = AIRLESS_ATMOS
+
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/tiled/blue)
+	broken_states = list("titanium_tiled_blue_dam")
 
 /turf/open/floor/mineral/titanium/tiled/blue
 	icon_state = "titanium_tiled_blue"
@@ -135,12 +161,18 @@ TYPEINFO_DEF(/turf/open/floor/mineral/titanium)
 /turf/open/floor/mineral/titanium/tiled/blue/airless
 	initial_gas = AIRLESS_ATMOS
 
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/tiled/white)
+	broken_states = list("titanium_tiled_white_dam")
+
 /turf/open/floor/mineral/titanium/tiled/white
 	icon_state = "titanium_tiled_white"
 	floor_tile = /obj/item/stack/tile/mineral/titanium/tiled/white
 
 /turf/open/floor/mineral/titanium/tiled/white/airless
 	initial_gas = AIRLESS_ATMOS
+
+TYPEINFO_DEF(/turf/open/floor/mineral/titanium/tiled/purple)
+	broken_states = list("titanium_tiled_purple_dam")
 
 /turf/open/floor/mineral/titanium/tiled/purple
 	icon_state = "titanium_tiled_purple"
@@ -152,6 +184,7 @@ TYPEINFO_DEF(/turf/open/floor/mineral/titanium)
 //PLASTITANIUM (syndieshuttle)
 TYPEINFO_DEF(/turf/open/floor/mineral/plastitanium)
 	default_materials = list(/datum/material/alloy/plastitanium = 500)
+	broken_states = list("plastitanium_dam")
 
 /turf/open/floor/mineral/plastitanium
 	name = "shuttle floor"
@@ -163,6 +196,9 @@ TYPEINFO_DEF(/turf/open/floor/mineral/plastitanium)
 
 /turf/open/floor/mineral/plastitanium/airless
 	initial_gas = AIRLESS_ATMOS
+
+TYPEINFO_DEF(/turf/open/floor/mineral/plastitanium/red)
+	broken_states = list("plastitanium_red_dam")
 
 /turf/open/floor/mineral/plastitanium/red
 	icon_state = "plastitanium_red"
@@ -182,6 +218,7 @@ TYPEINFO_DEF(/turf/open/floor/mineral/plastitanium)
 
 TYPEINFO_DEF(/turf/open/floor/mineral/bananium)
 	default_materials = list(/datum/material/bananium = 500)
+	broken_states = list("bananium_dam")
 
 /turf/open/floor/mineral/bananium
 	name = "bananium floor"
@@ -230,6 +267,7 @@ TYPEINFO_DEF(/turf/open/floor/mineral/bananium)
 
 TYPEINFO_DEF(/turf/open/floor/mineral/diamond)
 	default_materials = list(/datum/material/diamond = 500)
+	broken_states = list("diamond_dam")
 
 /turf/open/floor/mineral/diamond
 	name = "diamond floor"
@@ -241,6 +279,7 @@ TYPEINFO_DEF(/turf/open/floor/mineral/diamond)
 
 TYPEINFO_DEF(/turf/open/floor/mineral/uranium)
 	default_materials = list(/datum/material/uranium = 500)
+	broken_states = list("uranium_dam")
 
 /turf/open/floor/mineral/uranium
 	name = "uranium floor"
@@ -292,6 +331,7 @@ TYPEINFO_DEF(/turf/open/floor/mineral/uranium)
 // ALIEN ALLOY
 TYPEINFO_DEF(/turf/open/floor/mineral/abductor)
 	default_materials = list(/datum/material/alloy/alien = 500)
+	broken_states = list("alienpod1_dam")
 
 /turf/open/floor/mineral/abductor
 	name = "alien floor"

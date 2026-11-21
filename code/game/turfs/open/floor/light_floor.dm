@@ -28,8 +28,8 @@
 	///used for light floors that cycle colours
 	var/cycle = FALSE
 
-/turf/open/floor/light/setup_broken_states()
-	return list("light_broken")
+TYPEINFO_DEF(/turf/open/floor/light)
+	broken_states = list("light_broken")
 
 /turf/open/floor/light/examine(mob/user)
 	. = ..()

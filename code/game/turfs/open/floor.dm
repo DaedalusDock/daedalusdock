@@ -1,3 +1,9 @@
+TYPEINFO_DEF(/turf/open/floor)
+	/// Icon states in damaged_icon used for the broken overlay.
+	var/list/broken_states = list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
+	/// Icon states in damaged_icon used for the burnt overlay.
+	var/list/burnt_states = list("floorscorched1", "floorscorched2")
+
 /// Anything above a lattice should go here.
 /turf/open/floor
 	name = "floor"
@@ -30,51 +36,39 @@
 	var/burnt = FALSE
 	/// Path of the tile that this floor drops
 	var/floor_tile = null
-	var/list/broken_states
-	var/list/burnt_states
 	/// Determines if you can deconstruct this with a RCD
 	var/rcd_proof = FALSE
 
 /turf/open/floor/Initialize(mapload)
 	. = ..()
-	if (broken_states)
-		stack_trace("broken_states defined at the object level for [type], move it to setup_broken_states()")
-	else
-		broken_states = string_list(setup_broken_states())
-	if (burnt_states)
-		stack_trace("burnt_states defined at the object level for [type], move it to setup_burnt_states()")
-	else
-		var/list/new_burnt_states = setup_burnt_states()
-		if(new_burnt_states)
-			burnt_states = string_list(new_burnt_states)
-	if(!broken && broken_states && (icon_state in broken_states))
+	// Not typeinfo() for speed reasons.
+	var/datum/typeinfo/turf/open/floor/typeinfo = __typeinfo_cache[__typeinfo_path] ||= new __typeinfo_path
+	if(!broken && typeinfo.broken_states && (icon_state in typeinfo.broken_states))
 		broken = TRUE
-	if(!burnt && burnt_states && (icon_state in burnt_states))
+	if(!burnt && typeinfo.burnt_states && (icon_state in typeinfo.burnt_states))
 		burnt = TRUE
 	if(mapload && prob(33))
 		MakeDirty()
 
-/turf/open/floor/proc/setup_broken_states()
-	return list("damaged1", "damaged2", "damaged3", "damaged4", "damaged5")
-
-/turf/open/floor/proc/setup_burnt_states()
-	return list("floorscorched1", "floorscorched2")
-
 /turf/open/floor/update_overlays()
 	. = ..()
+	if(!broken && !burnt)
+		return
+
+	var/datum/typeinfo/turf/open/floor/typeinfo = typeinfo(src)
 	var/mutable_appearance/overlay
 	if(broken)
-		overlay = mutable_appearance(damaged_icon, pick(broken_states))
+		overlay = mutable_appearance(damaged_icon, pick(typeinfo.broken_states))
 		overlay.blend_mode = broken_blend
 		. += overlay
 
 	else if(burnt)
-		if(LAZYLEN(burnt_states))
-			overlay = mutable_appearance(damaged_icon, pick(burnt_states))
+		if(LAZYLEN(typeinfo.burnt_states))
+			overlay = mutable_appearance(damaged_icon, pick(typeinfo.burnt_states))
 			overlay.blend_mode = burned_blend
 			. += overlay
 		else
-			overlay = mutable_appearance(damaged_icon, pick(broken_states))
+			overlay = mutable_appearance(damaged_icon, pick(typeinfo.broken_states))
 			overlay.blend_mode = broken_blend
 			. += overlay
 

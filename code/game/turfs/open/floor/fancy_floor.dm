@@ -27,11 +27,9 @@
 
 	tiled_dirt = FALSE
 
-/turf/open/floor/wood/setup_broken_states()
-	return list("wood-broken", "wood-broken2", "wood-broken3", "wood-broken4", "wood-broken5", "wood-broken6", "wood-broken7")
-
-/turf/open/floor/wood/setup_burnt_states()
-	return list("floorscorched1", "floorscorched2")
+TYPEINFO_DEF(/turf/open/floor/wood)
+	broken_states = list("wood-broken", "wood-broken2", "wood-broken3", "wood-broken4", "wood-broken5", "wood-broken6", "wood-broken7")
+	burnt_states = list("floorscorched1", "floorscorched2")
 
 /turf/open/floor/wood/screwdriver_act(mob/living/user, obj/item/I)
 	if(..())
@@ -100,8 +98,8 @@
 	clawfootstep = FOOTSTEP_WOOD_CLAW
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 
-/turf/open/floor/bamboo/setup_broken_states()
-	return list("bamboodamaged")
+TYPEINFO_DEF(/turf/open/floor/bamboo)
+	broken_states = list("bamboodamaged")
 
 /turf/open/floor/grass
 	name = "grass patch"
@@ -119,8 +117,8 @@
 	heavyfootstep = FOOTSTEP_GENERIC_HEAVY
 	tiled_dirt = FALSE
 
-/turf/open/floor/grass/setup_broken_states()
-	return list("sand")
+TYPEINFO_DEF(/turf/open/floor/grass)
+	broken_states = list("sand")
 
 /turf/open/floor/grass/Initialize(mapload)
 	. = ..()
@@ -168,8 +166,8 @@
 	. = ..()
 	AddComponent(/datum/component/diggable, /obj/item/stack/tile/mineral/snow, 2, "dig up")
 
-/turf/open/floor/fake_snow/setup_broken_states()
-	return list("snow_dug")
+TYPEINFO_DEF(/turf/open/floor/fake_snow)
+	broken_states = list("snow_dug")
 
 /turf/open/floor/fake_snow/try_replace_tile(obj/item/stack/tile/T, mob/user, params)
 	return

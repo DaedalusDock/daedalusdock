@@ -6,11 +6,9 @@
 
 	floor_tile = /obj/item/stack/tile/iron/base
 
-/turf/open/floor/iron/setup_broken_states()
-	return list("broken0", "broken1", "broken2", "broken3", "broken4")
-
-/turf/open/floor/iron/setup_burnt_states()
-	return list("burned0", "burned1")
+TYPEINFO_DEF(/turf/open/floor/iron)
+	broken_states = list("broken0", "broken1", "broken2", "broken3", "broken4")
+	burnt_states = list("burned0", "burned1")
 
 /turf/open/floor/iron/rust_heretic_act()
 	if(prob(70))

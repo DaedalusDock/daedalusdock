@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/newspaper)
+	attack_verb_continuous = list("baps")
+	attack_verb_simple = list("bap")
+
 /obj/item/newspaper
 	name = "newspaper"
 	desc = "An issue of The Griffon, the newspaper circulating aboard Daedalus Space Stations."
@@ -6,8 +10,6 @@
 	lefthand_file = 'icons/mob/inhands/misc/books_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/books_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
-	attack_verb_continuous = list("baps")
-	attack_verb_simple = list("bap")
 	resistance_flags = FLAMMABLE
 	var/screen = 0
 	var/pages = 0

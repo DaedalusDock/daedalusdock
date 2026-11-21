@@ -49,6 +49,10 @@
 
 	plant_type = /datum/plant/nettle/death
 
+TYPEINFO_DEF(/obj/item/food/grown/nettle)
+	attack_verb_continuous = list("stings")
+	attack_verb_simple = list("sting")
+
 /obj/item/food/grown/nettle // "snack"
 	plant_datum = /datum/plant/nettle
 	name = "\improper nettle"
@@ -64,8 +68,6 @@
 	throwforce = 5
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 3
-	attack_verb_continuous = list("stings")
-	attack_verb_simple = list("sting")
 
 /obj/item/food/grown/nettle/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is eating some of [src]! It looks like [user.p_theyre()] trying to commit suicide!"))

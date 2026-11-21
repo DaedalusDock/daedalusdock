@@ -1,11 +1,13 @@
+TYPEINFO_DEF(/obj/item/stack/tile/light)
+	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "smashes")
+	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "smash")
+
 /obj/item/stack/tile/light
 	name = "light tile"
 	singular_name = "light floor tile"
 	desc = "A floor tile, made out of glass. It produces light."
 	icon_state = "tile_e"
 	flags_1 = CONDUCT_1
-	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "smashes")
-	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "smash")
 	turf_type = /turf/open/floor/light
 	merge_type = /obj/item/stack/tile/light
 	var/state = 0

@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/organ/tongue)
+	attack_verb_continuous = list("licks", "slobbers", "slaps", "frenches", "tongues")
+	attack_verb_simple = list("lick", "slobber", "slap", "french", "tongue")
+
 /obj/item/organ/tongue
 	name = "tongue"
 	desc = "A fleshy muscle mostly used for lying."
@@ -5,8 +9,6 @@
 	visual = FALSE
 	zone = BODY_ZONE_PRECISE_MOUTH
 	slot = ORGAN_SLOT_TONGUE
-	attack_verb_continuous = list("licks", "slobbers", "slaps", "frenches", "tongues")
-	attack_verb_simple = list("lick", "slobber", "slap", "french", "tongue")
 
 	relative_size = 5
 
@@ -361,13 +363,15 @@
 /obj/item/organ/tongue/alien/modify_speech(datum/source, list/speech_args)
 	playsound(owner, SFX_HISS, 25, TRUE, TRUE)
 
+TYPEINFO_DEF(/obj/item/organ/tongue/bone)
+	attack_verb_continuous = list("bites", "chatters", "chomps", "enamelles", "bones")
+	attack_verb_simple = list("bite", "chatter", "chomp", "enamel", "bone")
+
 /obj/item/organ/tongue/bone
 	name = "bone \"tongue\""
 	desc = "Apparently skeletons alter the sounds they produce through oscillation of their teeth, hence their characteristic rattling."
 	icon_state = "tonguebone"
 	tongue_say_verb = "rattles"
-	attack_verb_continuous = list("bites", "chatters", "chomps", "enamelles", "bones")
-	attack_verb_simple = list("bite", "chatter", "chomp", "enamel", "bone")
 	sense_of_taste = FALSE
 	modifies_speech = TRUE
 	var/chattering = FALSE
@@ -402,6 +406,10 @@
 		if("papyrus")
 			speech_args[SPEECH_SPANS] |= SPAN_PAPYRUS
 
+TYPEINFO_DEF(/obj/item/organ/tongue/robot)
+	attack_verb_continuous = list("beeps", "boops")
+	attack_verb_simple = list("beep", "boop")
+
 /obj/item/organ/tongue/robot
 	name = "robotic voicebox"
 	desc = "A voice synthesizer that can interface with organic lifeforms."
@@ -413,8 +421,6 @@
 	tongue_exclaim_verb = "whistles loudly"
 	tongue_whisper_verb = "whistles quietly"
 
-	attack_verb_continuous = list("beeps", "boops")
-	attack_verb_simple = list("beep", "boop")
 	modifies_speech = TRUE
 	taste_sensitivity = 25 // not as good as an organic tongue
 
@@ -443,14 +449,16 @@
 			new_message += message[i]
 	speech_args[SPEECH_MESSAGE] = new_message
 
+TYPEINFO_DEF(/obj/item/organ/tongue/ethereal)
+	attack_verb_continuous = list("shocks", "jolts", "zaps")
+	attack_verb_simple = list("shock", "jolt", "zap")
+
 /obj/item/organ/tongue/ethereal
 	name = "electric discharger"
 	desc = "A sophisticated ethereal organ, capable of synthesising speech via electrical discharge."
 	icon_state = "electrotongue"
 	tongue_say_verb = "crackles"
 	taste_sensitivity = 10 // ethereal tongues function (very loosely) like a gas spectrometer: vaporising a small amount of the food and allowing it to pass to the nose, resulting in more sensitive taste
-	attack_verb_continuous = list("shocks", "jolts", "zaps")
-	attack_verb_simple = list("shock", "jolt", "zap")
 	var/static/list/languages_possible_ethereal = typecacheof(list(
 		/datum/language/common,
 		/datum/language/draconic,

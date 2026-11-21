@@ -6,6 +6,8 @@
  */
 TYPEINFO_DEF(/obj/item/pitchfork)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
+	attack_verb_continuous = list("attacks", "impales", "pierces")
+	attack_verb_simple = list("attack", "impale", "pierce")
 
 /obj/item/pitchfork
 	icon_state = "pitchfork0"
@@ -23,8 +25,6 @@ TYPEINFO_DEF(/obj/item/pitchfork)
 	sharpness = SHARP_EDGED
 
 	w_class = WEIGHT_CLASS_BULKY
-	attack_verb_continuous = list("attacks", "impales", "pierces")
-	attack_verb_simple = list("attack", "impale", "pierce")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	max_integrity = 30

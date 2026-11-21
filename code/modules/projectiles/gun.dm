@@ -18,6 +18,8 @@
 
 TYPEINFO_DEF(/obj/item/gun)
 	default_materials = list(/datum/material/iron=2000)
+	attack_verb_continuous = list("strikes", "hits", "bashes")
+	attack_verb_simple = list("strike", "hit", "bash")
 
 /obj/item/gun
 	name = "gun"
@@ -40,8 +42,6 @@ TYPEINFO_DEF(/obj/item/gun)
 
 	has_combat_mode_interaction = TRUE
 
-	attack_verb_continuous = list("strikes", "hits", "bashes")
-	attack_verb_simple = list("strike", "hit", "bash")
 
 	var/gun_flags = NONE
 

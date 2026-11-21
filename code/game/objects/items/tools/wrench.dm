@@ -1,6 +1,8 @@
 TYPEINFO_DEF(/obj/item/wrench)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=150)
+	attack_verb_continuous = list("bashes", "batters", "bludgeons", "whacks")
+	attack_verb_simple = list("bash", "batter", "bludgeon", "whack")
 
 /obj/item/wrench
 	name = "wrench"
@@ -24,8 +26,6 @@ TYPEINFO_DEF(/obj/item/wrench)
 	drop_sound = 'sound/items/handling/wrench_drop.ogg'
 	pickup_sound = 'sound/items/handling/wrench_pickup.ogg'
 
-	attack_verb_continuous = list("bashes", "batters", "bludgeons", "whacks")
-	attack_verb_simple = list("bash", "batter", "bludgeon", "whack")
 	tool_behaviour = TOOL_WRENCH
 	toolspeed = 1
 
@@ -51,14 +51,16 @@ TYPEINFO_DEF(/obj/item/wrench/abductor)
 	toolspeed = 0.1
 
 
+TYPEINFO_DEF(/obj/item/wrench/medical)
+	attack_verb_continuous = list("heals", "medicals", "taps", "pokes", "analyzes") //"cobbyed"
+	attack_verb_simple = list("heal", "medical", "tap", "poke", "analyze")
+
 /obj/item/wrench/medical
 	name = "medical wrench"
 	desc = "A medical wrench with common(medical?) uses. Can be found in your hand."
 	icon_state = "wrench_medical"
 	force = 2 //MEDICAL
 	throwforce = 4
-	attack_verb_continuous = list("heals", "medicals", "taps", "pokes", "analyzes") //"cobbyed"
-	attack_verb_simple = list("heal", "medical", "tap", "poke", "analyze")
 	///var to hold the name of the person who suicided
 	var/suicider
 
@@ -93,13 +95,15 @@ TYPEINFO_DEF(/obj/item/wrench/abductor)
 	icon_state = "wrench_cyborg"
 	toolspeed = 0.5
 
+TYPEINFO_DEF(/obj/item/wrench/combat)
+	attack_verb_continuous = list("devastates", "brutalizes", "commits a war crime against", "obliterates", "humiliates")
+	attack_verb_simple = list("devastate", "brutalize", "commit a war crime against", "obliterate", "humiliate")
+
 /obj/item/wrench/combat
 	name = "combat wrench"
 	desc = "It's like a normal wrench but edgier. Can be found on the battlefield."
 	icon_state = "wrench_combat"
 	belt_icon_state = "wrench_combat"
-	attack_verb_continuous = list("devastates", "brutalizes", "commits a war crime against", "obliterates", "humiliates")
-	attack_verb_simple = list("devastate", "brutalize", "commit a war crime against", "obliterate", "humiliate")
 	tool_behaviour = null
 	toolspeed = null
 

@@ -285,6 +285,8 @@
  */
 TYPEINFO_DEF(/obj/item/toy/gun)
 	default_materials = list(/datum/material/iron=10, /datum/material/glass=10)
+	attack_verb_continuous = list("strikes", "pistol whips", "hits", "bashes")
+	attack_verb_simple = list("strike", "pistol whip", "hit", "bash")
 
 /obj/item/toy/gun
 	name = "cap gun"
@@ -298,8 +300,6 @@ TYPEINFO_DEF(/obj/item/toy/gun)
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("strikes", "pistol whips", "hits", "bashes")
-	attack_verb_simple = list("strike", "pistol whip", "hit", "bash")
 	var/bullets = 7
 
 /obj/item/toy/gun/examine(mob/user)
@@ -371,6 +371,10 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 /*
  * Toy swords
  */
+TYPEINFO_DEF(/obj/item/toy/sword)
+	attack_verb_continuous = list("attacks", "strikes", "hits")
+	attack_verb_simple = list("attack", "strike", "hit")
+
 /obj/item/toy/sword
 	name = "toy sword"
 	desc = "A cheap, plastic replica of an energy sword. Realistic sounds! Ages 8 and up."
@@ -379,8 +383,6 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	w_class = WEIGHT_CLASS_SMALL
-	attack_verb_continuous = list("attacks", "strikes", "hits")
-	attack_verb_simple = list("attack", "strike", "hit")
 	/// Whether our sword has been multitooled to rainbow
 	var/hacked = FALSE
 	/// The color of our fake energy sword
@@ -441,6 +443,10 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 /*
  * Foam armblade
  */
+TYPEINFO_DEF(/obj/item/toy/foamblade)
+	attack_verb_continuous = list("pricks", "absorbs", "gores")
+	attack_verb_simple = list("prick", "absorb", "gore")
+
 /obj/item/toy/foamblade
 	name = "foam armblade"
 	desc = "It says \"Sternside Changs #1 fan\" on it."
@@ -449,10 +455,12 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 	inhand_icon_state = "arm_blade"
 	lefthand_file = 'icons/mob/inhands/antag/changeling_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/antag/changeling_righthand.dmi'
-	attack_verb_continuous = list("pricks", "absorbs", "gores")
-	attack_verb_simple = list("prick", "absorb", "gore")
 	w_class = WEIGHT_CLASS_SMALL
 	resistance_flags = FLAMMABLE
+
+TYPEINFO_DEF(/obj/item/toy/windup_toolbox)
+	attack_verb_continuous = list("robusts")
+	attack_verb_simple = list("robust")
 
 /obj/item/toy/windup_toolbox
 	name = "windup toolbox"
@@ -465,8 +473,6 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 	hitsound = 'sound/weapons/smash.ogg'
 	drop_sound = 'sound/items/handling/toolbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/toolbox_pickup.ogg'
-	attack_verb_continuous = list("robusts")
-	attack_verb_simple = list("robust")
 	var/active = FALSE
 
 /obj/item/toy/windup_toolbox/Initialize(mapload)
@@ -518,6 +524,10 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 /*
  * Subtype of Double-Bladed Energy Swords
  */
+TYPEINFO_DEF(/obj/item/dualsaber/toy)
+	attack_verb_continuous = list("attacks", "strikes", "hits")
+	attack_verb_simple = list("attack", "strike", "hit")
+
 /obj/item/dualsaber/toy
 	name = "double-bladed toy sword"
 	desc = "A cheap, plastic replica of TWO energy swords.  Double the fun!"
@@ -527,8 +537,6 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 	throwforce = 0
 	throw_range = 5
 
-	attack_verb_continuous = list("attacks", "strikes", "hits")
-	attack_verb_simple = list("attack", "strike", "hit")
 
 /obj/item/dualsaber/toy/can_block_attack(mob/living/carbon/human/wielder, atom/movable/hitby, attack_type)
 	return FALSE
@@ -539,6 +547,10 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 /obj/item/dualsaber/toy/impale(mob/living/user)//Stops Toy Dualsabers from injuring clowns
 	to_chat(user, span_warning("You twirl around a bit before losing your balance and impaling yourself on [src]."))
 	user.stamina.adjust(-25)
+
+TYPEINFO_DEF(/obj/item/toy/katana)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices")
+	attack_verb_simple = list("attack", "slash", "stab", "slice")
 
 /obj/item/toy/katana
 	name = "replica katana"
@@ -554,8 +566,6 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 	force = 5
 	throwforce = 5
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices")
-	attack_verb_simple = list("attack", "slash", "stab", "slice")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /*
@@ -1227,14 +1237,16 @@ TYPEINFO_DEF(/obj/item/toy/ammo/gun)
 /*
  * Eldritch Toys
  */
+TYPEINFO_DEF(/obj/item/toy/eldritch_book)
+	attack_verb_continuous = list("sacrifices", "transmutes", "graspes", "curses")
+	attack_verb_simple = list("sacrifice", "transmute", "grasp", "curse")
+
 /obj/item/toy/eldritch_book
 	name = "Codex Cicatrix"
 	desc = "A toy book that closely resembles the Codex Cicatrix. Covered in fake polyester human flesh and has a huge goggly eye attached to the cover. The runes are gibberish and cannot be used to summon demons... Hopefully?"
 	icon = 'icons/obj/eldritch.dmi'
 	icon_state = "book"
 	w_class = WEIGHT_CLASS_SMALL
-	attack_verb_continuous = list("sacrifices", "transmutes", "graspes", "curses")
-	attack_verb_simple = list("sacrifice", "transmute", "grasp", "curse")
 	/// Helps determine the icon state of this item when it's used on self.
 	var/book_open = FALSE
 

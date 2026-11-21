@@ -1,6 +1,8 @@
 
 TYPEINFO_DEF(/obj/item/hatchet)
 	default_materials = list(/datum/material/iron = 15000)
+	attack_verb_continuous = list("chops", "tears", "lacerates", "cuts")
+	attack_verb_simple = list("chop", "tear", "lacerate", "cut")
 
 /obj/item/hatchet
 	name = "hatchet"
@@ -17,8 +19,6 @@ TYPEINFO_DEF(/obj/item/hatchet)
 	throw_speed = 1.5
 	throw_range = 7
 	embedding = list("pain_mult" = 4, "embed_chance" = 35, "fall_chance" = 10)
-	attack_verb_continuous = list("chops", "tears", "lacerates", "cuts")
-	attack_verb_simple = list("chop", "tear", "lacerate", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 

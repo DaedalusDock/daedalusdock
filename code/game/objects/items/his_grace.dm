@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/his_grace)
+	attack_verb_continuous = list("robusts")
+	attack_verb_simple = list("robust")
+
 //His Grace is a very special weapon granted only to traitor chaplains.
 //When awakened, He thirsts for blood and begins ticking a "bloodthirst" counter.
 //The wielder of His Grace is immune to stuns and gradually heals.
@@ -14,8 +18,6 @@
 	righthand_file = 'icons/mob/inhands/equipment/toolbox_righthand.dmi'
 	w_class = WEIGHT_CLASS_GIGANTIC
 	force = 12
-	attack_verb_continuous = list("robusts")
-	attack_verb_simple = list("robust")
 	hitsound = 'sound/weapons/smash.ogg'
 	drop_sound = 'sound/items/handling/toolbox_drop.ogg'
 	pickup_sound = 'sound/items/handling/toolbox_pickup.ogg'

@@ -350,6 +350,10 @@
 
 	plant_type = /datum/plant/flower/novaflower
 
+TYPEINFO_DEF(/obj/item/grown/novaflower)
+	attack_verb_continuous = list("roasts", "scorches", "burns")
+	attack_verb_simple = list("roast", "scorch", "burn")
+
 /obj/item/grown/novaflower
 	plant_datum = /datum/plant/flower/novaflower
 	name = "\improper novaflower"
@@ -365,8 +369,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 1
 	throw_range = 3
-	attack_verb_continuous = list("roasts", "scorches", "burns")
-	attack_verb_simple = list("roast", "scorch", "burn")
 	grind_results = list(/datum/reagent/consumable/capsaicin = 0, /datum/reagent/consumable/condensedcapsaicin = 0)
 
 // Rose

@@ -100,6 +100,8 @@ TYPEINFO_DEF(/obj/item/gun/energy/plasmacutter)
 		/datum/material/glass = 500,
 		/datum/material/plasma = 400
 	)
+	attack_verb_continuous = list("attacks", "slashes", "cuts", "slices")
+	attack_verb_simple = list("attack", "slash", "cut", "slice")
 
 /obj/item/gun/energy/plasmacutter
 	name = "plasma cutter"
@@ -108,8 +110,6 @@ TYPEINFO_DEF(/obj/item/gun/energy/plasmacutter)
 	inhand_icon_state = "plasmacutter"
 	ammo_type = list(/obj/item/ammo_casing/energy/plasma)
 	flags_1 = CONDUCT_1
-	attack_verb_continuous = list("attacks", "slashes", "cuts", "slices")
-	attack_verb_simple = list("attack", "slash", "cut", "slice")
 	force = 12
 	sharpness = SHARP_EDGED
 	can_charge = FALSE

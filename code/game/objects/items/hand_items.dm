@@ -10,12 +10,14 @@
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NO_STORAGE_INSERT, TRAIT_GENERIC)
 
+TYPEINFO_DEF(/obj/item/hand_item/circlegame)
+	attack_verb_continuous = list("bops")
+	attack_verb_simple = list("bop")
+
 /obj/item/hand_item/circlegame
 	name = "circled hand"
 	desc = "If somebody looks at this while it's below your waist, you get to bop them."
 	icon_state = "madeyoulook"
-	attack_verb_continuous = list("bops")
-	attack_verb_simple = list("bop")
 
 /obj/item/hand_item/circlegame/Initialize(mapload)
 	. = ..()
@@ -193,13 +195,15 @@
 	noogie_loop(user, target, iteration)
 
 
+TYPEINFO_DEF(/obj/item/hand_item/slapper)
+	attack_verb_continuous = list("slaps")
+	attack_verb_simple = list("slap")
+
 /obj/item/hand_item/slapper
 	name = "slapper"
 	desc = "This is how real men fight."
 	icon_state = "latexballon"
 	inhand_icon_state = "nothing"
-	attack_verb_continuous = list("slaps")
-	attack_verb_simple = list("slap")
 	hitsound = 'sound/effects/snap.ogg'
 	has_combat_mode_interaction = TRUE
 	/// How many smaller table smacks we can do before we're out

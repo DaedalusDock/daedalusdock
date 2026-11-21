@@ -3,6 +3,8 @@
  */
 TYPEINFO_DEF(/obj/item/dualsaber)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/dualsaber
 	icon = 'icons/obj/transforming_energy.dmi'
@@ -34,8 +36,6 @@ TYPEINFO_DEF(/obj/item/dualsaber)
 	light_color = LIGHT_COLOR_ELECTRIC_GREEN
 	light_on = FALSE
 
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 	max_integrity = 50
 	resistance_flags = FIRE_PROOF

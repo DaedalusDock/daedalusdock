@@ -3,6 +3,8 @@
  */
 TYPEINFO_DEF(/obj/item/fireaxe)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
+	attack_verb_continuous = list("attacks", "chops", "cleaves", "tears", "lacerates", "cuts")
+	attack_verb_simple = list("attack", "chop", "cleave", "tear", "lacerate", "cut")
 
 /obj/item/fireaxe  // DEM AXES MAN, marker -Agouri
 	icon_state = "fireaxe0"
@@ -18,8 +20,6 @@ TYPEINFO_DEF(/obj/item/fireaxe)
 
 	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = ITEM_SLOT_BACK
-	attack_verb_continuous = list("attacks", "chops", "cleaves", "tears", "lacerates", "cuts")
-	attack_verb_simple = list("attack", "chop", "cleave", "tear", "lacerate", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	max_integrity = 30

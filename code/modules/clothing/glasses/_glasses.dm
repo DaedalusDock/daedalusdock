@@ -115,6 +115,10 @@ TYPEINFO_DEF(/obj/item/clothing/glasses)
 	glass_colour_type = /datum/client_colour/glass_colour/green
 	supports_variations_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/glasses/meson/gar)
+	attack_verb_continuous = list("slices")
+	attack_verb_simple = list("slice")
+
 /obj/item/clothing/glasses/meson/gar
 	name = "gar mesons"
 	desc = "Do the impossible, see the invisible!"
@@ -124,8 +128,6 @@ TYPEINFO_DEF(/obj/item/clothing/glasses)
 	force = 10
 	throwforce = 10
 	throw_speed = 1.5
-	attack_verb_continuous = list("slices")
-	attack_verb_simple = list("slice")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	supports_variations_flags = NONE
@@ -202,6 +204,10 @@ TYPEINFO_DEF(/obj/item/clothing/glasses/science)
 	inhand_icon_state = "glasses"
 	darkness_view = 0
 
+TYPEINFO_DEF(/obj/item/clothing/glasses/material/mining/gar)
+	attack_verb_continuous = list("slices")
+	attack_verb_simple = list("slice")
+
 /obj/item/clothing/glasses/material/mining/gar
 	name = "gar material scanner"
 	desc = "Do the impossible, see the invisible!"
@@ -211,8 +217,6 @@ TYPEINFO_DEF(/obj/item/clothing/glasses/science)
 	force = 10
 	throwforce = 20
 	throw_speed = 1.5
-	attack_verb_continuous = list("slices")
-	attack_verb_simple = list("slice")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	glass_colour_type = /datum/client_colour/glass_colour/lightgreen
@@ -323,6 +327,10 @@ TYPEINFO_DEF(/obj/item/clothing/glasses/science)
 	clothing_traits = list(TRAIT_REAGENT_SCANNER, TRAIT_RESEARCH_SCANNER)
 	supports_variations_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/glasses/sunglasses/gar)
+	attack_verb_continuous = list("slices")
+	attack_verb_simple = list("slice")
+
 /obj/item/clothing/glasses/sunglasses/gar
 	name = "black gar glasses"
 	desc = "Go beyond impossible and kick reason to the curb!"
@@ -332,8 +340,6 @@ TYPEINFO_DEF(/obj/item/clothing/glasses/science)
 	force = 10
 	throwforce = 10
 	throw_speed = 1.5
-	attack_verb_continuous = list("slices")
-	attack_verb_simple = list("slice")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 

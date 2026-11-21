@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/organ/heart)
+	attack_verb_continuous = list("beats", "thumps")
+	attack_verb_simple = list("beat", "thump")
+
 /obj/item/organ/heart
 	name = "heart"
 	desc = "I feel bad for the heartless bastard who lost this."
@@ -22,8 +26,6 @@
 
 	// Heart attack code is in code/modules/mob/living/carbon/human/life.dm
 
-	attack_verb_continuous = list("beats", "thumps")
-	attack_verb_simple = list("beat", "thump")
 
 	var/beat = BEAT_NONE//is this mob having a heatbeat sound played? if so, which?
 	var/failed = FALSE //to prevent constantly running failing code

@@ -12,12 +12,12 @@
 
 TYPEINFO_DEF(/obj/item/bodypart/arm/left/robot)
 	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	attack_verb_simple = list("slapped", "punched")
 
 /obj/item/bodypart/arm/left/robot
 	name = "cyborg left arm"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
 	limb_id = BODYPART_ID_ROBOTIC
-	attack_verb_simple = list("slapped", "punched")
 	inhand_icon_state = "buildpipe"
 	icon = 'icons/mob/augmentation/augments.dmi'
 	icon_static = 'icons/mob/augmentation/augments.dmi'
@@ -41,11 +41,11 @@ TYPEINFO_DEF(/obj/item/bodypart/arm/left/robot)
 
 TYPEINFO_DEF(/obj/item/bodypart/arm/right/robot)
 	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	attack_verb_simple = list("slapped", "punched")
 
 /obj/item/bodypart/arm/right/robot
 	name = "cyborg right arm"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
-	attack_verb_simple = list("slapped", "punched")
 	inhand_icon_state = "buildpipe"
 	icon_static = 'icons/mob/augmentation/augments.dmi'
 	icon = 'icons/mob/augmentation/augments.dmi'
@@ -70,11 +70,11 @@ TYPEINFO_DEF(/obj/item/bodypart/arm/right/robot)
 
 TYPEINFO_DEF(/obj/item/bodypart/leg/left/robot)
 	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	attack_verb_simple = list("kicked", "stomped")
 
 /obj/item/bodypart/leg/left/robot
 	name = "cyborg left leg"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
-	attack_verb_simple = list("kicked", "stomped")
 	inhand_icon_state = "buildpipe"
 	icon_static = 'icons/mob/augmentation/augments.dmi'
 	icon = 'icons/mob/augmentation/augments.dmi'
@@ -99,11 +99,11 @@ TYPEINFO_DEF(/obj/item/bodypart/leg/left/robot)
 
 TYPEINFO_DEF(/obj/item/bodypart/leg/right/robot)
 	default_armor = list(BLUNT = 5, PUNCTURE = 5, SLASH = 0, LASER = 5, ENERGY = 0, BOMB = 0, BIO = 100, FIRE = 5, ACID = 10)
+	attack_verb_simple = list("kicked", "stomped")
 
 /obj/item/bodypart/leg/right/robot
 	name = "cyborg right leg"
 	desc = "A skeletal limb wrapped in pseudomuscles, with a low-conductivity case."
-	attack_verb_simple = list("kicked", "stomped")
 	inhand_icon_state = "buildpipe"
 	icon_static =  'icons/mob/augmentation/augments.dmi'
 	icon = 'icons/mob/augmentation/augments.dmi'

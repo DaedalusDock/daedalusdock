@@ -1,6 +1,8 @@
 TYPEINFO_DEF(/obj/item/crowbar)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=70)
+	attack_verb_continuous = list("attacks", "bashes", "batters", "bludgeons", "whacks")
+	attack_verb_simple = list("attack", "bash", "batter", "bludgeon", "whack")
 
 /obj/item/crowbar
 	name = "crowbar"
@@ -28,8 +30,6 @@ TYPEINFO_DEF(/obj/item/crowbar)
 	drop_sound = 'sound/items/handling/crowbar_drop.ogg'
 	pickup_sound = 'sound/items/handling/crowbar_pickup.ogg'
 
-	attack_verb_continuous = list("attacks", "bashes", "batters", "bludgeons", "whacks")
-	attack_verb_simple = list("attack", "bash", "batter", "bludgeon", "whack")
 	tool_behaviour = TOOL_CROWBAR
 	toolspeed = 1
 	var/force_opens = FALSE

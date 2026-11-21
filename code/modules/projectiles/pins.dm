@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/firing_pin)
+	attack_verb_continuous = list("pokes")
+	attack_verb_simple = list("poke")
+
 /obj/item/firing_pin
 	name = "electronic firing pin"
 	desc = "A small authentication device, to be inserted into a firearm receiver to allow operation. NT safety regulations require all new designs to incorporate one."
@@ -7,8 +11,6 @@
 	worn_icon_state = "pen"
 	flags_1 = CONDUCT_1
 	w_class = WEIGHT_CLASS_TINY
-	attack_verb_continuous = list("pokes")
-	attack_verb_simple = list("poke")
 
 	var/fail_message = "invalid user!"
 	var/selfdestruct = FALSE // Explode when user check is failed.

@@ -3,12 +3,14 @@
 #define AREA_SPACE 2
 #define AREA_SPECIAL 3
 
+TYPEINFO_DEF(/obj/item/areaeditor)
+	attack_verb_continuous = list("attacks", "baps", "hits")
+	attack_verb_simple = list("attack", "bap", "hit")
+
 /obj/item/areaeditor
 	name = "area modification item"
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "blueprints"
-	attack_verb_continuous = list("attacks", "baps", "hits")
-	attack_verb_simple = list("attack", "bap", "hit")
 	var/fluffnotice = "Nobody's gonna read this stuff!"
 	var/in_use = FALSE
 

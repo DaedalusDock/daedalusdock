@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/stack/sheet)
+	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "smashes")
+	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "smash")
+
 /obj/item/stack/sheet
 	name = "sheet"
 	lefthand_file = 'icons/mob/inhands/misc/sheets_lefthand.dmi'
@@ -15,8 +19,6 @@
 	stamina_cost = 23
 	stamina_critical_chance = 10
 
-	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "smashes")
-	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "smash")
 	novariants = FALSE
 	material_flags = MATERIAL_EFFECTS
 

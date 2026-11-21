@@ -243,6 +243,10 @@
 	. = ..()
 	AddComponent(/datum/component/customizable_reagent_holder, null, CUSTOM_INGREDIENT_ICON_FILL, max_ingredients = 8)
 
+TYPEINFO_DEF(/obj/item/food/baguette)
+	attack_verb_continuous = list("touche's")
+	attack_verb_simple = list("touche")
+
 /obj/item/food/baguette
 	name = "baguette"
 	desc = "Bon appetit!"
@@ -254,8 +258,6 @@
 	bite_consumption = 3
 	w_class = WEIGHT_CLASS_NORMAL
 	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
-	attack_verb_continuous = list("touche's")
-	attack_verb_simple = list("touche")
 	tastes = list("bread" = 1)
 	foodtypes = GRAIN
 	venue_value = FOOD_PRICE_CHEAP

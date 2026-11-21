@@ -1,6 +1,10 @@
 #define DECK_SHUFFLE_TIME (5 SECONDS)
 #define DECK_SYNDIE_SHUFFLE_TIME (3 SECONDS)
 
+TYPEINFO_DEF(/obj/item/toy/cards/deck)
+	attack_verb_continuous = list("attacks")
+	attack_verb_simple = list("attack")
+
 /obj/item/toy/cards/deck
 	name = "deck of cards"
 	desc = "A deck of space-grade playing cards."
@@ -12,8 +16,6 @@
 	hitsound = null
 	wielded_hitsound = 'sound/items/cardflip.ogg'
 
-	attack_verb_continuous = list("attacks")
-	attack_verb_simple = list("attack")
 
 	/// The amount of time it takes to shuffle
 	var/shuffle_time = DECK_SHUFFLE_TIME
@@ -186,6 +188,10 @@
 /*
 || Syndicate playing cards, for pretending you're Gambit and playing poker for the nuke disk. ||
 */
+TYPEINFO_DEF(/obj/item/toy/cards/deck/syndicate)
+	attack_verb_continuous = list("attacks", "slices", "dices", "slashes", "cuts")
+	attack_verb_simple = list("attack", "slice", "dice", "slash", "cut")
+
 /obj/item/toy/cards/deck/syndicate
 	name = "suspicious looking deck of cards"
 	desc = "A deck of space-grade playing cards. They seem unusually rigid."
@@ -195,8 +201,6 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	force = 5
 	throwforce = 10
-	attack_verb_continuous = list("attacks", "slices", "dices", "slashes", "cuts")
-	attack_verb_simple = list("attack", "slice", "dice", "slash", "cut")
 	resistance_flags = NONE
 	shuffle_time = DECK_SYNDIE_SHUFFLE_TIME
 

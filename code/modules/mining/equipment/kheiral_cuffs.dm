@@ -1,4 +1,8 @@
 /**********************Kheiral Cuffs**********************/
+TYPEINFO_DEF(/obj/item/kheiral_cuffs)
+	attack_verb_continuous = list("connects")
+	attack_verb_simple = list("connect")
+
 /// Acts as a GPS beacon & connects to station crew monitors from lavaland
 /obj/item/kheiral_cuffs
 	name = "\improper Kheiral cuffs"
@@ -11,8 +15,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	gender = PLURAL
 	throw_range = 5
-	attack_verb_continuous = list("connects")
-	attack_verb_simple = list("connect")
 	resistance_flags = FIRE_PROOF
 	zmm_flags = ZMM_MANGLE_PLANES
 

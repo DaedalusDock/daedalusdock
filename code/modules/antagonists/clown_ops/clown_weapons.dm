@@ -71,11 +71,13 @@ TYPEINFO_DEF(/obj/item/clothing/shoes/clown_shoes/banana_shoes/combat)
 
 //BANANIUM SWORD
 
+TYPEINFO_DEF(/obj/item/melee/energy/sword/bananium)
+	attack_verb_continuous = list("hits", "taps", "pokes")
+	attack_verb_simple = list("hit", "tap", "poke")
+
 /obj/item/melee/energy/sword/bananium
 	name = "bananium sword"
 	icon_state = "e_sword"
-	attack_verb_continuous = list("hits", "taps", "pokes")
-	attack_verb_simple = list("hit", "tap", "poke")
 	force = 0
 	throwforce = 0
 	hitsound = null

@@ -443,6 +443,10 @@
 
 #define CABLE_RESTRAINTS_COST 15
 
+TYPEINFO_DEF(/obj/item/stack/cable_coil)
+	attack_verb_continuous = list("whips", "lashes", "disciplines", "flogs")
+	attack_verb_simple = list("whip", "lash", "discipline", "flog")
+
 /obj/item/stack/cable_coil
 	name = "cable coil"
 	custom_price = PAYCHECK_ASSISTANT * 0.8
@@ -470,8 +474,6 @@
 	mats_per_unit = list(/datum/material/iron=10, /datum/material/glass=5)
 	flags_1 = CONDUCT_1
 	slot_flags = ITEM_SLOT_BELT
-	attack_verb_continuous = list("whips", "lashes", "disciplines", "flogs")
-	attack_verb_simple = list("whip", "lash", "discipline", "flog")
 	singular_name = "cable piece"
 	full_w_class = WEIGHT_CLASS_SMALL
 	grind_results = list(/datum/reagent/copper = 2) //2 copper per cable in the coil

@@ -1,5 +1,7 @@
 TYPEINFO_DEF(/obj/item/melee/powerfist)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 40)
+	attack_verb_continuous = list("whacks", "fists", "power-punches")
+	attack_verb_simple = list("whack", "fist", "power-punch")
 
 /obj/item/melee/powerfist
 	name = "power-fist"
@@ -9,8 +11,6 @@ TYPEINFO_DEF(/obj/item/melee/powerfist)
 	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	flags_1 = CONDUCT_1
-	attack_verb_continuous = list("whacks", "fists", "power-punches")
-	attack_verb_simple = list("whack", "fist", "power-punch")
 	force = 20
 	throwforce = 10
 	throw_range = 7

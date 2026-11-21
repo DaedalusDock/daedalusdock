@@ -4,6 +4,8 @@
 //Comes with a handy lock to prevent them from running off.
 TYPEINFO_DEF(/obj/item/pet_carrier)
 	default_materials = list(/datum/material/iron = 7500, /datum/material/glass = 100)
+	attack_verb_continuous = list("bashes", "carries")
+	attack_verb_simple = list("bash", "carry")
 
 /obj/item/pet_carrier
 	name = "pet carrier"
@@ -15,8 +17,6 @@ TYPEINFO_DEF(/obj/item/pet_carrier)
 	lefthand_file = 'icons/mob/inhands/items_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items_righthand.dmi'
 	force = 5
-	attack_verb_continuous = list("bashes", "carries")
-	attack_verb_simple = list("bash", "carry")
 	w_class = WEIGHT_CLASS_BULKY
 	throw_range = 3
 	var/open = TRUE

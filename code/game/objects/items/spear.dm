@@ -2,6 +2,8 @@
 TYPEINFO_DEF(/obj/item/spear)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=1150, /datum/material/glass=2075)
+	attack_verb_continuous = list("attacks", "pokes", "jabs", "tears", "lacerates", "gores")
+	attack_verb_simple = list("attack", "poke", "jab", "tear", "lacerate", "gore")
 
 /obj/item/spear
 	icon_state = "spearglass0"
@@ -24,8 +26,6 @@ TYPEINFO_DEF(/obj/item/spear)
 	armor_penetration = 10
 
 	hitsound = 'sound/weapons/attack/flesh_stab.ogg'
-	attack_verb_continuous = list("attacks", "pokes", "jabs", "tears", "lacerates", "gores")
-	attack_verb_simple = list("attack", "poke", "jab", "tear", "lacerate", "gore")
 	sharpness = SHARP_EDGED // i know the whole point of spears is that they're pointy, but edged is more devastating at the moment so
 	max_integrity = 30
 
@@ -157,12 +157,14 @@ TYPEINFO_DEF(/obj/item/spear)
 	explosive.detonate(lanced_by=user)
 	qdel(src)
 
+TYPEINFO_DEF(/obj/item/spear/grey_tide)
+	attack_verb_continuous = list("gores")
+	attack_verb_simple = list("gore")
+
 //GREY TIDE
 /obj/item/spear/grey_tide
 	name = "\improper Grey Tide"
 	desc = "Recovered from the aftermath of a revolt aboard Defense Outpost Theta Aegis, in which a seemingly endless tide of Assistants caused heavy casualities among Mars security staff."
-	attack_verb_continuous = list("gores")
-	attack_verb_simple = list("gore")
 
 	force = 15
 	force_wielded = 25

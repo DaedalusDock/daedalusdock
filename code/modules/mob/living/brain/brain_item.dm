@@ -1,6 +1,10 @@
 #define BRAIN_DAMAGE_THRESHOLDS 10
 #define BRAIN_DECAY_RATE 1
 
+TYPEINFO_DEF(/obj/item/organ/brain)
+	attack_verb_continuous = list("attacks", "slaps", "whacks")
+	attack_verb_simple = list("attack", "slap", "whack")
+
 /obj/item/organ/brain
 	name = "brain"
 	desc = "A piece of juicy meat found in a person's head."
@@ -13,8 +17,6 @@
 	zone = BODY_ZONE_HEAD
 	slot = ORGAN_SLOT_BRAIN
 	organ_flags = ORGAN_VITAL
-	attack_verb_continuous = list("attacks", "slaps", "whacks")
-	attack_verb_simple = list("attack", "slap", "whack")
 
 	///The brain's organ variables are significantly more different than the other organs, with half the decay rate for balance reasons, and twice the maxHealth
 	decay_factor = STANDARD_ORGAN_DECAY * 0.5 //30 minutes of decaying to result in a fully damaged brain, since a fast decay rate would be unfun gameplay-wise

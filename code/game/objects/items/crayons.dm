@@ -18,6 +18,10 @@
  * Crayons
  */
 
+TYPEINFO_DEF(/obj/item/toy/crayon)
+	attack_verb_continuous = list("attacks", "colours")
+	attack_verb_simple = list("attack", "colour")
+
 /obj/item/toy/crayon
 	name = "red crayon"
 	desc = "A colourful crayon. Looks tasty. Mmmm..."
@@ -31,8 +35,6 @@
 
 	var/crayon_color = "red"
 	w_class = WEIGHT_CLASS_TINY
-	attack_verb_continuous = list("attacks", "colours")
-	attack_verb_simple = list("attack", "colour")
 	grind_results = list()
 	var/paint_color = "#FF0000" //RGB
 

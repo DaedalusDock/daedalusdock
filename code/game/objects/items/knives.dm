@@ -2,6 +2,8 @@
 TYPEINFO_DEF(/obj/item/knife)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 50)
 	default_materials = list(/datum/material/iron=12000)
+	attack_verb_continuous = list("slashes",, "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/knife
 	name = "knife"
@@ -23,8 +25,6 @@ TYPEINFO_DEF(/obj/item/knife)
 	throw_speed = 1.5
 	throw_range = 6
 
-	attack_verb_continuous = list("slashes",, "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 	sharpness = SHARP_EDGED
 	special_attack_type = /datum/special_attack/basic/stab
@@ -88,6 +88,8 @@ TYPEINFO_DEF(/obj/item/knife)
 
 TYPEINFO_DEF(/obj/item/knife/butcher)
 	default_materials = list(/datum/material/iron=18000)
+	attack_verb_continuous = list("cleaves", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("cleave", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/knife/butcher
 	name = "butcher's cleaver"
@@ -97,8 +99,6 @@ TYPEINFO_DEF(/obj/item/knife/butcher)
 	flags_1 = CONDUCT_1
 	force = 15
 	throwforce = 10
-	attack_verb_continuous = list("cleaves", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("cleave", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	w_class = WEIGHT_CLASS_NORMAL
 	custom_price = PAYCHECK_ASSISTANT * 5
 
@@ -111,6 +111,10 @@ TYPEINFO_DEF(/obj/item/knife/butcher)
 /obj/item/knife/hunting/set_butchering()
 	AddComponent(/datum/component/butchering, 80 - force, 100, force + 10)
 
+TYPEINFO_DEF(/obj/item/knife/combat)
+	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "cuts")
+	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "cut")
+
 /obj/item/knife/combat
 	name = "combat knife"
 	icon_state = "buckknife"
@@ -118,8 +122,6 @@ TYPEINFO_DEF(/obj/item/knife/butcher)
 	embedding = list("pain_mult" = 4, "embed_chance" = 65, "fall_chance" = 10, "ignore_throwspeed_threshold" = TRUE)
 	force = 20
 	throwforce = 20
-	attack_verb_continuous = list("slashes", "stabs", "slices", "tears", "lacerates", "rips", "cuts")
-	attack_verb_simple = list("slash", "stab", "slice", "tear", "lacerate", "rip", "cut")
 	bayonet = TRUE
 
 /obj/item/knife/combat/survival
@@ -155,6 +157,8 @@ TYPEINFO_DEF(/obj/item/knife/combat/bone)
 TYPEINFO_DEF(/obj/item/knife/shiv)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 0, ACID = 0)
 	default_materials = list(/datum/material/glass=400)
+	attack_verb_continuous = list("shanks", "shivs")
+	attack_verb_simple = list("shank", "shiv")
 
 /obj/item/knife/shiv
 	name = "glass shiv"
@@ -166,8 +170,6 @@ TYPEINFO_DEF(/obj/item/knife/shiv)
 	desc = "A makeshift glass shiv."
 	force = 8
 	throwforce = 12
-	attack_verb_continuous = list("shanks", "shivs")
-	attack_verb_simple = list("shank", "shiv")
 
 /obj/item/knife/shiv/CheckParts(list/parts_list)
 	var/obj/item/shard/shard = locate() in contents

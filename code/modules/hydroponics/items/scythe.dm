@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/scythe)
+	attack_verb_continuous = list("chops", "slices", "cuts", "reaps")
+	attack_verb_simple = list("chop", "slice", "cut", "reap")
+
 /obj/item/scythe
 	icon_state = "scythe0"
 	lefthand_file = 'icons/mob/inhands/weapons/polearms_lefthand.dmi'
@@ -11,8 +15,6 @@
 	flags_1 = CONDUCT_1
 	armor_penetration = 20
 	slot_flags = ITEM_SLOT_BACK
-	attack_verb_continuous = list("chops", "slices", "cuts", "reaps")
-	attack_verb_simple = list("chop", "slice", "cut", "reap")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	var/swiping = FALSE
 

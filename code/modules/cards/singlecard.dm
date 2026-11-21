@@ -1,6 +1,10 @@
 #define CARD_FACEDOWN 0
 #define CARD_FACEUP 1
 
+TYPEINFO_DEF(/obj/item/toy/singlecard)
+	attack_verb_continuous = list("attacks")
+	attack_verb_simple = list("attack")
+
 /obj/item/toy/singlecard
 	name = "card"
 	desc = "A playing card used to play card games like poker."
@@ -14,8 +18,6 @@
 	force = 0
 	throwforce = 0
 	throw_range = 7
-	attack_verb_continuous = list("attacks")
-	attack_verb_simple = list("attack")
 	obj_flags = parent_type::obj_flags | SECRET_EXAMINE
 	/// Artistic style of the deck
 	var/deckstyle = "nanotrasen"
@@ -42,8 +44,8 @@
 		throwforce = parent_deck.throwforce
 		throw_speed = parent_deck.throw_speed
 		throw_range = parent_deck.throw_range
-		attack_verb_continuous = parent_deck.attack_verb_continuous
-		attack_verb_simple = parent_deck.attack_verb_simple
+		attack_verb_continuous = parent_deck.get_attack_verb_continuous()
+		attack_verb_simple = parent_deck.get_attack_verb_simple()
 
 		if(parent_deck.holodeck)
 			flags_1 |= HOLOGRAM_1

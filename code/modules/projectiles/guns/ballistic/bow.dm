@@ -1,4 +1,8 @@
 
+TYPEINFO_DEF(/obj/item/gun/ballistic/bow)
+	attack_verb_continuous = list("whipped", "cracked")
+	attack_verb_simple = list("whip", "crack")
+
 /obj/item/gun/ballistic/bow
 	name = "longbow"
 	desc = "While pretty finely crafted, surely you can find something better to use in the current year."
@@ -10,8 +14,6 @@
 	fire_sound = null
 	mag_type = /obj/item/ammo_box/magazine/internal/bow
 	force = 15
-	attack_verb_continuous = list("whipped", "cracked")
-	attack_verb_simple = list("whip", "crack")
 	w_class = WEIGHT_CLASS_BULKY
 	internal_magazine = TRUE
 	cartridge_wording = "arrow"

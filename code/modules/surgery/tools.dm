@@ -26,6 +26,8 @@ TYPEINFO_DEF(/obj/item/retractor)
 
 TYPEINFO_DEF(/obj/item/hemostat)
 	default_materials = list(/datum/material/iron=5000, /datum/material/glass=2500)
+	attack_verb_continuous = list("attacks", "pinches")
+	attack_verb_simple = list("attack", "pinch")
 
 /obj/item/hemostat
 	name = "hemostat"
@@ -38,8 +40,6 @@ TYPEINFO_DEF(/obj/item/hemostat)
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_TINY
-	attack_verb_continuous = list("attacks", "pinches")
-	attack_verb_simple = list("attack", "pinch")
 	tool_behaviour = TOOL_HEMOSTAT
 	toolspeed = 1
 
@@ -54,6 +54,8 @@ TYPEINFO_DEF(/obj/item/hemostat)
 
 TYPEINFO_DEF(/obj/item/cautery)
 	default_materials = list(/datum/material/iron=2500, /datum/material/glass=750)
+	attack_verb_continuous = list("burns")
+	attack_verb_simple = list("burn")
 
 /obj/item/cautery
 	name = "cautery"
@@ -66,8 +68,6 @@ TYPEINFO_DEF(/obj/item/cautery)
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_TINY
-	attack_verb_continuous = list("burns")
-	attack_verb_simple = list("burn")
 	tool_behaviour = TOOL_CAUTERY
 	toolspeed = 1
 
@@ -125,6 +125,8 @@ TYPEINFO_DEF(/obj/item/cautery/advanced)
 
 TYPEINFO_DEF(/obj/item/surgicaldrill)
 	default_materials = list(/datum/material/iron=10000, /datum/material/glass=6000)
+	attack_verb_continuous = list("drills")
+	attack_verb_simple = list("drill")
 
 /obj/item/surgicaldrill
 	name = "surgical drill"
@@ -138,8 +140,6 @@ TYPEINFO_DEF(/obj/item/surgicaldrill)
 	item_flags = SURGICAL_TOOL
 	force = 15
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("drills")
-	attack_verb_simple = list("drill")
 	tool_behaviour = TOOL_DRILL
 	toolspeed = 1
 	sharpness = SHARP_POINTY
@@ -168,6 +168,8 @@ TYPEINFO_DEF(/obj/item/surgicaldrill)
 
 TYPEINFO_DEF(/obj/item/scalpel)
 	default_materials = list(/datum/material/iron=4000, /datum/material/glass=1000)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/scalpel
 	name = "scalpel"
@@ -189,8 +191,6 @@ TYPEINFO_DEF(/obj/item/scalpel)
 	stamina_cost = 5
 	stamina_critical_chance = 35
 
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_SCALPEL
@@ -216,6 +216,8 @@ TYPEINFO_DEF(/obj/item/scalpel)
 
 TYPEINFO_DEF(/obj/item/circular_saw)
 	default_materials = list(/datum/material/iron=1000)
+	attack_verb_continuous = list("attacks", "slashes", "saws", "cuts")
+	attack_verb_simple = list("attack", "slash", "saw", "cut")
 
 /obj/item/circular_saw
 	name = "circular saw"
@@ -237,8 +239,6 @@ TYPEINFO_DEF(/obj/item/circular_saw)
 	stamina_cost = 5
 	stamina_critical_chance = 35
 
-	attack_verb_continuous = list("attacks", "slashes", "saws", "cuts")
-	attack_verb_simple = list("attack", "slash", "saw", "cut")
 	sharpness = SHARP_EDGED
 	tool_behaviour = TOOL_SAW
 	toolspeed = 1
@@ -346,6 +346,8 @@ TYPEINFO_DEF(/obj/item/retractor/advanced)
 
 TYPEINFO_DEF(/obj/item/shears)
 	default_materials = list(/datum/material/iron=8000, /datum/material/titanium=6000)
+	attack_verb_continuous = list("shears", "snips")
+	attack_verb_simple = list("shear", "snip")
 
 /obj/item/shears
 	name = "amputation shears"
@@ -359,8 +361,6 @@ TYPEINFO_DEF(/obj/item/shears)
 	w_class = WEIGHT_CLASS_NORMAL
 	throwforce = 6
 	throw_range = 5
-	attack_verb_continuous = list("shears", "snips")
-	attack_verb_simple = list("shear", "snip")
 	sharpness = SHARP_EDGED
 	custom_premium_price = PAYCHECK_ASSISTANT * 21.8
 
@@ -435,6 +435,8 @@ TYPEINFO_DEF(/obj/item/shears)
 
 TYPEINFO_DEF(/obj/item/bonesetter)
 	default_materials = list(/datum/material/iron=5000, /datum/material/glass=2500)
+	attack_verb_continuous = list("corrects", "properly sets")
+	attack_verb_simple = list("correct", "properly set")
 
 /obj/item/bonesetter
 	name = "bonesetter"
@@ -446,13 +448,13 @@ TYPEINFO_DEF(/obj/item/bonesetter)
 	flags_1 = CONDUCT_1
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_SMALL
-	attack_verb_continuous = list("corrects", "properly sets")
-	attack_verb_simple = list("correct", "properly set")
 	tool_behaviour = TOOL_BONESET
 	toolspeed = 1
 
 TYPEINFO_DEF(/obj/item/blood_filter)
 	default_materials = list(/datum/material/iron=2000, /datum/material/glass=1500, /datum/material/silver=500)
+	attack_verb_continuous = list("pumps", "siphons")
+	attack_verb_simple = list("pump", "siphon")
 
 /obj/item/bonesetter/examine(mob/user)
 	. = ..()
@@ -468,8 +470,6 @@ TYPEINFO_DEF(/obj/item/blood_filter)
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	item_flags = SURGICAL_TOOL
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("pumps", "siphons")
-	attack_verb_simple = list("pump", "siphon")
 	tool_behaviour = TOOL_BLOODFILTER
 	toolspeed = 1
 	/// Assoc list of chem ids to names, used for deciding which chems to filter when used for surgery

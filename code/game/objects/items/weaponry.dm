@@ -1,5 +1,7 @@
 TYPEINFO_DEF(/obj/item/banhammer)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 70)
+	attack_verb_continuous = list("bans")
+	attack_verb_simple = list("ban")
 
 /obj/item/banhammer
 	desc = "A banhammer."
@@ -12,8 +14,6 @@ TYPEINFO_DEF(/obj/item/banhammer)
 	w_class = WEIGHT_CLASS_TINY
 	throw_speed = 3
 	throw_range = 7
-	attack_verb_continuous = list("bans")
-	attack_verb_simple = list("ban")
 	max_integrity = 30
 	resistance_flags = FIRE_PROOF
 
@@ -41,6 +41,10 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	playsound(loc, 'sound/effects/adminhelp.ogg', 15) //keep it at 15% volume so people don't jump out of their skin too much
 	user.do_attack_animation(M, used_item = src)
 
+TYPEINFO_DEF(/obj/item/sord)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
+
 /obj/item/sord
 	name = "\improper SORD"
 	desc = "This thing is so unspeakably shitty you are having a hard time even holding it."
@@ -53,8 +57,6 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 	throwforce = 1
 	w_class = WEIGHT_CLASS_NORMAL
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/sord/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is trying to impale [user.p_them()]self with [src]! It might be a suicide attempt if it weren't so shitty."), \
@@ -63,6 +65,8 @@ for further reading, please see: https://github.com/tgstation/tgstation/pull/301
 
 TYPEINFO_DEF(/obj/item/claymore)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/claymore
 	name = "claymore"
@@ -77,8 +81,6 @@ TYPEINFO_DEF(/obj/item/claymore)
 	force = 40
 	throwforce = 10
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 30
@@ -106,6 +108,10 @@ TYPEINFO_DEF(/obj/item/claymore)
 	throw_range = 5
 	armor_penetration = 35
 
+TYPEINFO_DEF(/obj/item/claymore/highlander)
+	attack_verb_continuous = list("brutalizes", "eviscerates", "disembowels", "hacks", "carves", "cleaves") //ONLY THE MOST VISCERAL ATTACK VERBS
+	attack_verb_simple = list("brutalize", "eviscerate", "disembowel", "hack", "carve", "cleave")
+
 /obj/item/claymore/highlander //ALL COMMENTS MADE REGARDING THIS SWORD MUST BE MADE IN ALL CAPS
 	desc = "<b><i>THERE CAN BE ONLY ONE, AND IT WILL BE YOU!!!</i></b>\nActivate it in your hand to point to the nearest victim."
 	flags_1 = CONDUCT_1
@@ -113,8 +119,6 @@ TYPEINFO_DEF(/obj/item/claymore)
 	slot_flags = null
 	block_chance = 0 //RNG WON'T HELP YOU NOW, PANSY
 	light_outer_range = 3
-	attack_verb_continuous = list("brutalizes", "eviscerates", "disembowels", "hacks", "carves", "cleaves") //ONLY THE MOST VISCERAL ATTACK VERBS
-	attack_verb_simple = list("brutalize", "eviscerate", "disembowel", "hack", "carve", "cleave")
 	var/notches = 0 //HOW MANY PEOPLE HAVE BEEN SLAIN WITH THIS BLADE
 	var/obj/item/disk/nuclear/nuke_disk //OUR STORED NUKE DISK
 
@@ -256,6 +260,8 @@ TYPEINFO_DEF(/obj/item/claymore)
 
 TYPEINFO_DEF(/obj/item/katana)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/katana
 	name = "katana"
@@ -271,8 +277,6 @@ TYPEINFO_DEF(/obj/item/katana)
 	throwforce = 10
 	w_class = WEIGHT_CLASS_HUGE
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	block_chance = 50
 	sharpness = SHARP_EDGED
 	max_integrity = 30
@@ -321,6 +325,8 @@ TYPEINFO_DEF(/obj/item/throwing_star)
 
 TYPEINFO_DEF(/obj/item/switchblade)
 	default_materials = list(/datum/material/iron=12000)
+	attack_verb_continuous = list("stubs", "pokes")
+	attack_verb_simple = list("stub", "poke")
 
 /obj/item/switchblade
 	name = "switchblade"
@@ -336,8 +342,6 @@ TYPEINFO_DEF(/obj/item/switchblade)
 	throw_speed = 1.5
 	throw_range = 6
 	hitsound = 'sound/weapons/genhit.ogg'
-	attack_verb_continuous = list("stubs", "pokes")
-	attack_verb_simple = list("stub", "poke")
 	resistance_flags = FIRE_PROOF
 	/// Whether the switchblade starts extended or not.
 	var/start_extended = FALSE
@@ -364,6 +368,10 @@ TYPEINFO_DEF(/obj/item/switchblade)
 /obj/item/switchblade/extended
 	start_extended = TRUE
 
+TYPEINFO_DEF(/obj/item/phone)
+	attack_verb_continuous = list("calls", "rings")
+	attack_verb_simple = list("call", "ring")
+
 /obj/item/phone
 	name = "red phone"
 	desc = "Should anything ever go wrong..."
@@ -375,8 +383,6 @@ TYPEINFO_DEF(/obj/item/switchblade)
 	throw_range = 4
 
 	w_class = WEIGHT_CLASS_SMALL
-	attack_verb_continuous = list("calls", "rings")
-	attack_verb_simple = list("call", "ring")
 	hitsound = 'sound/weapons/ring.ogg'
 
 /obj/item/phone/suicide_act(mob/user)
@@ -388,6 +394,8 @@ TYPEINFO_DEF(/obj/item/switchblade)
 
 TYPEINFO_DEF(/obj/item/cane)
 	default_materials = list(/datum/material/iron=50)
+	attack_verb_continuous = list("bludgeons", "whacks", "disciplines", "thrashes")
+	attack_verb_simple = list("bludgeon", "whack", "discipline", "thrash")
 
 /obj/item/cane
 	name = "cane"
@@ -400,8 +408,10 @@ TYPEINFO_DEF(/obj/item/cane)
 	force = 5
 	throwforce = 5
 	w_class = WEIGHT_CLASS_SMALL
-	attack_verb_continuous = list("bludgeons", "whacks", "disciplines", "thrashes")
-	attack_verb_simple = list("bludgeon", "whack", "discipline", "thrash")
+
+TYPEINFO_DEF(/obj/item/staff)
+	attack_verb_continuous = list("bludgeons", "whacks", "disciplines")
+	attack_verb_simple = list("bludgeon", "whack", "discipline")
 
 /obj/item/staff
 	name = "wizard staff"
@@ -416,8 +426,6 @@ TYPEINFO_DEF(/obj/item/cane)
 	throw_range = 5
 	w_class = WEIGHT_CLASS_SMALL
 	armor_penetration = 100
-	attack_verb_continuous = list("bludgeons", "whacks", "disciplines")
-	attack_verb_simple = list("bludgeon", "whack", "discipline")
 	resistance_flags = FLAMMABLE
 
 /obj/item/staff/broom
@@ -460,6 +468,10 @@ TYPEINFO_DEF(/obj/item/cane)
 	icon_state = "mysticplasm"
 
 
+TYPEINFO_DEF(/obj/item/mounted_chainsaw)
+	attack_verb_continuous = list("saws", "tears", "lacerates", "cuts", "chops", "dices")
+	attack_verb_simple = list("saw", "tear", "lacerate", "cut", "chop", "dice")
+
 /obj/item/mounted_chainsaw
 	name = "mounted chainsaw"
 	desc = "A chainsaw that has replaced your arm."
@@ -474,8 +486,6 @@ TYPEINFO_DEF(/obj/item/cane)
 	throw_range = 0
 	throw_speed = 0
 	sharpness = SHARP_EDGED
-	attack_verb_continuous = list("saws", "tears", "lacerates", "cuts", "chops", "dices")
-	attack_verb_simple = list("saw", "tear", "lacerate", "cut", "chop", "dice")
 	hitsound = 'sound/weapons/chainsawhit.ogg'
 	tool_behaviour = TOOL_SAW
 	toolspeed = 1
@@ -496,6 +506,10 @@ TYPEINFO_DEF(/obj/item/cane)
 	if(part)
 		part.drop_limb()
 
+TYPEINFO_DEF(/obj/item/statuebust)
+	attack_verb_continuous = list("busts")
+	attack_verb_simple = list("bust")
+
 /obj/item/statuebust
 	name = "bust"
 	desc = "A priceless ancient marble bust, the kind that belongs in a museum." //or you can hit people with it
@@ -505,8 +519,6 @@ TYPEINFO_DEF(/obj/item/cane)
 	throwforce = 10
 	throw_speed = 5
 	throw_range = 2
-	attack_verb_continuous = list("busts")
-	attack_verb_simple = list("bust")
 	var/impressiveness = 45
 
 /obj/item/statuebust/Initialize(mapload)
@@ -527,6 +539,10 @@ TYPEINFO_DEF(/obj/item/cane)
 	inhand_icon_state = "catwhip"
 	item_flags = NONE
 
+TYPEINFO_DEF(/obj/item/melee/skateboard)
+	attack_verb_continuous = list("smacks", "whacks", "slams", "smashes")
+	attack_verb_simple = list("smack", "whack", "slam", "smash")
+
 /obj/item/melee/skateboard
 	name = "skateboard"
 	desc = "A skateboard. It can be placed on its wheels and ridden, or used as a radical weapon."
@@ -535,8 +551,6 @@ TYPEINFO_DEF(/obj/item/cane)
 	force = 12
 	throwforce = 4
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("smacks", "whacks", "slams", "smashes")
-	attack_verb_simple = list("smack", "whack", "slam", "smash")
 	///The vehicle counterpart for the board
 	var/board_item_type = /obj/vehicle/ridden/scooter/skateboard
 
@@ -575,6 +589,8 @@ TYPEINFO_DEF(/obj/item/cane)
 
 TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 3.5)
+	attack_verb_continuous = list("beats", "smacks")
+	attack_verb_simple = list("beat", "smack")
 
 /obj/item/melee/baseball_bat
 	name = "baseball bat"
@@ -586,8 +602,6 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	force = 12
 	throwforce = 12
-	attack_verb_continuous = list("beats", "smacks")
-	attack_verb_simple = list("beat", "smack")
 	w_class = WEIGHT_CLASS_HUGE
 	var/homerun_ready = 0
 	var/homerun_able = 0
@@ -659,6 +673,10 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 /obj/item/melee/baseball_bat/ablative/IsReflect() //some day this will reflect thrown items instead of lasers
 	return TRUE
 
+TYPEINFO_DEF(/obj/item/melee/flyswatter)
+	attack_verb_continuous = list("swats", "smacks")
+	attack_verb_simple = list("swat", "smack")
+
 /obj/item/melee/flyswatter
 	name = "flyswatter"
 	desc = "Useful for killing pests of all sizes."
@@ -669,8 +687,6 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	force = 1
 	throwforce = 1
-	attack_verb_continuous = list("swats", "smacks")
-	attack_verb_simple = list("swat", "smack")
 	hitsound = 'sound/effects/snap.ogg'
 	w_class = WEIGHT_CLASS_SMALL
 	//Things in this list will be instantly splatted.  Flyman weakness is handled in the flyman species weakness proc.
@@ -735,19 +751,25 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	interacting_with.attack_hand(user, modifiers)
 	return ITEM_INTERACT_SUCCESS
 
+TYPEINFO_DEF(/obj/item/gohei)
+	attack_verb_continuous = list("whacks", "thwacks", "wallops", "socks")
+	attack_verb_simple = list("whack", "thwack", "wallop", "sock")
+
 /obj/item/gohei
 	name = "gohei"
 	desc = "A wooden stick with white streamers at the end. Originally used by shrine maidens to purify things. Now used by the station's valued weeaboos."
 	force = 5
 	throwforce = 5
 	hitsound = SFX_SWING_HIT
-	attack_verb_continuous = list("whacks", "thwacks", "wallops", "socks")
-	attack_verb_simple = list("whack", "thwack", "wallop", "sock")
 	icon = 'icons/obj/items_and_weapons.dmi'
 	icon_state = "gohei"
 	inhand_icon_state = "gohei"
 	lefthand_file = 'icons/mob/inhands/weapons/staves_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/staves_righthand.dmi'
+
+TYPEINFO_DEF(/obj/item/melee/moonlight_greatsword)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/melee/moonlight_greatsword
 	name = "moonlight greatsword"
@@ -764,8 +786,6 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	force = 14
 	throwforce = 12
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 //High Frequency Blade
 
@@ -923,6 +943,10 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 		return
 	return ..()
 
+TYPEINFO_DEF(/obj/item/mace)
+	attack_verb_continuous = list("attacks", "bludgeons", "smashes", "thwacks", "wallops")
+	attack_verb_simple = list("attack", "bludgeon", "smash", "thwack", "wallop")
+
 /obj/item/mace
 	name = "iron mace"
 	desc = "A crude mace made made from pieces of metal welded together."
@@ -932,8 +956,6 @@ TYPEINFO_DEF(/obj/item/melee/baseball_bat)
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	w_class = WEIGHT_CLASS_BULKY
 	hitsound = 'sound/weapons/smash.ogg'
-	attack_verb_continuous = list("attacks", "bludgeons", "smashes", "thwacks", "wallops")
-	attack_verb_simple = list("attack", "bludgeon", "smash", "thwack", "wallop")
 
 	stamina_damage = 20
 	stamina_cost = 15

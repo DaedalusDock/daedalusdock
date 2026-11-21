@@ -137,6 +137,10 @@
 	if(extra_bump)
 		target.BumpedBy(B)
 
+TYPEINFO_DEF(/obj/item/broken_bottle)
+	attack_verb_continuous = list("stabs", "slashes", "attacks")
+	attack_verb_simple = list("stab", "slash", "attack")
+
 //Keeping this here for now, I'll ask if I should keep it here.
 /obj/item/broken_bottle
 	name = "broken bottle"
@@ -151,8 +155,6 @@
 	lefthand_file = 'icons/mob/inhands/misc/food_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/misc/food_righthand.dmi'
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("stabs", "slashes", "attacks")
-	attack_verb_simple = list("stab", "slash", "attack")
 	sharpness = SHARP_EDGED
 	var/static/icon/broken_outline = icon('icons/obj/drinks.dmi', "broken")
 

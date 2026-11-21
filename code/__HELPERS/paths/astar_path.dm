@@ -69,7 +69,7 @@
 	src.skip_first = skip_first
 	src.use_diagonals = use_diagonals
 	src.on_finish = on_finish
-	src.heuristic = heuristic || CALLBACK(src, PROC_REF(generic_heuristic))
+	src.heuristic = heuristic // If null, the euclidean distance is used.
 
 /datum/pathfind/astar/Destroy(force, ...)
 	. = ..()
@@ -78,7 +78,7 @@
 	open_binary_tree = null
 	open_turf_to_node = null
 	closed = null
-	heuristic = null // hard del generator if using generic_heuristic
+	heuristic = null
 
 /**
  * "starts" off the pathfinding, by storing the values this datum will need to work later on
@@ -202,7 +202,7 @@
 				continue
 
 			// The node isn't known to us so we need to check the heuristic.
-			var/heuristic_h = heuristic.Invoke(searching_turf, end)
+			var/heuristic_h = heuristic ? heuristic.Invoke(searching_turf, end) : get_dist_euclidean(searching_turf, end)
 			if(heuristic_h == 0)
 				closed[searching_turf] |= scan_direction
 				continue
@@ -224,7 +224,8 @@
 			#endif
 
 			// Check to see if we're close enough to the end destination.
-			if(ASTAR_CLOSE_ENOUGH_TO_END(end, new_node))
+			// Nodes over max_steps are discarded when popped, so don't accept one here either.
+			if(ASTAR_CLOSE_ENOUGH_TO_END(end, searching_turf) && (!max_steps || real_distance <= max_steps))
 				unwind_path(new_node)
 				return TRUE
 
@@ -253,10 +254,6 @@
 
 	return FALSE
 
-
-/// The generic heuristic, euclidean distance.
-/datum/pathfind/astar/proc/generic_heuristic(turf/searching_turf, turf/end)
-	return get_dist_euclidean(searching_turf, end)
 
 /// Called when we've hit the goal with the node that represents the last tile, then sets the path var to that path so it can be returned by [datum/pathfind/proc/search]
 /datum/pathfind/astar/proc/unwind_path(datum/astar_node/unwind_node)

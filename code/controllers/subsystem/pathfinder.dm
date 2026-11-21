@@ -25,14 +25,11 @@ SUBSYSTEM_DEF(pathfinder)
 	while(length(currentrun))
 		var/datum/pathfind/jps/path = currentrun[length(currentrun)]
 		if(!path.search_step()) // Something's wrong
-			path.early_exit()
-			currentrun.len--
+			path.early_exit() // qdels the path, Destroy() removes it from currentrun
 			continue
 		if(MC_TICK_CHECK)
 			return
-		path.finished()
-		// Next please
-		currentrun.len--
+		path.finished() // qdels the path, Destroy() removes it from currentrun
 
 /// Initiates a pathfind. Returns true if we're good, FALSE if something's failed
 /datum/controller/subsystem/pathfinder/proc/jps_pathfind(atom/movable/invoker, atom/end, max_steps = 30, mintargetdist, list/access=null, simulated_only = TRUE, turf/exclude, skip_first=TRUE, diagonal_handling=DIAGONAL_REMOVE_CLUNKY, datum/callback/on_finish)

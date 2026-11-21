@@ -108,7 +108,7 @@
 	else
 		stats?.remove_skill_modifier(/datum/rpg_skill/bloodsport, SKILL_SOURCE_COMBAT_MODE)
 
-	hud_used?.screen_objects[HUDKEY_MOB_INTENTS].update_appearance()
+	hud_used?.screen_objects[HUDKEY_MOB_INTENTS]?.update_appearance()
 
 	if(silent || !(client?.prefs.toggles & SOUND_COMBATMODE))
 		return

@@ -126,7 +126,7 @@
 				controller.max_target_distance,
 				required_distance,
 				access,
-				HAS_TRAIT(controller.pawn, TRAIT_FREE_FLOAT_MOVEMENT),
+				!HAS_TRAIT(controller.pawn, TRAIT_FREE_FLOAT_MOVEMENT),
 			)
 
 			if(path)

@@ -158,6 +158,10 @@
 
 ///Tries to calculate a new path for this moveloop.
 /datum/move_loop/has_target/astar/proc/recalculate_path()
+	// Don't start a second search while one is running, its result could overwrite a newer path.
+	if(is_pathing)
+		return
+
 	if(!COOLDOWN_FINISHED(src, repath_cooldown))
 		return
 

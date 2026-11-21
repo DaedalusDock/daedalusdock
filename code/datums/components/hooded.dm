@@ -34,7 +34,7 @@
 	pre_equip_hood = _pre_equip_hood
 	on_hood_created = _on_hood_created
 	on_hood_unequip = _on_hood_unequip
-	on_hood_equip = on_hood_unequip
+	on_hood_equip = _on_hood_equip
 
 	if(!delete_unequipped_hood)
 		create_hood()

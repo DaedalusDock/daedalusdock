@@ -48,6 +48,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 //Hopefully this makes preference reloading not the worst thing ever
 /mob/living/carbon/human/dummy/delete_equipment()
 	var/list/items_to_check = get_all_worn_items() + held_items
+	list_clear_nulls(items_to_check)
 	var/list/to_nuke = list() //List of items queued for deletion, can't qdel them before iterating their contents in case they hold something
 	///Travel to the bottom of the contents chain, expanding it out
 	for(var/i = 1; i <= length(items_to_check); i++) //Needs to be a c style loop since it can expand
@@ -56,6 +57,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			continue
 		if(!isitem(checking)) //What the fuck are you on
 			to_nuke += checking
+			continue
+
+		// Unequipping items can have knock-on effects for other items still in our items_to_check, like hooded clothes.
+		if(checking.equipped_to != src)
 			continue
 
 		var/list/contents = checking.contents

@@ -195,17 +195,17 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	if(surgery_flags & SURGERY_CANNOT_FAIL)
 		return 100
 
-	var/modifier = 0
+	. = 0
 	if(prob(100 - potency))
-		modifier -= 4
+		. -= 4
 
 	if(user == target)
-		modifier -= 1
+		. -= 1
 
 	var/turf/T = get_turf(target)
 	var/has_op_table = locate(/obj/structure/table/optable, T)
 	if(has_op_table)
-		modifier += 2
+		. += 2
 
 	if(delicate)
 		if(target.body_position == STANDING_UP)
@@ -213,13 +213,13 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 		if(!has_op_table)
 			if(locate(/obj/structure/bed, T))
-				modifier += 1
+				. += 1
 			else if(locate(/obj/structure/table, T))
-				modifier += 1
+				. += 1
 			else if(locate(/obj/effect/rune, T))
-				modifier -= 1
+				. -= 1
 			else
-				modifier -= 3
+				. -= 3
 
 /datum/surgery_step/proc/play_preop_sound(mob/user, mob/living/carbon/target, target_zone, obj/item/tool)
 	if(!preop_sound)
@@ -335,13 +335,13 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 		return TRUE
 
 	if(target == user)
-		if(user.zone_selected == BODY_ZONE_HEAD)
+		if(zone == BODY_ZONE_HEAD)
 			to_chat(user, span_warning("You cannot operate on your own head!"))
 			return TRUE
 
-		var/hand = user.get_active_hand().body_zone
-		if(user.zone_selected == hand)
-			to_chat(src, span_warning("You cannot operate on that arm with that hand!"))
+		var/obj/item/bodypart/active_hand = user.get_active_hand()
+		if(active_hand && zone == active_hand.body_zone)
+			to_chat(user, span_warning("You cannot operate on that arm with that hand!"))
 			return TRUE
 
 	perform_surgery(target, user, step, zone)
@@ -355,6 +355,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 	var/can_loop = FALSE
 
 	do
+		can_loop = FALSE
 		if(!surgery_sanity_check(target, user, step, zone))
 			return
 
@@ -373,6 +374,7 @@ GLOBAL_LIST_INIT(surgery_tool_exceptions, typecacheof(list(
 
 		var/roll_modifier = step.success_modifier(user, target, src, zone)
 		if(roll_modifier == -INFINITY)
+			LAZYREMOVE(target.surgeries_in_progress, zone)
 			return
 
 		// It's a surprise tool that'll help us later

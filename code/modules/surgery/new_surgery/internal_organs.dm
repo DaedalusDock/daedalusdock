@@ -63,6 +63,7 @@
 		// You need to treat the necrotization, bro
 		if(O.organ_flags & ORGAN_DEAD)
 			to_chat(user, span_warning("[O] is decayed, you must replace it or perform <b>Treat Necrosis</b>."))
+			organ_to_replace = -1
 			continue
 
 		return list(organ_to_replace, O)
@@ -258,7 +259,7 @@
 	user.visible_message(span_notice("\The [user] has [robotic_surgery ? "reinstalled" : "transplanted"] [tool] into [target]'s [affected.plaintext_zone]."), vision_distance = COMBAT_MESSAGE_RANGE)
 
 	var/obj/item/organ/O = tool
-	if(istype(O) && user.transferItemToLoc(O, target))
+	if(istype(O) && user.transferItemToLoc(O, affected))
 		affected.add_cavity_item(O) //move the organ into the patient. The organ is properly reattached in the next step
 
 		if(!(O.organ_flags & ORGAN_CUT_AWAY))
@@ -305,12 +306,14 @@
 		return FALSE
 
 	organ_to_replace = locate(attachable_organs[organ_to_replace]) in affected.cavity_items
+	if(!organ_to_replace)
+		return FALSE
 
 	if((deprecise_zone(organ_to_replace.zone) != affected.body_zone))
 		to_chat(user, span_warning("You can't find anywhere to attach \the [organ_to_replace] to!"))
 		return FALSE
 
-	O = locate(attachable_organs[organ_to_replace]) in affected.cavity_items
+	O = target.getorganslot(organ_to_replace.slot)
 	if(O)
 		to_chat(user, span_warning("\The [target] already has \a [O]."))
 		return FALSE
@@ -378,8 +381,13 @@
 		return
 
 	var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
-	if(!locate(/obj/item/organ/brain) in head)
-		to_chat(user, span_warning("\The [S] doesn't contain a brain to repair!"))
+	var/obj/item/organ/brain/brain = locate() in head?.contained_organs
+	if(!brain)
+		to_chat(user, span_warning("\The [target]'s head doesn't contain a brain to repair!"))
+		return
+
+	if(!brain.can_recover())
+		to_chat(user, span_warning("\The [target]'s brain is too far gone to be revived."))
 		return
 
 	return TRUE
@@ -396,6 +404,10 @@
 	var/obj/item/bodypart/head/head = target.get_bodypart(BODY_ZONE_HEAD)
 	var/obj/item/organ/brain/brain = locate() in head?.contained_organs
 	if(!head || !brain)
+		return
+
+	if(!brain.can_recover())
+		to_chat(user, span_warning("\The [target]'s brain is too far gone to be revived."))
 		return
 
 	tool.reagents.remove_reagent(/datum/reagent/medicine/alkysine, 5)

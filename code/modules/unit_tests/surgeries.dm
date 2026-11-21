@@ -156,3 +156,94 @@
 	suture.melee_attack_chain(user, patient)
 
 	TEST_ASSERT(patient_liver.damage == 0, "Liver damage value was not zero, instead it was [patient_liver.damage].")
+
+/// success_modifier() must return the modifiers it calculates.
+/datum/unit_test/surgery_success_modifier/Run()
+	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
+	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
+	var/obj/item/bonesetter/bonesetter = allocate(/obj/item/bonesetter)
+	var/datum/surgery_step/bone/set_bone/step = locate() in GLOB.surgeries_list
+	TEST_ASSERT_NOTNULL(step, "Could not find the set bone surgery step")
+
+	patient.set_lying_down()
+	var/floor_modifier = step.success_modifier(user, patient, bonesetter, BODY_ZONE_CHEST)
+	TEST_ASSERT(floor_modifier < 0, "Delicate surgery on the floor had a modifier of [floor_modifier], expected a penalty")
+
+	allocate(/obj/structure/table/optable, get_turf(patient))
+	var/table_modifier = step.success_modifier(user, patient, bonesetter, BODY_ZONE_CHEST)
+	TEST_ASSERT(table_modifier > 0, "Delicate surgery on an operating table had a modifier of [table_modifier], expected a bonus")
+
+/// Attach limb must only accept a limb that matches the targeted zone.
+/datum/unit_test/surgery_attach_limb_zone/Run()
+	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
+	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
+	var/datum/surgery_step/limb/attach/step = locate() in GLOB.surgeries_list
+	TEST_ASSERT_NOTNULL(step, "Could not find the attach limb surgery step")
+
+	var/obj/item/bodypart/arm = patient.get_bodypart(BODY_ZONE_R_ARM)
+	arm.dismember(silent = TRUE, clean = TRUE)
+	var/obj/item/bodypart/leg/left/leg = allocate(/obj/item/bodypart/leg/left)
+
+	TEST_ASSERT(!step.can_operate(user, patient, BODY_ZONE_R_ARM, leg), "A leg could be attached to the right arm slot")
+	TEST_ASSERT(step.can_operate(user, patient, BODY_ZONE_R_ARM, arm), "The right arm could not be attached to the right arm slot")
+
+/// Robotic repair steps must actually heal the right damage type.
+/datum/unit_test/surgery_robotic_repair/Run()
+	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
+	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
+	var/obj/item/bodypart/arm/left/robot/robot_arm = allocate(/obj/item/bodypart/arm/left/robot)
+	robot_arm.replace_limb(patient, TRUE)
+	robot_arm.hatch_state = HATCH_OPENED
+
+	// Repair damage to prosthetic: heals brute.
+	var/datum/surgery_step/robotics/repair_brute/repair_brute = locate() in GLOB.surgeries_list
+	var/obj/item/weldingtool/welder = allocate(/obj/item/weldingtool)
+	robot_arm.receive_damage(40, modifiers = NONE)
+	var/brute_before = robot_arm.brute_dam
+	TEST_ASSERT(brute_before > 0, "Robotic arm took no brute damage")
+	repair_brute.succeed_step(user, patient, BODY_ZONE_L_ARM, welder)
+	TEST_ASSERT(robot_arm.brute_dam < brute_before, "Repair damage to prosthetic did not heal brute damage")
+
+	// Repair third degree burns (robotic): heals burn, not brute.
+	robot_arm.heal_damage(1000, 1000)
+	var/datum/surgery_step/tend_wounds/robotic/burn/tend_burn = locate() in GLOB.surgeries_list
+	var/obj/item/stack/cable_coil/cable = allocate(/obj/item/stack/cable_coil)
+	robot_arm.receive_damage(30, 40, modifiers = NONE)
+	brute_before = robot_arm.brute_dam
+	var/burn_before = robot_arm.burn_dam
+	tend_burn.succeed_step(user, patient, BODY_ZONE_L_ARM, cable)
+	TEST_ASSERT(robot_arm.burn_dam < burn_before, "Robotic burn repair did not heal burn damage")
+	TEST_ASSERT_EQUAL(robot_arm.brute_dam, brute_before, "Robotic burn repair healed brute damage")
+
+/// Cavity space must be based on the size of the items already inside.
+/datum/unit_test/surgery_cavity_volume/Run()
+	var/mob/living/carbon/human/patient = allocate(/mob/living/carbon/human)
+	var/mob/living/carbon/human/user = allocate(/mob/living/carbon/human)
+	var/datum/surgery_step/cavity/place_item/step = locate() in GLOB.surgeries_list
+	var/obj/item/bodypart/chest = patient.get_bodypart(BODY_ZONE_CHEST)
+	chest.cavity = TRUE
+
+	// Fill the cavity past capacity with items of the maximum size.
+	var/max_volume = 7 * (chest.cavity_storage_max_weight - 1)
+	var/item_volume = (chest.cavity_storage_max_weight - 1) ** 2
+	for(var/i in 1 to (max_volume / item_volume) + 1)
+		var/obj/item/filler = allocate(/obj/item)
+		filler.w_class = chest.cavity_storage_max_weight
+		filler.forceMove(chest)
+		chest.add_cavity_item(filler)
+
+	var/obj/item/tiny = allocate(/obj/item)
+	tiny.w_class = WEIGHT_CLASS_TINY
+	TEST_ASSERT(!step.pre_surgery_step(user, patient, BODY_ZONE_CHEST, tiny), "An item fit into a cavity that was already over capacity")
+
+/// Sterilize wound should accept strong alcohol and reject plain liquids.
+/datum/unit_test/surgery_sterilize_alcohol/Run()
+	var/datum/surgery_step/sterilize_wound/step = locate() in GLOB.surgeries_list
+
+	var/obj/item/reagent_containers/cup/beaker/booze = allocate(/obj/item/reagent_containers/cup/beaker)
+	booze.reagents.add_reagent(/datum/reagent/consumable/ethanol/hooch, 10)
+	TEST_ASSERT(step.check_chemicals(booze), "Strong alcohol was not accepted for sterilization")
+
+	var/obj/item/reagent_containers/cup/beaker/water = allocate(/obj/item/reagent_containers/cup/beaker)
+	water.reagents.add_reagent(/datum/reagent/water, 10)
+	TEST_ASSERT(!step.check_chemicals(water), "Water was accepted for sterilization")

@@ -159,7 +159,7 @@
 /mob/living/silicon/robot/Topic(href, href_list)
 	. = ..()
 	//Show alerts window if user clicked on "Show alerts" in chat
-	if(href_list["showalerts"])
+	if(href_list["showalerts"] && usr == src)
 		alert_control.ui_interact(src)
 
 /mob/living/silicon/robot/get_cell()

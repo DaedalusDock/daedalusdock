@@ -476,6 +476,16 @@ GLOBAL_PROTECT(poll_options)
 	var/sql_votes = list()
 	for(var/h in href_list)
 		var/datum/poll_option/option = locate(h) in poll.options
+		if(!option)
+			continue
+		var/rating = text2num(href_list[h])
+		if(!isnum(rating))
+			continue
+
+		rating = round(rating, 1)
+		if(!(rating in option.min_val to option.max_val)) //href exploit protection, rigging the poll
+			continue
+
 		sql_votes += list(list(
 			"id" = votes["[option.option_id]"],
 			"pollid" = sql_poll_id,
@@ -483,8 +493,11 @@ GLOBAL_PROTECT(poll_options)
 			"ckey" = ckey,
 			"ip" = client.address,
 			"adminrank" = admin_rank,
-			"rating" = href_list[h]
+			"rating" = rating
 		))
+	if(!length(sql_votes))
+		return
+
 	SSdbcore.MassInsert(format_table_name("poll_vote"), sql_votes, duplicate_key = TRUE, special_columns = special_columns)
 	return TRUE
 

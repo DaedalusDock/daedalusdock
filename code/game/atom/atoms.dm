@@ -2017,6 +2017,11 @@ TYPEINFO_DEF(/atom)
 	var/list/paramslist = list()
 
 	if(href_list["statpanel_item_click"])
+		// The statpanel only lists the viewed turf and its contents (admins also get SDQL results),
+		// so refuse clicks on anything else or this can be used to click/examine atoms anywhere.
+		var/turf/listed = usr.listed_turf
+		if(!usr_client.holder && (!listed || (src != listed && loc != listed)))
+			return
 		switch(href_list["statpanel_item_click"])
 			if("left")
 				paramslist[LEFT_CLICK] = "1"

@@ -334,7 +334,7 @@ SUBSYSTEM_DEF(codex)
 	. = ..()
 	if(!. && href_list["show_examined_info"] && href_list["show_to"])
 		var/mob/showing_mob = locate(href_list["show_to"])
-		if(!istype(showing_mob))
+		if(!istype(showing_mob) || showing_mob != usr)
 			return
 		var/atom/showing_atom = locate(href_list["show_examined_info"])
 		var/entry

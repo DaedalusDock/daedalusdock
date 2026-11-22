@@ -113,7 +113,7 @@
 			return
 
 	if(href_list["show_death_stats"])
-		if(stat != DEAD || !(usr == src || usr.mind?.current != src))
+		if(stat != DEAD || !(usr == src || usr.mind?.current == src))
 			return
 
 		show_death_stats(usr)

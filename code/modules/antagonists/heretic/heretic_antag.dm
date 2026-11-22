@@ -120,6 +120,11 @@
 			if(!ispath(researched_path))
 				CRASH("Heretic attempted to learn non-heretic_knowledge path! (Got: [researched_path])")
 
+			if(!(researched_path in get_researchable_knowledge()))
+				message_admins("[ADMIN_LOOKUPFLW(usr)] attempted to research unavailable heretic knowledge [researched_path]. Possible href exploit.")
+				log_heretic_knowledge("[key_name(owner)] attempted to research unavailable knowledge: [researched_path]")
+				return
+
 			if(initial(researched_path.cost) > knowledge_points)
 				return
 			if(!gain_knowledge(researched_path))

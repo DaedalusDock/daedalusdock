@@ -378,8 +378,15 @@
 			if(!is_valid_recipe(recipe, recipes)) //href exploit protection
 				return
 			var/multiplier = text2num(params["multiplier"])
-			if(!multiplier || (multiplier <= 0)) //href exploit protection
+			if(!isnum(multiplier)) //href exploit protection
 				return
+			multiplier = round(multiplier) //fractional multipliers would discount the recipe
+			if(multiplier < 1)
+				return
+			if(recipe.max_res_amount <= 1)
+				multiplier = 1 //non-stack results only ever build one
+			else
+				multiplier = min(multiplier, max(1, round(recipe.max_res_amount / recipe.res_amount)))
 			if(!building_checks(recipe, multiplier))
 				return
 			if(recipe.time)

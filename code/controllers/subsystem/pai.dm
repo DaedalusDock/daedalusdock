@@ -97,28 +97,35 @@ SUBSYSTEM_DEF(pai)
 		return FALSE
 	switch(action)
 		if("submit")
-			candidate.comments = params["candidate"]["comments"]
-			candidate.description = params["candidate"]["description"]
-			candidate.name = params["candidate"]["name"]
+			var/list/candidate_data = params["candidate"]
+			if(!islist(candidate_data))
+				return
+			candidate.set_fields(candidate_data["name"], candidate_data["description"], candidate_data["comments"])
 			candidate.ready = TRUE
 			ui.close()
 			submit_alert()
 		if("save")
-			candidate.comments = params["candidate"]["comments"]
-			candidate.description = params["candidate"]["description"]
-			candidate.name = params["candidate"]["name"]
+			var/list/candidate_data = params["candidate"]
+			if(!islist(candidate_data))
+				return
+			candidate.set_fields(candidate_data["name"], candidate_data["description"], candidate_data["comments"])
 			candidate.savefile_save(usr)
 		if("load")
 			candidate.savefile_load(usr)
 			//In case people have saved unsanitized stuff.
-			if(candidate.comments)
-				candidate.comments = copytext_char(candidate.comments,1,MAX_MESSAGE_LEN)
-			if(candidate.description)
-				candidate.description = copytext_char(candidate.description,1,MAX_MESSAGE_LEN)
-			if(candidate.name)
-				candidate.name = copytext_char(candidate.name,1,MAX_NAME_LEN)
+			candidate.set_fields(candidate.name, candidate.description, candidate.comments)
 			ui.send_full_update()
 	return
+
+/**
+ * Sets the candidate's user-provided fields, sanitizing them.
+ * The name becomes the pAI mob's name and is shown unescaped in chat, so it must pass reject_bad_name().
+ * Description and comments are only displayed through tgui (which escapes them), so they are length capped.
+ */
+/datum/pai_candidate/proc/set_fields(new_name, new_description, new_comments)
+	name = istext(new_name) ? reject_bad_name(new_name, allow_numbers = TRUE) : null
+	description = istext(new_description) ? copytext_char(new_description, 1, MAX_MESSAGE_LEN) : null
+	comments = istext(new_comments) ? copytext_char(new_comments, 1, MAX_MESSAGE_LEN) : null
 
 /**
  * Finds the candidate in question from the list of candidates.

@@ -196,9 +196,23 @@
 	return laws_to_return
 
 /mob/living/silicon/Topic(href, href_list)
+	if (href_list["printlawtext"]) // this is kinda backwards
+		if (href_list["dead"] && (!isdead(usr) && !usr.client.holder)) // do not print deadchat law notice if the user is now alive
+			to_chat(usr, span_warning("You cannot view law changes that were made while you were dead."))
+			return
+		to_chat(usr, href_list["printlawtext"])
+		return
+
+	// Everything below controls the silicon's own law stating, only the silicon itself may use it.
+	if (usr != src)
+		return
+
 	if (href_list["lawc"]) // Toggling whether or not a law gets stated by the State Laws verb
 		var/law_index = text2num(href_list["lawc"])
-		var/law = assemble_laws()[law_index + 1]
+		var/list/all_laws = assemble_laws()
+		if (!(law_index in 0 to (length(all_laws) - 1)))
+			return
+		var/law = all_laws[law_index + 1]
 		if (law in lawcheck)
 			lawcheck -= law
 		else
@@ -207,6 +221,8 @@
 
 	if (href_list["lawi"])
 		var/law_index = text2num(href_list["lawi"])
+		if (!(law_index in 1 to (length(laws.ion))))
+			return
 		var/law = laws.ion[law_index]
 		if (law in ioncheck)
 			ioncheck -= law
@@ -216,6 +232,8 @@
 
 	if (href_list["lawh"])
 		var/law_index = text2num(href_list["lawh"])
+		if (!(law_index in 1 to (length(laws.hacked))))
+			return
 		var/law = laws.hacked[law_index]
 		if (law in hackedcheck)
 			hackedcheck -= law
@@ -225,12 +243,6 @@
 
 	if (href_list["laws"])
 		statelaws()
-
-	if (href_list["printlawtext"]) // this is kinda backwards
-		if (href_list["dead"] && (!isdead(usr) && !usr.client.holder)) // do not print deadchat law notice if the user is now alive
-			to_chat(usr, span_warning("You cannot view law changes that were made while you were dead."))
-			return
-		to_chat(usr, href_list["printlawtext"])
 
 	return
 

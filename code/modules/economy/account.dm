@@ -108,13 +108,15 @@
  * *amount: the quantity of marks that are being moved between bank_account datums.
  */
 /datum/bank_account/proc/transfer_money(datum/bank_account/from, amount)
-	if(from.has_money(amount))
-		adjust_money(amount)
-		SSblackbox.record_feedback("amount", "credits_transferred", amount)
-		log_econ("[amount] marks were transferred from [from.account_holder]'s account to [src.account_holder]")
-		from.adjust_money(-amount)
-		return TRUE
-	return FALSE
+	if(!isnum(amount) || !IS_FINITE(amount) || amount <= 0)
+		return FALSE
+	// Debit first, and only credit if the debit actually succeeded.
+	if(!from.adjust_money(-amount))
+		return FALSE
+	adjust_money(amount)
+	SSblackbox.record_feedback("amount", "credits_transferred", amount)
+	log_econ("[amount] marks were transferred from [from.account_holder]'s account to [src.account_holder]")
+	return TRUE
 
 /**
  * This proc handles passive income gain for players, using their job's paycheck value.

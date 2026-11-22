@@ -99,7 +99,7 @@
 				return TRUE
 			active_request.applicants += list(current_user)
 		if("payApplicant")
-			if(!current_user)
+			if(!current_user || !active_request || !request_target)
 				return
 			if(!current_user.has_money(active_request.value) || (current_user.account_holder != active_request.owner))
 				playsound(computer, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
@@ -125,10 +125,11 @@
 			return TRUE
 		if("bountyVal")
 			bounty_value = text2num(params["bountyval"])
-			if(!bounty_value)
+			if(!isnum(bounty_value) || !bounty_value)
 				bounty_value = 1
+			bounty_value = clamp(round(bounty_value), 1, 1000)
 		if("bountyText")
-			bounty_text = (params["bountytext"])
+			bounty_text = reject_bad_text(params["bountytext"], MAX_MESSAGE_LEN, ascii_only = FALSE)
 	. = TRUE
 
 /datum/computer_file/program/bounty_board/Destroy()

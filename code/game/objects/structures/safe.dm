@@ -154,6 +154,9 @@ FLOOR SAFES
 				to_chat(user, span_warning("The dial will not turn, as the mechanism is destroyed!"))
 				return
 			var/ticks = text2num(params["num"])
+			if(!isnum(ticks))
+				return
+			ticks = clamp(round(ticks), 1, 99) //href exploit protection, unbounded loop
 			for(var/iterate in 1 to ticks)
 				dial = WRAP(dial - 1, 0, 100)
 
@@ -175,6 +178,9 @@ FLOOR SAFES
 				to_chat(user, span_warning("The dial will not turn, as the mechanism is destroyed!"))
 				return
 			var/ticks = text2num(params["num"])
+			if(!isnum(ticks))
+				return
+			ticks = clamp(round(ticks), 1, 99)
 			for(var/iterate in 1 to ticks)
 				dial = WRAP(dial + 1, 0, 100)
 
@@ -193,10 +199,10 @@ FLOOR SAFES
 			if(!open)
 				return
 			var/index = text2num(params["index"])
-			if(!index)
+			if(!(index in 1 to length(contents)))
 				return
 			var/obj/item/retrieved_item = contents[index]
-			if(!retrieved_item || !in_range(src, user))
+			if(!isitem(retrieved_item) || !in_range(src, user))
 				return
 			user.put_in_hands(retrieved_item)
 			space -= retrieved_item.w_class

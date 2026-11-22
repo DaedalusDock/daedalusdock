@@ -182,7 +182,9 @@
 	switch(action)
 		if("amount")
 			var/target = text2num(params["target"])
-			amount = target
+			if(!isnum(target))
+				return
+			amount = clamp(round(target), 1, 100)
 			. = TRUE
 		if("dispense")
 			var/reagent_name = params["reagent"]
@@ -200,6 +202,8 @@
 						break
 			. = TRUE
 		if("remove")
+			if(!beaker)
+				return
 			var/amount = text2num(params["amount"])
 			beaker.reagents.remove_all(amount)
 			. = TRUE

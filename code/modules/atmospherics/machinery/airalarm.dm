@@ -379,6 +379,23 @@ TYPEINFO_DEF(/obj/machinery/airalarm)
 	if((locked && !usr.has_unlimited_silicon_privilege) || (usr.has_unlimited_silicon_privilege && aidisabled))
 		return
 	var/device_id = params["id_tag"]
+	// Device commands are broadcast by id_tag, so make sure the target device actually belongs to this alarm's area.
+	var/static/list/device_actions = list(
+		"power",
+		"toggle_filter",
+		"quicksucc",
+		"scrubbing",
+		"direction",
+		"excheck",
+		"incheck",
+		"set_external_pressure",
+		"set_internal_pressure",
+		"reset_external_pressure",
+		"reset_internal_pressure",
+	)
+	if((action in device_actions) && (!my_area || !device_id || (!(device_id in my_area.air_vent_info) && !(device_id in my_area.air_scrub_info))))
+		return
+
 	switch(action)
 		if("lock")
 			if(usr.has_unlimited_silicon_privilege && !wires.is_cut(WIRE_IDSCAN))
@@ -436,6 +453,15 @@ TYPEINFO_DEF(/obj/machinery/airalarm)
 				env = text2path(env)
 
 			var/name = params["var"]
+			// Only allow editing of the threshold values, never arbitrary vars on the datum.
+			var/static/list/valid_tlv_vars = list(
+				nameof(/datum/tlv::hazard_min),
+				nameof(/datum/tlv::warning_min),
+				nameof(/datum/tlv::warning_max),
+				nameof(/datum/tlv::hazard_max),
+			)
+			if(!(name in valid_tlv_vars))
+				return
 			var/datum/tlv/tlv = TLV[env]
 			if(isnull(tlv))
 				return
@@ -454,7 +480,12 @@ TYPEINFO_DEF(/obj/machinery/airalarm)
 		if("mode")
 			AALARM_UIACT_COOLDOWNCHECK
 			//Yes, the modes can match, but this will force a resend of the mode config to equipment.
-			mode = text2num(params["mode"])
+			var/new_mode = text2num(params["mode"])
+			if(!get_mode_name(new_mode)) // Not a real mode
+				return
+			if(new_mode == AALARM_MODE_FLOOD && !(obj_flags & EMAGGED)) // Flood is only offered when emagged
+				return
+			mode = new_mode
 			COOLDOWN_START(src, ui_cooldown, 3 SECONDS)
 			investigate_log("was turned to [get_mode_name(mode)] mode by [key_name(usr)]",INVESTIGATE_ATMOS)
 			apply_mode(usr)

@@ -204,8 +204,7 @@ const Blanks = (props) => {
             disabled={!has_toner}
             onClick={() =>
               act('print_blank', {
-                name: blank.name,
-                info: blank.info,
+                code: blank.code,
               })
             }
           >

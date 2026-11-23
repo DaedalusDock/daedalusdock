@@ -223,7 +223,7 @@
 	var/list/colors = prefs.read_preference(type)
 	var/index = text2num(params["color"])
 
-	if(!index)
+	if(!(index in 1 to length(colors)))
 		return
 
 	var/default = colors[index]

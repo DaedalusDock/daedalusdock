@@ -350,6 +350,9 @@
 
 /obj/item/mecha_parts/mecha_equipment/medical/syringe_gun/Topic(href,href_list)
 	..()
+	// Only the exosuit's pilots may operate it
+	if(!chassis || !(usr in chassis.occupants) || usr.incapacitated())
+		return
 	if (href_list["toggle_mode"])
 		mode = !mode
 		return

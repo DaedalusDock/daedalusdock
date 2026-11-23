@@ -47,9 +47,14 @@
 
 /obj/item/antag_spawner/contract/ui_act(action, list/params)
 	. = ..()
+	if(.)
+		return
 	if(used || polling || !ishuman(usr))
 		return
-	INVOKE_ASYNC(src, PROC_REF(poll_for_student), usr, params["school"])
+	var/school = params["school"]
+	if(!(school in list(APPRENTICE_DESTRUCTION, APPRENTICE_BLUESPACE, APPRENTICE_ROBELESS, APPRENTICE_HEALING)))
+		return
+	INVOKE_ASYNC(src, PROC_REF(poll_for_student), usr, school)
 	SStgui.close_uis(src)
 
 /obj/item/antag_spawner/contract/proc/poll_for_student(mob/living/carbon/human/teacher, apprentice_school)

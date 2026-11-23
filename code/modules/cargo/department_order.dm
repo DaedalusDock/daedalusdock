@@ -96,12 +96,17 @@ GLOBAL_LIST_INIT(department_order_cooldowns, list(
 
 /obj/machinery/computer/department_orders/ui_act(action, list/params)
 	. = ..()
+	if(.)
+		return
 
 	if(!isliving(usr))
 		return
 	var/mob/living/orderer = usr
 
 	var/obj/item/card/id/id_card = orderer.get_idcard(hand_first = TRUE)
+	if(!id_card)
+		playsound(src, 'sound/machines/buzz-sigh.ogg', 30, TRUE)
+		return
 
 	//needs to come BEFORE preventing actions!
 	if(action == "override_order")

@@ -179,17 +179,17 @@
 			if(busy)
 				to_chat(usr, span_warning("[src] is currently busy copying something. Please wait until it is finished."))
 				return FALSE
-			if (toner_cartridge.charges - PAPER_TONER_USE < 0)
+			if (!toner_cartridge || toner_cartridge.charges - PAPER_TONER_USE < 0)
 				to_chat(usr, span_warning("There is not enough toner in [src] to print the form, please replace the cartridge."))
+				return FALSE
+			// Never trust form contents from the client, look the form up from the server's own list.
+			var/list/blank = find_blank_form(params["code"], params["name"])
+			if(!blank)
 				return FALSE
 			do_copy_loop(CALLBACK(src, PROC_REF(make_blank_print)), usr)
 			var/obj/item/paper/printblank = new /obj/item/paper (loc)
-			var/printname = params["name"]
-			var/list/printinfo
-			for(var/infoline as anything in params["info"])
-				printinfo += infoline
-			printblank.name = printname
-			printblank.info = printinfo
+			printblank.name = blank["name"]
+			printblank.info = islist(blank["info"]) ? jointext(blank["info"], "") : "[blank["info"]]"
 			return printblank
 
 /**
@@ -289,6 +289,28 @@
 /**
  * The procedure is called when printing a blank to write off toner consumption.
  */
+/**
+ * Finds a blank form from config/blanks.json, by code if given, otherwise by name.
+ * Returns the form's assoc list, or null if no such form exists.
+ */
+/obj/machinery/photocopier/proc/find_blank_form(code, name)
+	if(!istext(code) && !istext(name))
+		return null
+	var/list/blanks
+	try
+		blanks = json_decode(file2text("config/blanks.json"))
+	catch()
+		return null
+	if(!islist(blanks))
+		return null
+	for(var/list/blank in blanks)
+		if(istext(code))
+			if(blank["code"] == code)
+				return blank
+		else if(blank["name"] == name)
+			return blank
+	return null
+
 /obj/machinery/photocopier/proc/make_blank_print()
 	toner_cartridge.charges -= PAPER_TONER_USE
 

@@ -128,7 +128,10 @@
 						tube_out.setDir(params["pipe_dir"])
 						wait = world.time + 1 SECONDS
 		if("piping_layer")
-			piping_layer = text2num(params["piping_layer"])
+			var/new_layer = text2num(params["piping_layer"])
+			if(!isnum(new_layer))
+				return
+			piping_layer = clamp(round(new_layer), PIPING_LAYER_MIN, PIPING_LAYER_MAX)
 
 		if("init_dir_setting")
 			var/target_dir = p_init_dir ^ text2dir(params["dir_flag"])

@@ -308,7 +308,11 @@
 					desired = tgui_input_number(usr, "How many sheets would you like to smelt?", "Smelt",  max_value = stored_amount)
 					if(!desired || QDELETED(usr) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 						return
-				var/sheets_to_remove = round(min(desired,50,stored_amount))
+				if(!isnum(desired))
+					return
+				var/sheets_to_remove = round(max(min(desired,50,stored_amount), 0))
+				if(sheets_to_remove < 1)
+					return
 
 				var/count = mat_container.retrieve_sheets(sheets_to_remove, mat, get_step(src, output_dir))
 				var/list/mats = list()
@@ -330,7 +334,10 @@
 		if("diskUpload")
 			var/n = text2num(params["design"])
 			if(inserted_disk)
-				var/datum/design/to_add = disk_get_designs(FABRICATOR_FILE_NAME, inserted_disk)[n]
+				var/list/disk_designs = disk_get_designs(FABRICATOR_FILE_NAME, inserted_disk)
+				if(!isnum(n) || n < 1 || n > length(disk_designs))
+					return TRUE
+				var/datum/design/to_add = disk_designs[n]
 				var/datum/c4_file/fab_design_bundle/dundle = disk_get_file(FABRICATOR_FILE_NAME, internal_disk)
 				if(!istype(dundle))
 					to_chat(usr, span_warning("Internal design database missing or corrupt. Operation failed."))
@@ -366,7 +373,11 @@
 					desired = tgui_input_number(usr, "How many sheets would you like to smelt?", "Smelt", max_value = smelt_amount)
 					if(!desired || QDELETED(usr) || QDELETED(src) || !usr.canUseTopic(src, USE_CLOSE|USE_IGNORE_TK))
 						return
+				if(!isnum(desired))
+					return
 				var/amount = round(min(desired,50,smelt_amount))
+				if(amount < 1) //href exploit protection, negative amounts would add materials
+					return
 				mat_container.use_materials(alloy.materials, amount)
 				materials.silo_log(src, "released", -amount, "sheets", alloy.materials)
 				var/output

@@ -139,6 +139,8 @@
 
 			var/gags_string = entry.custom_gags_colors || loadout_item.get_gags_string()
 			var/list/gags_list = color_string_to_list(gags_string)
+			if(!(gags_index in 1 to length(gags_list)))
+				return
 			var/current_color_display = gags_list[gags_index]
 			var/new_color = input(user, "Choose loadout item color [gags_index]:", "Loadout Customization", current_color_display) as color|null
 			if(!new_color || QDELETED(entry))

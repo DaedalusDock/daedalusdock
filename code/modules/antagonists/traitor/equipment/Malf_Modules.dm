@@ -942,18 +942,28 @@ GLOBAL_LIST_INIT(malf_modules, subtypesof(/datum/ai_module))
 			if(changing_voice)
 				owner.radio.use_command = loudvoice
 		if("look")
-			say_span = params["look"]
+			var/new_span = params["look"]
+			// Spans are inserted raw into chat html, only allow the ones offered by the UI.
+			if(!(new_span in list("normal", SPAN_ROBOT, SPAN_YELL, SPAN_CLOWN)))
+				return
+			say_span = new_span
 			if(changing_voice)
 				owner.speech_span = say_span
 		if("verb")
-			say_verb = params["verb"]
+			var/new_verb = reject_bad_text(params["verb"], 32, ascii_only = FALSE)
+			if(!new_verb)
+				return
+			say_verb = new_verb
 			if(changing_voice)
 				owner.verb_say = say_verb
 				owner.verb_ask = say_verb
 				owner.verb_exclaim = say_verb
 				owner.verb_yell = say_verb
 		if("name")
-			say_name = params["name"]
+			var/new_name = reject_bad_name(params["name"], allow_numbers = TRUE)
+			if(!new_name)
+				return
+			say_name = new_name
 
 
 #undef DEFAULT_DOOMSDAY_TIMER

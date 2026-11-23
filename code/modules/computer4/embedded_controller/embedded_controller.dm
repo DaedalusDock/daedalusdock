@@ -149,9 +149,12 @@ DEFINE_INTERACTABLE(/obj/machinery/c4_embedded_controller)
 		ui = new(user, src, "EmbeddedController")
 		ui.open()
 
-/obj/machinery/c4_embedded_controller/ui_act(action, list/params)
+/obj/machinery/c4_embedded_controller/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	SHOULD_CALL_PARENT(FALSE) // Relaying already
 	if(action == "ec_eject_id")
+		// This is handled before relaying to the internal computer, so check interaction ourselves.
+		if(!ui || ui.status != UI_INTERACTIVE)
+			return TRUE
 		var/obj/item/peripheral/card_reader/reader = internal_computer.get_peripheral(PERIPHERAL_TYPE_CARD_READER)
 		. = reader.try_eject_card(usr)
 

@@ -364,7 +364,10 @@ TYPEINFO_DEF(/obj/item/pipe_dispenser)
 	var/playeffect = TRUE
 	switch(action)
 		if("color")
-			paint_color = params["paint_color"]
+			var/new_color = params["paint_color"]
+			if(!(new_color in GLOB.pipe_paint_colors))
+				return
+			paint_color = new_color
 		if("category")
 			category = text2num(params["category"])
 			switch(category)
@@ -377,13 +380,20 @@ TYPEINFO_DEF(/obj/item/pipe_dispenser)
 			p_dir = NORTH
 			playeffect = FALSE
 		if("piping_layer")
-			piping_layer = text2num(params["piping_layer"])
+			var/new_layer = text2num(params["piping_layer"])
+			if(!isnum(new_layer))
+				return
+			piping_layer = clamp(round(new_layer), PIPING_LAYER_MIN, PIPING_LAYER_MAX)
 			playeffect = FALSE
 		if("pipe_type")
 			var/static/list/recipes
 			if(!recipes)
 				recipes = GLOB.disposal_pipe_recipes + GLOB.atmos_pipe_recipes + GLOB.transit_tube_recipes
-			recipe = recipes[params["category"]][text2num(params["pipe_type"])]
+			var/list/category_recipes = recipes[params["category"]]
+			var/recipe_index = text2num(params["pipe_type"])
+			if(!islist(category_recipes) || !(recipe_index in 1 to length(category_recipes)))
+				return
+			recipe = category_recipes[recipe_index]
 			p_dir = NORTH
 		if("setdir")
 			p_dir = text2dir(params["dir"])
@@ -391,7 +401,9 @@ TYPEINFO_DEF(/obj/item/pipe_dispenser)
 			playeffect = FALSE
 		if("mode")
 			var/n = text2num(params["mode"])
-			mode ^= n
+			if(!isnum(n))
+				return
+			mode ^= (n & (BUILD_MODE | WRENCH_MODE | DESTROY_MODE | REPROGRAM_MODE))
 		if("init_dir_setting")
 			var/target_dir = p_init_dir ^ text2dir(params["dir_flag"])
 			// Refuse to create a smart pipe that can only connect in one direction (it would act weirdly and lack an icon)

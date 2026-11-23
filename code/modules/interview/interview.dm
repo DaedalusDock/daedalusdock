@@ -125,7 +125,10 @@
 	switch(action)
 		if ("update_answer")
 			if (!read_only)
-				responses[text2num(params["qidx"])] = copytext_char(params["answer"], 1, 501) // byond indexing moment
+				var/qidx = text2num(params["qidx"])
+				if (!(qidx in 1 to length(responses)))
+					return
+				responses[qidx] = copytext_char(params["answer"], 1, 501) // byond indexing moment
 				. = TRUE
 		if ("submit")
 			if (!read_only)

@@ -72,6 +72,9 @@
 		return ..()
 
 /obj/machinery/abductor/gland_dispenser/proc/Dispense(count)
+	if(!(count in 1 to length(amounts)) || count > length(gland_types))
+		return
+
 	if(amounts[count]>0)
 		amounts[count]--
 		var/T = gland_types[count]

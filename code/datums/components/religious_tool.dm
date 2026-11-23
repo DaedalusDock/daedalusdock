@@ -107,17 +107,34 @@
 
 /datum/component/religious_tool/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	. = ..()
+	if(.)
+		return
 	switch(action)
 		if("sect_select")
+			if(!(operation_flags & RELIGION_TOOL_SECTSELECT))
+				return
 			select_sect(usr, params["path"])
 			return TRUE //they picked a sect lets update so some weird spammy shit doesn't happen
 		if("perform_rite")
+			if(!(operation_flags & RELIGION_TOOL_INVOKE))
+				return
 			perform_rite(usr, params["path"])
 
 /// Select the sect, called from [/datum/component/religious_tool/proc/AttemptActions]
 /datum/component/religious_tool/proc/select_sect(mob/living/user, path)
-	if(!ispath(text2path(path), /datum/religion_sect))
+	var/sect_path = text2path(path)
+	if(!ispath(sect_path, /datum/religion_sect))
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has tried to spawn an item when selecting a sect.")
+		return
+	var/sect_available = FALSE
+	for(var/list/available_sect as anything in generate_available_sects(user))
+		if(available_sect["path"] == sect_path)
+			sect_available = TRUE
+			break
+	if(!sect_available)
+		message_admins("[ADMIN_LOOKUPFLW(usr)] has tried to select an unavailable sect ([sect_path]). Possible href exploit.")
+		return
+	if(!user.mind)
 		return
 	if(user.mind.holy_role != HOLY_ROLE_HIGHPRIEST)
 		to_chat(user, "<span class='warning'>You are not the high priest, and therefore cannot select a religious sect.")
@@ -127,7 +144,7 @@
 		return
 	if(GLOB.religious_sect)
 		return
-	GLOB.religious_sect = new path()
+	GLOB.religious_sect = new sect_path()
 	for(var/i in GLOB.player_list)
 		if(!isliving(i))
 			continue
@@ -140,8 +157,14 @@
 
 /// Perform the rite, called from [/datum/component/religious_tool/proc/AttemptActions]
 /datum/component/religious_tool/proc/perform_rite(mob/living/user, path)
-	if(!ispath(text2path(path), /datum/religion_rites))
+	var/rite_path = text2path(path)
+	if(!ispath(rite_path, /datum/religion_rites))
 		message_admins("[ADMIN_LOOKUPFLW(usr)] has tried to spawn an item when performing a rite.")
+		return
+	if(!easy_access_sect || !(rite_path in easy_access_sect.rites_list))
+		message_admins("[ADMIN_LOOKUPFLW(usr)] has tried to perform a rite not offered by the current sect ([rite_path]). Possible href exploit.")
+		return
+	if(!user.mind)
 		return
 	if(user.mind.holy_role < HOLY_ROLE_PRIEST)
 		if(user.mind.holy_role == HOLY_ROLE_DEACON)
@@ -155,7 +178,7 @@
 	if(!user.canUseTopic(parent, USE_CLOSE|USE_DEXTERITY|USE_IGNORE_TK))
 		to_chat(user,span_warning("You are not close enough to perform the rite."))
 		return
-	performing_rite = new path(parent)
+	performing_rite = new rite_path(parent)
 	if(!performing_rite.perform_rite(user, parent))
 		QDEL_NULL(performing_rite)
 	else
@@ -174,12 +197,12 @@
 	var/human_highpriest = ishuman(user)
 	var/mob/living/carbon/human/highpriest = user
 	for(var/path in subtypesof(/datum/religion_sect))
-		if(human_highpriest && initial(easy_access_sect.invalidating_qualities))
+		var/datum/religion_sect/not_a_real_instance_rs = path
+		if(human_highpriest && initial(not_a_real_instance_rs.invalidating_qualities))
 			var/datum/species/highpriest_species = highpriest.dna.species
-			if(initial(easy_access_sect.invalidating_qualities) in highpriest_species.inherent_traits)
+			if(initial(not_a_real_instance_rs.invalidating_qualities) in highpriest_species.inherent_traits)
 				continue
 		var/list/sect = list()
-		var/datum/religion_sect/not_a_real_instance_rs = path
 		sect["name"] = initial(not_a_real_instance_rs.name)
 		sect["desc"] = initial(not_a_real_instance_rs.desc)
 		sect["alignment"] = initial(not_a_real_instance_rs.alignment)

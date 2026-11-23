@@ -222,7 +222,8 @@
 			if("Message")
 				send_message(usr, href_list["target"])
 			if("Mess_us_up")
-				if(!HAS_TRAIT(src, TRAIT_PDA_CAN_EXPLODE))
+				// The trait is applied to the computer when a detomatix message rigs it, see receive_message().
+				if(HAS_TRAIT(computer, TRAIT_PDA_CAN_EXPLODE) && istype(computer, /obj/item/modular_computer/tablet))
 					var/obj/item/modular_computer/tablet/comp = computer
 					comp.explode(usr, from_message_menu = TRUE)
 					return

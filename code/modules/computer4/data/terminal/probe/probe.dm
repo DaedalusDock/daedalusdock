@@ -42,7 +42,7 @@
 		if(potential_command.try_exec(parsed_input.command, os, src, parsed_input.arguments, parsed_input.options))
 			return TRUE
 
-	get_os().println("'[html_encode(parsed_input.raw)]' is not recognized as an internal or external command.")
+	get_os().println("'[parsed_input.raw]' is not recognized as an internal or external command.")
 
 /datum/c4_file/terminal_program/probe/peripheral_input(obj/item/peripheral/invoker, command, datum/signal/packet)
 	if(!packet)

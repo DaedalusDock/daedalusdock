@@ -34,7 +34,7 @@
 	var/datum/parsed_cmdline/parsed_cmdline = parse_cmdline(text)
 
 	var/datum/c4_file/terminal_program/operating_system/system = get_os()
-	system.println(html_encode(text))
+	system.println(text)
 
 	if(home_command.try_exec(parsed_cmdline.command, system, src, parsed_cmdline.arguments, parsed_cmdline.options))
 		return TRUE

@@ -128,7 +128,7 @@
 		log_message(
 			signal_payload["name"] || "#UNK",
 			signal_payload["job"] || "#UNK",
-			html_decode("\"[signal_payload["message"]]\"") || "#ERROR_MISSING_FIELD",
+			"\"[signal_payload["message"]]\"" || "#ERROR_MISSING_FIELD",
 			FALSE,
 			signal_payload["automated"] || FALSE,
 			signal_payload[PKT_HEAD_SOURCE_ADDRESS] || null
@@ -196,9 +196,11 @@
 		var/reply = "(<a href='byond://?src=[REF(src)];choice=[rigged ? "Mess_us_up" : "Message"];skiprefresh=1;target=[signal_data[PKT_HEAD_SOURCE_ADDRESS]]'>Reply</a>)"
 		var/hrefstart
 		var/hrefend
-		var/job_string = signal_data["job"] ? " ([signal_data["job"]])" : ""
+		// Packet data is plain text, encode it for chat.
+		var/sender_name = html_encode(signal_data["name"])
+		var/job_string = signal_data["job"] ? " ([html_encode(signal_data["job"])])" : ""
 		if (isAI(L))
-			hrefstart = "<a href='?src=[REF(L)];track=[html_encode(signal_data["name"])]'>"
+			hrefstart = "<a href='?src=[REF(L)];track=[sender_name]'>"
 			hrefend = "</a>"
 
 		if(signal_data[PKT_HEAD_SOURCE_ADDRESS] == null)
@@ -209,10 +211,10 @@
 
 
 		var/inbound_message = "\"[signal_data["message"]]\""
-		inbound_message = emoji_parse(inbound_message)
+		inbound_message = emoji_parse(html_encode(inbound_message))
 
 		if(ringer_status)
-			to_chat(L, "<span class='infoplain'>[icon2html(computer, L)] <b>PDA message from [hrefstart][signal_data["name"]][job_string][hrefend], </b>[inbound_message] [reply]</span>")
+			to_chat(L, "<span class='infoplain'>[icon2html(computer, L)] <b>PDA message from [hrefstart][sender_name][job_string][hrefend], </b>[inbound_message] [reply]</span>")
 
 /datum/computer_file/program/messenger/Topic(href, href_list)
 	..()
@@ -278,8 +280,8 @@
 			target_address,
 			payload = list(
 				PKT_ARG_CMD = NETCMD_PDAMESSAGE,
-				"name" = fake_name || computer.saved_identification,
-				"job" = fake_job || computer.saved_job,
+				"name" = html_decode(fake_name || computer.saved_identification),
+				"job" = html_decode(fake_job || computer.saved_job),
 				"message" = html_decode(message),
 			)
 		),
@@ -288,7 +290,7 @@
 
 	netcard_cache.post_signal(pda_message)
 	// Log it in our logs
-	log_message(fake_name || computer.saved_identification,fake_job || computer.saved_job,html_decode(message),TRUE,FALSE,target_address)
+	log_message(html_decode(fake_name || computer.saved_identification), html_decode(fake_job || computer.saved_job), html_decode(message),TRUE,FALSE,target_address)
 
 /datum/computer_file/program/messenger/proc/log_message(name, job, message, outgoing, automated, reply_addr)
 	var/list/message_data = list(

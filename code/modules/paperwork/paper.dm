@@ -65,6 +65,9 @@
 	var/contact_poison // Reagent ID to transfer on contact
 	var/contact_poison_volume = 0
 
+	/// The camera this paper was last held up to, so people watching through it can read it.
+	var/datum/weakref/camera_holder
+
 	/// When the sheet can be "filled out"
 	/// This is an associated list
 	var/list/form_fields = list()
@@ -184,6 +187,8 @@
 		// Are we on fire?  Hard ot read if so
 	if(resistance_flags & ON_FIRE)
 		return UI_CLOSE
+	if(can_show_through_camera(user))
+		return UI_UPDATE // Read-only
 	if(!in_range(user, src) && !isobserver(user))
 		return UI_CLOSE
 	if(user.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB) || (isobserver(user) && !isAdminGhostAI(user)))
@@ -197,6 +202,29 @@
 	return ..()
 
 
+
+/// Whether user can read this paper because it was held up to a camera they are watching.
+/obj/item/paper/proc/can_show_through_camera(mob/user)
+	var/obj/machinery/camera/held_to = camera_holder?.resolve()
+	if(!held_to)
+		return FALSE
+
+	if(isAI(user))
+		var/mob/living/silicon/ai/ai_user = user
+		if(ai_user.control_disabled || ai_user.stat == DEAD)
+			return FALSE
+		// Only the paper the AI was last shown.
+		var/datum/weakref/seen = ai_user.last_paper_seen
+		return istype(seen) && seen.resolve() == src
+
+	if(get_dist(get_turf(src), get_turf(held_to)) > 1)
+		return FALSE
+	return user.client?.eye == held_to
+
+/// Opens this paper's (sanitized) UI for someone watching it through a camera.
+/obj/item/paper/proc/show_through_camera(mob/user)
+	if(can_show_through_camera(user))
+		ui_interact(user)
 
 /obj/item/paper/can_interact(mob/user)
 	if(in_contents_of(/obj/machinery/door/airlock))

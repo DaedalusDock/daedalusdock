@@ -73,9 +73,9 @@
 	if(.)
 		return
 
-	var/encoded_in = html_encode(text)
-	println(encoded_in)
-	write_log(encoded_in)
+	// Terminal output is escaped at display (fancy-ansi), so print plain text.
+	println(text)
+	write_log(text)
 
 	var/list/datum/parsed_cmdline/parsed_cmdlines = parse_cmdline(text)
 	if(!length(parsed_cmdlines)) //okay
@@ -126,7 +126,7 @@
 
 
 		if(!recognized)
-			println("'[html_encode(parsed_cmdline.raw)]' is not recognized as an internal or external command.")
+			println("'[parsed_cmdline.raw]' is not recognized as an internal or external command.")
 
 	UNSETEMPTY(queued_commands)
 
@@ -173,7 +173,7 @@
 	set_current_user(login_user)
 
 	write_log("[ANSI_WRAP_BOLD("LOGIN")]: [account_name] | [account_occupation]")
-	println("Welcome [html_encode(account_name)]!\n[ANSI_WRAP_BOLD("Current Directory: [current_directory.path_to_string()]")]")
+	println("Welcome [account_name]!\n[ANSI_WRAP_BOLD("Current Directory: [current_directory.path_to_string()]")]")
 	return TRUE
 
 /datum/c4_file/terminal_program/operating_system/thinkdos/proc/logout()

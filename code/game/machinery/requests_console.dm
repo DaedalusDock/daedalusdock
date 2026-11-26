@@ -334,7 +334,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 			"sender" = department,
 			"rec_dpt" = to_department,
 			"send_dpt" = department,
-			"message" = message,
+			// Packet data is plain text, receivers encode it for display.
+			"message" = html_decode(message),
 			"verified" = msgVerified,
 			"stamped" = msgStamped,
 			"priority" = priority,
@@ -379,7 +380,8 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 /obj/machinery/requests_console/proc/createmessage(source, source_department, message, msgVerified, msgStamped, priority, radio_freq)
 	var/linkedsender
 
-	var/sending = "[message]<br>"
+	// message arrives as plain packet text. msgVerified and msgStamped are pre-formatted HTML.
+	var/sending = "[replacetext(html_encode(message), "\n", "<br>")]<br>"
 	if(msgVerified)
 		sending = "[sending][msgVerified]<br>"
 	if(msgStamped)
@@ -421,7 +423,7 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/requests_console, 30)
 
 	if(radio_freq)
 		Radio.set_frequency(radio_freq)
-		Radio.talk_into(src, "[alert]: <i>[message]</i>", radio_freq)
+		Radio.talk_into(src, "[alert]: <i>[html_encode(message)]</i>", radio_freq)
 
 /obj/machinery/requests_console/crowbar_act(mob/living/user, obj/item/tool)
 

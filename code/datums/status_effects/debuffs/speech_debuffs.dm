@@ -109,7 +109,7 @@
 		message = uppertext(message)
 		message += "[apply_speech(exclamation, exclamation)]"
 
-	message_args[1] = message
+	message_args[1] = html_encode(message) // Re-encode, the message was decoded above.
 
 	var/mob/living/living_source = source
 	if(!isliving(source) || living_source.has_status_effect(/datum/status_effect/speech/stutter))

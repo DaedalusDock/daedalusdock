@@ -311,14 +311,14 @@
 				new_dest = tgui_input_list(user, "Enter Destination", "Mulebot Settings", GLOB.deliverybeacontags, destination)
 			else
 				new_dest = params["value"]
-			if(new_dest)
+			if(new_dest in GLOB.deliverybeacontags)
 				set_destination(new_dest)
 		if("setid")
 			var/new_id
 			if(pda)
 				new_id = tgui_input_text(user, "Enter ID", "ID Assignment", id, MAX_NAME_LEN)
 			else
-				new_id = params["value"]
+				new_id = reject_bad_text(params["value"], ascii_only = FALSE) // Becomes part of the bot's name, shown in chat.
 			if(new_id)
 				set_id(new_id)
 		if("sethome")
@@ -327,7 +327,7 @@
 				new_home = tgui_input_list(user, "Enter Home", "Mulebot Settings", GLOB.deliverybeacontags, home_destination)
 			else
 				new_home = params["value"]
-			if(new_home)
+			if(new_home in GLOB.deliverybeacontags)
 				home_destination = new_home
 		if("unload")
 			if(load && mode != BOT_HUNT)

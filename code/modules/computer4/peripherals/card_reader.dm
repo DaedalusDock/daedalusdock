@@ -75,8 +75,9 @@
 		src,
 		packetv2(
 			payload = list(
-				"name" = inserted_card.registered_name,
-				"job" = inserted_card.assignment,
+				// Packet data is plain text.
+				"name" = html_decode(inserted_card.registered_name),
+				"job" = html_decode(inserted_card.assignment),
 				"access" = access2text(inserted_card.GetAccess())
 			)
 		),

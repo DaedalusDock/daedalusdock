@@ -358,14 +358,16 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 
 		var/itemname = ""
 		var/info = ""
+		// Paper info is raw player HTML, so it is only ever shown through the paper's own (sanitized) UI.
+		var/obj/item/paper/pressed_paper
 		if(istype(I, /obj/item/paper))
-			var/obj/item/paper/pressed_paper = I
+			pressed_paper = I
 			itemname = pressed_paper.name
-			info = pressed_paper.info
+			pressed_paper.camera_holder = WEAKREF(src)
 		if(istype(I, /obj/item/modular_computer/tablet))
 			var/obj/item/modular_computer/tablet/computer = I
 			itemname = computer.name
-			info = computer.note
+			info = html_encode(computer.note)
 
 		itemname = sanitize(itemname)
 		to_chat(paper_user, span_notice("You hold \the [itemname] up to the camera..."))
@@ -382,11 +384,14 @@ MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/camera/xray, 0)
 				else
 					to_chat(AI, "<b><a href='?src=[REF(AI)];track=[html_encode(paper_user.name)]'>[paper_user]</a></b> holds <a href='?_src_=usr;show_paper=1;'>\a [itemname]</a> up to one of your cameras ...")
 				AI.log_talk(itemname, LOG_VICTIM, tag="Pressed to camera from [key_name(paper_user)]", log_globally=FALSE)
-				AI.last_paper_seen = "<HTML><HEAD><TITLE>[itemname]</TITLE></HEAD><BODY><TT>[info]</TT></BODY></HTML>"
+				AI.last_paper_seen = pressed_paper ? WEAKREF(pressed_paper) : "<HTML><HEAD><TITLE>[itemname]</TITLE></HEAD><BODY><TT>[info]</TT></BODY></HTML>"
 			else if (potential_viewer.client?.eye == src)
 				to_chat(potential_viewer, "[span_name("[paper_user]")] holds \a [itemname] up to one of the cameras ...")
 				potential_viewer.log_talk(itemname, LOG_VICTIM, tag="Pressed to camera from [key_name(paper_user)]", log_globally=FALSE)
-				potential_viewer << browse("<HTML><HEAD><TITLE>[itemname]</TITLE></HEAD><BODY><TT>[info]</TT></BODY></HTML>","window=[itemname]")
+				if(pressed_paper)
+					pressed_paper.show_through_camera(potential_viewer)
+				else
+					potential_viewer << browse("<HTML><HEAD><TITLE>[itemname]</TITLE></HEAD><BODY><TT>[info]</TT></BODY></HTML>","window=[itemname]")
 		return
 
 	else if(istype(I, /obj/item/camera_bug))

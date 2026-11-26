@@ -102,19 +102,19 @@
 	var/text_message = null
 
 
-	text_message = tgui_input_text(user, "Enter a message", "NT Messaging")
+	// Packet data is plain text, receivers encode it for display.
+	text_message = tgui_input_text(user, "Enter a message", "NT Messaging", encode = FALSE)
 
 	if(!user.canUseTopic(holder, USE_CLOSE))
 		return
 
-	text_message = sanitize(text_message)
 	if(!text_message)
 		return list(VIRUS_MODE_ABORT)
-	var/sender_name = sanitize(tgui_input_text(user, "Enter the sending name", "NT Messaging"))
+	var/sender_name = tgui_input_text(user, "Enter the sending name", "NT Messaging", encode = FALSE)
 	if(!sender_name)
 		return list(VIRUS_MODE_ABORT)
-	var/sender_job = sanitize(tgui_input_text(user, "Enter the sending job", "NT Messaging"))
-	if(!sender_name)
+	var/sender_job = tgui_input_text(user, "Enter the sending job", "NT Messaging", encode = FALSE)
+	if(!sender_job)
 		return list(VIRUS_MODE_ABORT)
 
 	if(!user.canUseTopic(holder, USE_CLOSE))

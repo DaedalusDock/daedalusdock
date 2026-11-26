@@ -58,7 +58,7 @@
 			activate()
 			return TRUE
 		if("PRG_obfuscate")
-			var/newname = params["new_name"]
+			var/newname = reject_bad_text(params["new_name"], ascii_only = FALSE) // Shown in chat notifications.
 			if(!newname)
 				return
 			filedesc = newname

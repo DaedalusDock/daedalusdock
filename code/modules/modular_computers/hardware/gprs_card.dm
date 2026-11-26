@@ -79,8 +79,8 @@
 			// If we're on an actual tablet, pass along the user info. No privacy here.
 			var/obj/item/modular_computer/tablet/tab_holder = holder
 			var/list/og_data = outgoing.data[PKT_PAYLOAD]
-			og_data["reg_name"] = tab_holder.saved_identification
-			og_data["reg_job"] = tab_holder.saved_job
+			og_data["reg_name"] = html_decode(tab_holder.saved_identification)
+			og_data["reg_job"] = html_decode(tab_holder.saved_job)
 
 		post_signal(outgoing)
 

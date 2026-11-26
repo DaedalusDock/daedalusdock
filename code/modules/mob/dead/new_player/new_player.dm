@@ -204,7 +204,8 @@
 
 		var/datum/job_department/department = job.departments_list?[1]
 		if(department?.department_head == job.type && SSjob.temporary_heads_by_dep[department])
-			var/message = "Greetings, [job.title] [humanc.real_name], in your absense, your employee \"[SSjob.temporary_heads_by_dep[department]]\" was granted elevated access to perform your duties."
+			// PDA message text is plain, decode the stored names.
+			var/message = "Greetings, [job.title] [html_decode(humanc.real_name)], in your absense, your employee \"[html_decode(SSjob.temporary_heads_by_dep[department])]\" was granted elevated access to perform your duties."
 			aas_pda_message_name(humanc.real_name, DATACORE_RECORDS_STATION, message, "Staff Notice")
 
 		if(GLOB.curse_of_madness_triggered)

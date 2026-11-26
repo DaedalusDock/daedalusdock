@@ -80,6 +80,7 @@
 
 	var/datum/trackable/track = new
 
+	/// Last thing held up to our cameras: a weakref to a paper, or pre-built HTML with encoded contents.
 	var/last_paper_seen = null
 	var/can_shunt = TRUE
 	var/last_announcement = "" // For AI VOX, if enabled
@@ -477,7 +478,11 @@
 		return
 #endif
 	if(href_list["show_paper"])
-		if(last_paper_seen)
+		if(istype(last_paper_seen, /datum/weakref)) // Paper, shown through its own sanitized UI
+			var/datum/weakref/paper_ref = last_paper_seen
+			var/obj/item/paper/shown_paper = paper_ref.resolve()
+			shown_paper?.show_through_camera(src)
+		else if(last_paper_seen) // Pre-built HTML with encoded contents (tablet notes)
 			src << browse(last_paper_seen, "window=show_paper")
 	//Carn: holopad requests
 	if(href_list["jump_to_holopad"])

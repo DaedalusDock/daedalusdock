@@ -103,7 +103,7 @@
 	return reply
 
 /obj/machinery/telephone/update_name(updates)
-	ping_reply_payload = list("user_id"=friendly_name)
+	ping_reply_payload = list("user_id"=html_decode(friendly_name)) // Packet data is plain text.
 	name = "phone - [friendly_name][placard_name ? " - [placard_name]" : null]"
 	return ..()
 
@@ -201,14 +201,14 @@
 	var/selected = input(user, null, "Reconfigure Station", null) as null|anything in options_list
 	switch(selected)
 		if("Set Caller ID")
-			var/new_friendly_name = input(user, "New Name?", "Renaming [friendly_name]", friendly_name) as null|text
+			var/new_friendly_name = tgui_input_text(user, "New Name?", "Renaming", html_decode(friendly_name), MAX_NAME_LEN)
 			if(!new_friendly_name)
 				return ITEM_INTERACT_SUCCESS
 			friendly_name = new_friendly_name
 			update_appearance(UPDATE_NAME)
 
 		if("Set Placard")
-			var/new_placard_name = input(user, "New Placard?", "Re-writing [placard_name]", placard_name) as null|text
+			var/new_placard_name = tgui_input_text(user, "New Placard?", "Re-writing", html_decode(placard_name), MAX_NAME_LEN)
 			if(!new_placard_name)
 				return ITEM_INTERACT_SUCCESS
 			placard_name = new_placard_name
@@ -307,7 +307,7 @@
 		return //Who? Or more likely: HREF fuckery.
 	active_caller = list(target_phone, discovered_phones[target_phone])
 	state = STATE_ORIGINATE
-	post_signal(create_signal(target_phone, list(PKT_ARG_CMD = "tel_ring","caller_id" = friendly_name)))
+	post_signal(create_signal(target_phone, list(PKT_ARG_CMD = "tel_ring","caller_id" = html_decode(friendly_name))))
 	outring_loop.start()
 	update_icon()
 
@@ -427,7 +427,7 @@
 	for(var/far_id in discovered_phones)
 		var/station_name = discovered_phones[far_id]
 		dat += "<tr>"
-		dat += "<th>[station_name]</th>"
+		dat += "<th>[html_encode(station_name)]</th>"
 		if(show_netids)
 			dat += "<th><span class='statusDisplay' style='font-family: monospace;'>[far_id]</span></th>"
 		if(safe_to_call)
@@ -646,7 +646,7 @@
 		CRASH("Handset was asked to handle a packet that didn't exist.")
 
 	var/list/payload = v_signal.data[PKT_PAYLOAD]
-	var/list/radio_bullshit_override = list("span"="radio", "name"=callstation.active_caller[CALLER_NAME])
+	var/list/radio_bullshit_override = list("span"="radio", "name"=html_encode(callstation.active_caller[CALLER_NAME])) // Caller name came from a packet.
 
 	var/atom/movable/virtualspeaker/admission_of_defeat = payload["virtualspeaker"]
 	var/sound/funnysound

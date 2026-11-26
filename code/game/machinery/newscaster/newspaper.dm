@@ -57,7 +57,7 @@
 				var/temp_page=0
 				for(var/datum/feed_channel/NP in news_content)
 					temp_page++
-					dat+="<B>[NP.channel_name]</B> <FONT SIZE=2>\[page [temp_page+1]\]</FONT><BR>"
+					dat+="<B>[html_encode(NP.channel_name)]</B> <FONT SIZE=2>\[page [temp_page+1]\]</FONT><BR>"
 				dat+="</ul>"
 			if(scribble_page==curr_page)
 				dat+="<BR><I>There is a small scribble near the end of this page... It reads: \"[scribble]\"</I>"
@@ -66,7 +66,7 @@
 			for(var/datum/feed_channel/NP in news_content)
 				pages++
 			var/datum/feed_channel/C = news_content[curr_page]
-			dat += "<FONT SIZE=4><B>[C.channel_name]</B></FONT><FONT SIZE=1> \[created by: <FONT COLOR='maroon'>[C.return_author(notContent(C.author_censor_time))]</FONT>\]</FONT><BR><BR>"
+			dat += "<FONT SIZE=4><B>[html_encode(C.channel_name)]</B></FONT><FONT SIZE=1> \[created by: <FONT COLOR='maroon'>[C.return_author(notContent(C.author_censor_time))]</FONT>\]</FONT><BR><BR>"
 			if(notContent(C.D_class_censor_time))
 				dat+="This channel was deemed dangerous to the general welfare of the station and therefore marked with a <B><FONT COLOR='red'>D-Notice</B></FONT>. Its contents were not transferred to the newspaper at the time of printing."
 			else

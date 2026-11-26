@@ -427,7 +427,7 @@
 		system.println("[ANSI_WRAP_BOLD("Error")]: No file found.")
 		return
 
-	system.println(html_encode(file.to_string()))
+	system.println(file.to_string())
 
 /datum/shell_command/thinkdos/version
 	aliases = list("version", "ver")

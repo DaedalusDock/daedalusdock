@@ -21,7 +21,7 @@
 		return FALSE
 
 	if(length(req_access & system.current_user.access) != length(req_access))
-		system.println("[ANSI_WRAP_BOLD("Error:")] User '[html_encode(system.current_user.registered_name)]' does not have the required access credentials.")
+		system.println("[ANSI_WRAP_BOLD("Error:")] User '[system.current_user.registered_name]' does not have the required access credentials.")
 		return FALSE
 
 	return TRUE

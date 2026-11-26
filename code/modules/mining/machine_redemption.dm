@@ -111,7 +111,8 @@
 	console_notify_timer = null
 
 	var/area/A = get_area(src)
-	var/msg = "Now available in [A]:<br>"
+	// Packet data is plain text; the request console encodes it and turns newlines into line breaks.
+	var/msg = "Now available in [html_decode("\the [A]")]:\n"
 
 	var/has_minerals = FALSE
 
@@ -120,7 +121,7 @@
 		var/mineral_amount = mat_container.materials[mat] / MINERAL_MATERIAL_AMOUNT
 		if(mineral_amount)
 			has_minerals = TRUE
-		msg += "[capitalize(M.name)]: [mineral_amount] sheets<br>"
+		msg += "[capitalize(M.name)]: [mineral_amount] sheets\n"
 
 	if(!has_minerals)
 		return

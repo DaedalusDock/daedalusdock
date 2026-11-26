@@ -503,16 +503,18 @@ DEFINE_INTERACTABLE(/obj/item)
 /// Returns this item's third person attack verbs ("slashes"): the instance override if set, otherwise the typeinfo default.
 /obj/item/proc/get_attack_verb_continuous()
 	RETURN_TYPE(/list)
-	if(!isnull(attack_verb_continuous))
+	if(attack_verb_continuous)
 		return attack_verb_continuous
+
 	var/datum/typeinfo/obj/item/typeinfo = typeinfo(src)
 	return typeinfo.attack_verb_continuous
 
 /// Returns this item's second person attack verbs ("slash"): the instance override if set, otherwise the typeinfo default.
 /obj/item/proc/get_attack_verb_simple()
 	RETURN_TYPE(/list)
-	if(!isnull(attack_verb_simple))
+	if(attack_verb_simple)
 		return attack_verb_simple
+
 	var/datum/typeinfo/obj/item/typeinfo = typeinfo(src)
 	return typeinfo.attack_verb_simple
 

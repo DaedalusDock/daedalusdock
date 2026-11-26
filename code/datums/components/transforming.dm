@@ -69,10 +69,10 @@
 
 	if(attack_verb_continuous_on)
 		src.attack_verb_continuous_on = attack_verb_continuous_on
-		attack_verb_continuous_off = item_parent.attack_verb_continuous
+		attack_verb_continuous_off = item_parent.get_attack_verb_continuous()
 	if(attack_verb_simple_on)
 		src.attack_verb_simple_on = attack_verb_simple_on
-		attack_verb_simple_off = item_parent.attack_verb_simple
+		attack_verb_simple_off = item_parent.get_attack_verb_simple()
 
 	if(start_transformed)
 		toggle_active(parent)
@@ -174,9 +174,9 @@
 		source.throw_speed = throw_speed_on
 
 	if(LAZYLEN(attack_verb_continuous_on))
-		source.attack_verb_continuous = attack_verb_continuous_on
+		UNLINT(source.attack_verb_continuous) = attack_verb_continuous_on
 	if(LAZYLEN(attack_verb_simple_on))
-		source.attack_verb_simple = attack_verb_simple_on
+		UNLINT(source.attack_verb_simple) = attack_verb_simple_on
 
 	source.hitsound = hitsound_on
 	source.wielded_hitsound = hitsound_on
@@ -201,9 +201,9 @@
 		source.throw_speed = initial(source.throw_speed)
 
 	if(LAZYLEN(attack_verb_continuous_on))
-		source.attack_verb_continuous = attack_verb_continuous_off
+		UNLINT(source.attack_verb_continuous) = attack_verb_continuous_off
 	if(LAZYLEN(attack_verb_simple_off))
-		source.attack_verb_simple = attack_verb_simple_off
+		UNLINT(source.attack_verb_simple) = attack_verb_simple_off
 
 	source.hitsound = initial(source.hitsound)
 	source.wielded_hitsound = initial(source.wielded_hitsound)

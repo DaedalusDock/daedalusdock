@@ -14,7 +14,8 @@
 /obj/item/organ/wings/can_draw_on_bodypart(mob/living/carbon/human/human)
 	if(!(human.obscured_slots & HIDEJUMPSUIT))
 		return TRUE
-	if(human.wear_suit.species_exception && is_type_in_list(src, human.wear_suit.species_exception))
+	var/list/species_exception = human.wear_suit.get_species_exception()
+	if(species_exception && is_type_in_list(src, species_exception))
 		return TRUE
 	return FALSE
 
@@ -75,7 +76,7 @@
 	if(human.stat || human.body_position == LYING_DOWN)
 		return FALSE
 	//Jumpsuits have tail holes, so it makes sense they have wing holes too
-	if(human.wear_suit && ((human.wear_suit.flags_inv & HIDEJUMPSUIT) && (!human.wear_suit.species_exception || !is_type_in_list(src, human.wear_suit.species_exception))))
+	if(human.wear_suit && ((human.wear_suit.flags_inv & HIDEJUMPSUIT) && (!human.wear_suit.get_species_exception() || !is_type_in_list(src, human.wear_suit.get_species_exception()))))
 		to_chat(human, span_warning("Your suit blocks your wings from extending!"))
 		return FALSE
 	var/turf/location = get_turf(human)

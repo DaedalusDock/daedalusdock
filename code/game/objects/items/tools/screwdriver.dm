@@ -1,6 +1,8 @@
 TYPEINFO_DEF(/obj/item/screwdriver)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=75)
+	attack_verb_continuous = list("stabs")
+	attack_verb_simple = list("stab")
 
 /obj/item/screwdriver
 	name = "screwdriver"
@@ -24,8 +26,6 @@ TYPEINFO_DEF(/obj/item/screwdriver)
 	stamina_critical_chance = 30
 
 
-	attack_verb_continuous = list("stabs")
-	attack_verb_simple = list("stab")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	usesound = list('sound/items/screwdriver.ogg', 'sound/items/screwdriver2.ogg')
 	tool_behaviour = TOOL_SCREWDRIVER
@@ -85,6 +85,8 @@ TYPEINFO_DEF(/obj/item/screwdriver/abductor)
 
 TYPEINFO_DEF(/obj/item/screwdriver/power)
 	default_materials = list(/datum/material/iron=3500, /datum/material/silver=1500, /datum/material/titanium=2500)
+	attack_verb_continuous = list("drills", "screws", "jabs", "whacks")
+	attack_verb_simple = list("drill", "screw", "jab", "whack")
 
 /obj/item/screwdriver/power
 	name = "hand drill"
@@ -100,8 +102,6 @@ TYPEINFO_DEF(/obj/item/screwdriver/power)
 	throwforce = 8
 	throw_speed = 1.5
 	throw_range = 3//it's heavier than a screw driver/wrench, so it does more damage, but can't be thrown as far
-	attack_verb_continuous = list("drills", "screws", "jabs", "whacks")
-	attack_verb_simple = list("drill", "screw", "jab", "whack")
 	hitsound = 'sound/items/drill_hit.ogg'
 	usesound = 'sound/items/drill_use.ogg'
 	toolspeed = 0.7

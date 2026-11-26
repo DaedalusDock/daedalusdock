@@ -48,6 +48,10 @@ Striking a noncultist, however, will tear their flesh."}
 		return ..(do_message = FALSE)
 	return ..()
 
+TYPEINFO_DEF(/obj/item/melee/cultblade)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "rends")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
+
 /obj/item/melee/cultblade
 	name = "eldritch longsword"
 	desc = "A sword humming with unholy energy. It glows with a dim red light."
@@ -70,8 +74,6 @@ Striking a noncultist, however, will tear their flesh."}
 	block_effect =/obj/effect/temp_visual/cult/sparks
 
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "rends")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "rend")
 
 /obj/item/melee/cultblade/Initialize(mapload)
 	. = ..()
@@ -121,6 +123,10 @@ Striking a noncultist, however, will tear their flesh."}
 	if(!IS_CULTIST(user))
 		to_chat(user, span_cultlarge("\"I wouldn't advise that.\""))
 
+TYPEINFO_DEF(/obj/item/cult_bastard)
+	attack_verb_continuous = list("cleaves", "slashes", "tears", "lacerates", "hacks", "rips", "dices", "carves")
+	attack_verb_simple = list("cleave", "slash", "tear", "lacerate", "hack", "rip", "dice", "carve")
+
 /obj/item/cult_bastard
 	name = "bloody bastard sword"
 	desc = "An enormous sword used by Nar'Sien cultists to rapidly harvest the souls of non-believers."
@@ -135,8 +141,6 @@ Striking a noncultist, however, will tear their flesh."}
 	light_system = OVERLAY_LIGHT
 	light_outer_range = 4
 	light_color = COLOR_RED
-	attack_verb_continuous = list("cleaves", "slashes", "tears", "lacerates", "hacks", "rips", "dices", "carves")
-	attack_verb_simple = list("cleave", "slash", "tear", "lacerate", "hack", "rip", "dice", "carve")
 	icon = 'icons/obj/cult/items_and_weapons.dmi'
 	icon_state = "cultbastard"
 	inhand_icon_state = "cultbastard"
@@ -729,6 +733,10 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)
 
 	return ITEM_INTERACT_SUCCESS
 
+TYPEINFO_DEF(/obj/item/melee/cultblade/halberd)
+	attack_verb_continuous = list("attacks", "slices", "shreds", "sunders", "lacerates", "cleaves")
+	attack_verb_simple = list("attack", "slice", "shred", "sunder", "lacerate", "cleave")
+
 /obj/item/melee/cultblade/halberd
 	name = "bloody halberd"
 	desc = "A halberd with a volatile axehead made from crystallized blood. It seems linked to its creator. And, admittedly, more of a poleaxe than a halberd."
@@ -746,8 +754,6 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)
 	block_chance = 30
 
 	slot_flags = null
-	attack_verb_continuous = list("attacks", "slices", "shreds", "sunders", "lacerates", "cleaves")
-	attack_verb_simple = list("attack", "slice", "shred", "sunder", "lacerate", "cleave")
 	sharpness = SHARP_EDGED
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	var/datum/action/innate/cult/halberd/halberd_act
@@ -1043,6 +1049,10 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)
 	target = new_target
 	INVOKE_ASYNC(src, TYPE_PROC_REF(/atom/movable, orbit), target, 0, FALSE, 0, 0, FALSE, TRUE)
 
+TYPEINFO_DEF(/obj/item/shield/mirror)
+	attack_verb_continuous = list("bumps", "prods")
+	attack_verb_simple = list("bump", "prod")
+
 /obj/item/shield/mirror
 	name = "mirror shield"
 	desc = "An infamous shield used by Nar'Sien sects to confuse and disorient their enemies. Its edges are weighted for use as a throwing weapon - capable of disabling multiple foes with preternatural accuracy."
@@ -1054,8 +1064,6 @@ TYPEINFO_DEF(/obj/item/clothing/head/hooded/cult_hoodie/berserkerhood)
 	throw_speed = 1
 	throw_range = 4
 	w_class = WEIGHT_CLASS_BULKY
-	attack_verb_continuous = list("bumps", "prods")
-	attack_verb_simple = list("bump", "prod")
 	hitsound = 'sound/weapons/smash.ogg'
 	block_sound = 'sound/weapons/block/parry_metal.ogg'
 	var/illusions = 2

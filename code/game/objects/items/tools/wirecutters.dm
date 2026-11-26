@@ -1,6 +1,8 @@
 TYPEINFO_DEF(/obj/item/wirecutters)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=80)
+	attack_verb_continuous = list("pinches", "nips")
+	attack_verb_simple = list("pinch", "nip")
 
 /obj/item/wirecutters
 	name = "wirecutters"
@@ -24,8 +26,6 @@ TYPEINFO_DEF(/obj/item/wirecutters)
 	stamina_critical_chance = 30
 
 	w_class = WEIGHT_CLASS_SMALL
-	attack_verb_continuous = list("pinches", "nips")
-	attack_verb_simple = list("pinch", "nip")
 	hitsound = 'sound/items/wirecutter.ogg'
 	usesound = 'sound/items/wirecutter.ogg'
 	drop_sound = 'sound/items/handling/wirecutter_drop.ogg'

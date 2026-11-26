@@ -20,6 +20,10 @@
 
 	plant_type = /datum/plant/rainbow_bunch
 
+TYPEINFO_DEF(/obj/item/food/grown/rainbow_flower)
+	attack_verb_continuous = list("pompfs")
+	attack_verb_simple = list("pompf")
+
 /obj/item/food/grown/rainbow_flower
 	plant_datum = /datum/plant/rainbow_bunch
 	name = "rainbow flower"
@@ -31,8 +35,6 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 3
-	attack_verb_continuous = list("pompfs")
-	attack_verb_simple = list("pompf")
 	greyscale_config = /datum/greyscale_config/flower_simple
 	greyscale_config_worn = /datum/greyscale_config/flower_simple_worn
 

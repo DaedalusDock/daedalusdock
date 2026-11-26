@@ -2,6 +2,8 @@
 // CHAINSAW
 TYPEINFO_DEF(/obj/item/chainsaw)
 	default_materials = list(/datum/material/iron=13000)
+	attack_verb_continuous = list("saws", "tears", "lacerates", "cuts", "chops", "dices")
+	attack_verb_simple = list("saw", "tear", "lacerate", "cut", "chop", "dice")
 
 /obj/item/chainsaw
 	name = "chainsaw"
@@ -18,8 +20,6 @@ TYPEINFO_DEF(/obj/item/chainsaw)
 	throw_speed = 1
 	throw_range = 4
 
-	attack_verb_continuous = list("saws", "tears", "lacerates", "cuts", "chops", "dices")
-	attack_verb_simple = list("saw", "tear", "lacerate", "cut", "chop", "dice")
 	hitsound = SFX_SWING_HIT
 	sharpness = SHARP_EDGED
 	actions_types = list(/datum/action/item_action/startchainsaw)

@@ -1,6 +1,8 @@
 /*****************Pickaxes & Drills & Shovels****************/
 TYPEINFO_DEF(/obj/item/pickaxe)
 	default_materials = list(/datum/material/iron=2000)
+	attack_verb_continuous = list("hits", "pierces", "slices", "attacks")
+	attack_verb_simple = list("hit", "pierce", "slice", "attack")
 
 /obj/item/pickaxe
 	name = "pickaxe"
@@ -16,8 +18,6 @@ TYPEINFO_DEF(/obj/item/pickaxe)
 	tool_behaviour = TOOL_MINING
 	toolspeed = 1
 	usesound = list('sound/effects/picaxe1.ogg', 'sound/effects/picaxe2.ogg', 'sound/effects/picaxe3.ogg')
-	attack_verb_continuous = list("hits", "pierces", "slices", "attacks")
-	attack_verb_simple = list("hit", "pierce", "slice", "attack")
 
 	var/mining_damage = 20
 
@@ -28,11 +28,13 @@ TYPEINFO_DEF(/obj/item/pickaxe)
 	user.visible_message(span_suicide("[user] couldn't do it!"))
 	return SHAME
 
+TYPEINFO_DEF(/obj/item/pickaxe/rusted)
+	attack_verb_continuous = list("ineffectively hits")
+	attack_verb_simple = list("ineffectively hit")
+
 /obj/item/pickaxe/rusted
 	name = "rusty pickaxe"
 	desc = "A pickaxe that's been left to rust."
-	attack_verb_continuous = list("ineffectively hits")
-	attack_verb_simple = list("ineffectively hit")
 	force = 1
 	throwforce = 1
 
@@ -129,6 +131,8 @@ TYPEINFO_DEF(/obj/item/pickaxe/improvised)
 
 TYPEINFO_DEF(/obj/item/shovel)
 	default_materials = list(/datum/material/iron=50)
+	attack_verb_continuous = list("bashes", "bludgeons", "thrashes", "whacks")
+	attack_verb_simple = list("bash", "bludgeon", "thrash", "whack")
 
 /obj/item/shovel
 	name = "shovel"
@@ -145,8 +149,6 @@ TYPEINFO_DEF(/obj/item/shovel)
 	toolspeed = 1
 	usesound = 'sound/effects/shovel_dig.ogg'
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("bashes", "bludgeons", "thrashes", "whacks")
-	attack_verb_simple = list("bash", "bludgeon", "thrash", "whack")
 	sharpness = SHARP_EDGED
 
 /obj/item/shovel/Initialize(mapload)

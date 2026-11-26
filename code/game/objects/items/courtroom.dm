@@ -2,6 +2,10 @@
 // Gavel Hammer
 // Gavel Block
 
+TYPEINFO_DEF(/obj/item/gavelhammer)
+	attack_verb_continuous = list("bashes", "batters", "judges", "whacks")
+	attack_verb_simple = list("bash", "batter", "judge", "whack")
+
 /obj/item/gavelhammer
 	name = "gavel hammer"
 	desc = "Order, order! No bombs in my courthouse."
@@ -10,8 +14,6 @@
 	force = 5
 	throwforce = 6
 	w_class = WEIGHT_CLASS_SMALL
-	attack_verb_continuous = list("bashes", "batters", "judges", "whacks")
-	attack_verb_simple = list("bash", "batter", "judge", "whack")
 	resistance_flags = FLAMMABLE
 
 /obj/item/gavelhammer/Initialize(mapload)

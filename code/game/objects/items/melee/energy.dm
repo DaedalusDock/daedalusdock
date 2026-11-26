@@ -1,11 +1,11 @@
 TYPEINFO_DEF(/obj/item/melee/energy)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 30)
+	attack_verb_continuous = list("hits", "taps", "pokes")
+	attack_verb_simple = list("hit", "tap", "poke")
 
 /obj/item/melee/energy
 	icon = 'icons/obj/transforming_energy.dmi'
 	max_integrity = 25
-	attack_verb_continuous = list("hits", "taps", "pokes")
-	attack_verb_simple = list("hit", "tap", "poke")
 	resistance_flags = FIRE_PROOF
 	light_system = OVERLAY_LIGHT
 	light_outer_range = 3
@@ -133,6 +133,10 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 	set_light_on(active)
 	return COMPONENT_NO_DEFAULT_MESSAGE
 
+TYPEINFO_DEF(/obj/item/melee/energy/axe)
+	attack_verb_continuous = list("attacks", "chops", "cleaves", "tears", "lacerates", "cuts")
+	attack_verb_simple = list("attack", "chop", "cleave", "tear", "lacerate", "cut")
+
 /// Energy axe - extremely strong.
 /obj/item/melee/energy/axe
 	name = "energy axe"
@@ -141,8 +145,6 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 	lefthand_file = 'icons/mob/inhands/weapons/axes_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/axes_righthand.dmi'
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("attacks", "chops", "cleaves", "tears", "lacerates", "cuts")
-	attack_verb_simple = list("attack", "chop", "cleave", "tear", "lacerate", "cut")
 	force = 40
 
 	throwforce = 25
@@ -293,6 +295,10 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	light_color = COLOR_RED
 
+TYPEINFO_DEF(/obj/item/melee/energy/blade)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
+
 /// Energy blades, which are effectively perma-extended energy swords
 /obj/item/melee/energy/blade
 	name = "energy blade"
@@ -301,8 +307,6 @@ TYPEINFO_DEF(/obj/item/melee/energy)
 	lefthand_file = 'icons/mob/inhands/weapons/swords_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/swords_righthand.dmi'
 	hitsound = 'sound/weapons/blade1.ogg'
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	force = 30
 	throwforce = 1 // Throwing or dropping the item deletes it.
 	throw_range = 1

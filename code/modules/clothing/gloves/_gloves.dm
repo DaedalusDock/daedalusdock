@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/clothing/gloves)
+	attack_verb_continuous = list("challenges")
+	attack_verb_simple = list("challenge")
+
 /obj/item/clothing/gloves
 	name = "gloves"
 	gender = PLURAL //Carn: for grammarically correct text-parsing
@@ -9,8 +13,6 @@
 	body_parts_covered = HANDS
 	slot_flags = ITEM_SLOT_GLOVES
 	supports_variations_flags = CLOTHING_VOX_VARIATION
-	attack_verb_continuous = list("challenges")
-	attack_verb_simple = list("challenge")
 
 	equip_delay_self = EQUIP_ALLOW_MOVEMENT
 	equip_delay_self = EQUIP_DELAY_GLOVES

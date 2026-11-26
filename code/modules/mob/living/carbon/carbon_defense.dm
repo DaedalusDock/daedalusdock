@@ -81,10 +81,11 @@
 	return ..()
 
 /mob/living/carbon/send_item_attack_message(obj/item/I, mob/living/user, hit_area)
-	if(!I.force && !length(I.attack_verb_simple) && !length(I.attack_verb_continuous))
+	var/list/attack_verb_continuous = I.get_attack_verb_continuous()
+	if(!I.force && !length(I.get_attack_verb_simple()) && !length(attack_verb_continuous))
 		return
 
-	var/message_verb_continuous = length(I.attack_verb_continuous) ? "[pick(I.attack_verb_continuous)]" : "attacks"
+	var/message_verb_continuous = length(attack_verb_continuous) ? "[pick(attack_verb_continuous)]" : "attacks"
 	var/message_hit_area = ""
 
 	if(hit_area)

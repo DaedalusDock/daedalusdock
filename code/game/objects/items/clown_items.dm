@@ -203,6 +203,10 @@
  * Bike Horns
  */
 
+TYPEINFO_DEF(/obj/item/bikehorn)
+	attack_verb_continuous = list("HONKS")
+	attack_verb_simple = list("HONK")
+
 /obj/item/bikehorn
 	name = "bike horn"
 	desc = "A horn off of a bicycle. Rumour has it that they're made from recycled clowns."
@@ -217,8 +221,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	slot_flags = ITEM_SLOT_BACK|ITEM_SLOT_BELT
 	throw_range = 7
-	attack_verb_continuous = list("HONKS")
-	attack_verb_simple = list("HONK")
 	///sound file given to the squeaky component we make in Initialize() so sub-types can specify their own sound
 	var/sound_file = 'sound/items/bikehorn.ogg'
 

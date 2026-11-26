@@ -59,6 +59,10 @@
 	glass_colour_type = /datum/client_colour/glass_colour/green
 	supports_variations_flags = NONE
 
+TYPEINFO_DEF(/obj/item/clothing/glasses/hud/security/sunglasses/gars)
+	attack_verb_continuous = list("slices")
+	attack_verb_simple = list("slice")
+
 /obj/item/clothing/glasses/hud/security/sunglasses/gars
 	name = "\improper HUD gar glasses"
 	desc = "GAR glasses with a HUD."
@@ -68,8 +72,6 @@
 	force = 10
 	throwforce = 10
 	throw_speed = 1.5
-	attack_verb_continuous = list("slices")
-	attack_verb_simple = list("slice")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_EDGED
 

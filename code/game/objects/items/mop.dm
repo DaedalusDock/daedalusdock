@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/mop)
+	attack_verb_continuous = list("mops", "bashes", "bludgeons", "whacks")
+	attack_verb_simple = list("mop", "bash", "bludgeon", "whack")
+
 /obj/item/mop
 	desc = "The world of janitalia wouldn't be complete without a mop."
 	name = "mop"
@@ -10,8 +14,6 @@
 	throw_speed = 1.5
 	throw_range = 7
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("mops", "bashes", "bludgeons", "whacks")
-	attack_verb_simple = list("mop", "bash", "bludgeon", "whack")
 	resistance_flags = FLAMMABLE
 	var/mopcount = 0
 	///Maximum volume of reagents it can hold.

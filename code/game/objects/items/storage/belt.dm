@@ -1,3 +1,7 @@
+TYPEINFO_DEF(/obj/item/storage/belt)
+	attack_verb_continuous = list("whips", "lashes", "disciplines")
+	attack_verb_simple = list("whip", "lash", "discipline")
+
 /obj/item/storage/belt
 	name = "belt"
 	desc = "Can hold various things."
@@ -12,8 +16,6 @@
 	lefthand_file = 'icons/mob/inhands/equipment/belt_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/belt_righthand.dmi'
 	slot_flags = ITEM_SLOT_BELT
-	attack_verb_continuous = list("whips", "lashes", "disciplines")
-	attack_verb_simple = list("whip", "lash", "discipline")
 	max_integrity = 10
 
 	equip_sound = 'sound/items/equip/toolbelt_equip.ogg'

@@ -9,6 +9,10 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	new/datum/stack_recipe("catwalk floor tile", /obj/item/stack/overfloor_catwalk, 1, 4, 20), \
 	))
 
+TYPEINFO_DEF(/obj/item/stack/rods)
+	attack_verb_continuous = list("hits", "bludgeons", "whacks")
+	attack_verb_simple = list("hit", "bludgeon", "whack")
+
 /obj/item/stack/rods
 	name = "iron rods"
 	desc = "Some rods. Can be used for building or something."
@@ -22,8 +26,6 @@ GLOBAL_LIST_INIT(rod_recipes, list ( \
 	throw_range = 7
 	mats_per_unit = list(/datum/material/iron=1000)
 	max_amount = 50
-	attack_verb_continuous = list("hits", "bludgeons", "whacks")
-	attack_verb_simple = list("hit", "bludgeon", "whack")
 	hitsound = 'sound/weapons/gun/general/grenade_launch.ogg'
 	embedding = list(embed_chance = 50)
 	novariants = TRUE

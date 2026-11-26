@@ -29,6 +29,10 @@
 
 	plant_type = /datum/plant/pineapple
 
+TYPEINFO_DEF(/obj/item/food/grown/pineapple)
+	attack_verb_continuous = list("stings", "pines")
+	attack_verb_simple = list("sting", "pine")
+
 /obj/item/food/grown/pineapple
 	plant_datum = /datum/plant/pineapple
 	name = "pineapples"
@@ -38,8 +42,6 @@
 	force = 4
 	throwforce = 8
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("stings", "pines")
-	attack_verb_simple = list("sting", "pine")
 	throw_speed = 1
 	throw_range = 5
 	w_class = WEIGHT_CLASS_NORMAL

@@ -19,11 +19,9 @@
 
 	z_flags = Z_MIMIC_DEFAULTS
 
-/turf/open/floor/glass/setup_broken_states()
-	return list("glass-damaged1", "glass-damaged2", "glass-damaged3")
-
-/turf/open/floor/glass/setup_burnt_states()
-	return list("floorscorched1", "floorscorched2")
+TYPEINFO_DEF(/turf/open/floor/glass)
+	broken_states = list("glass-damaged1", "glass-damaged2", "glass-damaged3")
+	burnt_states = list("floorscorched1", "floorscorched2")
 
 /turf/open/floor/glass/Initialize(mapload)
 	icon_state = "" //Prevent the normal icon from appearing behind the smooth overlays

@@ -1,6 +1,8 @@
 //Misc. items that exist for other crafting recipes. Only add new ones if you can't justify making a crafting step instead.
 TYPEINFO_DEF(/obj/item/wirerod)
 	default_materials = list(/datum/material/iron=1150, /datum/material/glass=75)
+	attack_verb_continuous = list("hits", "bludgeons", "whacks", "bonks")
+	attack_verb_simple = list("hit", "bludgeon", "whack", "bonk")
 
 /obj/item/wirerod
 	name = "wired rod"
@@ -12,11 +14,11 @@ TYPEINFO_DEF(/obj/item/wirerod)
 	force = 9
 	throwforce = 10
 	w_class = WEIGHT_CLASS_BULKY
-	attack_verb_continuous = list("hits", "bludgeons", "whacks", "bonks")
-	attack_verb_simple = list("hit", "bludgeon", "whack", "bonk")
 
 TYPEINFO_DEF(/obj/item/metal_ball)
 	default_materials = list(/datum/material/iron=2000)
+	attack_verb_continuous = list("hits", "thwacks", "bowls")
+	attack_verb_simple = list("hit", "thwack", "bowl")
 
 /obj/item/metal_ball
 	name = "metal ball"
@@ -28,8 +30,6 @@ TYPEINFO_DEF(/obj/item/metal_ball)
 	force = 6
 	throwforce = 10 //time to go bowling!
 	w_class = WEIGHT_CLASS_BULKY
-	attack_verb_continuous = list("hits", "thwacks", "bowls")
-	attack_verb_simple = list("hit", "thwack", "bowl")
 
 /obj/item/rope
 	name = "strand of rope"

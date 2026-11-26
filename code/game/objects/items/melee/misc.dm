@@ -4,6 +4,8 @@
 
 TYPEINFO_DEF(/obj/item/melee/chainofcommand)
 	default_materials = list(/datum/material/iron = 1000)
+	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
+	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 
 /obj/item/melee/chainofcommand
 	name = "chain of command"
@@ -18,13 +20,15 @@ TYPEINFO_DEF(/obj/item/melee/chainofcommand)
 	force = 10
 	throwforce = 7
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
-	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 	hitsound = 'sound/weapons/chainhit.ogg'
 
 /obj/item/melee/chainofcommand/suicide_act(mob/user)
 	user.visible_message(span_suicide("[user] is strangling [user.p_them()]self with [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
 	return (OXYLOSS)
+
+TYPEINFO_DEF(/obj/item/melee/synthetic_arm_blade)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 /obj/item/melee/synthetic_arm_blade
 	name = "synthetic arm blade"
@@ -38,8 +42,6 @@ TYPEINFO_DEF(/obj/item/melee/chainofcommand)
 	force = 20
 	throwforce = 10
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	sharpness = SHARP_EDGED
 
 /obj/item/melee/synthetic_arm_blade/Initialize(mapload)
@@ -48,6 +50,8 @@ TYPEINFO_DEF(/obj/item/melee/chainofcommand)
 
 TYPEINFO_DEF(/obj/item/melee/sabre)
 	default_materials = list(/datum/material/iron = 1000)
+	attack_verb_continuous = list("slashes", "cuts")
+	attack_verb_simple = list("slash", "cut")
 
 /obj/item/melee/sabre
 	name = "officer's sabre"
@@ -65,8 +69,6 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 	block_sound = 'sound/weapons/block/parry_metal.ogg'
 	armor_penetration = 75
 	sharpness = SHARP_EDGED
-	attack_verb_continuous = list("slashes", "cuts")
-	attack_verb_simple = list("slash", "cut")
 	hitsound = 'sound/weapons/rapierhit.ogg'
 
 /obj/item/melee/sabre/Initialize(mapload)
@@ -133,6 +135,10 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 		user.death(FALSE)
 	REMOVE_TRAIT(src, TRAIT_NODROP, SABRE_SUICIDE_TRAIT)
 
+TYPEINFO_DEF(/obj/item/melee/beesword)
+	attack_verb_continuous = list("slashes", "stings", "prickles", "pokes")
+	attack_verb_simple = list("slash", "sting", "prickle", "poke")
+
 /obj/item/melee/beesword
 	name = "The Stinger"
 	desc = "Taken from a giant bee and folded over one thousand times in pure honey. Can sting through anything."
@@ -149,8 +155,6 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 	throwforce = 10
 	block_chance = 20
 	armor_penetration = 65
-	attack_verb_continuous = list("slashes", "stings", "prickles", "pokes")
-	attack_verb_simple = list("slash", "sting", "prickle", "poke")
 	hitsound = 'sound/weapons/rapierhit.ogg'
 
 /obj/item/melee/beesword/afterattack(atom/target, mob/user, list/modifiers)
@@ -269,6 +273,10 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 /obj/item/melee/supermatter_sword/add_blood_DNA(list/blood_dna)
 	return FALSE
 
+TYPEINFO_DEF(/obj/item/melee/curator_whip)
+	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
+	attack_verb_simple = list("flog", "whip", "lash", "discipline")
+
 /obj/item/melee/curator_whip
 	name = "curator's whip"
 	desc = "Somewhat eccentric and outdated, it still stings like hell to be hit by."
@@ -280,8 +288,6 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 	slot_flags = ITEM_SLOT_BELT
 	force = 15
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
-	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 	hitsound = 'sound/weapons/whip.ogg'
 
 /obj/item/melee/curator_whip/afterattack(atom/target, mob/user, list/modifiers)
@@ -289,6 +295,10 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 		var/mob/living/carbon/human/human_target = target
 		human_target.drop_all_held_items()
 		human_target.visible_message(span_danger("[user] disarms [human_target]!"), span_userdanger("[user] disarmed you!"))
+
+TYPEINFO_DEF(/obj/item/melee/roastingstick)
+	attack_verb_continuous = list("hits", "pokes")
+	attack_verb_simple = list("hit", "poke")
 
 /obj/item/melee/roastingstick
 	name = "advanced roasting stick"
@@ -300,8 +310,6 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 	w_class = WEIGHT_CLASS_SMALL
 	item_flags = NONE
 	force = 0
-	attack_verb_continuous = list("hits", "pokes")
-	attack_verb_simple = list("hit", "poke")
 	/// The sausage attatched to our stick.
 	var/obj/item/food/sausage/held_sausage
 	/// Static list of things our roasting stick can interact with.
@@ -417,6 +425,8 @@ TYPEINFO_DEF(/obj/item/melee/sabre)
 
 TYPEINFO_DEF(/obj/item/melee/cleric_mace)
 	default_materials = list(/datum/material/iron = 12000)
+	attack_verb_continuous = list("smacks", "strikes", "cracks", "beats")
+	attack_verb_simple = list("smack", "strike", "crack", "beat")
 
 /obj/item/melee/cleric_mace
 	name = "cleric mace"
@@ -439,5 +449,3 @@ TYPEINFO_DEF(/obj/item/melee/cleric_mace)
 	throwforce = 8
 	block_chance = 10
 	armor_penetration = 50
-	attack_verb_continuous = list("smacks", "strikes", "cracks", "beats")
-	attack_verb_simple = list("smack", "strike", "crack", "beat")

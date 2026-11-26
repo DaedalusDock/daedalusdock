@@ -59,6 +59,10 @@
 	grind_results = list()
 	merge_type = /obj/item/stack/ore/bluespace_crystal/artificial
 
+TYPEINFO_DEF(/obj/item/stack/sheet/bluespace_crystal)
+	attack_verb_continuous = list("bluespace polybashes", "bluespace polybatters", "bluespace polybludgeons", "bluespace polythrashes", "bluespace polysmashes")
+	attack_verb_simple = list("bluespace polybash", "bluespace polybatter", "bluespace polybludgeon", "bluespace polythrash", "bluespace polysmash")
+
 //Polycrystals, aka stacks
 /obj/item/stack/sheet/bluespace_crystal
 	name = "bluespace polycrystal"
@@ -68,8 +72,6 @@
 	singular_name = "bluespace polycrystal"
 	desc = "A stable polycrystal, made of fused-together bluespace crystals. You could probably break one off."
 	mats_per_unit = list(/datum/material/bluespace=MINERAL_MATERIAL_AMOUNT)
-	attack_verb_continuous = list("bluespace polybashes", "bluespace polybatters", "bluespace polybludgeons", "bluespace polythrashes", "bluespace polysmashes")
-	attack_verb_simple = list("bluespace polybash", "bluespace polybatter", "bluespace polybludgeon", "bluespace polythrash", "bluespace polysmash")
 	novariants = TRUE
 	point_value = 30
 	merge_type = /obj/item/stack/sheet/bluespace_crystal

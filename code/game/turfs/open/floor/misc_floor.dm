@@ -152,11 +152,9 @@
 	burned_blend = BLEND_DEFAULT
 	slowdown = -0.3
 
-/turf/open/floor/noslip/setup_broken_states()
-	return list("noslip-damaged1","noslip-damaged2","noslip-damaged3")
-
-/turf/open/floor/noslip/setup_burnt_states()
-	return list("noslip-scorched1","noslip-scorched2")
+TYPEINFO_DEF(/turf/open/floor/noslip)
+	broken_states = list("noslip-damaged1","noslip-damaged2","noslip-damaged3")
+	burnt_states = list("noslip-scorched1","noslip-scorched2")
 
 /turf/open/floor/noslip/MakeSlippery(wet_setting, min_wet_time, wet_time_to_add, max_wet_time, permanent)
 	return
@@ -218,8 +216,8 @@ TYPEINFO_DEF(/turf/open/floor/plastic)
 	icon_state = "eighties"
 	floor_tile = /obj/item/stack/tile/eighties
 
-/turf/open/floor/eighties/setup_broken_states()
-	return list("eighties_damaged")
+TYPEINFO_DEF(/turf/open/floor/eighties)
+	broken_states = list("eighties_damaged")
 
 /turf/open/floor/eighties/red
 	name = "red retro floor"
@@ -227,8 +225,8 @@ TYPEINFO_DEF(/turf/open/floor/plastic)
 	icon_state = "eightiesred"
 	floor_tile = /obj/item/stack/tile/eighties/red
 
-/turf/open/floor/eighties/red/setup_broken_states()
-	return list("eightiesred_damaged")
+TYPEINFO_DEF(/turf/open/floor/eighties/red)
+	broken_states = list("eightiesred_damaged")
 
 /turf/open/floor/plating/rust
 	//SDMM supports colors, this is simply for easier mapping
@@ -284,8 +282,8 @@ TYPEINFO_DEF(/turf/open/floor/plastic)
 	base_icon_state = "cult"
 	floor_tile = /obj/item/stack/tile/cult
 
-/turf/open/floor/cult/setup_broken_states()
-	return list("cultdamage","cultdamage2","cultdamage3","cultdamage4","cultdamage5","cultdamage6","cultdamage7")
+TYPEINFO_DEF(/turf/open/floor/cult)
+	broken_states = list("cultdamage","cultdamage2","cultdamage3","cultdamage4","cultdamage5","cultdamage6","cultdamage7")
 
 /turf/open/floor/cult/narsie_act()
 	return

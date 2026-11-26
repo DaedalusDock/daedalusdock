@@ -286,6 +286,10 @@
 	icon_state = "uk"
 	custom_price = PAYCHECK_ASSISTANT * 7
 
+TYPEINFO_DEF(/obj/item/melee/baton/telescopic)
+	attack_verb_continuous = list("hits", "pokes")
+	attack_verb_simple = list("hit", "poke")
+
 /obj/item/melee/baton/telescopic
 	name = "telescopic baton"
 	desc = "A compact yet robust personal defense weapon. Can be concealed when folded."
@@ -293,8 +297,6 @@
 	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
 	inhand_icon_state = null
-	attack_verb_continuous = list("hits", "pokes")
-	attack_verb_simple = list("hit", "poke")
 	worn_icon_state = "tele_baton"
 	slot_flags = ITEM_SLOT_BELT
 	w_class = WEIGHT_CLASS_SMALL
@@ -376,6 +378,8 @@
 
 TYPEINFO_DEF(/obj/item/melee/baton/security)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 50, BIO = 0, FIRE = 80, ACID = 80)
+	attack_verb_continuous = list("beats")
+	attack_verb_simple = list("beat")
 
 /obj/item/melee/baton/security
 	name = "stun baton"
@@ -388,8 +392,6 @@ TYPEINFO_DEF(/obj/item/melee/baton/security)
 	righthand_file = 'goon/icons/mob/inhands/baton_right.dmi'
 
 	force = 10
-	attack_verb_continuous = list("beats")
-	attack_verb_simple = list("beat")
 
 
 	throwforce = 7

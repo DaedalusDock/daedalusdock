@@ -283,6 +283,8 @@ TYPEINFO_DEF(/obj/item/stack/sheet/plastitaniumglass)
 TYPEINFO_DEF(/obj/item/shard)
 	default_armor = list(BLUNT = 100, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 100, BOMB = 0, BIO = 0, FIRE = 50, ACID = 100)
 	default_materials = list(/datum/material/glass=MINERAL_MATERIAL_AMOUNT)
+	attack_verb_continuous = list("stabs", "slashes", "slices", "cuts")
+	attack_verb_simple = list("stab", "slash", "slice", "cut")
 
 /obj/item/shard
 	name = "shard"
@@ -295,8 +297,6 @@ TYPEINFO_DEF(/obj/item/shard)
 	inhand_icon_state = "shard-glass"
 	lefthand_file = 'icons/mob/inhands/weapons/melee_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/melee_righthand.dmi'
-	attack_verb_continuous = list("stabs", "slashes", "slices", "cuts")
-	attack_verb_simple = list("stab", "slash", "slice", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	resistance_flags = ACID_PROOF
 	max_integrity = 3

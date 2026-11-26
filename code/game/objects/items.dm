@@ -1,6 +1,14 @@
 GLOBAL_DATUM_INIT(fire_overlay, /mutable_appearance, mutable_appearance('icons/effects/fire.dmi', "fire"))
 GLOBAL_DATUM_INIT(welding_sparks, /mutable_appearance, mutable_appearance('icons/effects/welding_effect.dmi', "welding_sparks", GASFIRE_LAYER, ABOVE_LIGHTING_PLANE))
 
+TYPEINFO_DEF(/obj/item)
+	/// Default verbs used in attack messages, e.g. "slashes". Instances can override this with the attack_verb_continuous var. Shared, do not mutate.
+	var/list/attack_verb_continuous
+	/// Default verbs used in attack messages, e.g. "slash". Instances can override this with the attack_verb_simple var. Shared, do not mutate.
+	var/list/attack_verb_simple
+	/// list() of species types, if a species cannot put items in a certain slot, but species type is in list, it will be able to wear that item. Shared, do not mutate.
+	var/list/species_exception
+
 DEFINE_INTERACTABLE(/obj/item)
 /// Anything you can pick up and hold.
 /obj/item
@@ -188,11 +196,13 @@ DEFINE_INTERACTABLE(/obj/item)
 	///How long it takes to resist out of the item (cuffs and such)
 	var/breakouttime = 0
 
-	///Used in [atom/proc/attackby] to say how something was attacked `"[x] has been [z.attack_verb] by [y] with [z]"`
-	var/list/attack_verb_continuous
-	var/list/attack_verb_simple
-	///list() of species types, if a species cannot put items in a certain slot, but species type is in list, it will be able to wear that item
-	var/list/species_exception = null
+	/**
+	 * Per-instance override of the typeinfo attack verbs, used in attack messages.
+	 * Null means use the typeinfo default. Do not define these at the type level, use TYPEINFO_DEF instead.
+	 * Read through [/obj/item/proc/get_attack_verb_continuous] and [/obj/item/proc/get_attack_verb_simple].
+	 */
+	VAR_PROTECTED/list/attack_verb_continuous
+	VAR_PROTECTED/list/attack_verb_simple
 	///This is a bitfield that defines what variations exist for bodyparts like Digi legs. See: code\_DEFINES\inventory.dm
 	var/supports_variations_flags = NONE
 	///A blacklist of bodytypes that aren't allowed to equip this item
@@ -282,13 +292,11 @@ DEFINE_INTERACTABLE(/obj/item)
 	var/unwield_sound = null
 
 /obj/item/Initialize(mapload)
-
+	// Only set when overridden (var edits, or set before parent call), typeinfo holds the defaults.
 	if(attack_verb_continuous)
 		attack_verb_continuous = string_list(attack_verb_continuous)
 	if(attack_verb_simple)
 		attack_verb_simple = string_list(attack_verb_simple)
-	if(species_exception)
-		species_exception = string_list(species_exception)
 
 	. = ..()
 
@@ -491,6 +499,30 @@ DEFINE_INTERACTABLE(/obj/item)
 /// Called if this item is supposed to be a steal objective item objective. Only done at mapload
 /obj/item/proc/add_stealing_item_objective()
 	return
+
+/// Returns this item's third person attack verbs ("slashes"): the instance override if set, otherwise the typeinfo default.
+/obj/item/proc/get_attack_verb_continuous()
+	RETURN_TYPE(/list)
+	if(attack_verb_continuous)
+		return attack_verb_continuous
+
+	var/datum/typeinfo/obj/item/typeinfo = typeinfo(src)
+	return typeinfo.attack_verb_continuous
+
+/// Returns this item's second person attack verbs ("slash"): the instance override if set, otherwise the typeinfo default.
+/obj/item/proc/get_attack_verb_simple()
+	RETURN_TYPE(/list)
+	if(attack_verb_simple)
+		return attack_verb_simple
+
+	var/datum/typeinfo/obj/item/typeinfo = typeinfo(src)
+	return typeinfo.attack_verb_simple
+
+/// Returns the list of species types that may wear this item in slots they normally can't, or null.
+/obj/item/proc/get_species_exception()
+	RETURN_TYPE(/list)
+	var/datum/typeinfo/obj/item/typeinfo = typeinfo(src)
+	return typeinfo.species_exception
 
 /obj/item/proc/check_allowed_items(atom/target, not_inside, target_self)
 	if(((src in target) && !target_self) || (!isturf(target.loc) && !isturf(target) && not_inside))

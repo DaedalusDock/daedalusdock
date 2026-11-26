@@ -266,6 +266,10 @@
 	sawn_desc = "A sawn-off hunting shotgun. In its new state, it's remarkably less effective at hunting... anything."
 	mag_type = /obj/item/ammo_box/magazine/internal/shot/dual/slugs
 
+TYPEINFO_DEF(/obj/item/gun/ballistic/shotgun/hook)
+	attack_verb_continuous = list("slashes", "hooks", "stabs")
+	attack_verb_simple = list("slash", "hook", "stab")
+
 /obj/item/gun/ballistic/shotgun/hook
 	name = "hook modified sawn-off shotgun"
 	desc = "Range isn't an issue when you can bring your victim to you."
@@ -281,8 +285,6 @@
 	flags_1 = CONDUCT_1
 	force = 18 //it has a hook on it
 	sharpness = SHARP_POINTY //it does in fact, have a hook on it
-	attack_verb_continuous = list("slashes", "hooks", "stabs")
-	attack_verb_simple = list("slash", "hook", "stab")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	//our hook gun!
 	var/obj/item/gun/magic/hook/bounty/hook

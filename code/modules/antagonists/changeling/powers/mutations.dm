@@ -142,6 +142,10 @@
 	weapon_type = /obj/item/melee/arm_blade
 	weapon_name_simple = "blade"
 
+TYPEINFO_DEF(/obj/item/melee/arm_blade)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
+
 /obj/item/melee/arm_blade
 	name = "arm blade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter."
@@ -157,8 +161,6 @@
 	throw_range = 0
 	throw_speed = 0
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	sharpness = SHARP_EDGED
 	var/can_drop = FALSE
 	var/fake = FALSE

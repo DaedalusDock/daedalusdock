@@ -1,6 +1,10 @@
 //The contant in the rate of reagent transfer on life ticks
 #define STOMACH_METABOLISM_CONSTANT 0.25
 
+TYPEINFO_DEF(/obj/item/organ/stomach)
+	attack_verb_continuous = list("gores", "squishes", "slaps", "digests")
+	attack_verb_simple = list("gore", "squish", "slap", "digest")
+
 /obj/item/organ/stomach
 	name = "stomach"
 	icon_state = "stomach"
@@ -8,8 +12,6 @@
 	w_class = WEIGHT_CLASS_SMALL
 	zone = BODY_ZONE_CHEST
 	slot = ORGAN_SLOT_STOMACH
-	attack_verb_continuous = list("gores", "squishes", "slaps", "digests")
-	attack_verb_simple = list("gore", "squish", "slap", "digest")
 	desc = "Onaka ga suite imasu."
 
 	decay_factor = STANDARD_ORGAN_DECAY * 1.15 // ~13 minutes, the stomach is one of the first organs to die

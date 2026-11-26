@@ -21,6 +21,10 @@
 
 	plant_type = /datum/plant/towercap
 
+TYPEINFO_DEF(/obj/item/grown/log)
+	attack_verb_continuous = list("bashes", "batters", "bludgeons", "whacks")
+	attack_verb_simple = list("bash", "batter", "bludgeon", "whack")
+
 /obj/item/grown/log
 	plant_datum = /datum/plant/towercap
 	name = "tower-cap log"
@@ -30,8 +34,6 @@
 	throwforce = 5
 	w_class = WEIGHT_CLASS_NORMAL
 	throw_range = 3
-	attack_verb_continuous = list("bashes", "batters", "bludgeons", "whacks")
-	attack_verb_simple = list("bash", "batter", "bludgeon", "whack")
 	var/plank_type = /obj/item/stack/sheet/mineral/wood
 	var/plank_name = "wooden planks"
 	var/static/list/accepted = typecacheof(list(

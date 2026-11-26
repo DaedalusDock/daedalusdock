@@ -703,7 +703,8 @@ GLOBAL_LIST_EMPTY(features_by_species)
 
 /datum/species/proc/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE, ignore_equipped = FALSE)
 	if(slot & no_equip_flags)
-		if(!I.species_exception || !is_type_in_list(src, I.species_exception))
+		var/list/species_exception = I.get_species_exception()
+		if(!species_exception || !is_type_in_list(src, species_exception))
 			return FALSE
 
 	// if there's an item in the slot we want, fail

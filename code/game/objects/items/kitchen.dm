@@ -20,6 +20,8 @@
 TYPEINFO_DEF(/obj/item/kitchen/fork)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=80)
+	attack_verb_continuous = list("attacks", "stabs", "pokes")
+	attack_verb_simple = list("attack", "stab", "poke")
 
 /obj/item/kitchen/fork
 	name = "fork"
@@ -31,8 +33,6 @@ TYPEINFO_DEF(/obj/item/kitchen/fork)
 	throw_speed = 1.5
 	throw_range = 5
 	flags_1 = CONDUCT_1
-	attack_verb_continuous = list("attacks", "stabs", "pokes")
-	attack_verb_simple = list("attack", "stab", "poke")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharpness = SHARP_POINTY
 	var/datum/reagent/forkload //used to eat omelette
@@ -87,6 +87,8 @@ TYPEINFO_DEF(/obj/item/kitchen/fork/plastic)
 
 TYPEINFO_DEF(/obj/item/knife/plastic)
 	default_materials = list(/datum/material/plastic = 100)
+	attack_verb_continuous = list("prods", "whiffs", "scratches", "pokes")
+	attack_verb_simple = list("prod", "whiff", "scratch", "poke")
 
 /obj/item/knife/plastic
 	name = "plastic knife"
@@ -97,8 +99,6 @@ TYPEINFO_DEF(/obj/item/knife/plastic)
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	throw_range = 5
-	attack_verb_continuous = list("prods", "whiffs", "scratches", "pokes")
-	attack_verb_simple = list("prod", "whiff", "scratch", "poke")
 	sharpness = SHARP_EDGED
 	custom_price = PAYCHECK_ASSISTANT * 0.2
 
@@ -108,6 +108,8 @@ TYPEINFO_DEF(/obj/item/knife/plastic)
 
 TYPEINFO_DEF(/obj/item/kitchen/rollingpin)
 	default_materials = list(/datum/material/wood = MINERAL_MATERIAL_AMOUNT * 1.5)
+	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
+	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 
 /obj/item/kitchen/rollingpin
 	name = "rolling pin"
@@ -124,8 +126,6 @@ TYPEINFO_DEF(/obj/item/kitchen/rollingpin)
 	stamina_critical_chance = 2
 
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
-	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	custom_price = PAYCHECK_ASSISTANT * 1.5
 	tool_behaviour = TOOL_ROLLINGPIN
 
@@ -137,6 +137,8 @@ TYPEINFO_DEF(/obj/item/kitchen/rollingpin)
 TYPEINFO_DEF(/obj/item/kitchen/spoon)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 50, ACID = 30)
 	default_materials = list(/datum/material/iron=120)
+	attack_verb_simple = list("whack", "spoon", "tap")
+	attack_verb_continuous = list("whacks", "spoons", "taps")
 
 /obj/item/kitchen/spoon
 	name = "spoon"
@@ -147,8 +149,6 @@ TYPEINFO_DEF(/obj/item/kitchen/spoon)
 	force = 2
 	throw_speed = 1.5
 	throw_range = 5
-	attack_verb_simple = list("whack", "spoon", "tap")
-	attack_verb_continuous = list("whacks", "spoons", "taps")
 	custom_price = PAYCHECK_ASSISTANT * 0.7
 	tool_behaviour = TOOL_MINING
 	toolspeed = 25 // Literally 25 times worse than the base pickaxe
@@ -169,6 +169,8 @@ TYPEINFO_DEF(/obj/item/kitchen/spoon/plastic)
 
 TYPEINFO_DEF(/obj/item/kitchen/spatula)
 	default_materials = list(/datum/material/iron = 80, /datum/material/plastic = 40)
+	attack_verb_simple = list("smack", "thwack", "slap")
+	attack_verb_continuous = list("smacks", "thwacks", "slaps")
 
 /obj/item/kitchen/spatula
 	name = "spatula"
@@ -178,7 +180,5 @@ TYPEINFO_DEF(/obj/item/kitchen/spatula)
 	force = 2
 	throw_speed = 1.5
 	throw_range = 5
-	attack_verb_simple = list("smack", "thwack", "slap")
-	attack_verb_continuous = list("smacks", "thwacks", "slaps")
 
 #undef PLASTIC_BREAK_PROBABILITY

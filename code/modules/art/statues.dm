@@ -271,6 +271,8 @@ TYPEINFO_DEF(/obj/structure/statue/elder_atmosian)
 
 TYPEINFO_DEF(/obj/item/chisel)
 	default_materials = list(/datum/material/iron=75)
+	attack_verb_continuous = list("stabs")
+	attack_verb_simple = list("stab")
 
 /obj/item/chisel
 	name = "chisel"
@@ -286,8 +288,6 @@ TYPEINFO_DEF(/obj/item/chisel)
 	w_class = WEIGHT_CLASS_TINY
 	throwforce = 5
 	throw_range = 5
-	attack_verb_continuous = list("stabs")
-	attack_verb_simple = list("stab")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	usesound = list('sound/items/screwdriver.ogg', 'sound/items/screwdriver2.ogg')
 	drop_sound = 'sound/items/handling/screwdriver_drop.ogg'

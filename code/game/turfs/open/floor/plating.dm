@@ -29,11 +29,9 @@
 	/// See [/obj/item/stack/tile/proc/place_tile].
 	var/allow_replacement = TRUE
 
-/turf/open/floor/plating/setup_broken_states()
-	return list("damaged1", "damaged2", "damaged4")
-
-/turf/open/floor/plating/setup_burnt_states()
-	return list("burned0", "burned1")
+TYPEINFO_DEF(/turf/open/floor/plating)
+	broken_states = list("damaged1", "damaged2", "damaged4")
+	burnt_states = list("burned0", "burned1")
 
 /turf/open/floor/plating/examine(mob/user)
 	. = ..()

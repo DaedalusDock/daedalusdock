@@ -1,6 +1,8 @@
 TYPEINFO_DEF(/obj/item/ceremonial_blade)
 	default_armor = list(BLUNT = 0, PUNCTURE = 0, SLASH = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, FIRE = 100, ACID = 50)
 	default_materials = list(/datum/material/iron = 12000)
+	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
+	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 
 ///ritual weapons. they're really bad, but they become normal weapons when sparring.
 /obj/item/ceremonial_blade
@@ -20,8 +22,6 @@ TYPEINFO_DEF(/obj/item/ceremonial_blade)
 	force = 2 //20
 	throwforce = 1 //10
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("attacks", "slashes", "stabs", "slices", "tears", "lacerates", "rips", "dices", "cuts")
-	attack_verb_simple = list("attack", "slash", "stab", "slice", "tear", "lacerate", "rip", "dice", "cut")
 	block_chance = 3 //30
 	sharpness = SHARP_EDGED
 	max_integrity = 200

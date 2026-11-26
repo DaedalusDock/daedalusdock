@@ -65,12 +65,14 @@
 	bodytype = BODYTYPE_LARVA_PLACEHOLDER | BODYTYPE_ORGANIC
 	acceptable_bodytype = BODYTYPE_LARVA_PLACEHOLDER
 
+TYPEINFO_DEF(/obj/item/bodypart/arm)
+	attack_verb_continuous = list("slaps", "punches")
+	attack_verb_simple = list("slap", "punch")
+
 /// Parent Type for arms, should not appear in game.
 /obj/item/bodypart/arm
 	name = "arm"
 	desc = "Hey buddy give me a HAND and report this to the github because you shouldn't be seeing this."
-	attack_verb_continuous = list("slaps", "punches")
-	attack_verb_simple = list("slap", "punch")
 	max_damage = 80
 	aux_layer = BODYPARTS_HIGH_LAYER
 	can_be_disabled = TRUE
@@ -137,6 +139,10 @@
 	if(owner.has_dna())
 		fingerprints = md5(owner.dna.unique_identity)
 
+TYPEINFO_DEF(/obj/item/bodypart/arm/left)
+	attack_verb_continuous = list("slaps", "punches")
+	attack_verb_simple = list("slap", "punch")
+
 /obj/item/bodypart/arm/left
 	name = "left arm"
 	desc = "Did you know that the word 'sinister' stems originally from the \
@@ -144,8 +150,6 @@
 		be possessed by the devil? This arm appears to be possessed by no \
 		one though."
 	icon_state = "default_human_l_arm"
-	attack_verb_continuous = list("slaps", "punches")
-	attack_verb_simple = list("slap", "punch")
 	max_damage = 50
 	body_zone = BODY_ZONE_L_ARM
 	body_part = ARM_LEFT
@@ -311,12 +315,14 @@
 	max_damage = 100
 	should_draw_greyscale = FALSE
 
+TYPEINFO_DEF(/obj/item/bodypart/leg)
+	attack_verb_continuous = list("kicks", "stomps")
+	attack_verb_simple = list("kick", "stomp")
+
 /// Parent Type for arms, should not appear in game.
 /obj/item/bodypart/leg
 	name = "leg"
 	desc = "This item shouldn't exist. Talk about breaking a leg. Badum-Tss!"
-	attack_verb_continuous = list("kicks", "stomps")
-	attack_verb_simple = list("kick", "stomp")
 	max_damage = 80
 	can_be_disabled = TRUE
 	unarmed_attack_effect = ATTACK_EFFECT_KICK

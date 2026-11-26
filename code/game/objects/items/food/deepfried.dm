@@ -27,7 +27,6 @@
 	equip_delay_self = fried.equip_delay_self
 	equip_delay_other = fried.equip_delay_other
 	strip_delay = fried.strip_delay
-	species_exception = fried.species_exception
 	item_flags = fried.item_flags
 	obj_flags = fried.obj_flags
 	inhand_x_dimension = fried.inhand_x_dimension

@@ -31,6 +31,10 @@
 
 	plant_type = /datum/plant/cotton
 
+TYPEINFO_DEF(/obj/item/grown/cotton)
+	attack_verb_continuous = list("pomfs")
+	attack_verb_simple = list("pomf")
+
 /obj/item/grown/cotton
 	plant_datum = /datum/plant/cotton
 	name = "cotton bundle"
@@ -40,8 +44,6 @@
 	throwforce = 0
 	w_class = WEIGHT_CLASS_TINY
 	throw_range = 3
-	attack_verb_continuous = list("pomfs")
-	attack_verb_simple = list("pomf")
 
 	var/cotton_type = /obj/item/stack/sheet/cotton
 	var/cotton_name = "raw cotton"
@@ -87,6 +89,10 @@
 
 	plant_type = /datum/plant/cotton/durathread
 
+TYPEINFO_DEF(/obj/item/grown/cotton/durathread)
+	attack_verb_continuous = list("bashes", "batters", "bludgeons", "whacks")
+	attack_verb_simple = list("bash", "batter", "bludgeon", "whack")
+
 /obj/item/grown/cotton/durathread
 	plant_datum = /datum/plant/cotton/durathread
 	name = "durathread bundle"
@@ -96,7 +102,5 @@
 	throwforce = 5
 	w_class = WEIGHT_CLASS_NORMAL
 	throw_range = 3
-	attack_verb_continuous = list("bashes", "batters", "bludgeons", "whacks")
-	attack_verb_simple = list("bash", "batter", "bludgeon", "whack")
 	cotton_type = /obj/item/stack/sheet/cotton/durathread
 	cotton_name = "raw durathread"

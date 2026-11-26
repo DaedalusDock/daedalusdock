@@ -266,6 +266,10 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 /obj/item/storage/book/bible/booze/PopulateContents()
 	new /obj/item/reagent_containers/cup/glass/bottle/whiskey(src)
 
+TYPEINFO_DEF(/obj/item/storage/book/bible/syndicate)
+	attack_verb_continuous = list("attacks", "burns", "blesses", "damns", "scorches")
+	attack_verb_simple = list("attack", "burn", "bless", "damn", "scorch")
+
 /obj/item/storage/book/bible/syndicate
 	icon_state ="ebook"
 	deity_name = "The Syndicate"
@@ -275,8 +279,6 @@ GLOBAL_LIST_INIT(bibleitemstates, list("bible", "koran", "scrapbook", "burning",
 	hitsound = 'sound/weapons/sear.ogg'
 	damtype = BURN
 	name = "Syndicate Tome"
-	attack_verb_continuous = list("attacks", "burns", "blesses", "damns", "scorches")
-	attack_verb_simple = list("attack", "burn", "bless", "damn", "scorch")
 	var/uses = 1
 
 /obj/item/storage/book/bible/syndicate/attack_self(mob/living/carbon/human/H)

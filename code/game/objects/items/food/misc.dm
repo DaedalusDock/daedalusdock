@@ -404,6 +404,10 @@
 	food_flags = FOOD_FINGER_FOOD
 	w_class = WEIGHT_CLASS_SMALL
 
+TYPEINFO_DEF(/obj/item/food/powercrepe)
+	attack_verb_continuous = list("slaps", "slathers")
+	attack_verb_simple = list("slap", "slather")
+
 /obj/item/food/powercrepe
 	name = "Powercrepe"
 	desc = "With great power, comes great crepes.  It looks like a pancake filled with jelly but packs quite a punch."
@@ -414,8 +418,6 @@
 	block_chance = 55
 	block_sound = 'sound/weapons/block/parry.ogg'
 	armor_penetration = 80
-	attack_verb_continuous = list("slaps", "slathers")
-	attack_verb_simple = list("slap", "slather")
 	w_class = WEIGHT_CLASS_BULKY
 	tastes = list("cherry" = 1, "crepe" = 1)
 	foodtypes = GRAIN | FRUIT | SUGAR

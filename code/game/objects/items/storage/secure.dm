@@ -138,6 +138,10 @@
 			return
 	return
 
+TYPEINFO_DEF(/obj/item/storage/secure/briefcase)
+	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
+	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
+
 ///Secure Briefcase
 /obj/item/storage/secure/briefcase
 	name = "secure briefcase"
@@ -151,8 +155,6 @@
 	hitsound = SFX_SWING_HIT
 	throw_range = 4
 	w_class = WEIGHT_CLASS_BULKY
-	attack_verb_continuous = list("bashes", "batters", "bludgeons", "thrashes", "whacks")
-	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 
 	storage_type = /datum/storage/latched_box
 

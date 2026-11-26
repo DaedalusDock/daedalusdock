@@ -1,5 +1,7 @@
 TYPEINFO_DEF(/obj/item/storage/toolbox)
 	default_materials = list(/datum/material/iron = 500)
+	attack_verb_continuous = list("robusts")
+	attack_verb_simple = list("robust")
 
 /obj/item/storage/toolbox
 	name = "toolbox"
@@ -23,8 +25,6 @@ TYPEINFO_DEF(/obj/item/storage/toolbox)
 	block_chance = 10
 
 	w_class = WEIGHT_CLASS_BULKY
-	attack_verb_continuous = list("robusts")
-	attack_verb_simple = list("robust")
 	hitsound = 'sound/weapons/smash.ogg'
 	block_sound = SFX_BLOCK_BIG_METAL
 	drop_sound = 'sound/items/handling/toolbox_drop.ogg'

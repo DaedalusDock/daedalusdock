@@ -1,5 +1,7 @@
 TYPEINFO_DEF(/obj/item/extinguisher)
 	default_materials = list(/datum/material/iron = 90)
+	attack_verb_continuous = list("slams", "whacks", "bashes", "thunks", "batters", "bludgeons", "thrashes")
+	attack_verb_simple = list("slam", "whack", "bash", "thunk", "batter", "bludgeon", "thrash")
 
 /obj/item/extinguisher
 	name = "fire extinguisher"
@@ -19,8 +21,6 @@ TYPEINFO_DEF(/obj/item/extinguisher)
 	stamina_cost = 20
 	stamina_critical_chance = 35
 
-	attack_verb_continuous = list("slams", "whacks", "bashes", "thunks", "batters", "bludgeons", "thrashes")
-	attack_verb_simple = list("slam", "whack", "bash", "thunk", "batter", "bludgeon", "thrash")
 	dog_fashion = /datum/dog_fashion/back
 	resistance_flags = FIRE_PROOF
 	var/max_water = 50

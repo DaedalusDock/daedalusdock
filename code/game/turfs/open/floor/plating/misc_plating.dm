@@ -13,8 +13,8 @@
 	damaged_icon = 'icons/turf/floors.dmi'
 	tiled_dirt = FALSE
 
-/turf/open/floor/plating/abductor/setup_broken_states()
-	return list("alienpod1")
+TYPEINFO_DEF(/turf/open/floor/plating/abductor)
+	broken_states = list("alienpod1")
 
 /turf/open/floor/plating/abductor/Initialize(mapload)
 	. = ..()
